@@ -1,0 +1,114 @@
+import json
+from datetime import date
+from pathlib import Path
+from jinja2 import Environment, FileSystemLoader
+from src.config import (
+    TEMPLATES_DIR, PATCHES_DIR, DOCS_DIR, ROOT_DIR,
+    README_DAYS_SHOWN,
+)
+from src.db import (
+    get_advisories_for_date, get_pattern_info,
+    get_recent_dates, get_all_advisories, get_stats,
+)
+
+
+def init_renderer() -> Environment:
+    return Environment(
+        loader=FileSystemLoader(str(TEMPLATES_DIR)),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+
+
+def render_daily_patch(target_date: str, advisories: list[dict]):
+    PATCHES_DIR.mkdir(parents=True, exist_ok=True)
+    env = init_renderer()
+    template = env.get_template("patch.md.j2")
+
+    enriched = []
+    for adv in advisories:
+        pattern_info = get_pattern_info(adv["pattern_id"])
+        enriched.append({
+            **adv,
+            "pattern_info": pattern_info,
+        })
+
+    content = template.render(
+        date=target_date,
+        advisories=enriched,
+        total=len(enriched),
+    )
+
+    output_path = PATCHES_DIR / f"{target_date}.md"
+    output_path.write_text(content, encoding="utf-8")
+
+
+def render_readme():
+    env = init_renderer()
+    template = env.get_template("readme.md.j2")
+    recent_dates = get_recent_dates(README_DAYS_SHOWN)
+
+    days_data = []
+    for d in recent_dates:
+        advisories = get_advisories_for_date(d)
+        days_data.append({"date": d, "advisories": advisories})
+
+    stats = get_stats()
+
+    content = template.render(
+        days=days_data,
+        stats=stats,
+        today=date.today().isoformat(),
+    )
+
+    output_path = ROOT_DIR / "README.md"
+    output_path.write_text(content, encoding="utf-8")
+
+
+def render_html_index():
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    env = init_renderer()
+    template = env.get_template("index.html.j2")
+
+    all_advisories = get_all_advisories()
+    stats = get_stats()
+
+    content = template.render(
+        advisories=all_advisories,
+        stats=stats,
+        today=date.today().isoformat(),
+    )
+
+    output_path = DOCS_DIR / "index.html"
+    output_path.write_text(content, encoding="utf-8")
+
+    _generate_search_index(all_advisories)
+
+
+def _generate_search_index(advisories: list[dict]):
+    index = []
+    for adv in advisories:
+        index.append({
+            "id": adv["id"],
+            "date": adv["date"],
+            "repo": adv["repo"],
+            "language": adv["language"],
+            "severity": adv["severity"],
+            "cvss": adv["cvss_score"],
+            "pattern": adv["pattern_id"],
+            "vuln_type": adv["vuln_type"],
+            "summary": adv.get("root_cause", "")[:200],
+            "package": adv.get("package_name", ""),
+        })
+
+    output_path = DOCS_DIR / "search-index.json"
+    output_path.write_text(
+        json.dumps(index, ensure_ascii=False, indent=None),
+        encoding="utf-8",
+    )
+
+
+def render_all(target_date: str, analyzed_advisories: list[dict]):
+    render_daily_patch(target_date, analyzed_advisories)
+    render_readme()
+    render_html_index()

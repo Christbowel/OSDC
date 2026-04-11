@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSDC — Open Source Daily Catch</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f8f9fa;--card:#fff;--text:#1a1a2e;--muted:#6c757d;--accent:#0d6efd;--border:#dee2e6;--critical:#dc3545;--high:#fd7e14;--moderate:#ffc107;--low:#198754;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:0 1.5rem}
+header{background:var(--text);color:#fff;padding:2rem 0}
+header h1{font-size:1.75rem;font-weight:700}
+header p{color:#a0a0b0;margin-top:.25rem}
+.stats{display:flex;gap:2rem;margin-top:1rem}
+.stat{text-align:center}
+.stat-value{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#a0a0b0}
+.controls{padding:1.5rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:200px;padding:.5rem 1rem;border:1px solid var(--border);border-radius:6px;font-size:.9rem;font-family:var(--font)}
+select{padding:.5rem;border:1px solid var(--border);border-radius:6px;font-size:.85rem;font-family:var(--font);background:var(--card)}
+.count{color:var(--muted);font-size:.85rem;margin-left:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.card-id{font-weight:700;color:var(--accent);text-decoration:none;font-size:.95rem}
+.card-id:hover{text-decoration:underline}
+.card-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.badge{padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600;color:#fff;text-transform:uppercase}
+.badge-critical{background:var(--critical)}
+.badge-high{background:var(--high)}
+.badge-moderate,.badge-medium{background:var(--moderate);color:#333}
+.badge-low{background:var(--low)}
+.pattern-tag{font-family:monospace;font-size:.8rem;background:#e8f0fe;color:#1a56db;padding:.15rem .5rem;border-radius:4px}
+.card-body{margin-top:.75rem;color:var(--muted);font-size:.9rem}
+.card-footer{margin-top:.75rem;display:flex;gap:1rem;font-size:.8rem;color:var(--muted)}
+footer{text-align:center;padding:2rem 0;color:var(--muted);font-size:.85rem}
+footer a{color:var(--accent)}
+@media(max-width:600px){.stats{flex-direction:column;gap:.5rem}.controls{flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>🎣 Open Source Daily Catch</h1>
+<p>Automated patch intelligence — what got fixed and why it matters</p>
+<div class="stats">
+<div class="stat">
+<div class="stat-value">{{ stats.total_advisories }}</div>
+<div class="stat-label">Advisories</div>
+</div>
+<div class="stat">
+<div class="stat-value">{{ stats.total_patterns }}</div>
+<div class="stat-label">Patterns</div>
+</div>
+<div class="stat">
+<div class="stat-value">{{ today }}</div>
+<div class="stat-label">Last update</div>
+</div>
+</div>
+</div>
+</header>
+
+<div class="container">
+<div class="controls">
+<input type="text" class="search" id="searchInput" placeholder="Search advisories, patterns, packages...">
+<select id="severityFilter">
+<option value="">All severities</option>
+<option value="CRITICAL">Critical</option>
+<option value="HIGH">High</option>
+<option value="MODERATE">Moderate</option>
+<option value="LOW">Low</option>
+</select>
+<select id="languageFilter">
+<option value="">All languages</option>
+</select>
+<span class="count" id="resultCount"></span>
+</div>
+
+<div id="advisoryList">
+{% for adv in advisories %}
+<div class="card" data-severity="{{ adv.severity }}" data-language="{{ adv.language }}" data-searchable="{{ adv.id }} {{ adv.repo }} {{ adv.package_name }} {{ adv.pattern_id }} {{ adv.vuln_type }} {{ adv.language }} {{ adv.root_cause }}">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/{{ adv.id }}" target="_blank" rel="noopener">{{ adv.id }}</a>
+<div class="card-meta">
+<span class="badge badge-{{ adv.severity | lower }}">{{ adv.severity }} {{ adv.cvss_score }}</span>
+<span class="pattern-tag">{{ adv.pattern_id }}</span>
+</div>
+</div>
+<div class="card-body">
+<strong>{{ adv.package_name }}</strong> · {{ adv.language }} · {{ adv.date }}<br>
+{{ adv.root_cause[:300] }}
+</div>
+<div class="card-footer">
+<span>{{ adv.vuln_type }}</span>
+<a href="{{ adv.commit_url }}" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<footer>
+<p>Built by <a href="https://christbowel.com">Christbowel</a> · <a href="https://github.com/christbowel/osdc">Source</a></p>
+</footer>
+
+<script>
+(function() {
+    var cards = document.querySelectorAll('.card');
+    var searchInput = document.getElementById('searchInput');
+    var severityFilter = document.getElementById('severityFilter');
+    var languageFilter = document.getElementById('languageFilter');
+    var resultCount = document.getElementById('resultCount');
+
+    var languages = new Set();
+    cards.forEach(function(c) { languages.add(c.dataset.language); });
+    Array.from(languages).sort().forEach(function(lang) {
+        var opt = document.createElement('option');
+        opt.value = lang;
+        opt.textContent = lang;
+        languageFilter.appendChild(opt);
+    });
+
+    function filterCards() {
+        var query = searchInput.value.toLowerCase();
+        var severity = severityFilter.value;
+        var language = languageFilter.value;
+        var visible = 0;
+
+        cards.forEach(function(card) {
+            var matchSearch = !query || card.dataset.searchable.toLowerCase().indexOf(query) !== -1;
+            var matchSeverity = !severity || card.dataset.severity === severity;
+            var matchLanguage = !language || card.dataset.language === language;
+            var show = matchSearch && matchSeverity && matchLanguage;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        resultCount.textContent = visible + ' of ' + cards.length + ' advisories';
+    }
+
+    searchInput.addEventListener('input', filterCards);
+    severityFilter.addEventListener('change', filterCards);
+    languageFilter.addEventListener('change', filterCards);
+    filterCards();
+})();
+</script>
+</body>
+</html>
