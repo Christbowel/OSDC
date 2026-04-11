@@ -18,13 +18,13 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 GEMINI_API_URL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
-    "gemini-2.0-flash:generateContent"
+    "gemini-2.0-flash-lite:generateContent"
 )
 
 MAX_DAILY_CALLS = 50
 MAX_DIFF_FILES = 5
 MAX_DIFF_LINES = 500
-RATE_LIMIT_DELAY = 2.0
+RATE_LIMIT_DELAY = 3.0
 RETRY_ATTEMPTS = 3
 RETRY_BACKOFF = [2, 4, 8]
 
