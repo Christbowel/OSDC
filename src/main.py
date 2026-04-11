@@ -70,6 +70,7 @@ def run():
     errors = 0
 
     for advisory in new_advisories:
+        print(f"  Processing {advisory['ghsa_id']} ({advisory['severity']})...")
         if calls_remaining <= 0:
             insert_pending(advisory["ghsa_id"], advisory)
             continue
