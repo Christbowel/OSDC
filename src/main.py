@@ -1,5 +1,6 @@
 import json
 import time
+import signal
 import sys
 from datetime import datetime, timezone
 from src.config import (
@@ -14,6 +15,15 @@ from src.db import (
     get_stats,
 )
 from src.render import render_all
+
+
+_shutdown_requested = False
+
+
+def _handle_signal(signum, frame):
+    global _shutdown_requested
+    _shutdown_requested = True
+    print(f"\nGraceful shutdown requested (signal {signum}), saving progress...")
 
 
 def load_state() -> dict:
@@ -34,7 +44,15 @@ def save_state(state: dict):
         json.dump(state, f, indent=2, ensure_ascii=False)
 
 
+def save_progress(state: dict):
+    save_state(state)
+    export_to_jsonl()
+
+
 def run():
+    signal.signal(signal.SIGTERM, _handle_signal)
+    signal.signal(signal.SIGINT, _handle_signal)
+
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
 
@@ -69,23 +87,31 @@ def run():
     new_patterns = 0
     errors = 0
 
-    for advisory in new_advisories:
-        print(f"  Processing {advisory['ghsa_id']} ({advisory['severity']})...")
+    for i, advisory in enumerate(new_advisories):
+        if _shutdown_requested:
+            print(f"Shutdown: saving {len(analyzed)} analyzed so far")
+            break
+
         if calls_remaining <= 0:
             insert_pending(advisory["ghsa_id"], advisory)
             continue
 
+        print(f"  [{i+1}/{len(new_advisories)}] {advisory['ghsa_id']} ({advisory['severity']})...")
+
         raw_diff = fetch_commit_diff(advisory["commit_url"])
         if not raw_diff:
+            print(f"    SKIP: no diff available")
             errors += 1
             continue
 
         filtered = filter_diff(raw_diff)
         if not filtered:
+            print(f"    SKIP: no relevant files in diff")
             continue
 
         result = analyze_advisory(advisory, filtered)
         if not result:
+            print(f"    ERROR: LLM analysis failed")
             errors += 1
             continue
 
@@ -98,10 +124,20 @@ def run():
         else:
             label = f"{pattern_match['occurrences']}x seen"
 
-        print(f"  {result['ghsa_id']} → {result['pattern_id']} [{label}]")
+        print(f"    OK → {result['pattern_id']} [{label}]")
 
         calls_remaining -= 1
         advisory_count += 1
+
+        if len(analyzed) % 5 == 0:
+            save_progress({
+                "last_run_at": now.isoformat(),
+                "pending_ids": [],
+                "today_advisory_count": advisory_count,
+                "today_run_number": run_number,
+            })
+            print(f"    [checkpoint: {len(analyzed)} saved]")
+
         time.sleep(RATE_LIMIT_DELAY)
 
     export_to_jsonl()
@@ -144,13 +180,7 @@ def run():
     print(f"Errors: {errors}")
     print(f"Total DB: {stats['total_advisories']} advisories, {stats['total_patterns']} patterns")
 
-    commit_msg = (
-        f"feat: patch analysis {today} [{run_number}/3] "
-        f"— {len(analyzed)} advisories, {new_patterns} new patterns"
-    )
-    print(f"\nCommit message: {commit_msg}")
-
-    return commit_msg
+    return len(analyzed)
 
 
 if __name__ == "__main__":
