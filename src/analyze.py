@@ -93,29 +93,35 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
 
             if response.status_code == 429:
                 wait = RETRY_BACKOFF[attempt] * 2
+                print(f"    Rate limited, waiting {wait}s...")
                 time.sleep(wait)
                 continue
 
-            response.raise_for_status()
+            if response.status_code != 200:
+                print(f"    Gemini HTTP {response.status_code}: {response.text[:300]}")
+                return None
+
             data = response.json()
             candidates = data.get("candidates", [])
             if not candidates:
+                print(f"    Gemini: no candidates in response")
                 return None
 
             content = candidates[0].get("content", {})
             parts = content.get("parts", [])
             if not parts:
+                print(f"    Gemini: no parts in response")
                 return None
 
             return parts[0].get("text", "")
 
-        except requests.RequestException:
+        except requests.RequestException as exc:
+            print(f"    Gemini error (attempt {attempt+1}): {exc}")
             if attempt == RETRY_ATTEMPTS - 1:
                 return None
             time.sleep(RETRY_BACKOFF[attempt])
 
     return None
-
 
 def _parse_llm_response(raw: str) -> Optional[dict]:
     cleaned = raw.strip()
