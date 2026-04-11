@@ -37,6 +37,7 @@ jobs:
         run: python -m src.main
 
       - name: Commit and push
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -47,13 +48,17 @@ jobs:
             COMMIT_MSG=$(python -c "
           import json
           from pathlib import Path
-          log = json.loads(Path('data/run_log.json').read_text())
-          date = log['run_at'][:10]
-          run = log['run_number']
-          analyzed = log['analyzed']
-          new_p = log['new_patterns']
-          print(f'feat: patch analysis {date} [{run}/3] — {analyzed} advisories, {new_p} new patterns')
-          ")
+          log_path = Path('data/run_log.json')
+          if log_path.exists():
+              log = json.loads(log_path.read_text())
+              date = log['run_at'][:10]
+              run = log['run_number']
+              analyzed = log['analyzed']
+              new_p = log['new_patterns']
+              print(f'feat: patch analysis {date} [{run}/3] — {analyzed} advisories, {new_p} new patterns')
+          else:
+              print('fix: partial run — saving progress')
+          " 2>/dev/null || echo "fix: partial run — saving progress")
             git commit -m "$COMMIT_MSG"
             git push
           fi
