@@ -19,17 +19,15 @@ from src.render import render_readme, render_html_index, render_daily_patch
 from src.db import get_advisories_for_date, get_recent_dates
 
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
+OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "qwen2.5-coder:7b"
 
 
 def call_ollama(user_prompt: str) -> str | None:
     payload = {
         "model": OLLAMA_MODEL,
-        "messages": [
-            {"role": "system", "content": LLM_SYSTEM_PROMPT},
-            {"role": "user", "content": user_prompt},
-        ],
+        "system": LLM_SYSTEM_PROMPT,
+        "prompt": user_prompt,
         "stream": False,
         "format": "json",
         "options": {
@@ -42,7 +40,7 @@ def call_ollama(user_prompt: str) -> str | None:
         response = requests.post(OLLAMA_URL, json=payload, timeout=120)
         response.raise_for_status()
         data = response.json()
-        return data.get("message", {}).get("content", "")
+        return data.get("response", "")
     except requests.RequestException as exc:
         print(f"    Ollama error: {exc}")
         return None
@@ -98,8 +96,6 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
 
 def backfill_local(days: int):
     print(f"=== OSDC Local Backfill ({OLLAMA_MODEL} via Ollama) ===")
-    print(f"Make sure Ollama is running: ollama serve")
-    print(f"Make sure model is pulled: ollama pull {OLLAMA_MODEL}")
     print()
 
     try:
@@ -188,7 +184,7 @@ def backfill_local(days: int):
     print(f"New patterns: {new_patterns}")
     print(f"Errors: {errors}")
     print(f"Total DB: {stats['total_advisories']} advisories, {stats['total_patterns']} patterns")
-    print(f"\nDon't forget to commit and push:")
+    print(f"\nCommit and push:")
     print(f"  git add -A && git commit -m 'feat: local backfill — {processed} advisories' && git push")
 
 
