@@ -11,10 +11,8 @@ from src.diff_filter import filter_diff
 from src.analyze import analyze_advisory
 from src.db import (
     rebuild_from_jsonl, advisory_exists, insert_analysis,
-    insert_pending, export_to_jsonl, get_advisories_for_date,
-    get_stats,
+    insert_pending, export_to_jsonl, get_stats,
 )
-from src.render import render_all
 
 
 _shutdown_requested = False
@@ -141,10 +139,6 @@ def run():
         time.sleep(RATE_LIMIT_DELAY)
 
     export_to_jsonl()
-
-    all_today = get_advisories_for_date(today)
-    if all_today:
-        render_all(today, all_today)
 
     if len(analyzed) > 0:
         new_cursor = now.isoformat()
