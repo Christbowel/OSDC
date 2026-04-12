@@ -2,26 +2,29 @@
 
 # 🎣 Open Source Daily Catch
 
-**Automated Patch Intelligence — what got fixed in open source today, and why it matters**
+**Automated Patch Intelligence for Security Engineers**
 
 [![Analysis](https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/daily.yml)
+[![Render](https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/render.yml)
 
-{{ stats.total_advisories }} advisories analyzed · {{ stats.total_patterns }} unique patterns tracked
+`{{ stats.total_advisories }}` advisories · `{{ stats.total_patterns }}` unique vuln patterns · updated 3x/day
 
-[Browse all patches →](https://christbowel.github.io/osdc)
+[Live index](https://christbowel.github.io/OSDC) · [How it works](#how-it-works)
 
 </div>
 
 ---
 
 {% for adv in top_advisories %}
-### {{ adv.id }} · {{ adv.package_name }}
+<table><tr><td>
 
-📅 {{ adv.date }} · {{ adv.language }} · **{{ adv.severity }}** {{ adv.cvss_score }} · Pattern: `{{ adv.pattern_id }}` · {{ adv.occurrences }}x seen
+**{{ adv.id }}** · `{{ adv.severity }} {{ adv.cvss_score }}` · {{ adv.date }}
 
-**Root cause** — {{ adv.root_cause }}
+`{{ adv.package_name }}` · {{ adv.language }} · Pattern: `{{ adv.pattern_id }}` · {{ adv.occurrences }}x across ecosystem
 
-**Impact** — {{ adv.impact }}
+**Root cause** : {{ adv.root_cause }}
+
+**Impact** : {{ adv.impact }}
 
 {% if adv.key_diff %}
 ```diff
@@ -29,24 +32,62 @@
 ```
 {% endif %}
 
-**Fix** — {{ adv.fix_summary }}
+**Fix** : {{ adv.fix_summary }}
 
-🔗 [Advisory](https://github.com/advisories/{{ adv.id }}) · [Commit]({{ adv.commit_url }})
+[Advisory](https://github.com/advisories/{{ adv.id }}) · [Commit]({{ adv.commit_url }})
 
----
+</td></tr></table>
 
 {% endfor %}
 
+## How it works
+
+```
+06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
+             Filter: has linked patch commit, severity >= MEDIUM
+                          ↓
+06:00:10     Fetch commit diff via GitHub API
+             Filter: exclude tests/docs/lockfiles, keep top 5 source files
+                          ↓
+06:00:15     LLM analysis (Gemini 2.5 Flash)
+             Extract: vuln_type, root_cause, impact, fix_summary, key_diff
+             Map to closed taxonomy of {{ stats.total_patterns }} normalized pattern IDs
+                          ↓
+06:00:20     Pattern matching against SQLite historical DB
+             Cross-language correlation, recurrence scoring
+                          ↓
+06:00:25     Output: patches/*.md, README.md, docs/index.html
+             Single atomic commit per run
+```
+
+Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independently at `07:00`, `15:00`, `00:00` UTC.
+
 <details>
-<summary>📊 Stats</summary>
+<summary>Stack</summary>
+
+| Component | Tech | Notes |
+|-----------|------|-------|
+| Automation | GitHub Actions cron | Zero infra |
+| Data source | GitHub Advisory DB | GraphQL, filtered on patch commits |
+| LLM | Gemini 2.5 Flash | Free tier, JSON-only output |
+| DB | SQLite (rebuilt from JSONL) | Git-friendly, versioned |
+| Frontend | Static HTML | Client-side search, zero build step |
+| Scripting | Python 3.11 | requests, jinja2, sqlite3 |
+
+</details>
+
+<details>
+<summary>Stats</summary>
 
 | Metric | Value |
 |--------|-------|
 | Total advisories | {{ stats.total_advisories }} |
 | Unique patterns | {{ stats.total_patterns }} |
-| Pending analysis | {{ stats.pending_count }} |
+| Pending | {{ stats.pending_count }} |
 | Last updated | {{ today }} |
 
 </details>
 
-*Built by [Christbowel](https://christbowel.com) · [Full index](https://christbowel.github.io/osdc)*
+---
+
+*[christbowel.com](https://christbowel.com)*
