@@ -4,7 +4,7 @@
 
 **Automated Patch Intelligence — what got fixed in open source today, and why it matters**
 
-[![Daily Analysis](https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/daily.yml)
+[![Analysis](https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/daily.yml)
 
 {{ stats.total_advisories }} advisories analyzed · {{ stats.total_patterns }} unique patterns tracked
 
@@ -16,22 +16,13 @@
 
 OSDC watches security patches landing in open source every day. It extracts vulnerability patterns, compares them to its historical database, and flags recurring antipatterns across languages and ecosystems.
 
-## Recent patches
+## Latest critical & high severity patches
 
-{% for day in days %}
-### {{ day.date }}
-
-| Advisory | Package | Severity | Pattern |
-|----------|---------|----------|---------|
-{% for adv in day.advisories %}
-| [{{ adv.id }}](patches/{{ day.date }}.md) | {{ adv.package_name }} ({{ adv.language }}) | {{ adv.severity }} {{ adv.cvss_score }} | `{{ adv.pattern_id }}` |
+| Date | Advisory | Package | Severity | Pattern | Seen |
+|------|----------|---------|----------|---------|------|
+{% for adv in top_advisories %}
+| {{ adv.date }} | [{{ adv.id }}](https://github.com/advisories/{{ adv.id }}) | {{ adv.package_name }} ({{ adv.language }}) | **{{ adv.severity }}** {{ adv.cvss_score }} | `{{ adv.pattern_id }}` | {{ adv.occurrences }}x |
 {% endfor %}
-
-{% endfor %}
-
-## How it works
-
-Three automated runs per day (06:00, 14:00, 23:00 UTC) pull new advisories from the GitHub Advisory Database, extract and filter the fix diffs, analyze them with an LLM, and match the vulnerability pattern against a growing historical database. Each pattern gets a normalized ID that enables cross-language, cross-ecosystem correlation.
 
 ## Stats
 
@@ -42,6 +33,10 @@ Three automated runs per day (06:00, 14:00, 23:00 UTC) pull new advisories from 
 | Pending analysis | {{ stats.pending_count }} |
 | Last updated | {{ today }} |
 
+## How it works
+
+Three automated runs per day (06:00, 14:00, 23:00 UTC) pull new advisories from the GitHub Advisory Database, extract and filter the fix diffs, analyze them with an LLM, and match the vulnerability pattern against a growing historical database.
+
 ---
 
-*Built by [Christbowel](https://christbowel.com) · [Live index](https://christbowel.github.io/osdc)*
+*Built by [Christbowel](https://christbowel.com) · [Full index](https://christbowel.github.io/osdc)*
