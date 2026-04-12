@@ -92,10 +92,8 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
             response = requests.post(url, json=payload, timeout=60)
 
             if response.status_code == 429:
-                wait = RETRY_BACKOFF[attempt] * 2
-                print(f"    Rate limited, waiting {wait}s...")
-                time.sleep(wait)
-                continue
+                print(f"    HTTP 429: {response.text[:500]}")
+                return None
 
             if response.status_code != 200:
                 print(f"    Gemini HTTP {response.status_code}: {response.text[:300]}")
