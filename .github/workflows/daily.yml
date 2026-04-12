@@ -1,4 +1,4 @@
-name: OSDC Daily Analysis
+name: OSDC Analysis
 
 on:
   schedule:
@@ -36,12 +36,12 @@ jobs:
           PYTHONUNBUFFERED: "1"
         run: python -m src.main
 
-      - name: Commit and push
+      - name: Commit data
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add data/ patches/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
