@@ -25,26 +25,24 @@
 
 **Impact** : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server's file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.
 
-```diff
-```diff
+<pre lang="diff">```diff
 --- a/server/asset_upload_handler.go
 +++ b/server/asset_upload_handler.go
 @@ -67,6 +67,13 @@ func AssetUploadHandler(cruds map[string]*resource.DbResource) func(c *gin.Conte
- 			c.AbortWithError(400, errors.New("filename query parameter is required"))
+ 			c.AbortWithError(400, errors.New(&#34;filename query parameter is required&#34;))
  			return
  		}
 +		// Strip path traversal from filename
-+		if fileName != "" {
++		if fileName != &#34;&#34; {
 +			fileName = filepath.Clean(fileName)
-+			for strings.HasPrefix(fileName, "..") {
-+				fileName = strings.TrimPrefix(strings.TrimPrefix(fileName, ".."), string(filepath.Separator))
++			for strings.HasPrefix(fileName, &#34;..&#34;) {
++				fileName = strings.TrimPrefix(strings.TrimPrefix(fileName, &#34;..&#34;), string(filepath.Separator))
 +			}
 +		}
  		// Validate table and column
  		dbResource, ok := cruds[typeName]
  		if !ok || dbResource == nil {
-```
-```
+```</pre>
 
 **Fix** : The patch introduces robust path sanitization by using `filepath.Clean` and then iteratively stripping any leading `..` components from user-supplied filenames and archive entry names. This ensures that all file system operations are constrained to the intended directories.
 
@@ -62,15 +60,14 @@
 
 **Impact** : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.
 
-```diff
-```diff
+<pre lang="diff">```diff
 --- a/lib/core/AxiosHeaders.js
 +++ b/lib/core/AxiosHeaders.js
-@@ -5,18 +5,49 @@ import parseHeaders from '../helpers/parseHeaders.js';
+@@ -5,18 +5,49 @@ import parseHeaders from &#39;../helpers/parseHeaders.js&#39;;
  
- const $internals = Symbol('internals');
+ const $internals = Symbol(&#39;internals&#39;);
  
-+const isValidHeaderValue = (value) => !/[
++const isValidHeaderValue = (value) =&gt; !/[
 ]/.test(value);
 +
 +function assertValidHeaderValue(value, header) {
@@ -79,12 +76,12 @@
 +  }
 +
 +  if (utils.isArray(value)) {
-+    value.forEach((v) => assertValidHeaderValue(v, header));
++    value.forEach((v) =&gt; assertValidHeaderValue(v, header));
 +    return;
 +  }
 +
 +  if (!isValidHeaderValue(String(value))) {
-+    throw new Error(`Invalid character in header content ["${header}"]`);
++    throw new Error(`Invalid character in header content [&#34;${header}&#34;]`);
 +  }
 +}
  
@@ -96,21 +93,20 @@
 -  return utils.isArray(value)
 -    ? value.map(normalizeValue)
 -    : String(value).replace(/[
-]+$/, '');
+]+$/, &#39;&#39;);
 +  return utils.isArray(value) ? value.map(normalizeValue) : stripTrailingCRLF(String(value));
  }
  
  function parseTokens(str) {
 @@ -98,6 +129,7 @@ class AxiosHeaders {
          _rewrite === true ||
-         (_rewrite === undefined && self[key] !== false)
+         (_rewrite === undefined &amp;&amp; self[key] !== false)
        ) {
 +        assertValidHeaderValue(_value, _header);
          self[key || _header] = normalizeValue(_value);
        }
      }
-```
-```
+```</pre>
 
 **Fix** : The patch introduces a `isValidHeaderValue` function to explicitly check for and disallow newline characters (CRLF) in header values. It also adds an `assertValidHeaderValue` function to enforce this validation before header values are set, preventing header injection.
 
@@ -128,12 +124,11 @@
 
 **Impact** : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.
 
-```diff
---- a/backend/routers/social/__init__.py
+<pre lang="diff">--- a/backend/routers/social/__init__.py
 +++ b/backend/routers/social/__init__.py
 @@ -149,9 +176,12 @@ def create_post(
-     moderation_enabled = settings.get("ai_bot_moderation_enabled", False)
-     initial_status = "pending" if moderation_enabled else "validated"
+     moderation_enabled = settings.get(&#34;ai_bot_moderation_enabled&#34;, False)
+     initial_status = &#34;pending&#34; if moderation_enabled else &#34;validated&#34;
  
 +    # Sanitize content to prevent Stored XSS
 +    clean_content = sanitize_content(post_data.content)
@@ -142,8 +137,7 @@
          author_id=current_user.id,
 -        content=post_data.content,
 +        content=clean_content,
-         visibility=post_data.visibility,
-```
+         visibility=post_data.visibility,</pre>
 
 **Fix** : The patch introduces a `sanitize_content` function using the `bleach` library to clean user input. This function is applied to all user-generated content (posts, comments, direct messages, and group conversation names) before it is stored in the database, stripping or escaping disallowed HTML tags and attributes.
 
@@ -161,13 +155,11 @@
 
 **Impact** : An attacker could write arbitrary files to arbitrary locations on the server's filesystem, potentially leading to remote code execution, data corruption, or denial of service.
 
-```diff
-temp_dir_real = os.path.realpath(temp_dir)
+<pre lang="diff">temp_dir_real = os.path.realpath(temp_dir)
 for member in zip_file.namelist():
     member_path = os.path.realpath(os.path.join(temp_dir_real, member))
     if not member_path.startswith(temp_dir_real + os.sep):
-        raise ValueError(f"Zip Slip path traversal detected: {member}")
-```
+        raise ValueError(f&#34;Zip Slip path traversal detected: {member}&#34;)</pre>
 
 **Fix** : The patch adds a validation step before extraction. It iterates through each member of the zip file, constructs its intended extraction path, and checks if the real path of the member remains within the designated temporary directory. If a path traversal attempt is detected, an error is raised.
 
@@ -185,8 +177,7 @@ for member in zip_file.namelist():
 
 **Impact** : An attacker could bypass intended access restrictions to delete, create, or modify files and directories, including potentially sensitive ones, even if a parent directory's '.goshs' file explicitly denied such actions.
 
-```diff
-```diff
+<pre lang="diff">```diff
 --- a/httpserver/handler.go
 +++ b/httpserver/handler.go
 @@ -83,8 +83,8 @@ func (fs *FileServer) doDir(file *os.File, w http.ResponseWriter, req *http.Requ
@@ -198,10 +189,9 @@ for member in zip_file.namelist():
 +	// Check for effective .goshs ACL (walks up to webroot so parent configs apply recursively)
 +	config, err := fs.findEffectiveACL(file.Name())
  	if err != nil
- 		logger.Errorf("error reading file based access config: %+v", err)
+ 		logger.Errorf(&#34;error reading file based access config: %+v&#34;, err)
  	}
-```
-```
+```</pre>
 
 **Fix** : The patch introduces a new `findEffectiveACL` function that recursively walks up the directory tree to find the nearest applicable '.goshs' ACL file. This function is now consistently used across all file and directory operations (doDir, doFile, deleteFile, handleMkdir, put, upload) to ensure proper authorization. Additionally, explicit checks were added to prevent the deletion or overwriting of '.goshs' ACL files themselves.
 
@@ -212,7 +202,7 @@ for member in zip_file.namelist():
 
 ## How it works
 
-```
+<pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
              Filter: has linked patch commit, severity >= MEDIUM
                           ↓
@@ -228,7 +218,7 @@ for member in zip_file.namelist():
                           ↓
 06:00:25     Output: patches/*.md, README.md, docs/index.html
              Single atomic commit per run
-```
+</pre>
 
 Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independently at `07:00`, `15:00`, `00:00` UTC.
 
