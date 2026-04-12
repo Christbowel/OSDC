@@ -32,7 +32,8 @@ def call_ollama(user_prompt: str) -> str | None:
         "format": "json",
         "options": {
             "temperature": 0.2,
-            "num_predict": 1024,
+            "num_predict": 512,
+            "num_ctx": 4096,
         },
     }
 
@@ -48,7 +49,7 @@ def call_ollama(user_prompt: str) -> str | None:
 
 def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
     taxonomy_ids = load_taxonomy()
-    taxonomy_list = "\n".join(f"- {pid}" for pid in taxonomy_ids)
+    taxonomy_list = ", ".join(taxonomy_ids)
 
     user_prompt = LLM_USER_PROMPT_TEMPLATE.format(
         ghsa_id=advisory["ghsa_id"],
@@ -57,7 +58,7 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
         summary=advisory["summary"],
         package_name=advisory["package_name"],
         ecosystem=advisory["ecosystem"],
-        diff_content=filtered_diff[:6000],
+        diff_content=filtered_diff[:2000],
         taxonomy_list=taxonomy_list,
     )
 
