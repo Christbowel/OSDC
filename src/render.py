@@ -59,6 +59,11 @@ def render_readme():
     for adv in top_advisories:
         pattern_info = get_pattern_info(adv["pattern_id"])
         adv["occurrences"] = pattern_info["occurrences"] if pattern_info else 1
+        adv["root_cause"] = adv.get("root_cause", "N/A")
+        adv["impact"] = adv.get("impact", "N/A")
+        adv["key_diff"] = adv.get("key_diff", "")
+        adv["fix_summary"] = adv.get("fix_summary", "N/A")
+        adv["commit_url"] = adv.get("commit_url", "")
 
     stats = get_stats()
 
