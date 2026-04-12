@@ -12,6 +12,9 @@ from src.db import (
 )
 
 
+SEVERITY_ORDER = {"CRITICAL": 0, "HIGH": 1, "MODERATE": 2, "MEDIUM": 2, "LOW": 3}
+
+
 def init_renderer() -> Environment:
     return Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
@@ -46,17 +49,21 @@ def render_daily_patch(target_date: str, advisories: list[dict]):
 def render_readme():
     env = init_renderer()
     template = env.get_template("readme.md.j2")
-    recent_dates = get_recent_dates(README_DAYS_SHOWN)
 
-    days_data = []
-    for d in recent_dates:
-        advisories = get_advisories_for_date(d)
-        days_data.append({"date": d, "advisories": advisories})
+    all_advisories = get_all_advisories()
+    top_advisories = sorted(
+        all_advisories,
+        key=lambda a: (SEVERITY_ORDER.get(a["severity"], 99), -a["cvss_score"])
+    )[:50]
+
+    for adv in top_advisories:
+        pattern_info = get_pattern_info(adv["pattern_id"])
+        adv["occurrences"] = pattern_info["occurrences"] if pattern_info else 1
 
     stats = get_stats()
 
     content = template.render(
-        days=days_data,
+        top_advisories=top_advisories,
         stats=stats,
         today=date.today().isoformat(),
     )
