@@ -84,8 +84,9 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
         ],
         "generationConfig": {
             "temperature": 0.2,
-            "maxOutputTokens": 1024,
+            "maxOutputTokens": 8192,
             "responseMimeType": "application/json",
+            "thinkingConfig": {"thinkingBudget": 0},
         },
     }
 
