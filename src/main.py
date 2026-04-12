@@ -146,8 +146,14 @@ def run():
     if all_today:
         render_all(today, all_today)
 
+    if len(analyzed) > 0:
+        new_cursor = now.isoformat()
+    else:
+        new_cursor = last_run
+        print(f"No advisories analyzed — keeping cursor at {last_run}")
+
     state = {
-        "last_run_at": now.isoformat(),
+        "last_run_at": new_cursor,
         "pending_ids": [],
         "today_advisory_count": advisory_count,
         "today_run_number": run_number,
