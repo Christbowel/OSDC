@@ -42,12 +42,14 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
 
     raw_response = _call_gemini(user_prompt)
     if not raw_response:
+        print(f"    DEBUG: _call_gemini returned None")
         return None
 
     parsed = _parse_llm_response(raw_response)
     if not parsed:
+        print(f"    DEBUG: parse failed, raw response: {raw_response[:300]}")
         return None
-
+        
     if parsed.get("pattern_id") not in taxonomy_ids:
         parsed["pattern_id"] = "UNCLASSIFIED"
 
