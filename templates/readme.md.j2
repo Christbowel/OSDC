@@ -14,17 +14,31 @@
 
 ---
 
-OSDC watches security patches landing in open source every day. It extracts vulnerability patterns, compares them to its historical database, and flags recurring antipatterns across languages and ecosystems.
-
-## Latest critical & high severity patches
-
-| Date | Advisory | Package | Severity | Pattern | Seen |
-|------|----------|---------|----------|---------|------|
 {% for adv in top_advisories %}
-| {{ adv.date }} | [{{ adv.id }}](https://github.com/advisories/{{ adv.id }}) | {{ adv.package_name }} ({{ adv.language }}) | **{{ adv.severity }}** {{ adv.cvss_score }} | `{{ adv.pattern_id }}` | {{ adv.occurrences }}x |
+### {{ adv.id }} · {{ adv.package_name }}
+
+📅 {{ adv.date }} · {{ adv.language }} · **{{ adv.severity }}** {{ adv.cvss_score }} · Pattern: `{{ adv.pattern_id }}` · {{ adv.occurrences }}x seen
+
+**Root cause** — {{ adv.root_cause }}
+
+**Impact** — {{ adv.impact }}
+
+{% if adv.key_diff %}
+```diff
+{{ adv.key_diff }}
+```
+{% endif %}
+
+**Fix** — {{ adv.fix_summary }}
+
+🔗 [Advisory](https://github.com/advisories/{{ adv.id }}) · [Commit]({{ adv.commit_url }})
+
+---
+
 {% endfor %}
 
-## Stats
+<details>
+<summary>📊 Stats</summary>
 
 | Metric | Value |
 |--------|-------|
@@ -33,10 +47,6 @@ OSDC watches security patches landing in open source every day. It extracts vuln
 | Pending analysis | {{ stats.pending_count }} |
 | Last updated | {{ today }} |
 
-## How it works
-
-Three automated runs per day (06:00, 14:00, 23:00 UTC) pull new advisories from the GitHub Advisory Database, extract and filter the fix diffs, analyze them with an LLM, and match the vulnerability pattern against a growing historical database.
-
----
+</details>
 
 *Built by [Christbowel](https://christbowel.com) · [Full index](https://christbowel.github.io/osdc)*
