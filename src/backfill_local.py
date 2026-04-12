@@ -111,6 +111,14 @@ def backfill_local(days: int):
         print("Run: ollama serve")
         return
 
+    print("Warming up model...")
+    requests.post(OLLAMA_URL, json={
+        "model": OLLAMA_MODEL,
+        "prompt": "Say OK",
+        "stream": False,
+    }, timeout=300)
+    print("Model loaded")
+
     rebuild_from_jsonl()
     stats = get_stats()
     print(f"DB before: {stats['total_advisories']} advisories, {stats['total_patterns']} patterns")
