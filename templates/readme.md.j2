@@ -27,9 +27,7 @@
 **Impact** : {{ adv.impact }}
 
 {% if adv.key_diff %}
-```diff
-{{ adv.key_diff }}
-```
+<pre lang="diff">{{ adv.key_diff | e }}</pre>
 {% endif %}
 
 **Fix** : {{ adv.fix_summary }}
@@ -42,7 +40,7 @@
 
 ## How it works
 
-```
+<pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
              Filter: has linked patch commit, severity >= MEDIUM
                           ↓
@@ -58,7 +56,7 @@
                           ↓
 06:00:25     Output: patches/*.md, README.md, docs/index.html
              Single atomic commit per run
-```
+</pre>
 
 Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independently at `07:00`, `15:00`, `00:00` UTC.
 
