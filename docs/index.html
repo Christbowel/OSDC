@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSDC — Open Source Daily Catch</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f8f9fa;--card:#fff;--text:#1a1a2e;--muted:#6c757d;--accent:#0d6efd;--border:#dee2e6;--critical:#dc3545;--high:#fd7e14;--moderate:#ffc107;--low:#198754;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:0 1.5rem}
+header{background:var(--text);color:#fff;padding:2rem 0}
+header h1{font-size:1.75rem;font-weight:700}
+header p{color:#a0a0b0;margin-top:.25rem}
+.stats{display:flex;gap:2rem;margin-top:1rem}
+.stat{text-align:center}
+.stat-value{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:#a0a0b0}
+.controls{padding:1.5rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:200px;padding:.5rem 1rem;border:1px solid var(--border);border-radius:6px;font-size:.9rem;font-family:var(--font)}
+select{padding:.5rem;border:1px solid var(--border);border-radius:6px;font-size:.85rem;font-family:var(--font);background:var(--card)}
+.count{color:var(--muted);font-size:.85rem;margin-left:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.card-id{font-weight:700;color:var(--accent);text-decoration:none;font-size:.95rem}
+.card-id:hover{text-decoration:underline}
+.card-meta{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.badge{padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600;color:#fff;text-transform:uppercase}
+.badge-critical{background:var(--critical)}
+.badge-high{background:var(--high)}
+.badge-moderate,.badge-medium{background:var(--moderate);color:#333}
+.badge-low{background:var(--low)}
+.pattern-tag{font-family:monospace;font-size:.8rem;background:#e8f0fe;color:#1a56db;padding:.15rem .5rem;border-radius:4px}
+.card-body{margin-top:.75rem;color:var(--muted);font-size:.9rem}
+.card-footer{margin-top:.75rem;display:flex;gap:1rem;font-size:.8rem;color:var(--muted)}
+footer{text-align:center;padding:2rem 0;color:var(--muted);font-size:.85rem}
+footer a{color:var(--accent)}
+@media(max-width:600px){.stats{flex-direction:column;gap:.5rem}.controls{flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>🎣 Open Source Daily Catch</h1>
+<p>Automated patch intelligence — what got fixed and why it matters</p>
+<div class="stats">
+<div class="stat">
+<div class="stat-value">5</div>
+<div class="stat-label">Advisories</div>
+</div>
+<div class="stat">
+<div class="stat-value">4</div>
+<div class="stat-label">Patterns</div>
+</div>
+<div class="stat">
+<div class="stat-value">2026-04-12</div>
+<div class="stat-label">Last update</div>
+</div>
+</div>
+</div>
+</header>
+
+<div class="container">
+<div class="controls">
+<input type="text" class="search" id="searchInput" placeholder="Search advisories, patterns, packages...">
+<select id="severityFilter">
+<option value="">All severities</option>
+<option value="CRITICAL">Critical</option>
+<option value="HIGH">High</option>
+<option value="MODERATE">Moderate</option>
+<option value="LOW">Low</option>
+</select>
+<select id="languageFilter">
+<option value="">All languages</option>
+</select>
+<span class="count" id="resultCount"></span>
+</div>
+
+<div id="advisoryList">
+<div class="card" data-severity="CRITICAL" data-language="Go" data-searchable="GHSA-9cp7-j3f8-p5jx daptin/daptin github.com/daptin/daptin PATH_TRAVERSAL→FILE_WRITE Path Traversal / Zip Slip Go The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/GHSA-9cp7-j3f8-p5jx" target="_blank" rel="noopener">GHSA-9cp7-j3f8-p5jx</a>
+<div class="card-meta">
+<span class="badge badge-critical">CRITICAL 10.0</span>
+<span class="pattern-tag">PATH_TRAVERSAL→FILE_WRITE</span>
+</div>
+</div>
+<div class="card-body">
+<strong>github.com/daptin/daptin</strong> · Go · 2026-04-10<br>
+The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.
+</div>
+<div class="card-footer">
+<span>Path Traversal / Zip Slip</span>
+<a href="https://github.com/daptin/daptin/commit/8d626bbb14f82160a08cbca53e0749f475f5742c" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="JavaScript" data-searchable="GHSA-fvcv-3m26-pcqx axios/axios axios UNSANITIZED_INPUT→HEADER Header Injection JavaScript The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx" target="_blank" rel="noopener">GHSA-fvcv-3m26-pcqx</a>
+<div class="card-meta">
+<span class="badge badge-critical">CRITICAL 10.0</span>
+<span class="pattern-tag">UNSANITIZED_INPUT→HEADER</span>
+</div>
+</div>
+<div class="card-body">
+<strong>axios</strong> · JavaScript · 2026-04-10<br>
+The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.
+</div>
+<div class="card-footer">
+<span>Header Injection</span>
+<a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="Python" data-searchable="GHSA-8wrq-fv5f-pfp2 parisneo/lollms lollms UNSANITIZED_INPUT→XSS Stored XSS Python The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/GHSA-8wrq-fv5f-pfp2" target="_blank" rel="noopener">GHSA-8wrq-fv5f-pfp2</a>
+<div class="card-meta">
+<span class="badge badge-critical">CRITICAL 9.6</span>
+<span class="pattern-tag">UNSANITIZED_INPUT→XSS</span>
+</div>
+</div>
+<div class="card-body">
+<strong>lollms</strong> · Python · 2026-04-10<br>
+The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.
+</div>
+<div class="card-footer">
+<span>Stored XSS</span>
+<a href="https://github.com/parisneo/lollms/commit/9767b882dbc893c388a286856beeaead69b8292a" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="Python" data-searchable="GHSA-m5gr-86j6-99jp gramps-project/gramps-web-api gramps-webapi PATH_TRAVERSAL→FILE_WRITE Zip Slip Path Traversal Python The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/GHSA-m5gr-86j6-99jp" target="_blank" rel="noopener">GHSA-m5gr-86j6-99jp</a>
+<div class="card-meta">
+<span class="badge badge-critical">CRITICAL 9.1</span>
+<span class="pattern-tag">PATH_TRAVERSAL→FILE_WRITE</span>
+</div>
+</div>
+<div class="card-body">
+<strong>gramps-webapi</strong> · Python · 2026-04-10<br>
+The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the i
+</div>
+<div class="card-footer">
+<span>Zip Slip Path Traversal</span>
+<a href="https://github.com/gramps-project/gramps-web-api/commit/3ed4342711e3ec849552df09b1fe2fbf2ca5c29a" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="Go" data-searchable="GHSA-wvhv-qcqf-f3cx patrickhener/goshs github.com/patrickhener/goshs MISSING_AUTHZ→RESOURCE Authorization Bypass Go The application's file-based Access Control List (ACL) mechanism, which uses '.goshs' files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a '.goshs' file in the immediate directory, failing to consider ACLs defined in parent directories, and some operations lacked any ACL enforcement.">
+<div class="card-header">
+<a class="card-id" href="https://github.com/advisories/GHSA-wvhv-qcqf-f3cx" target="_blank" rel="noopener">GHSA-wvhv-qcqf-f3cx</a>
+<div class="card-meta">
+<span class="badge badge-critical">CRITICAL 0.0</span>
+<span class="pattern-tag">MISSING_AUTHZ→RESOURCE</span>
+</div>
+</div>
+<div class="card-body">
+<strong>github.com/patrickhener/goshs</strong> · Go · 2026-04-10<br>
+The application's file-based Access Control List (ACL) mechanism, which uses '.goshs' files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a '.goshs' file in the immediate directory, failing to consider ACL
+</div>
+<div class="card-footer">
+<span>Authorization Bypass</span>
+<a href="https://github.com/patrickhener/goshs/commit/f212c4f4a126556bab008f79758e21a839ef2c0f" target="_blank" rel="noopener">View fix →</a>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+<p>Built by <a href="https://christbowel.com">Christbowel</a> · <a href="https://github.com/christbowel/osdc">Source</a></p>
+</footer>
+
+<script>
+(function() {
+    var cards = document.querySelectorAll('.card');
+    var searchInput = document.getElementById('searchInput');
+    var severityFilter = document.getElementById('severityFilter');
+    var languageFilter = document.getElementById('languageFilter');
+    var resultCount = document.getElementById('resultCount');
+
+    var languages = new Set();
+    cards.forEach(function(c) { languages.add(c.dataset.language); });
+    Array.from(languages).sort().forEach(function(lang) {
+        var opt = document.createElement('option');
+        opt.value = lang;
+        opt.textContent = lang;
+        languageFilter.appendChild(opt);
+    });
+
+    function filterCards() {
+        var query = searchInput.value.toLowerCase();
+        var severity = severityFilter.value;
+        var language = languageFilter.value;
+        var visible = 0;
+
+        cards.forEach(function(card) {
+            var matchSearch = !query || card.dataset.searchable.toLowerCase().indexOf(query) !== -1;
+            var matchSeverity = !severity || card.dataset.severity === severity;
+            var matchLanguage = !language || card.dataset.language === language;
+            var show = matchSearch && matchSeverity && matchLanguage;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        resultCount.textContent = visible + ' of ' + cards.length + ' advisories';
+    }
+
+    searchInput.addEventListener('input', filterCards);
+    severityFilter.addEventListener('change', filterCards);
+    languageFilter.addEventListener('change', filterCards);
+    filterCards();
+})();
+</script>
+</body>
+</html>
