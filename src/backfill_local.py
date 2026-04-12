@@ -75,6 +75,13 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
     if parsed.get("pattern_id") not in taxonomy_ids:
         parsed["pattern_id"] = "UNCLASSIFIED"
 
+    def _str(val):
+        if isinstance(val, dict):
+            return json.dumps(val)
+        if isinstance(val, list):
+            return json.dumps(val)
+        return str(val) if val else ""
+
     return {
         "ghsa_id": advisory["ghsa_id"],
         "date": advisory["published_at"][:10],
@@ -85,12 +92,12 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
         "cvss_score": advisory["cvss_score"],
         "package_name": advisory["package_name"],
         "pattern_id": parsed["pattern_id"],
-        "vuln_type": parsed.get("vuln_type", ""),
-        "root_cause": parsed.get("root_cause", ""),
-        "impact": parsed.get("impact", ""),
-        "fix_summary": parsed.get("fix_summary", ""),
-        "key_diff": parsed.get("key_diff", ""),
-        "confidence": parsed.get("confidence", "LOW"),
+        "vuln_type": _str(parsed.get("vuln_type", "")),
+        "root_cause": _str(parsed.get("root_cause", "")),
+        "impact": _str(parsed.get("impact", "")),
+        "fix_summary": _str(parsed.get("fix_summary", "")),
+        "key_diff": _str(parsed.get("key_diff", "")),
+        "confidence": _str(parsed.get("confidence", "LOW")),
         "commit_url": advisory["commit_url"],
     }
 
