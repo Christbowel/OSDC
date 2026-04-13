@@ -28,11 +28,18 @@ def _clean_diff(raw: str) -> str:
     if not raw:
         return ""
     cleaned = raw.strip()
+    if cleaned.startswith("{") and "before" in cleaned:
+        try:
+            obj = json.loads(cleaned)
+            before = obj.get("before", "")
+            after = obj.get("after", "")
+            return f"- {before}\n+ {after}" if before or after else ""
+        except json.JSONDecodeError:
+            pass
     cleaned = re.sub(r'^```\w*\n?', '', cleaned)
     cleaned = re.sub(r'\n?```$', '', cleaned)
     cleaned = cleaned.strip()
     return cleaned
-
 
 def _clean_text(raw: str) -> str:
     if not raw:
