@@ -453,31 +453,6 @@ if (/[\r\n\0]/.test(path)) {
 
 <table><tr><td>
 
-**GHSA-75hx-xj24-mqrw** · `HIGH 8.2` · 2026-04-10
-
-`n8n-mcp` · JavaScript · Pattern: `MISSING_AUTH→ENDPOINT` · 5x across ecosystem
-
-**Root cause** : The code did not handle authentication errors securely, potentially revealing sensitive information in error messages.
-
-**Impact** : An attacker could exploit this vulnerability to gain insights into the system's internal workings and potentially identify valid usernames or other sensitive data.
-
-<pre lang="diff">Before:
--    next();
-
-After:
-+    const authLimiter = rateLimit({ ... });
-+    app.use(authLimiter);
-+    // Root endpoint with API information
-+    app.get(&#39;/&#39;, (req, res) =&gt; { ... };</pre>
-
-**Fix** : The patch introduces rate limiting for authentication endpoints to prevent brute force attacks and DoS. It also enhances error handling to avoid revealing sensitive information in error messages.
-
-[Advisory](https://github.com/advisories/GHSA-75hx-xj24-mqrw) · [Commit](https://github.com/czlonkowski/n8n-mcp/commit/ca9d4b3df6419b8338983be98f7940400f78bde3)
-
-</td></tr></table>
-
-<table><tr><td>
-
 **GHSA-6v7q-wjvx-w8wg** · `HIGH 8.2` · 2026-04-10
 
 `basic-ftp` · JavaScript · Pattern: `UNSANITIZED_INPUT→COMMAND` · 12x across ecosystem
@@ -502,6 +477,31 @@ After:
 **Fix** : The patch added a regex check to reject any command containing control characters, preventing injection attacks.
 
 [Advisory](https://github.com/advisories/GHSA-6v7q-wjvx-w8wg) · [Commit](https://github.com/patrickjuchli/basic-ftp/commit/20327d35126e57e5fdbaae79a4b65222fbadc53c)
+
+</td></tr></table>
+
+<table><tr><td>
+
+**GHSA-75hx-xj24-mqrw** · `HIGH 8.2` · 2026-04-10
+
+`n8n-mcp` · JavaScript · Pattern: `MISSING_AUTH→ENDPOINT` · 5x across ecosystem
+
+**Root cause** : The code did not handle authentication errors securely, potentially revealing sensitive information in error messages.
+
+**Impact** : An attacker could exploit this vulnerability to gain insights into the system's internal workings and potentially identify valid usernames or other sensitive data.
+
+<pre lang="diff">Before:
+-    next();
+
+After:
++    const authLimiter = rateLimit({ ... });
++    app.use(authLimiter);
++    // Root endpoint with API information
++    app.get(&#39;/&#39;, (req, res) =&gt; { ... };</pre>
+
+**Fix** : The patch introduces rate limiting for authentication endpoints to prevent brute force attacks and DoS. It also enhances error handling to avoid revealing sensitive information in error messages.
+
+[Advisory](https://github.com/advisories/GHSA-75hx-xj24-mqrw) · [Commit](https://github.com/czlonkowski/n8n-mcp/commit/ca9d4b3df6419b8338983be98f7940400f78bde3)
 
 </td></tr></table>
 
@@ -634,6 +634,49 @@ After:
 
 <table><tr><td>
 
+**GHSA-3p65-76g6-3w7r** · `HIGH 7.5` · 2026-04-06
+
+`github.com/distribution/distribution` · Go · Pattern: `SSRF→INTERNAL_ACCESS` · 11x across ecosystem
+
+**Root cause** : The code did not validate the 'realm' parameter in the 'WWW-Authenticate' header, allowing attackers to perform SSRF attacks by manipulating the realm value.
+
+**Impact** : An attacker could use this vulnerability to access internal resources or services that are not supposed to be accessible from outside the network.
+
+<pre lang="diff">Before:
+	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) {
+After:
+	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) &amp;&amp; realmAllowed(remote, c.Parameters[&#34;realm&#34;]) {</pre>
+
+**Fix** : The patch introduces a function `realmAllowed` that checks if the 'realm' parameter is allowed based on the remote URL, preventing attackers from manipulating the realm value for SSRF attacks.
+
+[Advisory](https://github.com/advisories/GHSA-3p65-76g6-3w7r) · [Commit](https://github.com/distribution/distribution/commit/cc5d5fa4ba02157501e6afa2cc6a903ad0338e7b)
+
+</td></tr></table>
+
+<table><tr><td>
+
+**GHSA-f2g3-hh2r-cwgc** · `HIGH 7.5` · 2026-04-06
+
+`github.com/distribution/distribution` · Go · Pattern: `UNCLASSIFIED` · 32x across ecosystem
+
+**Root cause** : The code did not properly validate or sanitize input when interacting with the Redis cache.
+
+**Impact** : An attacker could potentially manipulate the Redis cache to access stale blob data, leading to unauthorized access or data corruption.
+
+<pre lang="diff">Before:
+- member, err := rsrbds.upstream.pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()
+After:
++ pool := rsrbds.upstream.pool
++ member, err := pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()</pre>
+
+**Fix** : The patch ensures that the Redis pool is used consistently and correctly for all operations, preventing potential misuse of the cache.
+
+[Advisory](https://github.com/advisories/GHSA-f2g3-hh2r-cwgc) · [Commit](https://github.com/distribution/distribution/commit/078b0783f239b4115d1a979e66f08832084e9d1d)
+
+</td></tr></table>
+
+<table><tr><td>
+
 **GHSA-h6rj-3m53-887h** · `HIGH 7.5` · 2026-04-06
 
 `pocketmine/pocketmine-mp` · PHP · Pattern: `UNCLASSIFIED` · 32x across ecosystem
@@ -695,49 +738,6 @@ index 21979ff23d..e0bbc18052 100644
 **Fix** : The patch should include proper authentication and authorization checks to ensure that only authenticated users can initiate connections and handle subscriptions.
 
 [Advisory](https://github.com/advisories/GHSA-vpwc-v33q-mq89) · [Commit](https://github.com/strawberry-graphql/strawberry/commit/0977a4e6b41b7cfe3e9d8ba84a43458a2b0c54c2)
-
-</td></tr></table>
-
-<table><tr><td>
-
-**GHSA-f2g3-hh2r-cwgc** · `HIGH 7.5` · 2026-04-06
-
-`github.com/distribution/distribution` · Go · Pattern: `UNCLASSIFIED` · 32x across ecosystem
-
-**Root cause** : The code did not properly validate or sanitize input when interacting with the Redis cache.
-
-**Impact** : An attacker could potentially manipulate the Redis cache to access stale blob data, leading to unauthorized access or data corruption.
-
-<pre lang="diff">Before:
-- member, err := rsrbds.upstream.pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()
-After:
-+ pool := rsrbds.upstream.pool
-+ member, err := pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()</pre>
-
-**Fix** : The patch ensures that the Redis pool is used consistently and correctly for all operations, preventing potential misuse of the cache.
-
-[Advisory](https://github.com/advisories/GHSA-f2g3-hh2r-cwgc) · [Commit](https://github.com/distribution/distribution/commit/078b0783f239b4115d1a979e66f08832084e9d1d)
-
-</td></tr></table>
-
-<table><tr><td>
-
-**GHSA-3p65-76g6-3w7r** · `HIGH 7.5` · 2026-04-06
-
-`github.com/distribution/distribution` · Go · Pattern: `SSRF→INTERNAL_ACCESS` · 11x across ecosystem
-
-**Root cause** : The code did not validate the 'realm' parameter in the 'WWW-Authenticate' header, allowing attackers to perform SSRF attacks by manipulating the realm value.
-
-**Impact** : An attacker could use this vulnerability to access internal resources or services that are not supposed to be accessible from outside the network.
-
-<pre lang="diff">Before:
-	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) {
-After:
-	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) &amp;&amp; realmAllowed(remote, c.Parameters[&#34;realm&#34;]) {</pre>
-
-**Fix** : The patch introduces a function `realmAllowed` that checks if the 'realm' parameter is allowed based on the remote URL, preventing attackers from manipulating the realm value for SSRF attacks.
-
-[Advisory](https://github.com/advisories/GHSA-3p65-76g6-3w7r) · [Commit](https://github.com/distribution/distribution/commit/cc5d5fa4ba02157501e6afa2cc6a903ad0338e7b)
 
 </td></tr></table>
 
@@ -890,13 +890,13 @@ After:
 
 <table><tr><td>
 
-**GHSA-qx8j-g322-qj6m** · `HIGH 0.0` · 2026-04-09
+**GHSA-7437-7hg8-frrw** · `HIGH 0.0` · 2026-04-09
 
-`openclaw` · JavaScript · Pattern: `SSRF→INTERNAL_ACCESS` · 11x across ecosystem
+`openclaw` · JavaScript · Pattern: `UNSANITIZED_INPUT→COMMAND` · 12x across ecosystem
 
-**Root cause** : The original code did not properly sanitize or validate the request body before replaying it across cross-origin redirects.
+**Root cause** : The code did not properly sanitize or denylist certain environment variables that could be used for command injection.
 
-**Impact** : An attacker could use this vulnerability to perform SSRF attacks, potentially accessing internal resources or leaking sensitive information.
+**Impact** : An attacker could inject malicious commands into the build environment, potentially leading to remote code execution (RCE).
 
 <pre lang="diff">Before:
 -      const pinned = await resolvePinnedHostnameWithPolicy(parsedUrl.hostname, {
@@ -909,9 +909,9 @@ After:
 +          policy: params.policy,
 +        });</pre>
 
-**Fix** : The patch ensures that the pinned hostname is resolved correctly and used in the dispatcher creation process, preventing unsafe request bodies from being replayed across cross-origin redirects.
+**Fix** : The patch ensures that critical environment variables like HGRCPATH, CARGO_BUILD_RUSTC_WRAPPER, RUSTC_WRAPPER, and MAKEFLAGS are properly sanitized or denied from being used in the build process.
 
-[Advisory](https://github.com/advisories/GHSA-qx8j-g322-qj6m) · [Commit](https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5)
+[Advisory](https://github.com/advisories/GHSA-7437-7hg8-frrw) · [Commit](https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5)
 
 </td></tr></table>
 
@@ -963,13 +963,13 @@ func (api objectAPIHandlers) SelectObjectContentHandler(w http.ResponseWriter, r
 
 <table><tr><td>
 
-**GHSA-7437-7hg8-frrw** · `HIGH 0.0` · 2026-04-09
+**GHSA-qx8j-g322-qj6m** · `HIGH 0.0` · 2026-04-09
 
-`openclaw` · JavaScript · Pattern: `UNSANITIZED_INPUT→COMMAND` · 12x across ecosystem
+`openclaw` · JavaScript · Pattern: `SSRF→INTERNAL_ACCESS` · 11x across ecosystem
 
-**Root cause** : The code did not properly sanitize or denylist certain environment variables that could be used for command injection.
+**Root cause** : The original code did not properly sanitize or validate the request body before replaying it across cross-origin redirects.
 
-**Impact** : An attacker could inject malicious commands into the build environment, potentially leading to remote code execution (RCE).
+**Impact** : An attacker could use this vulnerability to perform SSRF attacks, potentially accessing internal resources or leaking sensitive information.
 
 <pre lang="diff">Before:
 -      const pinned = await resolvePinnedHostnameWithPolicy(parsedUrl.hostname, {
@@ -982,61 +982,9 @@ After:
 +          policy: params.policy,
 +        });</pre>
 
-**Fix** : The patch ensures that critical environment variables like HGRCPATH, CARGO_BUILD_RUSTC_WRAPPER, RUSTC_WRAPPER, and MAKEFLAGS are properly sanitized or denied from being used in the build process.
+**Fix** : The patch ensures that the pinned hostname is resolved correctly and used in the dispatcher creation process, preventing unsafe request bodies from being replayed across cross-origin redirects.
 
-[Advisory](https://github.com/advisories/GHSA-7437-7hg8-frrw) · [Commit](https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5)
-
-</td></tr></table>
-
-<table><tr><td>
-
-**GHSA-hwr4-mq23-wcv5** · `HIGH 0.0` · 2026-04-08
-
-`github.com/dunglas/mercure` · Go · Pattern: `UNCLASSIFIED` · 32x across ecosystem
-
-**Root cause** : The patch does not address a security vulnerability but rather refactors the configuration structure for Topic Selector Cache.
-
-**Impact** : This change does not impact the security of the application; it is purely an internal refactor.
-
-<pre lang="diff">Before:
-- maxEntriesPerShard := mercure.DefaultTopicSelectorStoreCacheMaxEntriesPerShard
-- shardCount := mercure.DefaultTopicSelectorStoreCacheShardCount
-After:
-+ cacheSize := mercure.DefaultTopicSelectorStoreCacheSize
-+ switch {
-+ case m.TopicSelectorCache.Size &gt; 0:
-+ cacheSize = m.TopicSelectorCache.Size</pre>
-
-**Fix** : Refactor the cache configuration to use a single 'Size' field instead of deprecated 'MaxEntriesPerShard' and 'ShardCount'.
-
-[Advisory](https://github.com/advisories/GHSA-hwr4-mq23-wcv5) · [Commit](https://github.com/dunglas/mercure/commit/4964a69be904fd61e35b5f1e691271663b6fdd64)
-
-</td></tr></table>
-
-<table><tr><td>
-
-**GHSA-jpcj-7wfg-mqxv** · `HIGH 0.0` · 2026-04-08
-
-`stata-mcp` · Python · Pattern: `UNSANITIZED_INPUT→COMMAND` · 12x across ecosystem
-
-**Root cause** : The code did not validate user-supplied Stata do-file content, allowing the execution of shell-escape directives like `!cmd` or `shell cmd`.
-
-**Impact** : An attacker could execute arbitrary operating system commands on the server, leading to potential data loss, privilege escalation, or other malicious activities.
-
-<pre lang="diff">Before:
-# No validation of do-file content
-After:
-def _validate_dofile_content(text: str) -&gt; None:
-    dangerous_tokens = [&#34;\n!&#34;, &#34;\nshell &#34;]
-    for token in dangerous_tokens:
-        if token in text:
-            raise ValueError(
-                &#34;Shell-escape commands (!cmd or shell cmd) are disabled for security reasons.&#34;
-            )</pre>
-
-**Fix** : The patch introduced a security guard that checks for and rejects Stata shell-escape directives to prevent OS command execution.
-
-[Advisory](https://github.com/advisories/GHSA-jpcj-7wfg-mqxv) · [Commit](https://github.com/SepineTam/stata-mcp/commit/52413ce)
+[Advisory](https://github.com/advisories/GHSA-qx8j-g322-qj6m) · [Commit](https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5)
 
 </td></tr></table>
 
@@ -1112,6 +1060,80 @@ After:
 
 <table><tr><td>
 
+**GHSA-hwr4-mq23-wcv5** · `HIGH 0.0` · 2026-04-08
+
+`github.com/dunglas/mercure` · Go · Pattern: `UNCLASSIFIED` · 32x across ecosystem
+
+**Root cause** : The patch does not address a security vulnerability but rather refactors the configuration structure for Topic Selector Cache.
+
+**Impact** : This change does not impact the security of the application; it is purely an internal refactor.
+
+<pre lang="diff">Before:
+- maxEntriesPerShard := mercure.DefaultTopicSelectorStoreCacheMaxEntriesPerShard
+- shardCount := mercure.DefaultTopicSelectorStoreCacheShardCount
+After:
++ cacheSize := mercure.DefaultTopicSelectorStoreCacheSize
++ switch {
++ case m.TopicSelectorCache.Size &gt; 0:
++ cacheSize = m.TopicSelectorCache.Size</pre>
+
+**Fix** : Refactor the cache configuration to use a single 'Size' field instead of deprecated 'MaxEntriesPerShard' and 'ShardCount'.
+
+[Advisory](https://github.com/advisories/GHSA-hwr4-mq23-wcv5) · [Commit](https://github.com/dunglas/mercure/commit/4964a69be904fd61e35b5f1e691271663b6fdd64)
+
+</td></tr></table>
+
+<table><tr><td>
+
+**GHSA-jpcj-7wfg-mqxv** · `HIGH 0.0` · 2026-04-08
+
+`stata-mcp` · Python · Pattern: `UNSANITIZED_INPUT→COMMAND` · 12x across ecosystem
+
+**Root cause** : The code did not validate user-supplied Stata do-file content, allowing the execution of shell-escape directives like `!cmd` or `shell cmd`.
+
+**Impact** : An attacker could execute arbitrary operating system commands on the server, leading to potential data loss, privilege escalation, or other malicious activities.
+
+<pre lang="diff">Before:
+# No validation of do-file content
+After:
+def _validate_dofile_content(text: str) -&gt; None:
+    dangerous_tokens = [&#34;\n!&#34;, &#34;\nshell &#34;]
+    for token in dangerous_tokens:
+        if token in text:
+            raise ValueError(
+                &#34;Shell-escape commands (!cmd or shell cmd) are disabled for security reasons.&#34;
+            )</pre>
+
+**Fix** : The patch introduced a security guard that checks for and rejects Stata shell-escape directives to prevent OS command execution.
+
+[Advisory](https://github.com/advisories/GHSA-jpcj-7wfg-mqxv) · [Commit](https://github.com/SepineTam/stata-mcp/commit/52413ce)
+
+</td></tr></table>
+
+<table><tr><td>
+
+**GHSA-fmwg-qcqh-m992** · `HIGH 0.0` · 2026-04-07
+
+`github.com/gotenberg/gotenberg/v8` · Go · Pattern: `UNSANITIZED_INPUT→REGEX` · 3x across ecosystem
+
+**Root cause** : The code did not set a timeout for the regex pattern matching, allowing attackers to exploit a ReDoS vulnerability.
+
+**Impact** : An attacker could cause a denial of service by sending a malicious request with a large or complex input that causes the regex engine to consume excessive resources.
+
+<pre lang="diff">Before:
+scopeRegexp = p
+After:
+scopeRegexp = p
+p.MatchTimeout = 5 * time.Second</pre>
+
+**Fix** : The patch sets a timeout of 5 seconds for the regex pattern matching, mitigating the risk of ReDoS attacks.
+
+[Advisory](https://github.com/advisories/GHSA-fmwg-qcqh-m992) · [Commit](https://github.com/gotenberg/gotenberg/commit/cfb48d9af48cb236244eabe5c67fe1d30fb3fe25)
+
+</td></tr></table>
+
+<table><tr><td>
+
 **GHSA-qmwh-9m9c-h36m** · `HIGH 0.0` · 2026-04-07
 
 `github.com/gotenberg/gotenberg/v8` · Go · Pattern: `PATH_TRAVERSAL→FILE_WRITE` · 10x across ecosystem
@@ -1137,28 +1159,6 @@ After:
 **Fix** : The patch adds case-insensitive comparison for dangerous tags to prevent attackers from bypassing the intended restrictions. It also ensures that only safe metadata is written by removing any user-supplied tags that could trigger file operations like renaming, moving, or linking.
 
 [Advisory](https://github.com/advisories/GHSA-qmwh-9m9c-h36m) · [Commit](https://github.com/gotenberg/gotenberg/commit/15050a311b73d76d8b9223bafe7fa7ba71240011)
-
-</td></tr></table>
-
-<table><tr><td>
-
-**GHSA-fmwg-qcqh-m992** · `HIGH 0.0` · 2026-04-07
-
-`github.com/gotenberg/gotenberg/v8` · Go · Pattern: `UNSANITIZED_INPUT→REGEX` · 3x across ecosystem
-
-**Root cause** : The code did not set a timeout for the regex pattern matching, allowing attackers to exploit a ReDoS vulnerability.
-
-**Impact** : An attacker could cause a denial of service by sending a malicious request with a large or complex input that causes the regex engine to consume excessive resources.
-
-<pre lang="diff">Before:
-scopeRegexp = p
-After:
-scopeRegexp = p
-p.MatchTimeout = 5 * time.Second</pre>
-
-**Fix** : The patch sets a timeout of 5 seconds for the regex pattern matching, mitigating the risk of ReDoS attacks.
-
-[Advisory](https://github.com/advisories/GHSA-fmwg-qcqh-m992) · [Commit](https://github.com/gotenberg/gotenberg/commit/cfb48d9af48cb236244eabe5c67fe1d30fb3fe25)
 
 </td></tr></table>
 
@@ -1228,23 +1228,6 @@ catch(\JsonException $e){
 
 <table><tr><td>
 
-**GHSA-v2wj-q39q-566r** · `HIGH 0.0` · 2026-04-06
-
-`vite` · JavaScript · Pattern: `UNCLASSIFIED` · 32x across ecosystem
-
-**Root cause** : The code does not appear to directly address a known security vulnerability based on the provided diff.
-
-**Impact** : No clear impact or vulnerability is evident from the given diff snippet.
-
-
-**Fix** : The patch introduces a new file `matrixTestResultPlugin.ts` which seems to be part of a testing plugin for Vite's FS serve functionality. It does not introduce any known security vulnerabilities based on the provided information.
-
-[Advisory](https://github.com/advisories/GHSA-v2wj-q39q-566r) · [Commit](https://github.com/vitejs/vite/commit/a9a3df299378d9cbc5f069e3536a369f8188c8ff)
-
-</td></tr></table>
-
-<table><tr><td>
-
 **GHSA-p9ff-h696-f583** · `HIGH 0.0` · 2026-04-06
 
 `vite` · JavaScript · Pattern: `PATH_TRAVERSAL→FILE_READ` · 10x across ecosystem
@@ -1266,6 +1249,23 @@ isServerAccessDeniedForTransform(config, id)
 **Fix** : The patch introduced a check to ensure that the `id` does not start with ' ' and calls a new function `isServerAccessDeniedForTransform` to verify if access is allowed for the given `id`. This prevents attackers from reading arbitrary files.
 
 [Advisory](https://github.com/advisories/GHSA-p9ff-h696-f583) · [Commit](https://github.com/vitejs/vite/commit/f02d9fde0b195afe3ea2944414186962fbbe41e0)
+
+</td></tr></table>
+
+<table><tr><td>
+
+**GHSA-v2wj-q39q-566r** · `HIGH 0.0` · 2026-04-06
+
+`vite` · JavaScript · Pattern: `UNCLASSIFIED` · 32x across ecosystem
+
+**Root cause** : The code does not appear to directly address a known security vulnerability based on the provided diff.
+
+**Impact** : No clear impact or vulnerability is evident from the given diff snippet.
+
+
+**Fix** : The patch introduces a new file `matrixTestResultPlugin.ts` which seems to be part of a testing plugin for Vite's FS serve functionality. It does not introduce any known security vulnerabilities based on the provided information.
+
+[Advisory](https://github.com/advisories/GHSA-v2wj-q39q-566r) · [Commit](https://github.com/vitejs/vite/commit/a9a3df299378d9cbc5f069e3536a369f8188c8ff)
 
 </td></tr></table>
 
@@ -1392,53 +1392,19 @@ After:
 
 <table><tr><td>
 
-**GHSA-r4fg-73rc-hhh7** · `MODERATE 6.5` · 2026-04-10
+**GHSA-2j53-2c28-g9v2** · `MODERATE 6.5` · 2026-04-10
 
-`code.vikunja.io/api` · Go · Pattern: `INTEGER_OVERFLOW→BOUNDARY` · 1x across ecosystem
+`openclaw` · JavaScript · Pattern: `UNCLASSIFIED` · 32x across ecosystem
 
-**Root cause** : The code did not validate the `repeat_after` field for task repetition, allowing attackers to set extremely large values that could cause resource exhaustion.
+**Root cause** : The code does not enforce sender policy checks before allowing expensive cryptographic operations.
 
-**Impact** : An attacker could exploit this vulnerability by setting a very high value for `repeat_after`, causing the system to repeatedly perform tasks until it exhausts resources and becomes unresponsive.
+**Impact** : An attacker could trigger unauthenticated crypto work, potentially leading to resource exhaustion or other security issues.
 
-<pre lang="diff">Before:
+<pre lang="diff">{&#34;before&#34;: &#34;-    reply: (text: string) =&gt; Promise&lt;void&gt;,\n+    meta: { eventId: string; createdAt: number },\n+  ) =&gt; Promise&lt;void&gt;;&#34;, &#34;after&#34;: &#34;+  /** Called before expensive crypto to allow sender policy checks (optional) */\n+  authorizeSender?: (params: {\n+    senderPubkey: string;\n+    reply: (text: string) =&gt; Promise&lt;void&gt;;\n+  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;&#34;}</pre>
 
-func createTask(s *xorm.Session, t *Task, a web.Auth, updateAssignees bool, setBucketIndex bool) error {
-	if t.Title == &#34;&#34; {
-		return ErrTaskCannotBeEmpty{}
-	}
+**Fix** : The patch introduces a new `authorizeSender` function that allows for sender policy checks before performing expensive cryptographic operations.
 
-	// Check if the project exists
-	p, err := GetProjectSimpleByID(s, t.ProjectID)
-	if err != nil {
-		return err
-	}
-
-	// ... (rest of the function) ...
-}
-
-After:
-
-func createTask(s *xorm.Session, t *Task, a web.Auth, updateAssignees bool, setBucketIndex bool) error {
-	if t.Title == &#34;&#34; {
-		return ErrTaskCannotBeEmpty{}
-	}
-
-	if err := validateRepeatAfter(t.RepeatAfter); err != nil {
-		return err
-	}
-
-	// Check if the project exists
-	p, err := GetProjectSimpleByID(s, t.ProjectID)
-	if err != nil {
-		return err
-	}
-
-	// ... (rest of the function) ...
-}</pre>
-
-**Fix** : The patch introduces validation for the `repeat_after` field, ensuring it does not exceed a predefined maximum value (10 years). This prevents attackers from causing resource exhaustion through excessive task repetition.
-
-[Advisory](https://github.com/advisories/GHSA-r4fg-73rc-hhh7) · [Commit](https://github.com/go-vikunja/vikunja/commit/6df0d6c8f54b01db6464c42810e40e55f12b481b)
+[Advisory](https://github.com/advisories/GHSA-2j53-2c28-g9v2) · [Commit](https://github.com/openclaw/openclaw/commit/1ee9611079e81b9122f4bed01abb3d9f56206c77)
 
 </td></tr></table>
 
