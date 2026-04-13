@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import date
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -23,6 +24,26 @@ def init_renderer() -> Environment:
     )
 
 
+def _clean_diff(raw: str) -> str:
+    if not raw:
+        return ""
+    cleaned = raw.strip()
+    cleaned = re.sub(r'^```\w*\n?', '', cleaned)
+    cleaned = re.sub(r'\n?```$', '', cleaned)
+    cleaned = cleaned.strip()
+    return cleaned
+
+
+def _clean_text(raw: str) -> str:
+    if not raw:
+        return ""
+    if isinstance(raw, dict):
+        return json.dumps(raw)
+    if isinstance(raw, list):
+        return json.dumps(raw)
+    return str(raw).strip()
+
+
 def render_daily_patch(target_date: str, advisories: list[dict]):
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     env = init_renderer()
@@ -34,6 +55,10 @@ def render_daily_patch(target_date: str, advisories: list[dict]):
         enriched.append({
             **adv,
             "pattern_info": pattern_info,
+            "key_diff": _clean_diff(adv.get("key_diff", "")),
+            "root_cause": _clean_text(adv.get("root_cause", "")),
+            "impact": _clean_text(adv.get("impact", "")),
+            "fix_summary": _clean_text(adv.get("fix_summary", "")),
         })
 
     content = template.render(
@@ -59,10 +84,10 @@ def render_readme():
     for adv in top_advisories:
         pattern_info = get_pattern_info(adv["pattern_id"])
         adv["occurrences"] = pattern_info["occurrences"] if pattern_info else 1
-        adv["root_cause"] = adv.get("root_cause", "N/A")
-        adv["impact"] = adv.get("impact", "N/A")
-        adv["key_diff"] = adv.get("key_diff", "")
-        adv["fix_summary"] = adv.get("fix_summary", "N/A")
+        adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
+        adv["impact"] = _clean_text(adv.get("impact", ""))
+        adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
+        adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
         adv["commit_url"] = adv.get("commit_url", "")
 
     stats = get_stats()
@@ -83,6 +108,13 @@ def render_html_index():
     template = env.get_template("index.html.j2")
 
     all_advisories = get_all_advisories()
+
+    for adv in all_advisories:
+        adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
+        adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
+        adv["impact"] = _clean_text(adv.get("impact", ""))
+        adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
+
     stats = get_stats()
 
     content = template.render(
