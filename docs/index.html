@@ -843,7 +843,14 @@ After:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;-    reply: (text: string) =&gt; Promise&lt;void&gt;,\n+    meta: { eventId: string; createdAt: number },\n+  ) =&gt; Promise&lt;void&gt;;&#34;, &#34;after&#34;: &#34;+  /** Called before expensive crypto to allow sender policy checks (optional) */\n+  authorizeSender?: (params: {\n+    senderPubkey: string;\n+    reply: (text: string) =&gt; Promise&lt;void&gt;;\n+  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;&#34;}</div>
+<div class="diff-block">- -    reply: (text: string) =&gt; Promise&lt;void&gt;,
++    meta: { eventId: string; createdAt: number },
++  ) =&gt; Promise&lt;void&gt;;
++ +  /** Called before expensive crypto to allow sender policy checks (optional) */
++  authorizeSender?: (params: {
++    senderPubkey: string;
++    reply: (text: string) =&gt; Promise&lt;void&gt;;
++  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -959,7 +966,9 @@ func createTask(s *xorm.Session, t *Task, a web.Auth, updateAssignees bool, setB
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;await assertPublicHostname(parsedUrl.hostname);&#34;, &#34;after&#34;: &#34;const pinned = await resolvePinnedHostname(parsedUrl.hostname);\nconst dispatcher = createPinnedDispatcher(pinned);&#34;}</div>
+<div class="diff-block">- await assertPublicHostname(parsedUrl.hostname);
++ const pinned = await resolvePinnedHostname(parsedUrl.hostname);
+const dispatcher = createPinnedDispatcher(pinned);</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1635,7 +1644,8 @@ doc_root: Document = builder.parseString(data)</div>
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;import { normalizeUrl } from &#39;./index.js&#39;;&#34;, &#34;after&#34;: &#34;import { isRedirect, normalizeUrl, redirect } from &#39;./index.js&#39;;&#34;}</div>
+<div class="diff-block">- import { normalizeUrl } from &#39;./index.js&#39;;
++ import { isRedirect, normalizeUrl, redirect } from &#39;./index.js&#39;;</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1676,7 +1686,12 @@ doc_root: Document = builder.parseString(data)</div>
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;return pathname.replace(/\\/g, &#39;%5C&#39;).replace(//+/g, &#39;/&#39;);&#34;, &#34;after&#34;: &#34;return pathname\n    .replace(/\\/g, &#39;%5C&#39;)\n    .replace(/[\t\n\r]/g, &#39;&#39;)\n    .replace(//+/g, &#39;/&#39;);&#34;}</div>
+<div class="diff-block">- return pathname.replace(/\/g, &#39;%5C&#39;).replace(//+/g, &#39;/&#39;);
++ return pathname
+    .replace(/\/g, &#39;%5C&#39;)
+    .replace(/[	
+]/g, &#39;&#39;)
+    .replace(//+/g, &#39;/&#39;);</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -2405,7 +2420,18 @@ if (allowedNonce) checkForUnsafeRegExp(allowedNonce, &#39;allowedNonce&#39;)</di
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;&#34;, &#34;after&#34;: &#34;+const normalizeNoProxyHost = (hostname) =&gt; {\n+  if (!hostname) {\n+    return hostname;\n+  }\n+\n+  if (hostname.charAt(0) === &#39;[&#39; &amp;&amp; hostname.charAt(hostname.length - 1) === &#39;]&#39;) {\n+    hostname = hostname.slice(1, -1);\n+  }\n+\n+  return hostname.replace(/\\.+$/, &#39;&#39;);\n+};&#34;}</div>
+<div class="diff-block">- 
++ +const normalizeNoProxyHost = (hostname) =&gt; {
++  if (!hostname) {
++    return hostname;
++  }
++
++  if (hostname.charAt(0) === &#39;[&#39; &amp;&amp; hostname.charAt(hostname.length - 1) === &#39;]&#39;) {
++    hostname = hostname.slice(1, -1);
++  }
++
++  return hostname.replace(/\.+$/, &#39;&#39;);
++};</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -2769,7 +2795,21 @@ if (/[\r\n\0]/.test(path)) {
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;this.baseUrl = baseUrl;&#34;, &#34;after&#34;: &#34;let normalizedBase: string;\ntry {\n  const parsed = new URL(baseUrl);\n  parsed.hash = &#39;&#39;;\n  parsed.username = &#39;&#39;;\n  parsed.password = &#39;&#39;;\n  normalizedBase = parsed.toString().replace(//$/, &#39;&#39;);\n} catch {\n  // Unparseable input falls through to raw; downstream axios call will\n  // fail cleanly. Preserves backward compat for tests that pass\n  // placeholder strings.\n  normalizedBase = baseUrl;\n}\nthis.baseUrl = normalizedBase;&#34;}</div>
+<div class="diff-block">- this.baseUrl = baseUrl;
++ let normalizedBase: string;
+try {
+  const parsed = new URL(baseUrl);
+  parsed.hash = &#39;&#39;;
+  parsed.username = &#39;&#39;;
+  parsed.password = &#39;&#39;;
+  normalizedBase = parsed.toString().replace(//$/, &#39;&#39;);
+} catch {
+  // Unparseable input falls through to raw; downstream axios call will
+  // fail cleanly. Preserves backward compat for tests that pass
+  // placeholder strings.
+  normalizedBase = baseUrl;
+}
+this.baseUrl = normalizedBase;</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -2864,7 +2904,14 @@ After:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;-$ipn = PayPalYPT::IPNcheck();\n-if (!$ipn) {\n-    die(\&#34;IPN Fail\&#34;);\n-}&#34;, &#34;after&#34;: &#34;+if (!isset($_POST[&#39;txn_id&#39;]) || !Transaction::isUnique($_POST[&#39;txn_id&#39;])) {\n+    _error_log(\&#34;PayPalIPN: Duplicate txn_id detected\&#34;);\n+    die(\&#34;Duplicate IPN detected\&#34;);\n+}&#34;}</div>
+<div class="diff-block">- -$ipn = PayPalYPT::IPNcheck();
+-if (!$ipn) {
+-    die(&#34;IPN Fail&#34;);
+-}
++ +if (!isset($_POST[&#39;txn_id&#39;]) || !Transaction::isUnique($_POST[&#39;txn_id&#39;])) {
++    _error_log(&#34;PayPalIPN: Duplicate txn_id detected&#34;);
++    die(&#34;Duplicate IPN detected&#34;);
++}</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -3263,7 +3310,8 @@ if (/(?:^|[\\/])\.{1,2}(?:$|[\\/])|[\\/]{2,}/.test(filename)) {</div>
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;const getXorPayload = (token: string): ClientSecretPayload =&gt; { ... }&#34;, &#34;after&#34;: &#34;// Removed code handling X-lobe-chat-auth header&#34;}</div>
+<div class="diff-block">- const getXorPayload = (token: string): ClientSecretPayload =&gt; { ... }
++ // Removed code handling X-lobe-chat-auth header</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -3847,7 +3895,10 @@ class JustHTML:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;-const enforceRoot = type !== LookupType.Root\n... if (enforceRoot) { ... }&#34;, &#34;after&#34;: &#34;... for (const dir of dirs) { ... }\n+if (!allowed) continue&#34;}</div>
+<div class="diff-block">- -const enforceRoot = type !== LookupType.Root
+... if (enforceRoot) { ... }
++ ... for (const dir of dirs) { ... }
++if (!allowed) continue</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -4082,7 +4133,9 @@ After:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;-            checkpoint_rng_state = torch.load(rng_file)&#34;, &#34;after&#34;: &#34;+            check_torch_load_is_safe()\n+            checkpoint_rng_state = torch.load(rng_file, weights_only=True)&#34;}</div>
+<div class="diff-block">- -            checkpoint_rng_state = torch.load(rng_file)
++ +            check_torch_load_is_safe()
++            checkpoint_rng_state = torch.load(rng_file, weights_only=True)</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -5381,7 +5434,10 @@ After:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;const key = `${target.path}:${target.account.accountId}:${update.event_name}:${messageId}`;&#34;, &#34;after&#34;: &#34;const chatId = update.message?.chat?.id ?? \&#34;\&#34;;\nconst senderId = update.message?.from?.id ?? \&#34;\&#34;;\nconst key = [target.path, target.account.accountId, update.event_name, chatId, senderId, messageId].join(\&#34;:\&#34;);&#34;}</div>
+<div class="diff-block">- const key = `${target.path}:${target.account.accountId}:${update.event_name}:${messageId}`;
++ const chatId = update.message?.chat?.id ?? &#34;&#34;;
+const senderId = update.message?.from?.id ?? &#34;&#34;;
+const key = [target.path, target.account.accountId, update.event_name, chatId, senderId, messageId].join(&#34;:&#34;);</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -5471,7 +5527,8 @@ const next = sanitizeHostExecEnv({
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">{&#34;before&#34;: &#34;async function downloadUrlToTempFile(url: string): Promise&lt;&#34;, &#34;after&#34;: &#34;function resolveSafeMarketplaceDownloadFileName(url: string, fallback: string): string {&#34;}</div>
+<div class="diff-block">- async function downloadUrlToTempFile(url: string): Promise&lt;
++ function resolveSafeMarketplaceDownloadFileName(url: string, fallback: string): string {</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>

@@ -237,7 +237,18 @@ for member in zip_file.namelist():
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
 <details>
 <summary>Diff</summary>
-<pre lang="diff">{&#34;before&#34;: &#34;&#34;, &#34;after&#34;: &#34;+const normalizeNoProxyHost = (hostname) =&gt; {\n+  if (!hostname) {\n+    return hostname;\n+  }\n+\n+  if (hostname.charAt(0) === &#39;[&#39; &amp;&amp; hostname.charAt(hostname.length - 1) === &#39;]&#39;) {\n+    hostname = hostname.slice(1, -1);\n+  }\n+\n+  return hostname.replace(/\\.+$/, &#39;&#39;);\n+};&#34;}</pre>
+<pre lang="diff">- 
++ +const normalizeNoProxyHost = (hostname) =&gt; {
++  if (!hostname) {
++    return hostname;
++  }
++
++  if (hostname.charAt(0) === &#39;[&#39; &amp;&amp; hostname.charAt(hostname.length - 1) === &#39;]&#39;) {
++    hostname = hostname.slice(1, -1);
++  }
++
++  return hostname.replace(/\.+$/, &#39;&#39;);
++};</pre>
 </details>
 <p><b>Fix</b> : The patch introduces a function to normalize and parse the `no_proxy` entries, ensuring that only valid hostnames are considered for bypassing proxy settings.</p>
 <p>
@@ -403,7 +414,21 @@ if (/[\r\n\0]/.test(path)) {
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
 <details>
 <summary>Diff</summary>
-<pre lang="diff">{&#34;before&#34;: &#34;this.baseUrl = baseUrl;&#34;, &#34;after&#34;: &#34;let normalizedBase: string;\ntry {\n  const parsed = new URL(baseUrl);\n  parsed.hash = &#39;&#39;;\n  parsed.username = &#39;&#39;;\n  parsed.password = &#39;&#39;;\n  normalizedBase = parsed.toString().replace(//$/, &#39;&#39;);\n} catch {\n  // Unparseable input falls through to raw; downstream axios call will\n  // fail cleanly. Preserves backward compat for tests that pass\n  // placeholder strings.\n  normalizedBase = baseUrl;\n}\nthis.baseUrl = normalizedBase;&#34;}</pre>
+<pre lang="diff">- this.baseUrl = baseUrl;
++ let normalizedBase: string;
+try {
+  const parsed = new URL(baseUrl);
+  parsed.hash = &#39;&#39;;
+  parsed.username = &#39;&#39;;
+  parsed.password = &#39;&#39;;
+  normalizedBase = parsed.toString().replace(//$/, &#39;&#39;);
+} catch {
+  // Unparseable input falls through to raw; downstream axios call will
+  // fail cleanly. Preserves backward compat for tests that pass
+  // placeholder strings.
+  normalizedBase = baseUrl;
+}
+this.baseUrl = normalizedBase;</pre>
 </details>
 <p><b>Fix</b> : The patch normalizes the `baseUrl` by removing any embedded credentials and ensuring it does not end with a trailing slash, enhancing defense-in-depth against SSRF attacks.</p>
 <p>
@@ -1284,7 +1309,14 @@ After:
 <p><b>Impact</b> : An attacker could trigger unauthenticated crypto work, potentially leading to resource exhaustion or other security issues.</p>
 <details>
 <summary>Diff</summary>
-<pre lang="diff">{&#34;before&#34;: &#34;-    reply: (text: string) =&gt; Promise&lt;void&gt;,\n+    meta: { eventId: string; createdAt: number },\n+  ) =&gt; Promise&lt;void&gt;;&#34;, &#34;after&#34;: &#34;+  /** Called before expensive crypto to allow sender policy checks (optional) */\n+  authorizeSender?: (params: {\n+    senderPubkey: string;\n+    reply: (text: string) =&gt; Promise&lt;void&gt;;\n+  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;&#34;}</pre>
+<pre lang="diff">- -    reply: (text: string) =&gt; Promise&lt;void&gt;,
++    meta: { eventId: string; createdAt: number },
++  ) =&gt; Promise&lt;void&gt;;
++ +  /** Called before expensive crypto to allow sender policy checks (optional) */
++  authorizeSender?: (params: {
++    senderPubkey: string;
++    reply: (text: string) =&gt; Promise&lt;void&gt;;
++  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;</pre>
 </details>
 <p><b>Fix</b> : The patch introduces a new `authorizeSender` function that allows for sender policy checks before performing expensive cryptographic operations.</p>
 <p>
