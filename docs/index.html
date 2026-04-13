@@ -151,8 +151,7 @@ footer a{color:var(--accent)}
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">```diff
---- a/server/asset_upload_handler.go
+<div class="diff-block">--- a/server/asset_upload_handler.go
 +++ b/server/asset_upload_handler.go
 @@ -67,6 +67,13 @@ func AssetUploadHandler(cruds map[string]*resource.DbResource) func(c *gin.Conte
  			c.AbortWithError(400, errors.New(&#34;filename query parameter is required&#34;))
@@ -167,8 +166,7 @@ footer a{color:var(--accent)}
 +		}
  		// Validate table and column
  		dbResource, ok := cruds[typeName]
- 		if !ok || dbResource == nil {
-```</div>
+ 		if !ok || dbResource == nil {</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -209,8 +207,7 @@ footer a{color:var(--accent)}
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">```diff
---- a/lib/core/AxiosHeaders.js
+<div class="diff-block">--- a/lib/core/AxiosHeaders.js
 +++ b/lib/core/AxiosHeaders.js
 @@ -5,18 +5,49 @@ import parseHeaders from &#39;../helpers/parseHeaders.js&#39;;
  
@@ -254,8 +251,7 @@ footer a{color:var(--accent)}
 +        assertValidHeaderValue(_value, _header);
          self[key || _header] = normalizeValue(_value);
        }
-     }
-```</div>
+     }</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1258,8 +1254,7 @@ After:
 +                if ($tag_name_lower === &#39;style&#39; &amp;&amp; $this-&gt;hasDangerousStyleContent($element-&gt;textContent)) {
 +                    $element-&gt;parentNode-&gt;removeChild($element);
 +                    continue;
-+                }
-</div>
++                }</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1544,9 +1539,7 @@ if ($hmac != $this-&gt;hmac_check-&gt;hash(pack(&#39;NNCa*&#39;, $this-&gt;get_s
 ```
 After:
 ```php
-} elseif (!$this-&gt;_equals($hmac, $this-&gt;hmac_check-&gt;hash(pack(&#39;NNCa*&#39;, $this-&gt;get_seq_no, $packet_length, $padding_length, $payload . $padding)))) {
-```
-</div>
+} elseif (!$this-&gt;_equals($hmac, $this-&gt;hmac_check-&gt;hash(pack(&#39;NNCa*&#39;, $this-&gt;get_seq_no, $packet_length, $padding_length, $payload . $padding)))) {</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1601,8 +1594,7 @@ class _XmpBuilder(ExpatBuilderNS):
 parser = XMLParserType()
 builder = _XmpBuilder()
 builder.install(parser)
-doc_root: Document = builder.parseString(data)
-```</div>
+doc_root: Document = builder.parseString(data)</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -1922,8 +1914,7 @@ After:
 </div>
 <div class="field">
 <div class="field-label">key diff</div>
-<div class="diff-block">```diff
---- a/httpserver/handler.go
+<div class="diff-block">--- a/httpserver/handler.go
 +++ b/httpserver/handler.go
 @@ -83,8 +83,8 @@ func (fs *FileServer) doDir(file *os.File, w http.ResponseWriter, req *http.Requ
  		}
@@ -1935,8 +1926,7 @@ After:
 +	config, err := fs.findEffectiveACL(file.Name())
  	if err != nil
  		logger.Errorf(&#34;error reading file based access config: %+v&#34;, err)
- 	}
-```</div>
+ 	}</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -2129,8 +2119,7 @@ await self.run_command(cmd)
 After:
 ```python
 def run_command(self, cmd) -&gt; str:
-    # ... (rest of the method remains unchanged)
-```</div>
+    # ... (rest of the method remains unchanged)</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -2637,8 +2626,7 @@ After:
 +      const result = await req.payload.find({
 +        collection: collection as CollectionSlug,
 +        req,
-+        overrideAccess: false,
-</div>
++        overrideAccess: false,</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -3606,8 +3594,7 @@ After:
 +
      /**
       * {@inheritDoc}
-      * &lt;p&gt;
-</div>
+      * &lt;p&gt;</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -3819,8 +3806,7 @@ class JustHTML:
 
     @staticmethod
     def _stabilize_terminal_sanitize_once(...):
-        # ... (new method)
-```</div>
+        # ... (new method)</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -4147,8 +4133,7 @@ After:
 +                                debug!(&#34;Error parsing dns message {e:?}&#34;);
 +                                continue;
 +                            },
-+                        },
-</div>
++                        },</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -4348,8 +4333,7 @@ After:
 +     ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 + } else {
 +     throw new SecurityException(&#34;Invalid class name in deserialized data&#34;);
-+ }
-</div>
++ }</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -6040,8 +6024,7 @@ def _validate_partition_path(self, path: str, dir_path: str) -&gt; None:
     normalized_full_path = posixpath.normpath(full_path_to_check)
     normalized_base_path = posixpath.normpath(dir_path)
 
-    # Ensure the normalized path is within the base directory
-```</div>
+    # Ensure the normalized path is within the base directory</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -6243,8 +6226,7 @@ const args = [
   &#34;--language&#34;, request.language,
   &#34;--base-path&#34;, request.basePath];
 if (request.overwrite) args.push(&#34;--force&#34;);
-const { stdout, stderr } = await execFilePromise(&#34;heim&#34;, args);
-```</div>
+const { stdout, stderr } = await execFilePromise(&#34;heim&#34;, args);</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
@@ -6564,8 +6546,7 @@ try{
 }
 catch(\JsonException $e){
 	// Handle exception
-}
-```</div>
+}</div>
 </div>
 <div class="field">
 <div class="field-label">fix</div>
