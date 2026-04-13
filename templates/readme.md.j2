@@ -1,26 +1,25 @@
 <div align="center">
-
-# 🎣 Open Source Daily Catch
-
-**Automated Patch Intelligence for Security Engineers**
-
-[![Analysis](https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/daily.yml)
-[![Render](https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg)](https://github.com/christbowel/osdc/actions/workflows/render.yml)
-
-`{{ stats.total_advisories }}` advisories · `{{ stats.total_patterns }}` unique vuln patterns · updated 3x/day
-
-[Live index](https://christbowel.github.io/OSDC) · [How it works](#how-it-works)
-
+<h1>🎣 Open Source Daily Catch</h1>
+<p><strong>Automated Patch Intelligence for Security Engineers</strong></p>
+<p>
+<a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
+<a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-{{ stats.total_advisories }}-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-{{ stats.total_patterns }}-purple" alt="Patterns"></a>
+</p>
+<p>
+<a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
+</p>
 </div>
 
 ---
 
 {% for adv in top_advisories %}
-<table><tr><td>
+### {{ adv.id }}
 
-**{{ adv.id }}** · `{{ adv.severity }} {{ adv.cvss_score }}` · {{ adv.date }}
+{{ adv.severity }} {{ adv.cvss_score }} · {{ adv.date }} · {{ adv.language }}
 
-`{{ adv.package_name }}` · {{ adv.language }} · Pattern: `{{ adv.pattern_id }}` · {{ adv.occurrences }}x across ecosystem
+{{ adv.package_name }} · Pattern: {{ adv.pattern_id }} · {{ adv.occurrences }}x across ecosystem
 
 **Root cause** : {{ adv.root_cause }}
 
@@ -32,9 +31,9 @@
 
 **Fix** : {{ adv.fix_summary }}
 
-[Advisory](https://github.com/advisories/{{ adv.id }}) · [Commit]({{ adv.commit_url }})
+<sup><a href="https://github.com/advisories/{{ adv.id }}">Advisory</a> · <a href="{{ adv.commit_url }}">Commit</a></sup>
 
-</td></tr></table>
+---
 
 {% endfor %}
 
@@ -58,7 +57,7 @@
              Single atomic commit per run
 </pre>
 
-Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independently at `07:00`, `15:00`, `00:00` UTC.
+Three runs per day: 06:00, 14:00, 23:00 UTC. Render pipeline runs independently at 07:00, 15:00, 00:00 UTC.
 
 <details>
 <summary>Stack</summary>
@@ -68,7 +67,7 @@ Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independ
 | Automation | GitHub Actions cron | Zero infra |
 | Data source | GitHub Advisory DB | GraphQL, filtered on patch commits |
 | LLM | Gemini 2.5 Flash | Free tier, JSON-only output |
-| DB | SQLite (rebuilt from JSONL) | Git-friendly, versioned |
+| DB | SQLite rebuilt from JSONL | Git-friendly, versioned |
 | Frontend | Static HTML | Client-side search, zero build step |
 | Scripting | Python 3.11 | requests, jinja2, sqlite3 |
 
@@ -88,4 +87,4 @@ Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independ
 
 ---
 
-*[christbowel.com](https://christbowel.com)*
+<sub><a href="https://christbowel.com">christbowel.com</a></sub>
