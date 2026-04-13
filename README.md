@@ -244,7 +244,7 @@ Three runs per day: `06:00`, `14:00`, `23:00` UTC. Render pipeline runs independ
 | Total advisories | 5 |
 | Unique patterns | 4 |
 | Pending | 0 |
-| Last updated | 2026-04-12 |
+| Last updated | 2026-04-13 |
 
 </details>
 
