@@ -91,19 +91,19 @@ Commits from {{ stats.watchlist_count }} high-value repos scored by structural h
 <input type="text" class="search" id="searchInput" placeholder="search repos, files, patterns...">
 <select id="scoreFilter">
 <option value="">all scores</option>
-<option value="20">score >= 20</option>
+<option value="60">score >= 60</option>
+<option value="30">score >= 30</option>
 <option value="15">score >= 15</option>
-<option value="10">score >= 10</option>
 </select>
 <span class="count" id="resultCount"></span>
 </div>
 <div id="suspectList">
 {% for s in suspects %}
-<div class="card" data-score="{{ s.combined_score }}" data-searchable="{{ s.repo }} {{ s.top_file }} {{ s.message }} {{ s.fingerprint_match or '' }} {{ s.commit_sha }}">
+<div class="card" data-score="{{ s.normalized_score }}" data-searchable="{{ s.repo }} {{ s.top_file }} {{ s.message }} {{ s.fingerprint_match or '' }} {{ s.commit_sha }}">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
 <a class="commit-link" href="{{ s.commit_url }}" target="_blank" rel="noopener">{{ s.commit_sha[:8] }}</a>
-<span class="score-badge {% if s.combined_score >= 20 %}score-high{% elif s.combined_score >= 15 %}score-med{% else %}score-low{% endif %}">{{ s.combined_score }}</span>
+<span class="score-badge {% if s.normalized_score >= 60 %}score-high{% elif s.normalized_score >= 30 %}score-med{% else %}score-low{% endif %}">{{ s.normalized_score }}</span>
 {% if s.fingerprint_match %}
 <span class="fp-tag">{{ s.fingerprint_match }}</span>
 {% endif %}
@@ -134,7 +134,7 @@ Commits from {{ stats.watchlist_count }} high-value repos scored by structural h
 <div class="score-grid">
 <div class="score-item"><span class="label">heuristic</span><span class="value">{{ s.heuristic_score }}</span></div>
 <div class="score-item"><span class="label">fingerprint</span><span class="value">{{ '%.1f' | format(s.fingerprint_score * 20) }}</span></div>
-<div class="score-item"><span class="label">combined</span><span class="value">{{ s.combined_score }}</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">{{ s.normalized_score }}</span></div>
 <div class="score-item"><span class="label">files changed</span><span class="value">{{ s.files_changed }}</span></div>
 </div>
 </div>
@@ -173,7 +173,7 @@ Commits from {{ stats.watchlist_count }} high-value repos scored by structural h
 </div>
 </div>
 <footer>
-<p><a href="https://christbowel.com">christbowel</a> · <a href="https://github.com/christbowel/osdc">source</a></p>
+<p><a href="https://christbowel.com">christbowel</a> · <a href="https://github.com/christbowel/OSDC">source</a></p>
 </footer>
 <script>
 function toggleCard(btn){var h=btn.closest('.card').querySelector('.detail-hidden');if(h){h.classList.toggle('detail-hidden');btn.textContent=h.classList.contains('detail-hidden')?'expand':'collapse'}}

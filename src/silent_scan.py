@@ -68,36 +68,15 @@ def github_get(endpoint: str, params: dict = None) -> dict | list | None:
         response = requests.get(url, headers=headers, params=params, timeout=30)
         if response.status_code == 403:
             remaining = response.headers.get("X-RateLimit-Remaining", "?")
-            reset = response.headers.get("X-RateLimit-Reset", "?")
-            print(f"    Rate limited (remaining: {remaining}, reset: {reset})")
+            print(f"    Rate limited (remaining: {remaining})")
             return None
         if response.status_code == 404:
             return None
         response.raise_for_status()
         return response.json()
     except requests.RequestException as exc:
-        print(f"    GitHub API error: {exc}")
+        print(f"    API error: {exc}")
         return None
-
-
-def fetch_recent_commits(repo: str, since: str) -> list[dict]:
-    commits = github_get(f"/repos/{repo}/commits", {
-        "since": since,
-        "per_page": 100,
-    })
-
-    if not commits or not isinstance(commits, list):
-        return []
-
-    return commits
-
-
-def fetch_commit_detail(repo: str, sha: str) -> dict | None:
-    return github_get(f"/repos/{repo}/commits/{sha}")
-
-
-def has_linked_advisory(repo: str, sha: str) -> bool:
-    return False
 
 
 def run(hours: int = 24):
@@ -123,23 +102,23 @@ def run(hours: int = 24):
     for i, repo in enumerate(watchlist):
         print(f"  [{i+1}/{len(watchlist)}] {repo}...", end=" ", flush=True)
 
-        commits = fetch_recent_commits(repo, since)
-        if not commits:
+        commits = github_get(f"/repos/{repo}/commits", {"since": since, "per_page": 100})
+        if not commits or not isinstance(commits, list):
             print("0 commits")
             skipped_repos += 1
             time.sleep(REQUEST_DELAY)
             continue
 
         new_commits = [c for c in commits if c.get("sha", "") not in seen_commits]
-        print(f"{len(new_commits)} new / {len(commits)} total", end="", flush=True)
+        print(f"{len(new_commits)} new", end="", flush=True)
 
         repo_suspects = 0
 
         for commit in new_commits:
             sha = commit.get("sha", "")
-            message = commit.get("commit", {}).get("message", "")
+            message = commit.get("commit", {}).get("message", "").split("\n")[0]
 
-            detail = fetch_commit_detail(repo, sha)
+            detail = github_get(f"/repos/{repo}/commits/{sha}")
             if not detail:
                 time.sleep(REQUEST_DELAY)
                 continue
@@ -157,17 +136,17 @@ def run(hours: int = 24):
 
             layer1_pass += 1
 
-            combined_patch = "\n".join(
-                f.get("patch", "") for f in files if f.get("patch")
-            )
+            combined_patch = "\n".join(f.get("patch", "") for f in files if f.get("patch"))
             fingerprint_matches = match_fingerprints(combined_patch)
 
             best_fp = fingerprint_matches[0] if fingerprint_matches else None
             fp_score = best_fp["score"] if best_fp else 0.0
 
-            combined_score = heuristic_result["score"] + (fp_score * 20)
+            normalized = heuristic_result["normalized_score"]
+            if best_fp:
+                normalized = min(normalized + (fp_score * 30), 100)
 
-            if combined_score < 10:
+            if normalized < 10:
                 continue
 
             layer2_pass += 1
@@ -183,9 +162,9 @@ def run(hours: int = 24):
                 "message": message[:200],
                 "date": detail.get("commit", {}).get("author", {}).get("date", ""),
                 "author": detail.get("commit", {}).get("author", {}).get("name", ""),
-                "combined_score": round(combined_score, 2),
+                "normalized_score": round(normalized, 1),
                 "heuristic_score": heuristic_result["score"],
-                "heuristic_breakdown": heuristic_result["breakdown"],
+                "heuristic_normalized": heuristic_result["normalized_score"],
                 "top_file": top_file.get("file", ""),
                 "top_file_score": top_file.get("score", 0),
                 "top_file_signals": top_file.get("signals", []),
@@ -200,7 +179,7 @@ def run(hours: int = 24):
             }
 
             append_result(result)
-            print(f"\n    SUSPECT: {sha[:8]} score={combined_score:.1f} file={top_file.get('file', '?')}", end="", flush=True)
+            print(f"\n    SUSPECT: {sha[:8]} score={normalized:.1f} {top_file.get('file', '?')}", end="", flush=True)
 
             time.sleep(REQUEST_DELAY)
 
@@ -222,7 +201,7 @@ def run(hours: int = 24):
     print(f"Repos scanned: {len(watchlist) - skipped_repos}/{len(watchlist)}")
     print(f"Commits analyzed: {total_commits}")
     print(f"Layer 1 pass (heuristics >= 8): {layer1_pass}")
-    print(f"Layer 2 pass (combined >= 10): {layer2_pass}")
+    print(f"Layer 2 pass (normalized >= 10): {layer2_pass}")
     print(f"New suspects: {total_suspects}")
     print(f"Total suspects in DB: {state['total_suspects']}")
 
