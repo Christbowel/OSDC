@@ -146,7 +146,7 @@ def run(hours: int = 24):
             if best_fp:
                 normalized = min(normalized + (fp_score * 30), 100)
 
-            if normalized < 10:
+            if normalized < 20:
                 continue
 
             layer2_pass += 1
