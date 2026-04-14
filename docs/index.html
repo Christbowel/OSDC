@@ -72,9 +72,9 @@ footer a{color:var(--accent)}
 <div class="container">
 <h1><span>OSDC</span> · Open Source Daily Catch</h1>
 <div class="header-meta">
-<span>134 advisories</span>
-<span>29 patterns</span>
-<span>2026-04-13</span>
+<span>145 advisories</span>
+<span>30 patterns</span>
+<span>2026-04-14</span>
 </div>
 </div>
 </header>
@@ -85,8 +85,8 @@ footer a{color:var(--accent)}
 <div class="dash-card" style="grid-column:1/-1">
 <h3>overview</h3>
 <div class="stat-grid">
-<div class="stat-box"><div class="stat-val">134</div><div class="stat-label">advisories</div></div>
-<div class="stat-box"><div class="stat-val">29</div><div class="stat-label">patterns</div></div>
+<div class="stat-box"><div class="stat-val">145</div><div class="stat-label">advisories</div></div>
+<div class="stat-box"><div class="stat-val">30</div><div class="stat-label">patterns</div></div>
 <div class="stat-box"><div class="stat-val" id="langCount">0</div><div class="stat-label">languages</div></div>
 <div class="stat-box"><div class="stat-val" id="critCount">0</div><div class="stat-label">critical</div></div>
 </div>
@@ -125,6 +125,580 @@ footer a{color:var(--accent)}
 </div>
 
 <div id="advisoryList">
+<div class="card" data-severity="HIGH" data-language="Java" data-date="2026-04-13" data-pattern="UNSANITIZED_INPUT→COMMAND" data-searchable="GHSA-3p24-9x7v-7789 NationalSecurityAgency/emissary gov.nsa.emissary:emissary UNSANITIZED_INPUT→COMMAND OS Command Injection Java The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-3p24-9x7v-7789" target="_blank" rel="noopener">GHSA-3p24-9x7v-7789</a>
+<span class="sev sev-high">HIGH 8.8</span>
+<span class="pattern">UNSANITIZED_INPUT→COMMAND</span>
+<span class="lang">Java</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">gov.nsa.emissary:emissary · NationalSecurityAgency/emissary</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- this.inFileEnding = configG.findStringEntry(&#34;IN_FILE_ENDING&#34;, &#34;&#34;);
++++ this.inFileEnding = cleanFileEnding(configG.findStringEntry(&#34;IN_FILE_ENDING&#34;, &#34;&#34;));
+--- this.outFileEnding = configG.findStringEntry(&#34;OUT_FILE_ENDING&#34;, this.inFileEnding.isEmpty() ? &#34;.out&#34; : &#34;&#34;);
++++ this.outFileEnding = cleanFileEnding(configG.findStringEntry(&#34;OUT_FILE_ENDING&#34;, this.inFileEnding.isEmpty() ? &#34;.out&#34; : &#34;&#34;));</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a new `cleanFileEnding` method that sanitizes the `IN_FILE_ENDING` and `OUT_FILE_ENDING` parameters. This method uses a regular expression to remove any characters that are not alphanumeric, underscore, hyphen, or a leading dot, preventing command injection.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>OS Command Injection</span>
+<a href="https://github.com/NationalSecurityAgency/emissary/commit/1faf33f2494c0128f250d7d2e8f2da99bbd32ae8" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-3p24-9x7v-7789" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Go" data-date="2026-04-13" data-pattern="UNSANITIZED_INPUT→XSS" data-searchable="GHSA-9pr4-rf97-79qh enchant97/note-mark github.com/enchant97/note-mark/backend UNSANITIZED_INPUT→XSS Stored XSS Go The application allowed unrestricted upload of assets and served them with their original Content-Type, including &#39;text/html&#39; and &#39;image/svg+xml&#39;. This enabled an attacker to upload malicious HTML or SVG files containing JavaScript, which would then execute in the victim&#39;s browser when the asset was viewed.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-9pr4-rf97-79qh" target="_blank" rel="noopener">GHSA-9pr4-rf97-79qh</a>
+<span class="sev sev-high">HIGH 8.7</span>
+<span class="pattern">UNSANITIZED_INPUT→XSS</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/enchant97/note-mark/backend · enchant97/note-mark</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application allowed unrestricted upload of assets and served them with their original Content-Type, including &#39;text/html&#39; and &#39;image/svg+xml&#39;. This enabled an attacker to upload malicious HTML or SVG files containing JavaScript, which would then execute in the victim&#39;s browser when the asset was viewed.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could execute arbitrary JavaScript in the context of the victim&#39;s browser, leading to session hijacking, defacement, or redirection to malicious sites.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">- ctx.SetHeader(&#34;Content-Type&#34;, info.MimeType)
++ if info.MimeType == &#34;&#34; || info.MimeType == &#34;text/html&#34; || info.MimeType == &#34;image/svg+xml&#34; {
++ 	ctx.SetHeader(&#34;Content-Type&#34;, &#34;application/octet-stream&#34;)
++ } else {
++ 	ctx.SetHeader(&#34;Content-Type&#34;, info.MimeType)</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a check for &#39;text/html&#39; and &#39;image/svg+xml&#39; MIME types. If an uploaded asset matches these types or has an empty MIME type, it is now served with &#39;application/octet-stream&#39; and &#39;Content-Disposition: attachment&#39; to force a download instead of inline rendering, mitigating the XSS risk. It also adds &#39;X-Content-Type-Options: nosniff&#39;.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Stored XSS</span>
+<a href="https://github.com/enchant97/note-mark/commit/6bb62842ccb956870b9bf183629eba95e326e5e3" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-9pr4-rf97-79qh" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="Go" data-date="2026-04-13" data-pattern="IDOR→DATA_ACCESS" data-searchable="GHSA-p5w6-75f9-cc2p enchant97/note-mark github.com/enchant97/note-mark/backend IDOR→DATA_ACCESS Broken Access Control Go The application allowed any authenticated user to download any asset by knowing its ID and the associated note ID, without verifying if the user had legitimate access to the note itself. The `GetNoteAssetContentByID` function lacked proper authorization checks.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-p5w6-75f9-cc2p" target="_blank" rel="noopener">GHSA-p5w6-75f9-cc2p</a>
+<span class="sev sev-moderate">MODERATE 5.9</span>
+<span class="pattern">IDOR→DATA_ACCESS</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/enchant97/note-mark/backend · enchant97/note-mark</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application allowed any authenticated user to download any asset by knowing its ID and the associated note ID, without verifying if the user had legitimate access to the note itself. The `GetNoteAssetContentByID` function lacked proper authorization checks.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could download assets belonging to other users&#39; private notes, leading to unauthorized information disclosure.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/backend/handlers/assets.go
++++ b/backend/handlers/assets.go
+@@ -122,11 +122,13 @@ func (h AssetsHandler) GetNoteAssets(
+ 	}
+ }
+ 
+-// TODO Work out way to authenticate this
+ func (h AssetsHandler) GetNoteAssetContentByID(
+ 	ctx context.Context,
+ 	input *GetNoteAssetContentByIDInput) (*huma.StreamResponse, error) {
++	authDetails, _ := h.AuthProvider.TryGetAuthDetails(ctx)
++	optionalUserUID := authDetails.GetOptionalUserID()
+ 	if asset, info, stream, err := h.AssetsService.GetNoteAssetContentByID(
++		optionalUserUID,
+ 		input.NoteID,
+ 		input.AssetID,
+ 		h.Storage); err != nil {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces an authorization check in the `GetNoteAssetContentByID` function. It now verifies that the requesting user is either the owner of the note or that the note is public before allowing access to its assets.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Broken Access Control</span>
+<a href="https://github.com/enchant97/note-mark/commit/6593898855add151eb9965d96998b05e14c62026" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-p5w6-75f9-cc2p" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="C#" data-date="2026-04-13" data-pattern="INTEGER_OVERFLOW→BOUNDARY" data-searchable="GHSA-v67w-737x-v2c9 ImageMagick/ImageMagick Magick.NET-Q8-x86 INTEGER_OVERFLOW→BOUNDARY Heap Overflow C# The vulnerability was caused by an integer overflow/wraparound in the viff encoder on 32-bit builds. When calculating the size of memory to allocate (variable &#39;packets&#39;), a large value could wrap around, resulting in a smaller-than-expected allocation. Subsequent operations would then write beyond the allocated buffer, leading to a heap overflow.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-v67w-737x-v2c9" target="_blank" rel="noopener">GHSA-v67w-737x-v2c9</a>
+<span class="sev sev-moderate">MODERATE 5.9</span>
+<span class="pattern">INTEGER_OVERFLOW→BOUNDARY</span>
+<span class="lang">C#</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">Magick.NET-Q8-x86 · ImageMagick/ImageMagick</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability was caused by an integer overflow/wraparound in the viff encoder on 32-bit builds. When calculating the size of memory to allocate (variable &#39;packets&#39;), a large value could wrap around, resulting in a smaller-than-expected allocation. Subsequent operations would then write beyond the allocated buffer, leading to a heap overflow.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could potentially achieve arbitrary code execution or cause a denial of service by providing a specially crafted VIFF image file that triggers the integer overflow and subsequent heap overflow.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/coders/viff.c
++++ b/coders/viff.c
+@@ -1098,6 +1098,8 @@ static MagickBooleanType WriteVIFFImage(const ImageInfo *image_info,
+     /*
+       Convert MIFF to VIFF raster pixels.
+     */
++    if (packets != (MagickSizeType) ((size_t) packets))
++      ThrowWriterException(ResourceLimitError,&#34;MemoryAllocationFailed&#34;);
+     pixel_info=AcquireVirtualMemory((size_t) packets,sizeof(*pixels));
+     if (pixel_info == (MemoryInfo *) NULL)
+       ThrowWriterException(ResourceLimitError,&#34;MemoryAllocationFailed&#34;);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds a check to ensure that the &#39;packets&#39; variable, which determines the memory allocation size, has not overflowed when cast to &#39;size_t&#39;. If an overflow is detected, it throws a &#39;ResourceLimitError&#39; to prevent the undersized memory allocation and subsequent heap overflow.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Heap Overflow</span>
+<a href="https://github.com/ImageMagick/ImageMagick/commit/d27b840a61b322419a66d0d192ff56d52498148d" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-v67w-737x-v2c9" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="RUST" data-date="2026-04-13" data-pattern="NULL_DEREF→CRASH" data-searchable="GHSA-48m6-486p-9j8p nimiq/core-rs-albatross nimiq-consensus NULL_DEREF→CRASH Denial of Service RUST The vulnerability existed because the `RequestMacroChain` handler did not validate that a provided block locator hash referred to a macro block before attempting to retrieve a chain of macro blocks. If a micro block hash was provided, the subsequent call to `get_macro_blocks()` would panic, leading to a denial of service.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-48m6-486p-9j8p" target="_blank" rel="noopener">GHSA-48m6-486p-9j8p</a>
+<span class="sev sev-moderate">MODERATE 5.3</span>
+<span class="pattern">NULL_DEREF→CRASH</span>
+<span class="lang">RUST</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">nimiq-consensus · nimiq/core-rs-albatross</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability existed because the `RequestMacroChain` handler did not validate that a provided block locator hash referred to a macro block before attempting to retrieve a chain of macro blocks. If a micro block hash was provided, the subsequent call to `get_macro_blocks()` would panic, leading to a denial of service.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could send a crafted `RequestMacroChain` message containing a micro block hash as a locator, causing the Nimiq consensus node to panic and crash, leading to a denial of service for that node.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">-            .unwrap(); // We made sure that start_block_hash is on our chain.
++            .unwrap(); // Safe: We validated that start_block_hash is a macro block on our chain.</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds a validation step to ensure that the `locator` hash refers to a macro block before it is used to fetch a chain of macro blocks. If the locator is a micro block, it is skipped, and the search continues for a valid macro block.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Denial of Service</span>
+<a href="https://github.com/nimiq/core-rs-albatross/commit/ae6c1e92342e72f80fd12accbe66ee80dd6802ac" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-48m6-486p-9j8p" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="C#" data-date="2026-04-13" data-pattern="BUFFER_OVERFLOW→HEAP" data-searchable="GHSA-cr67-pvmx-2pp2 ImageMagick/ImageMagick Magick.NET-Q8-x86 BUFFER_OVERFLOW→HEAP Heap Buffer Overflow C# The vulnerability existed because the code attempted to access an array element at &#39;length-1&#39; without properly checking if &#39;length&#39; could be zero or one. If &#39;length&#39; was 0 or 1, &#39;length-1&#39; would result in an out-of-bounds negative index or index 0, leading to a heap-buffer-overflow write of a single zero byte.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-cr67-pvmx-2pp2" target="_blank" rel="noopener">GHSA-cr67-pvmx-2pp2</a>
+<span class="sev sev-moderate">MODERATE 5.3</span>
+<span class="pattern">BUFFER_OVERFLOW→HEAP</span>
+<span class="lang">C#</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">Magick.NET-Q8-x86 · ImageMagick/ImageMagick</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability existed because the code attempted to access an array element at &#39;length-1&#39; without properly checking if &#39;length&#39; could be zero or one. If &#39;length&#39; was 0 or 1, &#39;length-1&#39; would result in an out-of-bounds negative index or index 0, leading to a heap-buffer-overflow write of a single zero byte.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could potentially cause a denial of service (crash) or, in more complex scenarios, achieve arbitrary code execution by corrupting adjacent heap memory.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/MagickCore/xml-tree.c
++++ b/MagickCore/xml-tree.c
+-  terminal=utf8[length-1];
+-  utf8[length-1]=&#39;\0&#39;;
++  terminal=utf8[MagickMax(length-1,0)];
++  utf8[MagickMax(length-1,0)]=&#39;\0&#39;;</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch addresses the vulnerability by using the MagickMax macro to ensure that the index used to access the &#39;utf8&#39; array is never less than zero. It now uses &#39;MagickMax(length-1,0)&#39; to safely access the last character or the first character if the string is very short, preventing out-of-bounds access.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Heap Buffer Overflow</span>
+<a href="https://github.com/ImageMagick/ImageMagick/commit/ae679e2fd19ec656bfab9f822ae4cf06bf91604d" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-cr67-pvmx-2pp2" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="C#" data-date="2026-04-13" data-pattern="INTEGER_OVERFLOW→BOUNDARY" data-searchable="GHSA-26qp-ffjh-2x4v ImageMagick/ImageMagick Magick.NET-Q8-x86 INTEGER_OVERFLOW→BOUNDARY Integer Overflow C# The vulnerability existed because the calculation for memory allocation (length = (image-&gt;columns+2)*(image-&gt;rows+2)) did not properly check for potential integer overflows before performing the multiplication. On 32-bit systems, large image dimensions could cause this multiplication to wrap around, resulting in a smaller-than-expected &#39;length&#39; value.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-26qp-ffjh-2x4v" target="_blank" rel="noopener">GHSA-26qp-ffjh-2x4v</a>
+<span class="sev sev-moderate">MODERATE 5.1</span>
+<span class="pattern">INTEGER_OVERFLOW→BOUNDARY</span>
+<span class="lang">C#</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">Magick.NET-Q8-x86 · ImageMagick/ImageMagick</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability existed because the calculation for memory allocation (length = (image-&gt;columns+2)*(image-&gt;rows+2)) did not properly check for potential integer overflows before performing the multiplication. On 32-bit systems, large image dimensions could cause this multiplication to wrap around, resulting in a smaller-than-expected &#39;length&#39; value.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could craft an image with specific dimensions that would trigger an integer overflow, leading to a heap buffer overflow. This could result in denial of service (application crash) or potentially arbitrary code execution.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/MagickCore/effect.c
++++ b/MagickCore/effect.c
+@@ -1369,7 +1369,13 @@ MagickExport Image *DespeckleImage(const Image *image,ExceptionInfo *exception)
+   /*
+     Allocate image buffer.
+   */
+-  length=(size_t) ((image-&gt;columns+2)*(image-&gt;rows+2));
++  if ((image-&gt;columns &gt; (MAGICK_SIZE_MAX-2)) ||
++      (image-&gt;rows &gt; (MAGICK_SIZE_MAX-2)))
++    {
++      despeckle_image=DestroyImage(despeckle_image);
++      ThrowImageException(ResourceLimitError,&#34;MemoryAllocationFailed&#34;);
++    }
++  length=(image-&gt;columns+2)*(image-&gt;rows+2);
+   pixel_info=AcquireVirtualMemory(length,sizeof(*pixels));
+   buffer_info=AcquireVirtualMemory(length,sizeof(*buffer));
+   if ((pixel_info == (MemoryInfo *) NULL) ||</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds explicit checks to ensure that &#39;image-&gt;columns&#39; and &#39;image-&gt;rows&#39; do not exceed &#39;MAGICK_SIZE_MAX-2&#39; before performing the multiplication. If the dimensions are too large, it throws a &#39;ResourceLimitError&#39; and prevents the overflow, thus avoiding the subsequent heap buffer overflow.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Integer Overflow</span>
+<a href="https://github.com/ImageMagick/ImageMagick/commit/bcd8519c70ecd9ebbc180920f2cf97b267d1f440" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-26qp-ffjh-2x4v" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="LOW" data-language="Go" data-date="2026-04-13" data-pattern="TIMING_SIDE_CHANNEL→USER_ENUM" data-searchable="GHSA-w6m9-39cv-2fwp enchant97/note-mark github.com/enchant97/note-mark/backend TIMING_SIDE_CHANNEL→USER_ENUM Username Enumeration Go The application&#39;s login endpoint exhibited a timing difference when a username did not exist versus when it did. If a username was not found in the database, the password comparison logic was skipped, leading to a faster response time compared to when a username existed, even with an incorrect password.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-w6m9-39cv-2fwp" target="_blank" rel="noopener">GHSA-w6m9-39cv-2fwp</a>
+<span class="sev sev-low">LOW 3.7</span>
+<span class="pattern">TIMING_SIDE_CHANNEL→USER_ENUM</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/enchant97/note-mark/backend · enchant97/note-mark</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application&#39;s login endpoint exhibited a timing difference when a username did not exist versus when it did. If a username was not found in the database, the password comparison logic was skipped, leading to a faster response time compared to when a username existed, even with an incorrect password.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could determine valid usernames by observing the response time differences from the login endpoint, which could then be used for brute-force attacks or targeted phishing.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/backend/services/auth.go
++++ b/backend/services/auth.go
+@@ -29,6 +29,7 @@ func (s AuthService) GetAccessToken(
+ 	if err := db.DB.
+ 		First(&amp;user, &#34;username = ?&#34;, username).
+ 		Select(&#34;id&#34;, &#34;password&#34;).Error; err != nil {
++		user.IsPasswordMatch(password) // prevent CWE-208
+ 		return core.AccessToken{}, InvalidCredentialsError
+ 	}
+ 
+--- a/backend/db/models.go
++++ b/backend/db/models.go
+@@ -42,10 +44,14 @@ func (u *User) IsPasswordMatch(plainPassword string) bool {
+ 	var current []byte
+ 	if len(u.Password) == 0 {
+-		return false
++		// prevent CWE-208
++		current = nullPasswordHash
++	} else {
++		current = u.Password
+ 	}
+-	if err := bcrypt.CompareHashAndPassword(u.Password, []byte(plainPassword)); err == nil {
++	if err := bcrypt.CompareHashAndPassword(current, []byte(plainPassword)); err == nil {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a constant-time password comparison for non-existent users. If a user is not found, a dummy password hash is generated and compared against the provided password, ensuring that the `bcrypt.CompareHashAndPassword` function is always called, thus normalizing the execution time regardless of username existence.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Username Enumeration</span>
+<a href="https://github.com/enchant97/note-mark/commit/cf4c6f6acf70b569d80396d323b067c00d45c034" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-w6m9-39cv-2fwp" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Go" data-date="2026-04-13" data-pattern="SSRF→INTERNAL_ACCESS" data-searchable="GHSA-r2pg-r6h7-crf3 external-secrets/external-secrets github.com/external-secrets/external-secrets SSRF→INTERNAL_ACCESS DNS-based Secret Exfiltration Go The External Secrets Operator&#39;s v2 template engine included the `getHostByName` function from the Sprig library. This function allowed templates to perform DNS lookups, which could be abused to exfiltrate sensitive information (secrets) by encoding them into DNS queries to an attacker-controlled domain.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-r2pg-r6h7-crf3" target="_blank" rel="noopener">GHSA-r2pg-r6h7-crf3</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">SSRF→INTERNAL_ACCESS</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/external-secrets/external-secrets · external-secrets/external-secrets</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The External Secrets Operator&#39;s v2 template engine included the `getHostByName` function from the Sprig library. This function allowed templates to perform DNS lookups, which could be abused to exfiltrate sensitive information (secrets) by encoding them into DNS queries to an attacker-controlled domain.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker with control over the template content could exfiltrate secrets stored in the External Secrets Operator by encoding them into DNS queries and sending them to a domain they control.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/runtime/template/v2/template.go
++++ b/runtime/template/v2/template.go
+@@ -87,7 +87,7 @@ func init() {
+ 	sprigFuncs := sprig.TxtFuncMap()
+ 	delete(sprigFuncs, &#34;env&#34;)
+ 	delete(sprigFuncs, &#34;expandenv&#34;)
+-
++	delete(sprigFuncs, &#34;getHostByName&#34;)
+ 	maps.Copy(tplFuncs, sprigFuncs)</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch removes the `getHostByName` function from the list of available functions in the v2 template engine. This prevents templates from performing DNS lookups, thereby mitigating the risk of DNS-based secret exfiltration.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>DNS-based Secret Exfiltration</span>
+<a href="https://github.com/external-secrets/external-secrets/commit/6800989bdc12782ca2605d3b8bf7f2876a16551a" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-r2pg-r6h7-crf3" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="Go" data-date="2026-04-13" data-pattern="UNSANITIZED_INPUT→XSS" data-searchable="GHSA-vffh-x6r8-xx99 prometheus/prometheus github.com/prometheus/prometheus UNSANITIZED_INPUT→XSS Stored XSS Go The Prometheus web UI rendered metric names and label values directly into HTML tooltips and the metrics explorer without proper HTML escaping. This allowed an attacker to inject arbitrary HTML and script code by crafting malicious metric names or label values.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-vffh-x6r8-xx99" target="_blank" rel="noopener">GHSA-vffh-x6r8-xx99</a>
+<span class="sev sev-moderate">MODERATE 0.0</span>
+<span class="pattern">UNSANITIZED_INPUT→XSS</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/prometheus/prometheus · prometheus/prometheus</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The Prometheus web UI rendered metric names and label values directly into HTML tooltips and the metrics explorer without proper HTML escaping. This allowed an attacker to inject arbitrary HTML and script code by crafting malicious metric names or label values.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could inject malicious scripts into the Prometheus UI, leading to session hijacking, data exfiltration, or defacement of the UI for users viewing the affected metrics.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/web/ui/mantine-ui/src/pages/query/uPlotChartHelpers.ts
++++ b/web/ui/mantine-ui/src/pages/query/uPlotChartHelpers.ts
+@@ -153,7 +153,7 @@ const tooltipPlugin = (useLocalTime: boolean, data: AlignedData) =&gt; {
+             &lt;div class=&#34;date&#34;&gt;${formatTimestamp(ts, useLocalTime)}&lt;/div&gt;
+             &lt;div class=&#34;series-value&#34;&gt;
+               &lt;span class=&#34;detail-swatch&#34; style=&#34;background-color: ${color}&#34;&gt;&lt;/span&gt;
+-              &lt;span&gt;${labels.__name__ ? labels.__name__ + &#34;: &#34; : &#34; &#34;}&lt;strong&gt;${value}&lt;/strong&gt;&lt;/span&gt;
++              &lt;span&gt;${labels.__name__ ? escapeHTML(labels.__name__) + &#34;: &#34; : &#34; &#34;}&lt;strong&gt;${value}&lt;/strong&gt;&lt;/span&gt;
+             &lt;/div&gt;
+             ${formatLabels(labels)}
+           `.trimEnd();</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces `escapeHTML` calls around all metric names and label values before they are rendered in tooltips and the metrics explorer. Additionally, the fuzzy search library configuration was updated to enable HTML escaping for search results.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Stored XSS</span>
+<a href="https://github.com/prometheus/prometheus/commit/07c6232d159bfb474a077788be184d87adcfac3c" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-vffh-x6r8-xx99" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Python" data-date="2026-04-13" data-pattern="DOS→RESOURCE_EXHAUSTION" data-searchable="GHSA-whj4-6x5x-4v2j python-pillow/Pillow pillow DOS→RESOURCE_EXHAUSTION Denial of Service (Decompression Bomb) Python The application used `gzip.decompress` on the entire input stream without any size limits. An attacker could craft a compressed FITS file that, when decompressed, expands to an extremely large size, consuming excessive memory and CPU resources.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-whj4-6x5x-4v2j" target="_blank" rel="noopener">GHSA-whj4-6x5x-4v2j</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">DOS→RESOURCE_EXHAUSTION</span>
+<span class="lang">Python</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">pillow · python-pillow/Pillow</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application used `gzip.decompress` on the entire input stream without any size limits. An attacker could craft a compressed FITS file that, when decompressed, expands to an extremely large size, consuming excessive memory and CPU resources.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could cause a denial of service by providing a specially crafted FITS GZIP file, leading to resource exhaustion (memory and CPU) and potentially crashing the application or making it unresponsive.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/PIL/FitsImagePlugin.py
++++ b/src/PIL/FitsImagePlugin.py
+@@ -128,8 +128,9 @@ class FitsGzipDecoder(ImageFile.PyDecoder):
+ 
+     def decode(self, buffer: bytes | Image.SupportsArrayInterface) -&gt; tuple[int, int]:
+         assert self.fd is not None
+-        value = gzip.decompress(self.fd.read())
+-
+-        rows = []
+-        offset = 0
+-        number_of_bits = min(self.args[0] // 8, 4)
+-        for y in range(self.state.ysize):
+-            row = bytearray()
+-            for x in range(self.state.xsize):
+-                row += value[offset + (4 - number_of_bits) : offset + 4]
+-                offset += 4
+-            rows.append(row)
++        with gzip.open(self.fd) as fp:
++            value = fp.read(self.state.xsize * self.state.ysize * 4)
++
++            rows = []
++            offset = 0
++            number_of_bits = min(self.args[0] // 8, 4)
++            for y in range(self.state.ysize):
++                row = bytearray()
++                for x in range(self.state.xsize):
++                    row += value[offset + (4 - number_of_bits) : offset + 4]
++                    offset += 4
++                rows.append(row)</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch replaces `gzip.decompress(self.fd.read())` with `gzip.open(self.fd) as fp: value = fp.read(self.state.xsize * self.state.ysize * 4)`. This change limits the amount of data read from the decompressed stream to a size calculated based on the image dimensions, preventing excessive memory allocation.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-13</span>
+<span>Denial of Service (Decompression Bomb)</span>
+<a href="https://github.com/python-pillow/Pillow/commit/3cb854e8b2bab43f40e342e665f9340d861aa628" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-whj4-6x5x-4v2j" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
 <div class="card" data-severity="CRITICAL" data-language="Go" data-date="2026-04-10" data-pattern="PATH_TRAVERSAL→FILE_WRITE" data-searchable="GHSA-9cp7-j3f8-p5jx daptin/daptin github.com/daptin/daptin PATH_TRAVERSAL→FILE_WRITE Path Traversal / Zip Slip Go The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">

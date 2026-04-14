@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-134-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-29-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-145-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-30-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -127,7 +127,7 @@ After:
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 6x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -231,7 +231,7 @@ for member in zip_file.namelist():
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -301,6 +301,25 @@ After:
 <p><b>Fix</b> : The patch adds a check for the class name during deserialization to prevent untrusted objects from being deserialized.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
+</p>
+<hr>
+<h3>GHSA-3p24-9x7v-7789</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-04-13 · Java<br>
+<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- this.inFileEnding = configG.findStringEntry(&#34;IN_FILE_ENDING&#34;, &#34;&#34;);
++++ this.inFileEnding = cleanFileEnding(configG.findStringEntry(&#34;IN_FILE_ENDING&#34;, &#34;&#34;));
+--- this.outFileEnding = configG.findStringEntry(&#34;OUT_FILE_ENDING&#34;, this.inFileEnding.isEmpty() ? &#34;.out&#34; : &#34;&#34;);
++++ this.outFileEnding = cleanFileEnding(configG.findStringEntry(&#34;OUT_FILE_ENDING&#34;, this.inFileEnding.isEmpty() ? &#34;.out&#34; : &#34;&#34;));</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `cleanFileEnding` method that sanitizes the `IN_FILE_ENDING` and `OUT_FILE_ENDING` parameters. This method uses a regular expression to remove any characters that are not alphanumeric, underscore, hyphen, or a leading dot, preventing command injection.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-3p24-9x7v-7789">Advisory</a> · <a href="https://github.com/NationalSecurityAgency/emissary/commit/1faf33f2494c0128f250d7d2e8f2da99bbd32ae8">Commit</a>
 </p>
 <hr>
 <h3>GHSA-jvff-x2qm-6286</h3>
@@ -382,10 +401,30 @@ else
 <a href="https://github.com/advisories/GHSA-qxpc-96fq-wwmg">Advisory</a> · <a href="https://github.com/apache/cassandra/commit/b584a435970e5125e1def5148d943c39569dc7af">Commit</a>
 </p>
 <hr>
+<h3>GHSA-9pr4-rf97-79qh</h3>
+<p>
+<code>HIGH 8.7</code> · 2026-04-13 · Go<br>
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 8x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed unrestricted upload of assets and served them with their original Content-Type, including &#39;text/html&#39; and &#39;image/svg+xml&#39;. This enabled an attacker to upload malicious HTML or SVG files containing JavaScript, which would then execute in the victim&#39;s browser when the asset was viewed.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary JavaScript in the context of the victim&#39;s browser, leading to session hijacking, defacement, or redirection to malicious sites.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">- ctx.SetHeader(&#34;Content-Type&#34;, info.MimeType)
++ if info.MimeType == &#34;&#34; || info.MimeType == &#34;text/html&#34; || info.MimeType == &#34;image/svg+xml&#34; {
++ 	ctx.SetHeader(&#34;Content-Type&#34;, &#34;application/octet-stream&#34;)
++ } else {
++ 	ctx.SetHeader(&#34;Content-Type&#34;, info.MimeType)</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a check for &#39;text/html&#39; and &#39;image/svg+xml&#39; MIME types. If an uploaded asset matches these types or has an empty MIME type, it is now served with &#39;application/octet-stream&#39; and &#39;Content-Disposition: attachment&#39; to force a download instead of inline rendering, mitigating the XSS risk. It also adds &#39;X-Content-Type-Options: nosniff&#39;.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-9pr4-rf97-79qh">Advisory</a> · <a href="https://github.com/enchant97/note-mark/commit/6bb62842ccb956870b9bf183629eba95e326e5e3">Commit</a>
+</p>
+<hr>
 <h3>GHSA-chqc-8p9q-pq6q</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-08 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not sanitize input for control characters, allowing attackers to inject CRLF sequences that could manipulate FTP commands.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to execute arbitrary FTP commands on the server, potentially leading to unauthorized access or data manipulation.</p>
@@ -408,7 +447,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -438,7 +477,7 @@ this.baseUrl = normalizedBase;</pre>
 <h3>GHSA-6v7q-wjvx-w8wg</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for FTP commands, allowing control characters to be injected.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary FTP commands using credentials and MKD commands due to the lack of proper input validation.</p>
@@ -605,7 +644,7 @@ After:
 <h3>GHSA-3p65-76g6-3w7r</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-06 · Go<br>
-<code>github.com/distribution/distribution</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>github.com/distribution/distribution</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the &#39;realm&#39; parameter in the &#39;WWW-Authenticate&#39; header, allowing attackers to perform SSRF attacks by manipulating the realm value.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or services that are not supposed to be accessible from outside the network.</p>
@@ -663,7 +702,7 @@ After:
 <h3>GHSA-hv3w-m4g2-5x77</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-06 · Python<br>
-<code>strawberry-graphql</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 4x across ecosystem
+<code>strawberry-graphql</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 5x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not limit the number of WebSocket subscriptions per connection, allowing an attacker to create an unbounded number of subscriptions.</p>
 <p><b>Impact</b> : An attacker could cause a denial of service by establishing an excessive number of WebSocket connections and subscriptions, exhausting server resources.</p>
@@ -770,7 +809,7 @@ insertValues = append(insertValues, value)</pre>
 <h3>GHSA-pg8g-f2hf-x82m</h3>
 <p>
 <code>HIGH 6.5</code> · 2026-04-09 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The original code did not properly sanitize or validate the request body before sending it across cross-origin redirects.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform SSRF attacks, potentially gaining access to internal resources or leaking sensitive information.</p>
@@ -790,6 +829,74 @@ After:
 <p><b>Fix</b> : The patch ensures that the request body is sanitized and validated before being sent across cross-origin redirects, mitigating the risk of SSRF vulnerabilities.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-pg8g-f2hf-x82m">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5">Commit</a>
+</p>
+<hr>
+<h3>GHSA-r2pg-r6h7-crf3</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-13 · Go<br>
+<code>github.com/external-secrets/external-secrets</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The External Secrets Operator&#39;s v2 template engine included the `getHostByName` function from the Sprig library. This function allowed templates to perform DNS lookups, which could be abused to exfiltrate sensitive information (secrets) by encoding them into DNS queries to an attacker-controlled domain.</p>
+<p><b>Impact</b> : An attacker with control over the template content could exfiltrate secrets stored in the External Secrets Operator by encoding them into DNS queries and sending them to a domain they control.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/runtime/template/v2/template.go
++++ b/runtime/template/v2/template.go
+@@ -87,7 +87,7 @@ func init() {
+ 	sprigFuncs := sprig.TxtFuncMap()
+ 	delete(sprigFuncs, &#34;env&#34;)
+ 	delete(sprigFuncs, &#34;expandenv&#34;)
+-
++	delete(sprigFuncs, &#34;getHostByName&#34;)
+ 	maps.Copy(tplFuncs, sprigFuncs)</pre>
+</details>
+<p><b>Fix</b> : The patch removes the `getHostByName` function from the list of available functions in the v2 template engine. This prevents templates from performing DNS lookups, thereby mitigating the risk of DNS-based secret exfiltration.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-r2pg-r6h7-crf3">Advisory</a> · <a href="https://github.com/external-secrets/external-secrets/commit/6800989bdc12782ca2605d3b8bf7f2876a16551a">Commit</a>
+</p>
+<hr>
+<h3>GHSA-whj4-6x5x-4v2j</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-13 · Python<br>
+<code>pillow</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 5x across ecosystem
+</p>
+<p><b>Root cause</b> : The application used `gzip.decompress` on the entire input stream without any size limits. An attacker could craft a compressed FITS file that, when decompressed, expands to an extremely large size, consuming excessive memory and CPU resources.</p>
+<p><b>Impact</b> : An attacker could cause a denial of service by providing a specially crafted FITS GZIP file, leading to resource exhaustion (memory and CPU) and potentially crashing the application or making it unresponsive.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/PIL/FitsImagePlugin.py
++++ b/src/PIL/FitsImagePlugin.py
+@@ -128,8 +128,9 @@ class FitsGzipDecoder(ImageFile.PyDecoder):
+ 
+     def decode(self, buffer: bytes | Image.SupportsArrayInterface) -&gt; tuple[int, int]:
+         assert self.fd is not None
+-        value = gzip.decompress(self.fd.read())
+-
+-        rows = []
+-        offset = 0
+-        number_of_bits = min(self.args[0] // 8, 4)
+-        for y in range(self.state.ysize):
+-            row = bytearray()
+-            for x in range(self.state.xsize):
+-                row += value[offset + (4 - number_of_bits) : offset + 4]
+-                offset += 4
+-            rows.append(row)
++        with gzip.open(self.fd) as fp:
++            value = fp.read(self.state.xsize * self.state.ysize * 4)
++
++            rows = []
++            offset = 0
++            number_of_bits = min(self.args[0] // 8, 4)
++            for y in range(self.state.ysize):
++                row = bytearray()
++                for x in range(self.state.xsize):
++                    row += value[offset + (4 - number_of_bits) : offset + 4]
++                    offset += 4
++                rows.append(row)</pre>
+</details>
+<p><b>Fix</b> : The patch replaces `gzip.decompress(self.fd.read())` with `gzip.open(self.fd) as fp: value = fp.read(self.state.xsize * self.state.ysize * 4)`. This change limits the amount of data read from the decompressed stream to a size calculated based on the image dimensions, preventing excessive memory allocation.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-whj4-6x5x-4v2j">Advisory</a> · <a href="https://github.com/python-pillow/Pillow/commit/3cb854e8b2bab43f40e342e665f9340d861aa628">Commit</a>
 </p>
 <hr>
 <h3>GHSA-q5jf-9vfq-h4h7</h3>
@@ -841,7 +948,7 @@ After:
 <h3>GHSA-7437-7hg8-frrw</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
+<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize or denylist certain environment variables that could be used for command injection.</p>
 <p><b>Impact</b> : An attacker could inject malicious commands into the build environment, potentially leading to remote code execution (RCE).</p>
@@ -866,7 +973,7 @@ After:
 <h3>GHSA-h749-fxx7-pwpg</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-09 · Go<br>
-<code>github.com/minio/minio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 4x across ecosystem
+<code>github.com/minio/minio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 5x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or limit the size of the input data for S3 Select CSV parsing, leading to an unbounded memory allocation.</p>
 <p><b>Impact</b> : An attacker could cause a Denial of Service (DoS) by sending specially crafted requests that trigger excessive memory usage on the server.</p>
@@ -910,7 +1017,7 @@ func (api objectAPIHandlers) SelectObjectContentHandler(w http.ResponseWriter, r
 <h3>GHSA-qx8j-g322-qj6m</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The original code did not properly sanitize or validate the request body before replaying it across cross-origin redirects.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, potentially accessing internal resources or leaking sensitive information.</p>
@@ -1025,7 +1132,7 @@ After:
 <h3>GHSA-jpcj-7wfg-mqxv</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-08 · Python<br>
-<code>stata-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
+<code>stata-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate user-supplied Stata do-file content, allowing the execution of shell-escape directives like `!cmd` or `shell cmd`.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to potential data loss, privilege escalation, or other malicious activities.</p>
@@ -1098,7 +1205,7 @@ After:
 <h3>GHSA-vfw7-6rhc-6xxg</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-07 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
+<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code directly used environment variables from the backend configuration without sanitizing them.</p>
 <p><b>Impact</b> : An attacker could inject malicious commands into the environment, potentially leading to arbitrary command execution on the server.</p>
@@ -1217,7 +1324,7 @@ if !validators.IsValidOrigin(redirectURL, g.Config.AllowedOrigins) {
 <h3>GHSA-8j7f-g9gv-7jhc</h3>
 <p>
 <code>MODERATE 7.4</code> · 2026-04-10 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 11x across ecosystem
+<code>openclaw</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the target URL before making requests, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal network resources or make unauthorized requests to other servers.</p>
@@ -1235,94 +1342,6 @@ const guardedFetchImpl: typeof f</pre>
 <a href="https://github.com/advisories/GHSA-8j7f-g9gv-7jhc">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/f92c92515bd439a71bd03eb1bc969c1964f17acf">Commit</a>
 </p>
 <hr>
-<h3>GHSA-p6j4-wvmc-vx2h</h3>
-<p>
-<code>MODERATE 7.3</code> · 2026-04-10 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 9x across ecosystem
-</p>
-<p><b>Root cause</b> : The code does not properly check if the user has authorization to access or modify certain resources before performing operations on them.</p>
-<p><b>Impact</b> : An attacker could potentially perform actions they are not authorized to do, such as accessing or modifying sensitive data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
--      const citedContent = await resolveAllCites(content.content);
-After:
-+      // Resolve any cited/quoted messages first
-+      const citedContent = await resolveAllCites(content.content);</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that the code checks for proper authorization before performing operations on resources.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-p6j4-wvmc-vx2h">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/3cbf932413e41d1836cb91aed1541a28a3122f93">Commit</a>
-</p>
-<hr>
-<h3>GHSA-wp29-qmvj-frvp</h3>
-<p>
-<code>MODERATE 7.3</code> · 2026-04-09 · Python<br>
-<code>metagpt</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 12x across ecosystem
-</p>
-<p><b>Root cause</b> : The `run_command` method directly executes user-provided commands without proper sanitization or validation.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to unauthorized access, data theft, or system compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-```python
-await self.run_command(cmd)
-```
-After:
-```python
-def run_command(self, cmd) -&gt; str:
-    # ... (rest of the method remains unchanged)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a background task to read output from the shell process and put it into a queue, preventing direct execution of user-provided commands.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-wp29-qmvj-frvp">Advisory</a> · <a href="https://github.com/paipeline/MetaGPT/commit/d04ffc8dc67903e8b327f78ec121df5e190ffc7b">Commit</a>
-</p>
-<hr>
-<h3>GHSA-99j8-wv67-4c72</h3>
-<p>
-<code>MODERATE 6.8</code> · 2026-04-10 · Go<br>
-<code>github.com/aiven/aiven-operator</code> · Pattern: <code>UNCLASSIFIED</code> · 32x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not validate the namespace of the secret source, allowing cross-namespace secret exfiltration.</p>
-<p><b>Impact</b> : An attacker could read secrets from any namespace on the cluster, potentially exposing sensitive information.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- sourceNamespace := secretSource.Namespace
-- if sourceNamespace == &#34;&#34; {
--     sourceNamespace = resource.GetNamespace()
-- }
-After:
-+ ns := resource.GetNamespace()</pre>
-</details>
-<p><b>Fix</b> : The patch restricts the secret source to the same namespace as the resource, preventing cross-namespace access.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-99j8-wv67-4c72">Advisory</a> · <a href="https://github.com/aiven/aiven-operator/commit/032c9ba63257fdd2fddfb7f73f71830e371ff182">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2j53-2c28-g9v2</h3>
-<p>
-<code>MODERATE 6.5</code> · 2026-04-10 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>UNCLASSIFIED</code> · 32x across ecosystem
-</p>
-<p><b>Root cause</b> : The code does not enforce sender policy checks before allowing expensive cryptographic operations.</p>
-<p><b>Impact</b> : An attacker could trigger unauthenticated crypto work, potentially leading to resource exhaustion or other security issues.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">- -    reply: (text: string) =&gt; Promise&lt;void&gt;,
-+    meta: { eventId: string; createdAt: number },
-+  ) =&gt; Promise&lt;void&gt;;
-+ +  /** Called before expensive crypto to allow sender policy checks (optional) */
-+  authorizeSender?: (params: {
-+    senderPubkey: string;
-+    reply: (text: string) =&gt; Promise&lt;void&gt;;
-+  }) =&gt; Promise&lt;&#39;allow&#39; | &#39;block&#39; | &#39;pairing&#39;&gt;;</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new `authorizeSender` function that allows for sender policy checks before performing expensive cryptographic operations.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2j53-2c28-g9v2">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/1ee9611079e81b9122f4bed01abb3d9f56206c77">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1333,7 +1352,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 29 normalized pattern IDs
+             Map to closed taxonomy of 30 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1358,10 +1377,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>134</td></tr>
-<tr><td>Unique patterns</td><td>29</td></tr>
+<tr><td>Total advisories</td><td>145</td></tr>
+<tr><td>Unique patterns</td><td>30</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-13</td></tr>
+<tr><td>Last updated</td><td>2026-04-14</td></tr>
 </table>
 </details>
 <hr>
