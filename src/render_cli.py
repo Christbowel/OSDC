@@ -6,7 +6,7 @@ from src.db import (
     rebuild_from_jsonl, get_all_advisories, get_recent_dates,
     get_advisories_for_date, get_stats,
 )
-from src.render import render_readme, render_html_index, render_daily_patch
+from src.render import render_readme, render_html_index, render_daily_patch, render_silent_page
 
 
 def generate_badge(stats: dict):
@@ -58,6 +58,9 @@ def run():
 
     render_html_index()
     print("  Rendered docs/index.html + search-index.json")
+
+    render_silent_page()
+    print("  Rendered docs/silent.html")
 
     generate_badge(stats)
 

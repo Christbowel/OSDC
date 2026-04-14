@@ -5,7 +5,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from src.config import (
     TEMPLATES_DIR, PATCHES_DIR, DOCS_DIR, ROOT_DIR,
-    README_DAYS_SHOWN,
+    README_DAYS_SHOWN, DATA_DIR,
 )
 from src.db import (
     get_advisories_for_date, get_pattern_info,
@@ -40,6 +40,7 @@ def _clean_diff(raw: str) -> str:
     cleaned = re.sub(r'\n?```$', '', cleaned)
     cleaned = cleaned.strip()
     return cleaned
+
 
 def _clean_text(raw: str) -> str:
     if not raw:
@@ -134,6 +135,45 @@ def render_html_index():
     output_path.write_text(content, encoding="utf-8")
 
     _generate_search_index(all_advisories)
+
+
+def render_silent_page():
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    env = init_renderer()
+    template = env.get_template("silent.html.j2")
+
+    results_path = DATA_DIR / "silent_results.jsonl"
+    suspects = []
+    if results_path.exists():
+        with open(results_path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                suspects.append(json.loads(line))
+
+    suspects.sort(key=lambda s: s.get("combined_score", 0), reverse=True)
+
+    state_path = DATA_DIR / "silent_state.json"
+    stats = {"last_scan_at": "", "total_scanned": 0, "total_suspects": 0, "watchlist_count": 0}
+    if state_path.exists():
+        with open(state_path, "r") as f:
+            stats.update(json.load(f))
+
+    watchlist_path = DATA_DIR / "watchlist.json"
+    if watchlist_path.exists():
+        with open(watchlist_path, "r") as f:
+            wl = json.load(f)
+            stats["watchlist_count"] = len(wl.get("repos", []))
+
+    content = template.render(
+        suspects=suspects,
+        stats=stats,
+        today=date.today().isoformat(),
+    )
+
+    output_path = DOCS_DIR / "silent.html"
+    output_path.write_text(content, encoding="utf-8")
 
 
 def _generate_search_index(advisories: list[dict]):
