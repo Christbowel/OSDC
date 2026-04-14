@@ -72,8 +72,8 @@ footer a{color:var(--accent)}
 <div class="container">
 <h1><span>OSDC</span> · Open Source Daily Catch</h1>
 <div class="header-meta">
-<span>145 advisories</span>
-<span>30 patterns</span>
+<span>147 advisories</span>
+<span>31 patterns</span>
 <span>2026-04-14</span>
 </div>
 </div>
@@ -85,8 +85,8 @@ footer a{color:var(--accent)}
 <div class="dash-card" style="grid-column:1/-1">
 <h3>overview</h3>
 <div class="stat-grid">
-<div class="stat-box"><div class="stat-val">145</div><div class="stat-label">advisories</div></div>
-<div class="stat-box"><div class="stat-val">30</div><div class="stat-label">patterns</div></div>
+<div class="stat-box"><div class="stat-val">147</div><div class="stat-label">advisories</div></div>
+<div class="stat-box"><div class="stat-val">31</div><div class="stat-label">patterns</div></div>
 <div class="stat-box"><div class="stat-val" id="langCount">0</div><div class="stat-label">languages</div></div>
 <div class="stat-box"><div class="stat-val" id="critCount">0</div><div class="stat-label">critical</div></div>
 </div>
@@ -125,6 +125,106 @@ footer a{color:var(--accent)}
 </div>
 
 <div id="advisoryList">
+<div class="card" data-severity="MODERATE" data-language="Java" data-date="2026-04-14" data-pattern="CREDENTIAL_LEAK→LOG_EXPOSURE" data-searchable="GHSA-cmxv-58fp-fm3g AsyncHttpClient/async-http-client org.asynchttpclient:async-http-client CREDENTIAL_LEAK→LOG_EXPOSURE Credential Leak Java The AsyncHttpClient library did not properly strip authorization credentials (like Authorization headers or Realm information) when following HTTP redirects to different base URIs or when downgrading from HTTPS to HTTP. This meant that sensitive authentication data could be inadvertently sent to untrusted or less secure domains.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-cmxv-58fp-fm3g" target="_blank" rel="noopener">GHSA-cmxv-58fp-fm3g</a>
+<span class="sev sev-moderate">MODERATE 6.8</span>
+<span class="pattern">CREDENTIAL_LEAK→LOG_EXPOSURE</span>
+<span class="lang">Java</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">org.asynchttpclient:async-http-client · AsyncHttpClient/async-http-client</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The AsyncHttpClient library did not properly strip authorization credentials (like Authorization headers or Realm information) when following HTTP redirects to different base URIs or when downgrading from HTTPS to HTTP. This meant that sensitive authentication data could be inadvertently sent to untrusted or less secure domains.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could potentially intercept authorization credentials if a user&#39;s request was redirected to a malicious or compromised domain, leading to unauthorized access to the user&#39;s account or sensitive information.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">-                        .setRealm(request.getRealm())
++                        .setRealm(stripAuth ? null : request.getRealm())
+ 
++                if (stripAuth) {
++                    future.setRealm(null);
++                    future.setProxyRealm(null);
++                }</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces logic to explicitly strip authorization credentials (Realm and Authorization header) when a redirect leads to a different base URI, a scheme downgrade (HTTPS to HTTP), or if a `stripAuthorizationOnRedirect` flag is set. It also logs when credentials are being stripped for better visibility.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Credential Leak</span>
+<a href="https://github.com/AsyncHttpClient/async-http-client/commit/6b2fbb7f8" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-cmxv-58fp-fm3g" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="LOW" data-language="PHP" data-date="2026-04-14" data-pattern="INFO_DISCLOSURE→ERROR_MESSAGE" data-searchable="GHSA-3vxg-x5f8-f5qf craftcms/commerce craftcms/commerce INFO_DISCLOSURE→ERROR_MESSAGE Information Disclosure PHP The application was inadvertently including customer order data (specifically, the cart array) in error responses for unauthenticated payment attempts on completed orders. This allowed an attacker to retrieve sensitive order details without proper authentication.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-3vxg-x5f8-f5qf" target="_blank" rel="noopener">GHSA-3vxg-x5f8-f5qf</a>
+<span class="sev sev-low">LOW 0.0</span>
+<span class="pattern">INFO_DISCLOSURE→ERROR_MESSAGE</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">craftcms/commerce · craftcms/commerce</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application was inadvertently including customer order data (specifically, the cart array) in error responses for unauthenticated payment attempts on completed orders. This allowed an attacker to retrieve sensitive order details without proper authentication.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An unauthenticated attacker could obtain some customer order data, potentially including items in the cart, even if the order was completed, by triggering a specific error condition.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/controllers/PaymentsController.php
++++ b/src/controllers/PaymentsController.php
+@@ -141,9 +141,7 @@ public function actionPay(): ?Response
+ 
+         if (!$order-&gt;getIsActiveCart() &amp;&amp; !$checkPaymentCanBeMade) {
+             $error = Craft::t(&#39;commerce&#39;, &#39;Email required to make payments on a completed order.&#39;);
+-            return $this-&gt;asFailure($error, data: [
+-                $this-&gt;_cartVariableName =&gt; $this-&gt;cartArray($order),
+-            ]);
++            return $this-&gt;asFailure($error);
+         }
+ 
+         if ($plugin-&gt;getSettings()-&gt;requireShippingAddressAtCheckout &amp;&amp; !$order-&gt;shippingAddressId) {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch removes the inclusion of the cart array from the error response when an unauthenticated user attempts to pay for a completed order without providing an email. This prevents the unintended disclosure of order information.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Information Disclosure</span>
+<a href="https://github.com/craftcms/commerce/commit/48a5d946419964e2af1ac64a8e1acc2a32ca0a08" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-3vxg-x5f8-f5qf" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
 <div class="card" data-severity="HIGH" data-language="Java" data-date="2026-04-13" data-pattern="UNSANITIZED_INPUT→COMMAND" data-searchable="GHSA-3p24-9x7v-7789 NationalSecurityAgency/emissary gov.nsa.emissary:emissary UNSANITIZED_INPUT→COMMAND OS Command Injection Java The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
