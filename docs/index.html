@@ -89,17 +89,17 @@ footer a{color:var(--accent)}
 <header>
 <h1><span>OSDC</span> · Open Source Daily Catch</h1>
 <div class="header-meta">
-<span>147 advisories</span>
-<span>31 patterns</span>
-<span>2026-04-14</span>
+<span>162 advisories</span>
+<span>33 patterns</span>
+<span>2026-04-15</span>
 </div>
 </header>
 <div class="dashboard">
 <div class="dash-card" style="grid-column:1/-1">
 <h3>overview</h3>
 <div class="stat-grid">
-<div class="stat-box"><div class="stat-val">147</div><div class="stat-label">advisories</div></div>
-<div class="stat-box"><div class="stat-val">31</div><div class="stat-label">patterns</div></div>
+<div class="stat-box"><div class="stat-val">162</div><div class="stat-label">advisories</div></div>
+<div class="stat-box"><div class="stat-val">33</div><div class="stat-label">patterns</div></div>
 <div class="stat-box"><div class="stat-val" id="langCount">0</div><div class="stat-label">languages</div></div>
 <div class="stat-box"><div class="stat-val" id="critCount">0</div><div class="stat-label">critical</div></div>
 </div>
@@ -136,6 +136,459 @@ footer a{color:var(--accent)}
 <span class="count" id="resultCount"></span>
 </div>
 <div id="advisoryList">
+<div class="card" data-severity="CRITICAL" data-language="PHP" data-date="2026-04-14" data-pattern="UNSANITIZED_INPUT→XSS" data-searchable="GHSA-gph2-j4c9-vhhr WWBN/AVideo wwbn/avideo UNSANITIZED_INPUT→XSS Cross-Site Scripting (XSS) PHP The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-gph2-j4c9-vhhr" target="_blank" rel="noopener">GHSA-gph2-j4c9-vhhr</a>
+<span class="sev sev-critical">CRITICAL 10.0</span>
+<span class="pattern">UNSANITIZED_INPUT→XSS</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">-                //_log_message(&#34;onMessage:msgObj: &#34; . json_encode($json));
++                //_log_message(&#34;onMessage:msgObj: &#34; . json_encode($json));
++                // Strip eval-able fields from browser/guest messages.
++                if (empty($msgObj-&gt;isCommandLineInterface) &amp;&amp; ($msgObj-&gt;sentFrom ?? &#39;&#39;) !== &#39;php&#39;) {
++                    if (is_array($json[&#39;msg&#39;] ?? null)) {
++                        unset($json[&#39;msg&#39;][&#39;autoEvalCodeOnHTML&#39;]);
++                    }
++                    if (isset($json[&#39;callback&#39;]) &amp;&amp; !preg_match(&#39;/^[a-zA-Z_][a-zA-Z0-9_]*$/&#39;, (string)$json[&#39;callback&#39;])) {
++                        unset($json[&#39;callback&#39;]);
++                    }
++                }
+                 if (!empty($msgObj-&gt;send_to_uri_pattern)) {
+                     $this-&gt;msgToSelfURI($json, $msgObj-&gt;send_to_uri_pattern);
+                 } else if (!empty($json[&#39;resourceId&#39;])) {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces input validation and sanitization for WebSocket messages. It specifically removes the &#39;autoEvalCodeOnHTML&#39; field from messages originating from browsers or guests and ensures that the &#39;callback&#39; field, if present, adheres to a strict alphanumeric and underscore pattern, effectively preventing arbitrary JavaScript injection.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Cross-Site Scripting (XSS)</span>
+<a href="https://github.com/WWBN/AVideo/commit/c08694bf6264eb4decceb78c711baee2609b4efd" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-gph2-j4c9-vhhr" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Python" data-date="2026-04-14" data-pattern="PRIVILEGE_ESCALATION→ROLE" data-searchable="GHSA-66hx-chf7-3332 pyload/pyload pyload-ng PRIVILEGE_ESCALATION→ROLE Privilege Revocation Bypass Python The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-66hx-chf7-3332" target="_blank" rel="noopener">GHSA-66hx-chf7-3332</a>
+<span class="sev sev-high">HIGH 8.8</span>
+<span class="pattern">PRIVILEGE_ESCALATION→ROLE</span>
+<span class="lang">Python</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">pyload-ng · pyload/pyload</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/pyload/webui/app/blueprints/json_blueprint.py
++++ b/src/pyload/webui/app/blueprints/json_blueprint.py
+@@ -9,7 +9,7 @@
+ from pyload.core.api import Role
+ from pyload.core.utils import format, fs
+ 
+-from ..helpers import get_permission, login_required, permlist, render_template, set_permission
++from ..helpers import clear_all_user_sessions, get_permission, login_required, permlist, render_template, set_permission
+ 
+ bp = flask.Blueprint(&#34;json&#34;, __name__)
+ 
+@@ -360,6 +360,7 @@ def change_password(user_login, user_curpw, user_newpw):
+     if not done:
+         return jsonify(False), 403  #: Wrong password
+ 
++    clear_all_user_sessions(user_login)
+     return jsonify(True)</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a `clear_all_user_sessions` function and calls it whenever a user&#39;s password is changed, or their role or permissions are updated. This ensures that any active sessions for the affected user are immediately invalidated, forcing them to re-authenticate with their new, updated privileges.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Privilege Revocation Bypass</span>
+<a href="https://github.com/pyload/pyload/commit/e95804fb0d06cbb07d2ba380fc494d9ff89b68c1" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-66hx-chf7-3332" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="PHP" data-date="2026-04-14" data-pattern="CSRF→STATE_CHANGE" data-searchable="GHSA-vvfw-4m39-fjqf WWBN/AVideo wwbn/avideo CSRF→STATE_CHANGE CSRF PHP The application&#39;s configuration update endpoint (configurationUpdate.json.php) lacked proper CSRF protection. This allowed an attacker to craft a malicious request that, when triggered by an authenticated administrator, would modify the site&#39;s configuration without the administrator&#39;s explicit consent.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-vvfw-4m39-fjqf" target="_blank" rel="noopener">GHSA-vvfw-4m39-fjqf</a>
+<span class="sev sev-high">HIGH 8.3</span>
+<span class="pattern">CSRF→STATE_CHANGE</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application&#39;s configuration update endpoint (configurationUpdate.json.php) lacked proper CSRF protection. This allowed an attacker to craft a malicious request that, when triggered by an authenticated administrator, would modify the site&#39;s configuration without the administrator&#39;s explicit consent.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could trick an administrator into changing critical site configurations, including the encoder URL and SMTP credentials, potentially leading to further compromise like arbitrary code execution or email spoofing.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/objects/configurationUpdate.json.php
++++ b/objects/configurationUpdate.json.php
+@@ -15,6 +15,8 @@
+ require_once $global[&#39;systemRootPath&#39;] . &#39;objects/configuration.php&#39;;
+ require_once $global[&#39;systemRootPath&#39;] . &#39;objects/functions.php&#39;;
+ 
++forbidIfIsUntrustedRequest(&#39;configurationUpdate&#39;);
++
+ _error_log(&#34;save configuration {$_POST[&#39;language&#39;]}&#34;);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a call to `forbidIfIsUntrustedRequest(&#39;configurationUpdate&#39;);` at the beginning of the `configurationUpdate.json.php` script. This function likely implements a mechanism to verify the legitimacy of the request, such as checking for a valid CSRF token, thereby preventing unauthorized state changes.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>CSRF</span>
+<a href="https://github.com/WWBN/AVideo/commit/f9492f5e6123dff0292d5bb3164fde7665dc36b4" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-vvfw-4m39-fjqf" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="PHP" data-date="2026-04-14" data-pattern="CORS_MISCONFIGURATION→ORIGIN" data-searchable="GHSA-ccq9-r5cw-5hwq WWBN/AVideo wwbn/avideo CORS_MISCONFIGURATION→ORIGIN CORS Origin Reflection PHP The application&#39;s CORS policy, specifically in the `allowOrigin` function when `allowAll` was true, would reflect the `Origin` header from the request and set `Access-Control-Allow-Credentials: true`. This was intended for public resources but was applied to sensitive API endpoints, allowing any origin to make credentialed requests.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-ccq9-r5cw-5hwq" target="_blank" rel="noopener">GHSA-ccq9-r5cw-5hwq</a>
+<span class="sev sev-high">HIGH 8.1</span>
+<span class="pattern">CORS_MISCONFIGURATION→ORIGIN</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application&#39;s CORS policy, specifically in the `allowOrigin` function when `allowAll` was true, would reflect the `Origin` header from the request and set `Access-Control-Allow-Credentials: true`. This was intended for public resources but was applied to sensitive API endpoints, allowing any origin to make credentialed requests.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could craft a malicious webpage to make cross-origin requests to sensitive API endpoints on the vulnerable AVideo instance. Since `Access-Control-Allow-Credentials: true` was set, the victim&#39;s browser would include session cookies, enabling the attacker to read session-authenticated API responses and potentially achieve account takeover.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">-        if (!empty($requestOrigin)) {
+-            header(&#39;Access-Control-Allow-Origin: &#39; . $requestOrigin);
+-            header(&#39;Access-Control-Allow-Credentials: true&#39;);
+-        } else {
+-            header(&#39;Access-Control-Allow-Origin: *&#39;);
++        if (!empty($requestOrigin) &amp;&amp; !empty($siteOriginForAllowAll) &amp;&amp; $requestOrigin === $siteOriginForAllowAll) {
++            header(&#39;Access-Control-Allow-Origin: &#39; . $requestOrigin);
++            header(&#39;Access-Control-Allow-Credentials: true&#39;);
++        } else {
++            header(&#39;Access-Control-Allow-Origin: *&#39;);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch modifies the `allowOrigin` function to explicitly check if the `requestOrigin` matches the `siteOriginForAllowAll` when `allowAll` is true. If they match, the origin is reflected with credentials. Otherwise, a wildcard origin (`*`) is used without credentials, preventing third-party origins from making credentialed requests.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>CORS Origin Reflection</span>
+<a href="https://github.com/WWBN/AVideo/commit/caf705f38eae0ccfac4c3af1587781355d24495e" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-ccq9-r5cw-5hwq" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Go" data-date="2026-04-14" data-pattern="BUFFER_OVERFLOW→HEAP" data-searchable="GHSA-77fj-vx54-gvh7 gomarkdown/markdown github.com/gomarkdown/markdown BUFFER_OVERFLOW→HEAP Out-of-bounds Read Go The `smartLeftAngle` function in the SmartypantsRenderer processed text to find the closing angle bracket &#39;&gt;&#39;. If no closing bracket was found, the loop would iterate until `i` equaled `len(text)`. Subsequently, `text[:i+1]` would attempt to access an index beyond the buffer&#39;s bounds, leading to an out-of-bounds read.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-77fj-vx54-gvh7" target="_blank" rel="noopener">GHSA-77fj-vx54-gvh7</a>
+<span class="sev sev-high">HIGH 7.5</span>
+<span class="pattern">BUFFER_OVERFLOW→HEAP</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/gomarkdown/markdown · gomarkdown/markdown</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The `smartLeftAngle` function in the SmartypantsRenderer processed text to find the closing angle bracket &#39;&gt;&#39;. If no closing bracket was found, the loop would iterate until `i` equaled `len(text)`. Subsequently, `text[:i+1]` would attempt to access an index beyond the buffer&#39;s bounds, leading to an out-of-bounds read.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could provide specially crafted input that causes the application to crash due to an out-of-bounds read, leading to a denial of service. In some scenarios, this could potentially lead to information disclosure or arbitrary code execution, though the immediate impact is a crash.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/html/smartypants.go
++++ b/html/smartypants.go
+@@ -371,7 +371,10 @@ func (r *SPRenderer) smartLeftAngle(out *bytes.Buffer, previousChar byte, text [
+ 		i++
+ 	}
+ 
+-	out.Write(text[:i+1])
++	if i == len(text) { // No &gt; found until the end of the text
++		return i
++	}
++	out.Write(text[:i+1]) // include the &#39;&gt;&#39;
+ 	return i
+ }</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds a check to ensure that `i` does not exceed `len(text)` before attempting to slice `text[:i+1]`. If `i` reaches `len(text)`, it means no closing angle bracket was found, and the function returns early to prevent the out-of-bounds access.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Out-of-bounds Read</span>
+<a href="https://github.com/gomarkdown/markdown/commit/759bbc3e32073c3bc4e25969c132fc520eda2778" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-77fj-vx54-gvh7" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Ruby" data-date="2026-04-14" data-pattern="MISSING_AUTHZ→RESOURCE" data-searchable="GHSA-w5xj-99cg-rccm decidim/decidim decidim-core MISSING_AUTHZ→RESOURCE Missing Authorization Ruby The application logic for handling amendments (accepting, rejecting, reacting, promoting) did not properly check the component&#39;s settings. Specifically, the `can_react_to_emendation?` and `allowed_to_promote?` methods in `AmendmentsHelper` lacked checks against the `amendment_reaction_enabled` and `amendment_promotion_enabled` component settings, respectively. This allowed any authenticated user to perform these actions regardless of the component&#39;s configuration.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-w5xj-99cg-rccm" target="_blank" rel="noopener">GHSA-w5xj-99cg-rccm</a>
+<span class="sev sev-high">HIGH 7.5</span>
+<span class="pattern">MISSING_AUTHZ→RESOURCE</span>
+<span class="lang">Ruby</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">decidim-core · decidim/decidim</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application logic for handling amendments (accepting, rejecting, reacting, promoting) did not properly check the component&#39;s settings. Specifically, the `can_react_to_emendation?` and `allowed_to_promote?` methods in `AmendmentsHelper` lacked checks against the `amendment_reaction_enabled` and `amendment_promotion_enabled` component settings, respectively. This allowed any authenticated user to perform these actions regardless of the component&#39;s configuration.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could accept or reject amendments, react to them, or promote rejected amendments, even if the component&#39;s settings explicitly disabled these functionalities. This could lead to unauthorized manipulation of the amendment process and undermine the integrity of the platform&#39;s participatory features.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/decidim-core/app/helpers/decidim/amendments_helper.rb
++++ b/decidim-core/app/helpers/decidim/amendments_helper.rb
+@@ -41,7 +41,7 @@ def emendation_announcement_for(emendation)
+     def can_react_to_emendation?(emendation)
+       return unless current_user &amp;&amp; emendation.emendation?
+ 
+-      true
++      current_component.current_settings.amendment_reaction_enabled
+     end
+ 
+     # Checks if the user can accept and reject the emendation
+@@ -54,18 +54,9 @@ def allowed_to_accept_and_reject?(emendation)
+     # Checks if the user can promote the emendation
+     def allowed_to_promote?(emendation)
+       return unless emendation.amendment.rejected? &amp;&amp; emendation.created_by?(current_user)
+-      return if promoted?(emendation)
++      return if emendation.amendment.promoted?
+ 
+-      true
+-    end
+-
+-    # Checks if the unique ActionLog created in the promote command exists.
+-    def promoted?(emendation)
+-      logs = Decidim::ActionLog.where(decidim_component_id: emendation.component)
+-                               .where(decidim_user_id: emendation.creator_author)
+-                               .where(action: &#34;promote&#34;)
+-
+-      logs.select { |log| log.extra[&#34;promoted_from&#34;] == emendation.id }.present?
++      current_component.current_settings.amendment_promotion_enabled
+     end
+ 
+     # Renders a UserGroup select field in a form.</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces checks against the component&#39;s current settings for amendment-related actions. Specifically, `amend_button_for` now checks `amendment_creation_enabled`, `can_react_to_emendation?` checks `amendment_reaction_enabled`, and `allowed_to_promote?` checks `amendment_promotion_enabled`. This ensures that these actions are only possible when explicitly enabled in the component&#39;s configuration.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Missing Authorization</span>
+<a href="https://github.com/decidim/decidim/commit/1b99136a1c7aa02616a0b54a6ab88d12907a57a9" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-w5xj-99cg-rccm" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="PHP" data-date="2026-04-14" data-pattern="CORS_MISCONFIGURATION→ORIGIN" data-searchable="GHSA-ff5q-cc22-fgp4 WWBN/AVideo wwbn/avideo CORS_MISCONFIGURATION→ORIGIN CORS Origin Reflection Bypass PHP The application reflected the `HTTP_ORIGIN` header directly into the `Access-Control-Allow-Origin` header for all API requests, including authenticated ones. This allowed an attacker to bypass the Same-Origin Policy.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-ff5q-cc22-fgp4" target="_blank" rel="noopener">GHSA-ff5q-cc22-fgp4</a>
+<span class="sev sev-high">HIGH 7.1</span>
+<span class="pattern">CORS_MISCONFIGURATION→ORIGIN</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application reflected the `HTTP_ORIGIN` header directly into the `Access-Control-Allow-Origin` header for all API requests, including authenticated ones. This allowed an attacker to bypass the Same-Origin Policy.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could make authenticated cross-origin requests to the API from a malicious domain, potentially accessing sensitive user data or performing actions on behalf of the victim, despite the browser&#39;s Same-Origin Policy.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- plugin/API/router.php
++++ plugin/API/router.php
+-    header(&#34;Access-Control-Allow-Origin: &#34; . $HTTP_ORIGIN);
+-header(&#34;Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, HEAD&#34;);
+-header(&#34;Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, ua-resolution, APISecret, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers&#34;);
+-header(&#39;Access-Control-Allow-Private-Network: true&#39;);
++
++// CORS preflight handling.
++// OPTIONS preflights are cross-origin by definition (same-origin requests are never
++// preflighted by browsers). Returning Access-Control-Allow-Origin: * without
++// Access-Control-Allow-Credentials is safe:
++//   - External API clients using APISecret (non-credentialed) proceed normally.
++//   - Credentialed attacker requests are blocked: the browser sees no
++//     Allow-Credentials:true in the preflight and aborts the actual request,
++//     so session cookies are never sent.
++// Actual GET/POST responses are handled by allowOrigin(true) in get/set.json.php
++// which enforces same-origin-only credentials (fixed in commit 986e64aad).
+ if ($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;OPTIONS&#39;) {
+-    header(&#34;Access-Control-Max-Age: 86400&#34;); // Cache preflight for 24 hours
+-    http_response_code(200);
++    header(&#39;Access-Control-Allow-Origin: *&#39;);
++    header(&#39;Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, HEAD&#39;);
++    header(&#39;Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, ua-resolution, APISecret, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers&#39;);
++    header(&#39;Access-Control-Allow-Private-Network: true&#39;);
++    header(&#39;Access-Control-Max-Age: 86400&#39;);
++    http_response_code(204);
+     exit;
+ }</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch removes the dynamic reflection of the `HTTP_ORIGIN` header for all requests. For preflight OPTIONS requests, it now explicitly sets `Access-Control-Allow-Origin: *` without `Access-Control-Allow-Credentials`, which is safe. The handling of actual GET/POST responses for credentialed requests is deferred to `allowOrigin(true)` in other files, which is expected to enforce same-origin-only credentials.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>CORS Origin Reflection Bypass</span>
+<a href="https://github.com/WWBN/AVideo/commit/5e2b897ccac61eb6daca2dee4a6be3c4c2d93e13" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-ff5q-cc22-fgp4" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="PHP" data-date="2026-04-14" data-pattern="CSRF→STATE_CHANGE" data-searchable="GHSA-ffw8-fwxp-h64w WWBN/AVideo wwbn/avideo CSRF→STATE_CHANGE CSRF PHP The application&#39;s administrative JSON endpoints lacked proper CSRF protection. This allowed an attacker to craft malicious requests that, when executed by an authenticated administrator, would perform actions without the administrator&#39;s explicit consent.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-ffw8-fwxp-h64w" target="_blank" rel="noopener">GHSA-ffw8-fwxp-h64w</a>
+<span class="sev sev-high">HIGH 7.1</span>
+<span class="pattern">CSRF→STATE_CHANGE</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application&#39;s administrative JSON endpoints lacked proper CSRF protection. This allowed an attacker to craft malicious requests that, when executed by an authenticated administrator, would perform actions without the administrator&#39;s explicit consent.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could trick an authenticated administrator into performing unintended actions, such as adding new categories, clearing cache, refreshing videos, or swapping videos, by simply visiting a malicious webpage.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/objects/categoryAddNew.json.php
++++ b/objects/categoryAddNew.json.php
+@@ -19,6 +19,7 @@
+     $obj-&gt;msg = __(&#34;Permission denied&#34;);
+     die(json_encode($obj));
+ }
++forbidIfIsUntrustedRequest(&#39;categoryAddNew&#39;);
+ 
+ $objCat = new Category(intval(@$_POST[&#39;id&#39;]));
+ $objCat-&gt;setName($_POST[&#39;name&#39;]);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a call to `forbidIfIsUntrustedRequest()` at the beginning of several administrative JSON endpoints. This function likely implements a CSRF token check or similar mechanism to ensure that requests originate from trusted sources and are not forged.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>CSRF</span>
+<a href="https://github.com/WWBN/AVideo/commit/ee5615153c40628ab3ec6fe04962d1f92e67d3e2" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-ffw8-fwxp-h64w" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
 <div class="card" data-severity="MODERATE" data-language="Java" data-date="2026-04-14" data-pattern="CREDENTIAL_LEAK→LOG_EXPOSURE" data-searchable="GHSA-cmxv-58fp-fm3g AsyncHttpClient/async-http-client org.asynchttpclient:async-http-client CREDENTIAL_LEAK→LOG_EXPOSURE Credential Leak Java The AsyncHttpClient library did not properly strip authorization credentials (like Authorization headers or Realm information) when following HTTP redirects to different base URIs or when downgrading from HTTPS to HTTP. This meant that sensitive authentication data could be inadvertently sent to untrusted or less secure domains.">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
@@ -181,6 +634,72 @@ footer a{color:var(--accent)}
 <span>Credential Leak</span>
 <a href="https://github.com/AsyncHttpClient/async-http-client/commit/6b2fbb7f8" target="_blank" rel="noopener">view commit</a>
 <a href="https://github.com/advisories/GHSA-cmxv-58fp-fm3g" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="PHP" data-date="2026-04-14" data-pattern="SSRF→INTERNAL_ACCESS" data-searchable="GHSA-3m9m-24vh-39wx craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS SSRF PHP The application allowed asset uploads via a URL without properly validating the scheme of the provided URL. This enabled an attacker to specify arbitrary schemes like `gopher://`, `file://`, or `ftp://`, which could be used to make requests to internal resources or local files.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-3m9m-24vh-39wx" target="_blank" rel="noopener">GHSA-3m9m-24vh-39wx</a>
+<span class="sev sev-moderate">MODERATE 0.0</span>
+<span class="pattern">SSRF→INTERNAL_ACCESS</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">craftcms/cms · craftcms/cms</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application allowed asset uploads via a URL without properly validating the scheme of the provided URL. This enabled an attacker to specify arbitrary schemes like `gopher://`, `file://`, or `ftp://`, which could be used to make requests to internal resources or local files.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could potentially access internal network resources, read local files on the server, or interact with other services accessible from the server, leading to information disclosure or further compromise.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/gql/resolvers/mutations/Asset.php
++++ b/src/gql/resolvers/mutations/Asset.php
+@@ -251,6 +251,10 @@ protected function handleUpload(AssetElement $asset, array $fileInformation): bo
+         } elseif (!empty($fileInformation[&#39;url&#39;])) {
+             $url = $fileInformation[&#39;url&#39;];
+ 
++            if (!$this-&gt;validateScheme($url)) {
++                throw new UserError(&#34;$url contains an invalid scheme.&#34;);
++            }
++
+             if (!$this-&gt;validateHostname($url)) {
+                 throw new UserError(&#34;$url contains an invalid hostname.&#34;);
+             }
+@@ -297,6 +301,13 @@ protected function handleUpload(AssetElement $asset, array $fileInformation): bo
+         return true;
+     }
+ 
++    private function validateScheme(string $url): bool
++    {
++        // block Gopher/File/FTP Smuggling
++        $scheme = parse_url($url, PHP_URL_SCHEME);
++        return in_array(strtolower($scheme), [&#39;http&#39;, &#39;https&#39;], true);
++    }
+ 
+     private function validateHostname(string $url): bool
+     {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a new validation method, `validateScheme`, which explicitly checks if the URL scheme is either &#39;http&#39; or &#39;https&#39;. If any other scheme is detected, a `UserError` is thrown, preventing the server from making requests to unauthorized protocols.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>SSRF</span>
+<a href="https://github.com/craftcms/cms/commit/d20aecfaa0eae076c4154be3b17e1f9fa05ce46f" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-3m9m-24vh-39wx" target="_blank" rel="noopener">advisory</a>
 </div>
 </div>
 <div class="card" data-severity="LOW" data-language="PHP" data-date="2026-04-14" data-pattern="INFO_DISCLOSURE→ERROR_MESSAGE" data-searchable="GHSA-3vxg-x5f8-f5qf craftcms/commerce craftcms/commerce INFO_DISCLOSURE→ERROR_MESSAGE Information Disclosure PHP The application was inadvertently including customer order data (specifically, the cart array) in error responses for unauthenticated payment attempts on completed orders. This allowed an attacker to retrieve sensitive order details without proper authentication.">
@@ -234,6 +753,366 @@ footer a{color:var(--accent)}
 <span>Information Disclosure</span>
 <a href="https://github.com/craftcms/commerce/commit/48a5d946419964e2af1ac64a8e1acc2a32ca0a08" target="_blank" rel="noopener">view commit</a>
 <a href="https://github.com/advisories/GHSA-3vxg-x5f8-f5qf" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-14" data-pattern="SSRF→INTERNAL_ACCESS" data-searchable="GHSA-4x48-cgf9-q33f novuhq/novu @novu/api SSRF→INTERNAL_ACCESS SSRF JavaScript The application allowed users to specify webhook URLs in conditions filters. While a `validateUrlSsrf()` function existed, it was not being called for webhook URLs within the conditions filter logic, allowing an attacker to bypass existing SSRF protection and make requests to internal resources.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-4x48-cgf9-q33f" target="_blank" rel="noopener">GHSA-4x48-cgf9-q33f</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">SSRF→INTERNAL_ACCESS</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">@novu/api · novuhq/novu</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application allowed users to specify webhook URLs in conditions filters. While a `validateUrlSsrf()` function existed, it was not being called for webhook URLs within the conditions filter logic, allowing an attacker to bypass existing SSRF protection and make requests to internal resources.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could craft a malicious webhook URL to make the server-side application send requests to internal network resources, potentially accessing sensitive data, internal services, or cloud metadata endpoints.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/libs/application-generic/src/usecases/conditions-filter/conditions-filter.usecase.ts
++++ b/libs/application-generic/src/usecases/conditions-filter/conditions-filter.usecase.ts
+@@ -257,6 +264,17 @@ export class ConditionsFilter extends Filter {
+       config.headers[&#39;nv-hmac-256&#39;] = hmac;
+     }
+ 
++    const ssrfError = await validateUrlSsrf(child.webhookUrl);
++
++    if (ssrfError) {
++      throw new Error(
++        JSON.stringify({
++          message: ssrfError,
++          data: &#39;Webhook URL blocked by SSRF protection.&#39;,
++        })
++      );
++    }
++
+     try {
+       return await axios.post(child.webhookUrl, payload, config).then((response) =&gt; {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The `validateUrlSsrf()` function was moved to a shared utility library and is now explicitly called to validate webhook URLs within the `ConditionsFilter` use case before any HTTP request is made. Additionally, the `isPrivateIp` function was updated to include `0.0.0.0` and IPv6 mapped IPv4 private ranges for more comprehensive protection.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>SSRF</span>
+<a href="https://github.com/novuhq/novu/commit/87d965eb88340ac7cd262dd52c8015acd092dc68" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-4x48-cgf9-q33f" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="PHP" data-date="2026-04-14" data-pattern="SSRF→INTERNAL_ACCESS" data-searchable="GHSA-95wr-3f2v-v2wh craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS SSRF PHP The `actionResourceJs` endpoint in `AppController.php` directly fetched a URL provided by the user via a Guzzle client without sufficient validation or sanitization. This allowed an attacker to control the URL that the server would request, leading to a Server-Side Request Forgery.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-95wr-3f2v-v2wh" target="_blank" rel="noopener">GHSA-95wr-3f2v-v2wh</a>
+<span class="sev sev-moderate">MODERATE 0.0</span>
+<span class="pattern">SSRF→INTERNAL_ACCESS</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">craftcms/cms · craftcms/cms</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The `actionResourceJs` endpoint in `AppController.php` directly fetched a URL provided by the user via a Guzzle client without sufficient validation or sanitization. This allowed an attacker to control the URL that the server would request, leading to a Server-Side Request Forgery.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could force the Craft CMS server to make requests to arbitrary internal or external hosts, potentially accessing internal network resources, cloud metadata, or other sensitive information not directly exposed to the internet.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/controllers/AppController.php
++++ b/src/controllers/AppController.php
+@@ -110,17 +112,23 @@ public function actionResourceJs(string $url): Response
+     {
+         $this-&gt;requireCpRequest();
+ 
+-        if (!str_starts_with($url, Craft::$app-&gt;getAssetManager()-&gt;baseUrl)) {
++        $assetManager = Craft::$app-&gt;getAssetManager();
++        $baseUrl = StringHelper::ensureRight($assetManager-&gt;baseUrl, &#39;/&#39;);
++        if (!str_starts_with($url, $baseUrl)) {
+             throw new BadRequestHttpException(&#34;$url does not appear to be a resource URL&#34;);
+         }
+ 
+-        // Close the PHP session in case this takes a while
+-        Session::close();
++        $resourceUri = preg_replace(&#39;/^(.*)\?.*/&#39;, &#39;$1&#39;, substr($url, strlen($baseUrl)));
+ 
+-        $response = Craft::createGuzzleClient()-&gt;get($url);
+-        $this-&gt;response-&gt;setCacheHeaders();
+-        $this-&gt;response-&gt;getHeaders()-&gt;set(&#39;content-type&#39;, &#39;application/javascript&#39;);
+-        return $this-&gt;asRaw($response-&gt;getBody());
++        try {
++            $publishedPath = App::resourcePathByUri($resourceUri);
++        } catch (InvalidArgumentException $e) {
++            throw new BadRequestHttpException($e-&gt;getMessage(), previous: $e);
++        }
++
++        return $this-&gt;response-&gt;sendFile($publishedPath, null, [
++            &#39;inline&#39; =&gt; true,
++        ]);
+     }</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch refactors resource handling by introducing `App::resourcePathByUri` and `App::resourceSourcePathByHash` helpers. Instead of fetching external URLs, the `actionResourceJs` endpoint now uses these helpers to locate and serve local resource files, ensuring that only legitimate, published resources are served and preventing arbitrary URL fetches.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>SSRF</span>
+<a href="https://github.com/craftcms/cms/commit/ebe7e85f1c89700d64332f72492be2e9a594e783" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-95wr-3f2v-v2wh" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Go" data-date="2026-04-14" data-pattern="MISSING_AUTH→ENDPOINT" data-searchable="GHSA-hv4r-mvr4-25vw minio/minio github.com/minio/minio MISSING_AUTH→ENDPOINT Unauthenticated Object Write Go The vulnerability stemmed from a bypass in the query-string credential signature validation for unsigned-trailer uploads. MinIO failed to properly authenticate requests when specific conditions related to unsigned trailers were met, allowing an attacker to write objects without valid credentials.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-hv4r-mvr4-25vw" target="_blank" rel="noopener">GHSA-hv4r-mvr4-25vw</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">MISSING_AUTH→ENDPOINT</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/minio/minio · minio/minio</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability stemmed from a bypass in the query-string credential signature validation for unsigned-trailer uploads. MinIO failed to properly authenticate requests when specific conditions related to unsigned trailers were met, allowing an attacker to write objects without valid credentials.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An unauthenticated attacker could upload arbitrary objects to MinIO, potentially leading to data compromise, unauthorized data storage, or denial of service by filling up storage space.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/cmd/apierrorcode_string.go
++++ b/cmd/apierrorcode_string.go
+@@ -131,197 +131,198 @@ func _() {
+ 	_ = x[ErrInvalidTagDirective-120]
+ 	_ = x[ErrPolicyAlreadyAttached-121]
+ 	_ = x[ErrPolicyNotAttached-122]
+-	_ = x[ErrInvalidEncryptionMethod-123]
++	_ = x[ErrExcessData-123]
+ 	_ = x[ErrInvalidEncryptionKeyID-124]
+ 	_ = x[ErrInsecureSSECustomerRequest-125]</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a new error code, `ErrExcessData`, and re-indexes subsequent error codes. While this specific diff doesn&#39;t show the direct fix logic, it indicates a change in error handling, likely related to how MinIO processes and validates request data, including headers and trailers, to prevent the signature bypass.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Unauthenticated Object Write</span>
+<a href="https://github.com/minio/minio/commit/76913a9fd5c6e5c2dbd4e8c7faf56ed9e9e24091" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-hv4r-mvr4-25vw" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="PHP" data-date="2026-04-14" data-pattern="MISSING_AUTHZ→RESOURCE" data-searchable="GHSA-jq2f-59pj-p3m3 craftcms/cms craftcms/cms MISSING_AUTHZ→RESOURCE Missing Authorization Check PHP The application was missing an authorization check in the `actionSavePermissions` and `_saveUserGroups` methods. This allowed users who did not have the necessary permissions to modify user groups or permissions to still trigger these actions.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-jq2f-59pj-p3m3" target="_blank" rel="noopener">GHSA-jq2f-59pj-p3m3</a>
+<span class="sev sev-moderate">MODERATE 0.0</span>
+<span class="pattern">MISSING_AUTHZ→RESOURCE</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">craftcms/cms · craftcms/cms</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application was missing an authorization check in the `actionSavePermissions` and `_saveUserGroups` methods. This allowed users who did not have the necessary permissions to modify user groups or permissions to still trigger these actions.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could remove users from user groups or modify user permissions, potentially leading to privilege escalation or denial of service for affected users.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/src/controllers/UsersController.php
++++ b/src/controllers/UsersController.php
+@@ -1261,6 +1261,10 @@ public function actionSavePermissions(): Response
+     {
+         $this-&gt;requireCpRequest();
+ 
++        if (!$this-&gt;showPermissionsScreen()) {
++            throw new ForbiddenHttpException(&#39;User not authorized to perform this action.&#39;);
++        }
++
+         $currentUser = static::currentUser();
+         $user = $this-&gt;editedUser((int)$this-&gt;request-&gt;getRequiredBodyParam(&#39;userId&#39;));
+ 
+@@ -2784,6 +2788,10 @@ private function _saveUserPermissions(User $user, User $currentUser): void
+      */
+     private function _saveUserGroups(User $user, User $currentUser): void
+     {
++        if (!$currentUser-&gt;canAssignUserGroups()) {
++            return;
++        }
++
+         $groupIds = $this-&gt;request-&gt;getBodyParam(&#39;groups&#39;);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds a `showPermissionsScreen()` check at the beginning of `actionSavePermissions()` and a `canAssignUserGroups()` check in `_saveUserGroups()` to ensure that only authorized users can perform these actions.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Missing Authorization Check</span>
+<a href="https://github.com/craftcms/cms/commit/b135384808ad43fcf8836a9dd9b877fb0087bc27" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-jq2f-59pj-p3m3" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="Go" data-date="2026-04-14" data-pattern="CREDENTIAL_LEAK→LOG_EXPOSURE" data-searchable="GHSA-pm7q-rjjx-979p oxia-db/oxia github.com/oxia-db/oxia CREDENTIAL_LEAK→LOG_EXPOSURE Information Disclosure Go The application was logging the full bearer token in debug messages when an authentication failure occurred. This meant that if debug logging was enabled, the sensitive authentication token could be exposed in logs, making it accessible to anyone with access to the log files.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-pm7q-rjjx-979p" target="_blank" rel="noopener">GHSA-pm7q-rjjx-979p</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">CREDENTIAL_LEAK→LOG_EXPOSURE</span>
+<span class="lang">Go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">github.com/oxia-db/oxia · oxia-db/oxia</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application was logging the full bearer token in debug messages when an authentication failure occurred. This meant that if debug logging was enabled, the sensitive authentication token could be exposed in logs, making it accessible to anyone with access to the log files.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker with access to the system&#39;s log files could retrieve full bearer tokens, potentially allowing them to impersonate users or gain unauthorized access to the system.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/oxiad/common/rpc/auth/interceptor.go
++++ b/oxiad/common/rpc/auth/interceptor.go
+@@ -98,8 +98,21 @@ func validateTokenWithContext(ctx context.Context, provider AuthenticationProvid
+ 	if userName, err = provider.Authenticate(ctx, token); err != nil {
+ 		slog.Debug(&#34;Failed to authenticate token&#34;,
+ 			slog.String(&#34;peer&#34;, peerMeta.Addr.String()),
+-			slog.String(&#34;token&#34;, token))
++			slog.String(&#34;token&#34;, redactToken(token)))
+ 		return &#34;&#34;, err
+ 	}
+ 	return userName, nil
+ }
++
++// redactToken returns a redacted version of a token for safe logging.
++// For tokens longer than 8 characters, at most the last 8 characters are
++// preserved and the rest is replaced with &#34;[REDACTED]&#34;. Tokens of 8 characters
++// or fewer are fully redacted to &#34;[REDACTED]&#34;.
++func redactToken(token string) string {
++	const suffixLen = 8
++	const prefix = &#34;[REDACTED]&#34;
++	if len(token) &lt;= suffixLen {
++		return prefix
++	}
++	return prefix + token[len(token)-suffixLen:]
++}</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces a `redactToken` function that masks the bearer token before it is logged. Instead of logging the full token, it now logs a redacted version, preserving only the last 8 characters for longer tokens and fully redacting shorter ones, prefixed with &#34;[REDACTED]&#34;.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Information Disclosure</span>
+<a href="https://github.com/oxia-db/oxia/commit/f7259d0ebc739fc95ff19f93c823433850857416" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-pm7q-rjjx-979p" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="PHP" data-date="2026-04-14" data-pattern="MISSING_AUTH→ENDPOINT" data-searchable="GHSA-pq8p-wc4f-vg7j WWBN/AVideo wwbn/avideo MISSING_AUTH→ENDPOINT Command Injection PHP The application previously had a command injection vulnerability (CVE-2026-33502) in the `wget` function, which was used to fetch content from a URL provided by user input. The original fix was incomplete, as it did not restrict access to the `test.php` endpoint, allowing unauthenticated attackers to still trigger the vulnerable `wget` function.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-pq8p-wc4f-vg7j" target="_blank" rel="noopener">GHSA-pq8p-wc4f-vg7j</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="pattern">MISSING_AUTH→ENDPOINT</span>
+<span class="lang">PHP</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">wwbn/avideo · WWBN/AVideo</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The application previously had a command injection vulnerability (CVE-2026-33502) in the `wget` function, which was used to fetch content from a URL provided by user input. The original fix was incomplete, as it did not restrict access to the `test.php` endpoint, allowing unauthenticated attackers to still trigger the vulnerable `wget` function.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An unauthenticated attacker could execute arbitrary commands on the server by manipulating the `statsURL` parameter, leading to full system compromise.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/plugin/Live/test.php
++++ b/plugin/Live/test.php
+@@ -1,3 +1,8 @@
+ &lt;?php
++
++require_once dirname(__FILE__) . &#39;/../../videos/configuration.php&#39;;
++
++if (!User::isAdmin()) {
++    http_response_code(403);
++    exit(&#39;Forbidden&#39;);
++}
+ 
+ $timeStarted = microtime(true);</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces an authentication check at the beginning of the `test.php` file, requiring the user to be an administrator. If the user is not an admin, access is denied with a 403 Forbidden status code.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Command Injection</span>
+<a href="https://github.com/WWBN/AVideo/commit/1e6cf03e93b5a5318204b010ea28440b0d9a5ab3" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-pq8p-wc4f-vg7j" target="_blank" rel="noopener">advisory</a>
 </div>
 </div>
 <div class="card" data-severity="HIGH" data-language="Java" data-date="2026-04-13" data-pattern="UNSANITIZED_INPUT→COMMAND" data-searchable="GHSA-3p24-9x7v-7789 NationalSecurityAgency/emissary gov.nsa.emissary:emissary UNSANITIZED_INPUT→COMMAND OS Command Injection Java The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.">
