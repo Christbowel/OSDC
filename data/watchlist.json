@@ -6,7 +6,8 @@
   },
   "repos": [
     "expressjs/express", "fastify/fastify", "koajs/koa", "honojs/hono",
-    "nestjs/nest", "hapijs/hapi", "meteor/meteor", "strapi/strapi",
+    "nestjs/nest", "hapijs/hapi", , "vendurehq/vendure", "moodle/moodle", "WWBN/AVideo", 
+    "axios/axios", "NVIDIA/OpenShell", "meteor/meteor", "strapi/strapi",
     "django/django", "pallets/flask", "tiangolo/fastapi", "tornadoweb/tornado",
     "encode/starlette", "sanic-org/sanic", "aio-libs/aiohttp", "psf/requests",
     "rails/rails", "sinatra/sinatra", "hanami/hanami",
