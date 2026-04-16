@@ -1,7 +1,6 @@
 import json
 import time
 import signal
-import sys
 from datetime import datetime, timezone
 from src.config import (
     STATE_PATH, MAX_DAILY_CALLS, RATE_LIMIT_DELAY,
@@ -98,18 +97,18 @@ def run():
 
         raw_diff = fetch_commit_diff(advisory["commit_url"])
         if not raw_diff:
-            print(f"    SKIP: no diff available")
+            print("    SKIP: no diff available")
             errors += 1
             continue
 
         filtered = filter_diff(raw_diff)
         if not filtered:
-            print(f"    SKIP: no relevant files in diff")
+            print("    SKIP: no relevant files in diff")
             continue
 
         result = analyze_advisory(advisory, filtered)
         if not result:
-            print(f"    ERROR: LLM analysis failed")
+            print("    ERROR: LLM analysis failed")
             errors += 1
             continue
 
@@ -174,7 +173,7 @@ def run():
         encoding="utf-8",
     )
 
-    print(f"\n=== Summary ===")
+    print("\n=== Summary ===")
     print(f"Analyzed: {len(analyzed)}")
     print(f"New patterns: {new_patterns}")
     print(f"Errors: {errors}")

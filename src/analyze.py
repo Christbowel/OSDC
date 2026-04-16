@@ -6,7 +6,6 @@ from src.config import (
     GEMINI_API_KEY, GEMINI_API_URL,
     LLM_SYSTEM_PROMPT, LLM_USER_PROMPT_TEMPLATE,
     TAXONOMY_PATH, RETRY_ATTEMPTS, RETRY_BACKOFF,
-    RATE_LIMIT_DELAY,
 )
 
 
@@ -42,7 +41,7 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
 
     raw_response = _call_gemini(user_prompt)
     if not raw_response:
-        print(f"    DEBUG: _call_gemini returned None")
+        print("    DEBUG: _call_gemini returned None")
         return None
 
     parsed = _parse_llm_response(raw_response)
@@ -52,6 +51,16 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
         
     if parsed.get("pattern_id") not in taxonomy_ids:
         parsed["pattern_id"] = "UNCLASSIFIED"
+
+    return build_analysis_result(advisory, parsed)
+
+
+def build_analysis_result(advisory: dict, parsed: dict) -> dict:
+    """Build a standardized analysis result from advisory metadata and LLM output."""
+    def _str(val):
+        if isinstance(val, (dict, list)):
+            return json.dumps(val)
+        return str(val) if val else ""
 
     return {
         "ghsa_id": advisory["ghsa_id"],
@@ -63,12 +72,12 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
         "cvss_score": advisory["cvss_score"],
         "package_name": advisory["package_name"],
         "pattern_id": parsed["pattern_id"],
-        "vuln_type": parsed.get("vuln_type", ""),
-        "root_cause": parsed.get("root_cause", ""),
-        "impact": parsed.get("impact", ""),
-        "fix_summary": parsed.get("fix_summary", ""),
-        "key_diff": parsed.get("key_diff", ""),
-        "confidence": parsed.get("confidence", "LOW"),
+        "vuln_type": _str(parsed.get("vuln_type", "")),
+        "root_cause": _str(parsed.get("root_cause", "")),
+        "impact": _str(parsed.get("impact", "")),
+        "fix_summary": _str(parsed.get("fix_summary", "")),
+        "key_diff": _str(parsed.get("key_diff", "")),
+        "confidence": _str(parsed.get("confidence", "LOW")),
         "commit_url": advisory["commit_url"],
     }
 
@@ -107,13 +116,13 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
             data = response.json()
             candidates = data.get("candidates", [])
             if not candidates:
-                print(f"    Gemini: no candidates in response")
+                print("    Gemini: no candidates in response")
                 return None
 
             content = candidates[0].get("content", {})
             parts = content.get("parts", [])
             if not parts:
-                print(f"    Gemini: no parts in response")
+                print("    Gemini: no parts in response")
                 return None
 
             return parts[0].get("text", "")

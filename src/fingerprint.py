@@ -1,6 +1,5 @@
 import json
 import re
-from pathlib import Path
 from src.config import DATA_DIR
 
 
@@ -116,3 +115,25 @@ def get_best_match(patch_text: str) -> dict | None:
     if matches and matches[0]["score"] >= 0.1:
         return matches[0]
     return None
+
+
+def score_with_fingerprints(
+    heuristic_result: dict, files: list[dict]
+) -> tuple[float, dict | None, float]:
+    """Combine heuristic score with fingerprint matching.
+
+    Returns (normalized_score, best_fingerprint, fp_score).
+    """
+    combined_patch = "\n".join(
+        f.get("patch", "") for f in files if f.get("patch")
+    )
+    fingerprint_matches = match_fingerprints(combined_patch)
+
+    best_fp = fingerprint_matches[0] if fingerprint_matches else None
+    fp_score = best_fp["score"] if best_fp else 0.0
+
+    normalized = heuristic_result["normalized_score"]
+    if best_fp:
+        normalized = min(normalized + (fp_score * 30), 100)
+
+    return normalized, best_fp, fp_score

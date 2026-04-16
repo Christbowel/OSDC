@@ -1,20 +1,16 @@
 import json
 import time
 import sys
-import os
-import requests
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
-from src.config import DATA_DIR, GITHUB_TOKEN
+from src.config import DATA_DIR
 from src.heuristics import score_commit
-from src.fingerprint import match_fingerprints
+from src.fingerprint import score_with_fingerprints
+from src.github_api import github_get, REQUEST_DELAY
 
 
 SILENT_STATE_PATH = DATA_DIR / "silent_state.json"
 SILENT_RESULTS_PATH = DATA_DIR / "silent_results.jsonl"
 WATCHLIST_PATH = DATA_DIR / "watchlist.json"
-GITHUB_API = "https://api.github.com"
-REQUEST_DELAY = 0.8
 
 
 def load_watchlist() -> list[str]:
@@ -55,33 +51,6 @@ def load_existing_results() -> set:
 def append_result(result: dict):
     with open(SILENT_RESULTS_PATH, "a") as f:
         f.write(json.dumps(result, ensure_ascii=False) + "\n")
-
-
-def github_get(endpoint: str, params: dict = None) -> dict | list | None:
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    if GITHUB_TOKEN:
-        headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
-
-    url = f"{GITHUB_API}{endpoint}" if endpoint.startswith("/") else endpoint
-
-    try:
-        response = requests.get(url, headers=headers, params=params, timeout=30)
-        if response.status_code == 403:
-            remaining = response.headers.get("X-RateLimit-Remaining", "?")
-            reset = response.headers.get("X-RateLimit-Reset", "0")
-            if remaining == "0":
-                wait = max(int(reset) - int(time.time()), 10)
-                print(f"    Rate limited, waiting {wait}s...")
-                time.sleep(wait)
-                return github_get(endpoint, params)
-            return None
-        if response.status_code == 404:
-            return None
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as exc:
-        print(f"    API error: {exc}")
-        return None
 
 
 def run(hours: int = 24):
@@ -141,15 +110,9 @@ def run(hours: int = 24):
 
             layer1_pass += 1
 
-            combined_patch = "\n".join(f.get("patch", "") for f in files if f.get("patch"))
-            fingerprint_matches = match_fingerprints(combined_patch)
-
-            best_fp = fingerprint_matches[0] if fingerprint_matches else None
-            fp_score = best_fp["score"] if best_fp else 0.0
-
-            normalized = heuristic_result["normalized_score"]
-            if best_fp:
-                normalized = min(normalized + (fp_score * 30), 100)
+            normalized, best_fp, fp_score = score_with_fingerprints(
+                heuristic_result, files
+            )
 
             if normalized < 20:
                 continue
@@ -202,7 +165,7 @@ def run(hours: int = 24):
     }
     save_silent_state(state)
 
-    print(f"\n=== Summary ===")
+    print("\n=== Summary ===")
     print(f"Repos scanned: {len(watchlist) - skipped_repos}/{len(watchlist)}")
     print(f"Commits analyzed: {total_commits}")
     print(f"Layer 1 pass (heuristics >= 8): {layer1_pass}")
