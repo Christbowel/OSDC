@@ -89,16 +89,16 @@ footer a{color:var(--accent)}
 <header>
 <h1><span>OSDC</span> · Open Source Daily Catch</h1>
 <div class="header-meta">
-<span>162 advisories</span>
+<span>163 advisories</span>
 <span>33 patterns</span>
-<span>2026-04-15</span>
+<span>2026-04-16</span>
 </div>
 </header>
 <div class="dashboard">
 <div class="dash-card" style="grid-column:1/-1">
 <h3>overview</h3>
 <div class="stat-grid">
-<div class="stat-box"><div class="stat-val">162</div><div class="stat-label">advisories</div></div>
+<div class="stat-box"><div class="stat-val">163</div><div class="stat-label">advisories</div></div>
 <div class="stat-box"><div class="stat-val">33</div><div class="stat-label">patterns</div></div>
 <div class="stat-box"><div class="stat-val" id="langCount">0</div><div class="stat-label">languages</div></div>
 <div class="stat-box"><div class="stat-val" id="critCount">0</div><div class="stat-label">critical</div></div>
@@ -136,6 +136,57 @@ footer a{color:var(--accent)}
 <span class="count" id="resultCount"></span>
 </div>
 <div id="advisoryList">
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-15" data-pattern="UNSANITIZED_INPUT→HEADER" data-searchable="GHSA-247c-9743-5963 fastify/fastify fastify UNSANITIZED_INPUT→HEADER Body Schema Validation Bypass JavaScript The vulnerability existed because the `getEssenceMediaType` function, responsible for extracting the media type from the &#39;Content-Type&#39; header, only split the header string by the semicolon character. This allowed an attacker to prepend a space before the semicolon (e.g., &#39; application/json;charset=utf-8&#39;) to bypass the schema validation logic, as the leading space was not considered a delimiter.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-247c-9743-5963" target="_blank" rel="noopener">GHSA-247c-9743-5963</a>
+<span class="sev sev-high">HIGH 7.5</span>
+<span class="pattern">UNSANITIZED_INPUT→HEADER</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">fastify · fastify/fastify</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability existed because the `getEssenceMediaType` function, responsible for extracting the media type from the &#39;Content-Type&#39; header, only split the header string by the semicolon character. This allowed an attacker to prepend a space before the semicolon (e.g., &#39; application/json;charset=utf-8&#39;) to bypass the schema validation logic, as the leading space was not considered a delimiter.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could bypass the body schema validation, potentially sending malformed or unexpected data to the application. This could lead to various issues depending on how the application processes the unvalidated data, such as data corruption, unexpected application behavior, or further exploitation if the application is not robust against invalid input.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/lib/validation.js
++++ b/lib/validation.js
+@@ -261,7 +261,7 @@ function wrapValidationError (result, dataVar, schemaErrorFormatter) {
+  */
+ function getEssenceMediaType (header) {
+   if (!header) return &#39;&#39;
+-  return header.split(&#39;;&#39;, 1)[0].trim().toLowerCase()
++  return header.split(/[ ;]/, 1)[0].trim().toLowerCase()
+ }
+ 
+ module.exports = {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch modifies the `getEssenceMediaType` function to correctly parse the &#39;Content-Type&#39; header. It changes the split delimiter from just a semicolon to include both space and semicolon characters. This ensures that any leading space before the media type parameters is also considered a delimiter, preventing the validation bypass.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Body Schema Validation Bypass</span>
+<a href="https://github.com/fastify/fastify/commit/f3d2bcb3963cd570a582e5d39aab01a9ae692fe4" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-247c-9743-5963" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
 <div class="card" data-severity="CRITICAL" data-language="PHP" data-date="2026-04-14" data-pattern="UNSANITIZED_INPUT→XSS" data-searchable="GHSA-gph2-j4c9-vhhr WWBN/AVideo wwbn/avideo UNSANITIZED_INPUT→XSS Cross-Site Scripting (XSS) PHP The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">

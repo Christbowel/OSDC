@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-162-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-163-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-33-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -75,7 +75,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 1x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 2x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -683,6 +683,32 @@ err = os.Rename(fullPath, targetPath)</pre>
 <p><b>Fix</b> : The patch introduced a path sanitization function `sanitizePath` to ensure that only valid paths are used for file operations, preventing directory traversal attacks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2943-crp8-38xx">Advisory</a> · <a href="https://github.com/patrickhener/goshs/commit/141c188ce270ffbec087844a50e5e695b7da7744">Commit</a>
+</p>
+<hr>
+<h3>GHSA-247c-9743-5963</h3>
+<p>
+<code>HIGH 7.5</code> · 2026-04-15 · JavaScript<br>
+<code>fastify</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 2x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the `getEssenceMediaType` function, responsible for extracting the media type from the &#39;Content-Type&#39; header, only split the header string by the semicolon character. This allowed an attacker to prepend a space before the semicolon (e.g., &#39; application/json;charset=utf-8&#39;) to bypass the schema validation logic, as the leading space was not considered a delimiter.</p>
+<p><b>Impact</b> : An attacker could bypass the body schema validation, potentially sending malformed or unexpected data to the application. This could lead to various issues depending on how the application processes the unvalidated data, such as data corruption, unexpected application behavior, or further exploitation if the application is not robust against invalid input.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/validation.js
++++ b/lib/validation.js
+@@ -261,7 +261,7 @@ function wrapValidationError (result, dataVar, schemaErrorFormatter) {
+  */
+ function getEssenceMediaType (header) {
+   if (!header) return &#39;&#39;
+-  return header.split(&#39;;&#39;, 1)[0].trim().toLowerCase()
++  return header.split(/[ ;]/, 1)[0].trim().toLowerCase()
+ }
+ 
+ module.exports = {</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the `getEssenceMediaType` function to correctly parse the &#39;Content-Type&#39; header. It changes the split delimiter from just a semicolon to include both space and semicolon characters. This ensures that any leading space before the media type parameters is also considered a delimiter, preventing the validation bypass.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-247c-9743-5963">Advisory</a> · <a href="https://github.com/fastify/fastify/commit/f3d2bcb3963cd570a582e5d39aab01a9ae692fe4">Commit</a>
 </p>
 <hr>
 <h3>GHSA-77fj-vx54-gvh7</h3>
@@ -1350,50 +1376,6 @@ After:
 <a href="https://github.com/advisories/GHSA-7437-7hg8-frrw">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5">Commit</a>
 </p>
 <hr>
-<h3>GHSA-h749-fxx7-pwpg</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-09 · Go<br>
-<code>github.com/minio/minio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 5x across ecosystem
-</p>
-<p><b>Root cause</b> : The code does not properly validate or limit the size of the input data for S3 Select CSV parsing, leading to an unbounded memory allocation.</p>
-<p><b>Impact</b> : An attacker could cause a Denial of Service (DoS) by sending specially crafted requests that trigger excessive memory usage on the server.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-
-After:
-func (api objectAPIHandlers) SelectObjectContentHandler(w http.ResponseWriter, r *http.Request) {
-    ctx := newContext(r, w, &#34;SelectObject&#34;)
-    var object, bucket string
-    vars := mux.Vars(r)
-    bucket = vars[&#34;bucket&#34;]
-    object = vars[&#34;object&#34;]
-
-    // Fetch object stat info.
-    objectAPI := api.ObjectAPI()
-    if objectAPI == nil {
-        writeErrorResponse(w, ErrServerNotInitialized, r.URL)
-        return
-    }
-
-    getObjectInfo := objectAPI.GetObjectInfo
-    if api.CacheAPI() != nil {
-        getObjectInfo = api.CacheAPI().GetObjectInfo
-    }
-
-    if s3Error := checkRequestAuthType(ctx, r, policy.GetObjectAction, bucket, object); s3Error != ErrNone {
-        if getRequestAuthType(r) == authTypeAnonymous {
-            // As per &#34;Permission&#34; section in
-            // https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html If
-            // the object you request does not exist, the error Amazon S3 returns
-            // depends on whether you also have the s3:ListBucket permission. * If you
-            // have the s3:ListBucket permission on the bucket, Amazon S3 will re</pre>
-</details>
-<p><b>Fix</b> : The patch adds validation and limits on the size of the input data for S3 Select CSV parsing, preventing unbounded memory allocation.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-h749-fxx7-pwpg">Advisory</a> · <a href="https://github.com/minio/minio/commit/7c14cdb60e53dbfdad2be644dfb180cab19fffa7">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1429,10 +1411,10 @@ func (api objectAPIHandlers) SelectObjectContentHandler(w http.ResponseWriter, r
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>162</td></tr>
+<tr><td>Total advisories</td><td>163</td></tr>
 <tr><td>Unique patterns</td><td>33</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-15</td></tr>
+<tr><td>Last updated</td><td>2026-04-16</td></tr>
 </table>
 </details>
 <hr>
