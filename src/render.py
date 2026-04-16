@@ -1,15 +1,14 @@
 import json
 import re
 from datetime import date
-from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from src.config import (
     TEMPLATES_DIR, PATCHES_DIR, DOCS_DIR, ROOT_DIR,
-    README_DAYS_SHOWN, DATA_DIR,
+    DATA_DIR,
 )
 from src.db import (
-    get_advisories_for_date, get_pattern_info,
-    get_recent_dates, get_all_advisories, get_stats,
+    get_pattern_info,
+    get_all_advisories, get_stats,
 )
 
 

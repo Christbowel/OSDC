@@ -28,7 +28,7 @@ def graphql_request(query: str, variables: dict) -> dict:
             if "errors" in data:
                 raise RuntimeError(f"GraphQL errors: {data['errors']}")
             return data
-        except (requests.RequestException, RuntimeError) as exc:
+        except (requests.RequestException, RuntimeError):
             if attempt == RETRY_ATTEMPTS - 1:
                 raise
             time.sleep(RETRY_BACKOFF[attempt])

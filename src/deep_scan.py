@@ -4,7 +4,6 @@ import time
 import os
 import requests
 from datetime import datetime, timezone
-from pathlib import Path
 from src.config import DATA_DIR
 from src.heuristics import score_commit
 from src.fingerprint import match_fingerprints
@@ -146,7 +145,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         message = commit.get("commit", {}).get("message", "").split("\n")[0]
 
         if (i + 1) % 50 == 0 or (i + 1) == len(new_commits):
-            print(f"  [{i+1}/{len(new_commits)}] {suspects_count} suspects so far...", flush=True) if 'suspects_count' in dir() else None
+            print(f"  [{i+1}/{len(new_commits)}] {len(suspects)} suspects so far...", flush=True)
 
         detail = github_get(f"/repos/{repo}/commits/{sha}")
         if not detail:
@@ -172,7 +171,6 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         best_fp = fingerprint_matches[0] if fingerprint_matches else None
         fp_score = best_fp["score"] if best_fp else 0.0
 
-        raw_combined = heuristic_result["score"] + (fp_score * 20)
         normalized = heuristic_result["normalized_score"]
         if best_fp:
             normalized = min(normalized + (fp_score * 30), 100)
@@ -206,7 +204,6 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
         suspects.append(result)
-        suspects_count = len(suspects)
 
         severity = "HIGH" if normalized >= 60 else "MEDIUM" if normalized >= 30 else "LOW"
         print(f"  [{i+1}/{len(new_commits)}] {severity} score={normalized} {sha[:8]} {message[:60]}")
@@ -221,7 +218,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
 
     if suspects:
         print(f"\nResults saved to: {results_path}")
-        print(f"\nTop suspects:")
+        print("\nTop suspects:")
         top = sorted(suspects, key=lambda s: s["normalized_score"], reverse=True)[:10]
         for s in top:
             print(f"  score={s['normalized_score']:5.1f}  {s['commit_sha'][:8]}  {s['message'][:60]}")
