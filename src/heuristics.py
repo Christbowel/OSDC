@@ -27,6 +27,17 @@ SECURITY_FILE_PATTERNS_HIGH = [
     (r"cert[._/]", 3),
     (r"tls[._/]", 3),
     (r"ssl[._/]", 3),
+    (r"config[._/]", 3),
+    (r"\.env", 5),
+    (r"secrets?[._/]", 5),
+    (r"private[._/]", 4),
+    (r"\.htaccess", 5),
+    (r"web\.config", 4),
+    (r"nginx\.conf", 3),
+    (r"apache\.conf", 3),
+    (r"application\.(properties|yml)", 3),
+    (r"settings\.py", 3),
+    (r"wp-config\.php", 5),
 ]
 
 SECURITY_FILE_PATTERNS_LOW = [
@@ -141,6 +152,43 @@ ADD_PATTERNS = {
     r"\ballowlist\b": 4,
     r"\bdenylist\b": 4,
     r"\bblocklist\b": 4,
+    # PHP-specific
+    r"\bhtmlentities\b": 5,
+    r"\bfilter_var\b": 5,
+    r"\bfilter_input\b": 5,
+    r"\bmysqli_prepare\b": 6,
+    r"\bPDO::prepare\b": 6,
+    r"\bpassword_hash\b": 5,
+    r"\bpassword_verify\b": 5,
+    r"\brandom_bytes\b": 5,
+    r"\brandom_int\b": 5,
+    r"\bbin2hex\b": 3,
+    r"\bstrip_tags\b": 4,
+    r"\bintval\b": 3,
+    r"\bpreg_replace_callback\b": 5,
+    # Java-specific
+    r"\bPreparedStatement\b": 6,
+    r"\bParameterizedQuery\b": 6,
+    r"\bMessageDigest\.getInstance\b": 4,
+    r"\bSecureRandom\b": 5,
+    r"\bFiles\.copy\b": 3,
+    r"\bProcessBuilder\b": 4,
+    # Go-specific
+    r"\bfilepath\.EvalSymlinks\b": 5,
+    r"\bfilepath\.Abs\b": 4,
+    r"\bstrconv\.Atoi\b": 3,
+    r"\bcrypto/sha256\b": 4,
+    r"\bstrings\.HasPrefix\b": 3,
+    # Rust-specific
+    r"\bMaybeUninit\b": 5,
+    r"\bcatch_unwind\b": 4,
+    r"\bfrom_utf8_lossy\b": 3,
+    # Python-specific
+    r"\bsecrets\.token\b": 5,
+    r"\bhmac\.compare_digest\b": 7,
+    r"\bsubprocess\.check_call\b": 4,
+    r"\btempfile\.mkstemp\b": 4,
+    r"\bos\.urandom\b": 4,
 }
 
 DEL_PATTERNS = {
@@ -168,6 +216,55 @@ DEL_PATTERNS = {
     r"\btrust.?all\b": 5,
     r"\bno.?verify\b": 5,
     r"\binsecure\b": 4,
+    # PHP-specific
+    r"\bextract\s*\(": 6,
+    r"\bparse_str\s*\(": 6,
+    r"\bunserialize\s*\(": 7,
+    r"\bpreg_replace\s*\(\s*['\"]/.*/e": 8,
+    r"\bcreate_function\s*\(": 7,
+    r"\bassert\s*\(": 6,
+    r"\bcall_user_func\s*\(": 5,
+    r"\bpcntl_exec\s*\(": 7,
+    r"\bpassthru\s*\(": 7,
+    r"\bshell_exec\s*\(": 7,
+    r"\bpopen\s*\(": 6,
+    r"\bproc_open\s*\(": 6,
+    # Java-specific
+    r"\bRuntime\.getRuntime\(\)\.exec\b": 8,
+    r"\bObjectInputStream\b": 7,
+    r"\bXMLDecoder\b": 7,
+    r"\bScriptEngine.*\.eval\b": 7,
+    r"\bJNDI\.lookup\b": 8,
+    r"\bMethod\.invoke\b": 5,
+    # Go-specific
+    r"\bexec\.Command\b": 6,
+    r"\bioutil\.ReadAll\b": 3,
+    r"\bhttp\.ListenAndServe\b.*0\.0\.0\.0": 5,
+    # Rust-specific
+    r"\bunsafe\s*\{": 5,
+    r"\btransmute\b": 6,
+    r"\buninitialized\b": 6,
+    r"\b\.unwrap\(\)": 3,
+    # Python-specific
+    r"\bos\.popen\b": 6,
+    r"\bcommands\.getoutput\b": 6,
+    r"\btempfile\.mktemp\b": 5,
+    r"\bshelve\.open\b": 5,
+    r"\bcPickle\b": 6,
+    r"\bimportlib\.import_module\b": 4,
+    r"\blogging\.config\.dictConfig\b": 4,
+    # C/C++ specific
+    r"\bstrcpy\s*\(": 7,
+    r"\bgets\s*\(": 8,
+    r"\bsprintf\s*\(": 6,
+    r"\bstrcat\s*\(": 6,
+    r"\bmalloc\s*\(": 3,
+    # JavaScript/Node additional
+    r"\bFunction\s*\(": 7,
+    r"\bsetTimeout\s*\(\s*['\"]": 6,
+    r"\bsetInterval\s*\(\s*['\"]": 6,
+    r"\brequire\s*\(\s*[^'\"]": 6,
+    r"\bvm\.runInThisContext\b": 7,
 }
 
 REPLACEMENT_PAIRS = [
@@ -189,6 +286,34 @@ REPLACEMENT_PAIRS = [
     (r"\bmath\.random\b", r"\bcrypto\.randomBytes\b", 6),
     (r"\bexec\b", r"\bsubprocess\.run\b", 6),
     (r"\bhttp://", r"\bhttps://", 3),
+    # PHP
+    (r"\bunserialize\b", r"\bjson_decode\b", 7),
+    (r"\bextract\b", r"\b\$_POST\[", 5),
+    (r"\bpreg_replace\b.*/e", r"\bpreg_replace_callback\b", 8),
+    (r"\bserialize\b", r"\bjson_encode\b", 5),
+    (r"\bcreate_function\b", r"\bfunction\s*\(", 6),
+    # Java
+    (r"\bRuntime.*exec\b", r"\bProcessBuilder\b", 7),
+    (r"\bObjectInputStream\b", r"\bJSON\b", 7),
+    (r"\bXMLDecoder\b", r"\bJSON\b", 7),
+    # C
+    (r"\bstrcpy\b", r"\bstrncpy\b", 6),
+    (r"\bsprintf\b", r"\bsnprintf\b", 6),
+    (r"\bgets\b", r"\bfgets\b", 7),
+    # Python
+    (r"\btempfile\.mktemp\b", r"\btempfile\.mkstemp\b", 6),
+    (r"\bos\.popen\b", r"\bsubprocess\.run\b", 6),
+    # Rust
+    (r"\bunsafe\b", r"\bsafe\b", 5),
+    (r"\b\.unwrap\(\)", r"\b\.unwrap_or\b", 4),
+    # Go
+    (r"\bexec\.Command\b", r"\bexec\.CommandContext\b", 5),
+    (r"\bstrings\.Contains\b", r"\bstrings\.HasPrefix\b", 4),
+    # Node
+    (r"\bcrypto\.createCipher\b", r"\bcrypto\.createCipheriv\b", 6),
+    # JS
+    (r"\blocation\.href\s*=", r"\bsanitizeUrl\b", 6),
+    (r"\bObject\.assign\b", r"\bstructuredClone\b", 5),
 ]
 
 MAX_FILES_SCORED = 5
@@ -230,8 +355,14 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         "sanitiz", "bypass", "traversal", "xss", "csrf", "ssrf",
         "rce", "dos", "permission", "privilege", "leak",
         "harden", "mitigat", "restrict",
+        "validation", "authentication", "authorization", "bounds", "null.?check",
+        "hotfix", "urgent", "critical", "edge.?case", "regression", "revert",
+        "rollback", "cleanup", "harden", "escape", "encode", "decode",
+        "overflow", "underflow", "race.?condition", "deadlock", "timeout",
+        "tight", "strengthen", "lockdown", "lock.?down", "clamp",
+        "guard", "protect", "safeguard", "defensive", "constrain",
     ]
-    msg_hits = [w for w in security_msg_words if w in msg_lower]
+    msg_hits = [w for w in security_msg_words if re.search(w, msg_lower)]
     if msg_hits:
         msg_score = min(len(msg_hits) * 2, 5)
         total_score += msg_score
