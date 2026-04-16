@@ -68,7 +68,12 @@ def github_get(endpoint: str, params: dict = None) -> dict | list | None:
         response = requests.get(url, headers=headers, params=params, timeout=30)
         if response.status_code == 403:
             remaining = response.headers.get("X-RateLimit-Remaining", "?")
-            print(f"    Rate limited (remaining: {remaining})")
+            reset = response.headers.get("X-RateLimit-Reset", "0")
+            if remaining == "0":
+                wait = max(int(reset) - int(time.time()), 10)
+                print(f"    Rate limited, waiting {wait}s...")
+                time.sleep(wait)
+                return github_get(endpoint, params)
             return None
         if response.status_code == 404:
             return None
