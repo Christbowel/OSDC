@@ -1,6 +1,14 @@
 import re
-from pathlib import PurePosixPath
+from functools import lru_cache
 
+
+@lru_cache(maxsize=512)
+def _compiled(pattern: str, flags: int = 0) -> re.Pattern:
+    return re.compile(pattern, flags)
+
+
+def _search(pattern: str, text: str, flags: int = 0):
+    return _compiled(pattern, flags).search(text)
 
 SECURITY_FILE_PATTERNS_HIGH = [
     (r"auth[._/]", 5),
@@ -330,7 +338,7 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
     msg_lower = commit_message.lower()
 
     for pattern in SKIP_MESSAGE_PATTERNS:
-        if re.search(pattern, msg_lower):
+        if _search(pattern, msg_lower):
             return {
                 "score": 0,
                 "normalized_score": 0,
@@ -359,6 +367,7 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         "defensive", "constrain", "strengthen", "lockdown",
     ]
     msg_hits = [w for w in security_msg_words if w in msg_lower]
+
     if msg_hits:
         msg_score = min(len(msg_hits) * 2, 5)
         total_score += msg_score
@@ -375,7 +384,7 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
 
         skip = False
         for pattern in SKIP_FILE_PATTERNS:
-            if re.search(pattern, path_lower):
+            if _search(pattern, path_lower):
                 skip = True
                 break
         if skip:
@@ -385,14 +394,14 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         file_breakdown = []
 
         for pattern, weight in SECURITY_FILE_PATTERNS_HIGH:
-            if re.search(pattern, path_lower):
+            if _search(pattern, path_lower):
                 file_score += weight
                 file_breakdown.append(f"sec_file:{pattern}")
                 break
 
         if file_score == 0:
             for pattern, weight in SECURITY_FILE_PATTERNS_LOW:
-                if re.search(pattern, path_lower):
+                if _search(pattern, path_lower):
                     file_score += weight
                     file_breakdown.append(f"sec_file:{pattern}")
                     break
@@ -424,7 +433,7 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
 
         add_matched = set()
         for pattern, weight in ADD_PATTERNS.items():
-            match = re.search(pattern, added_text, re.IGNORECASE)
+            match = _search(pattern, added_text, re.IGNORECASE)
             if match:
                 token = match.group()
                 if token.lower() not in add_matched:
@@ -434,7 +443,7 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
 
         del_matched = set()
         for pattern, weight in DEL_PATTERNS.items():
-            match = re.search(pattern, removed_text, re.IGNORECASE)
+            match = _search(pattern, removed_text, re.IGNORECASE)
             if match:
                 token = match.group()
                 if token.lower() not in del_matched:
@@ -443,7 +452,9 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
                     del_matched.add(token.lower())
 
         for del_pat, add_pat, weight in REPLACEMENT_PAIRS:
-            if re.search(del_pat, removed_text, re.IGNORECASE) and re.search(add_pat, added_text, re.IGNORECASE):
+            if _search(del_pat, removed_text, re.IGNORECASE) and _search(
+                add_pat, added_text, re.IGNORECASE
+            ):
                 file_score += weight
                 file_breakdown.append(f"swap:{del_pat}→{add_pat}")
 
