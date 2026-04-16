@@ -1,9 +1,7 @@
 import json
-from datetime import date
-from pathlib import Path
 from src.config import DOCS_DIR
 from src.db import (
-    rebuild_from_jsonl, get_all_advisories, get_recent_dates,
+    rebuild_from_jsonl, get_recent_dates,
     get_advisories_for_date, get_stats,
 )
 from src.render import render_readme, render_html_index, render_daily_patch, render_silent_page
@@ -32,7 +30,7 @@ def generate_badge(stats: dict):
     (DOCS_DIR / "badge-patterns.json").write_text(
         json.dumps(badge_patterns), encoding="utf-8"
     )
-    print(f"  Generated badge endpoints")
+    print("  Generated badge endpoints")
 
 
 def run():

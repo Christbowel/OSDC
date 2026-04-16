@@ -4,7 +4,6 @@ import time
 import os
 import requests
 from datetime import datetime, timezone
-from pathlib import Path
 from src.config import DATA_DIR
 from src.heuristics import score_commit
 from src.fingerprint import match_fingerprints
@@ -62,6 +61,7 @@ def fetch_all_commits(repo: str, since: str = None, until: str = None, per_page:
         params["until"] = until
 
     url = f"/repos/{repo}/commits"
+    use_params = True
 
     page = 0
     while url:
@@ -72,7 +72,7 @@ def fetch_all_commits(repo: str, since: str = None, until: str = None, per_page:
 
         full_url = f"{GITHUB_API}{url}" if url.startswith("/") else url
         try:
-            response = requests.get(full_url, headers=headers, params=params if page == 1 else None, timeout=30)
+            response = requests.get(full_url, headers=headers, params=params if use_params else None, timeout=30)
             if response.status_code == 403:
                 remaining = response.headers.get("X-RateLimit-Remaining", "0")
                 if remaining == "0":
@@ -91,6 +91,7 @@ def fetch_all_commits(repo: str, since: str = None, until: str = None, per_page:
 
             next_url = get_link_next(dict(response.headers))
             url = next_url
+            use_params = False
             time.sleep(REQUEST_DELAY)
         except requests.RequestException as exc:
             print(f"  Error on page {page}: {exc}")
@@ -125,9 +126,13 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         with open(results_path, "r") as f:
             for line in f:
                 line = line.strip()
-                if line:
+                if not line:
+                    continue
+                try:
                     record = json.loads(line)
-                    seen.add(record.get("commit_sha", ""))
+                except json.JSONDecodeError:
+                    continue
+                seen.add(record.get("commit_sha", ""))
         print(f"Already scanned: {len(seen)} commits")
 
     new_commits = [c for c in commits if c.get("sha", "") not in seen]
@@ -146,7 +151,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         message = commit.get("commit", {}).get("message", "").split("\n")[0]
 
         if (i + 1) % 50 == 0 or (i + 1) == len(new_commits):
-            print(f"  [{i+1}/{len(new_commits)}] {suspects_count} suspects so far...", flush=True) if 'suspects_count' in dir() else None
+            print(f"  [{i+1}/{len(new_commits)}] {len(suspects)} suspects so far...", flush=True)
 
         detail = github_get(f"/repos/{repo}/commits/{sha}")
         if not detail:
@@ -172,7 +177,6 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         best_fp = fingerprint_matches[0] if fingerprint_matches else None
         fp_score = best_fp["score"] if best_fp else 0.0
 
-        raw_combined = heuristic_result["score"] + (fp_score * 20)
         normalized = heuristic_result["normalized_score"]
         if best_fp:
             normalized = min(normalized + (fp_score * 30), 100)
@@ -206,7 +210,6 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
         suspects.append(result)
-        suspects_count = len(suspects)
 
         severity = "HIGH" if normalized >= 60 else "MEDIUM" if normalized >= 30 else "LOW"
         print(f"  [{i+1}/{len(new_commits)}] {severity} score={normalized} {sha[:8]} {message[:60]}")
@@ -221,7 +224,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
 
     if suspects:
         print(f"\nResults saved to: {results_path}")
-        print(f"\nTop suspects:")
+        print("\nTop suspects:")
         top = sorted(suspects, key=lambda s: s["normalized_score"], reverse=True)[:10]
         for s in top:
             print(f"  score={s['normalized_score']:5.1f}  {s['commit_sha'][:8]}  {s['message'][:60]}")

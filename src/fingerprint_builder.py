@@ -2,7 +2,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from collections import defaultdict
 
 
 EXPERT_FINGERPRINTS = {
@@ -246,7 +245,7 @@ def build_fingerprints(output_path: str = "data/fingerprints.json"):
     print(f"  Expert CWE: {len(EXPERT_FINGERPRINTS)}")
     print(f"  OSDC live: {len([k for k in fingerprints if k.startswith('OSDC:')])}")
 
-    print(f"\nTop patterns by token count:")
+    print("\nTop patterns by token count:")
     top = sorted(fingerprints.items(), key=lambda x: len(x[1]["add_tokens"]) + len(x[1]["del_tokens"]), reverse=True)[:10]
     for pid, data in top:
         total = len(data["add_tokens"]) + len(data["del_tokens"])
