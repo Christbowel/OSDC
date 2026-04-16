@@ -185,7 +185,6 @@ ADD_PATTERNS = {
     r"\bfrom_utf8_lossy\b": 3,
     # Python-specific
     r"\bsecrets\.token\b": 5,
-    r"\bhmac\.compare_digest\b": 7,
     r"\bsubprocess\.check_call\b": 4,
     r"\btempfile\.mkstemp\b": 4,
     r"\bos\.urandom\b": 4,
@@ -355,14 +354,11 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         "sanitiz", "bypass", "traversal", "xss", "csrf", "ssrf",
         "rce", "dos", "permission", "privilege", "leak",
         "harden", "mitigat", "restrict",
-        "validation", "authentication", "authorization", "bounds", "null.?check",
-        "hotfix", "urgent", "critical", "edge.?case", "regression", "revert",
-        "rollback", "cleanup", "harden", "escape", "encode", "decode",
-        "overflow", "underflow", "race.?condition", "deadlock", "timeout",
-        "tight", "strengthen", "lockdown", "lock.?down", "clamp",
-        "guard", "protect", "safeguard", "defensive", "constrain",
+        "validation", "authentication", "authorization", "bounds",
+        "hotfix", "critical", "guard", "protect", "safeguard",
+        "defensive", "constrain", "strengthen", "lockdown",
     ]
-    msg_hits = [w for w in security_msg_words if re.search(w, msg_lower)]
+    msg_hits = [w for w in security_msg_words if w in msg_lower]
     if msg_hits:
         msg_score = min(len(msg_hits) * 2, 5)
         total_score += msg_score
