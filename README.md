@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-163-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-33-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-165-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-34-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -130,6 +130,95 @@
 <p><b>Fix</b> : The patch introduces a `isValidHeaderValue` function to explicitly check for and disallow newline characters (CRLF) in header values. It also adds an `assertValidHeaderValue` function to enforce this validation before header values are set, preventing header injection.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
+</p>
+<hr>
+<h3>GHSA-2689-5p89-6j3j</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
+<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→STACK</code> · 1x across ecosystem
+</p>
+<p><b>Root cause</b> : The `MakeTable` function, responsible for creating Huffman code mapping tables, did not adequately validate the `BitLen` array values. Specifically, it failed to check if `BitLen[Index]` exceeded 16 or if `Start[Len]` (calculated from `BitLen`) could lead to an out-of-bounds write when indexing the `Table` array, which is allocated on the stack.</p>
+<p><b>Impact</b> : An attacker providing specially crafted compressed data could cause a stack out-of-bounds write, potentially leading to arbitrary code execution or denial of service by corrupting stack data or control flow.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/uefi_firmware/compression/Tiano/Decompress.c
++++ b/uefi_firmware/compression/Tiano/Decompress.c
+@@ -208,14 +188,16 @@ Routine Description:
+   }
+ 
+   for (Index = 0; Index &lt; NumOfChar; Index++) {
++    if (BitLen[Index] &gt; 16) {
++      return (UINT16) BAD_TABLE;
++    }
+     Count[BitLen[Index]]++;
+   }
+ 
+@@ -245,18 +227,20 @@ Routine Description:
+ 
+     if (Len &lt;= TableBits) {
+ 
++      if (Start[Len] &gt;= NextCode || NextCode &gt; MaxTableLength) {
++        return (UINT16) BAD_TABLE;
++      }
++
+       for (Index = Start[Len]; Index &lt; NextCode; Index++) {
+-        if(Index &gt;= TableSize)
+-        {
+-          Sd-&gt;mBadAlgorithm = 1;
+-          return (UINT16) BAD_TABLE;
+-        } 
+         Table[Index] = Char;
+       }
++</pre>
+</details>
+<p><b>Fix</b> : The patch adds checks within the `MakeTable` function to ensure that `BitLen[Index]` does not exceed 16 and that calculated table indices (`Start[Len]`) do not go out of bounds of the `Table` array. It also removes the `mBadAlgorithm` flag and replaces it with a direct return of `BAD_TABLE` upon detection of an invalid table.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2689-5p89-6j3j">Advisory</a> · <a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e">Commit</a>
+</p>
+<hr>
+<h3>GHSA-hm2w-vr2p-hq7w</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
+<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 7x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.</p>
+<p><b>Impact</b> : An attacker could craft a malicious compressed UEFI firmware image that, when processed by the decompressor, would trigger a heap out-of-bounds write. This could lead to denial of service (crash), arbitrary code execution, or other memory corruption issues, compromising the integrity and security of the system&#39;s firmware.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/uefi_firmware/compression/Tiano/Decompress.c
++++ b/uefi_firmware/compression/Tiano/Decompress.c
+@@ -208,14 +188,16 @@ Routine Description:
+   }
+ 
+   for (Index = 0; Index &lt; NumOfChar; Index++) {
++    if (BitLen[Index] &gt; 16) {
++      return (UINT16) BAD_TABLE;
++    }
+     Count[BitLen[Index]]++;
+   }
+ 
+   // ... (lines omitted for brevity)
+ 
+     if (Len &lt;= TableBits) {
+ 
++      if (Start[Len] &gt;= NextCode || NextCode &gt; MaxTableLength) {
++        return (UINT16) BAD_TABLE;
++      }
++
+       for (Index = Start[Len]; Index &lt; NextCode; Index++) {
+-        if(Index &gt;= TableSize)
+-        {
+-          Sd-&gt;mBadAlgorithm = 1;
+-          return (UINT16) BAD_TABLE;
+-        } 
+         Table[Index] = Char;
+       }
++
+     } else {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces explicit bounds checks within the `MakeTable` function. It now verifies that `BitLen[Index]` does not exceed 16 and that `Start[Len]` and `NextCode` remain within the `MaxTableLength` before writing to the `Table` array. Additionally, it removes the `mBadAlgorithm` flag and simplifies the `TableSize` calculation, ensuring that all writes to `Table` are within its allocated memory.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-hm2w-vr2p-hq7w">Advisory</a> · <a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e">Commit</a>
 </p>
 <hr>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
@@ -714,7 +803,7 @@ err = os.Rename(fullPath, targetPath)</pre>
 <h3>GHSA-77fj-vx54-gvh7</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-14 · Go<br>
-<code>github.com/gomarkdown/markdown</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 6x across ecosystem
+<code>github.com/gomarkdown/markdown</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 7x across ecosystem
 </p>
 <p><b>Root cause</b> : The `smartLeftAngle` function in the SmartypantsRenderer processed text to find the closing angle bracket &#39;&gt;&#39;. If no closing bracket was found, the loop would iterate until `i` equaled `len(text)`. Subsequently, `text[:i+1]` would attempt to access an index beyond the buffer&#39;s bounds, leading to an out-of-bounds read.</p>
 <p><b>Impact</b> : An attacker could provide specially crafted input that causes the application to crash due to an out-of-bounds read, leading to a denial of service. In some scenarios, this could potentially lead to information disclosure or arbitrary code execution, though the immediate impact is a crash.</p>
@@ -1324,58 +1413,6 @@ After:
 <a href="https://github.com/advisories/GHSA-q5jf-9vfq-h4h7">Advisory</a> · <a href="https://github.com/helm/helm/commit/05fa37973dc9e42b76e1d2883494c87174b6074f">Commit</a>
 </p>
 <hr>
-<h3>GHSA-vmx8-mqv2-9gmg</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-10 · Go<br>
-<code>helm.sh/helm/v4</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 10x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not validate the plugin version format, allowing an attacker to write files outside the Helm plugin directory.</p>
-<p><b>Impact</b> : An attacker could potentially overwrite or create arbitrary files on the server with the privileges of the user running Helm.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-
-After:
-+func isValidSemver(v string) bool {
-+    _, err := semver.NewVersion(v)
-+    return err == nil
-+}
-
--// Validate the plugin version
--if m.Version != &#34;&#34; &amp;&amp; !isValidSemver(m.Version) {
--    return fmt.Errorf(&#34;invalid plugin version %q: must be valid semver&#34;, m.Version)
--}</pre>
-</details>
-<p><b>Fix</b> : The patch adds a validation function for the plugin version using semantic versioning, ensuring that only valid versions can be used.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-vmx8-mqv2-9gmg">Advisory</a> · <a href="https://github.com/helm/helm/commit/36c8539e99bc42d7aef9b87d136254662d04f027">Commit</a>
-</p>
-<hr>
-<h3>GHSA-7437-7hg8-frrw</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly sanitize or denylist certain environment variables that could be used for command injection.</p>
-<p><b>Impact</b> : An attacker could inject malicious commands into the build environment, potentially leading to remote code execution (RCE).</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
--      const pinned = await resolvePinnedHostnameWithPolicy(parsedUrl.hostname, {
--        lookupFn: params.lookupFn,
--        policy: params.policy,
--      });
-After:
-+        const pinned = await resolvePinnedHostnameWithPolicy(parsedUrl.hostname, {
-+          lookupFn: params.lookupFn,
-+          policy: params.policy,
-+        });</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that critical environment variables like HGRCPATH, CARGO_BUILD_RUSTC_WRAPPER, RUSTC_WRAPPER, and MAKEFLAGS are properly sanitized or denied from being used in the build process.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-7437-7hg8-frrw">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1386,7 +1423,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 33 normalized pattern IDs
+             Map to closed taxonomy of 34 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1411,8 +1448,8 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>163</td></tr>
-<tr><td>Unique patterns</td><td>33</td></tr>
+<tr><td>Total advisories</td><td>165</td></tr>
+<tr><td>Unique patterns</td><td>34</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-04-16</td></tr>
 </table>

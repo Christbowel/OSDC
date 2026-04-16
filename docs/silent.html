@@ -79,9 +79,9 @@ footer a{color:var(--accent)}
 <header>
 <h1><span>Silent patch</span> detection</h1>
 <div class="header-meta">
-<span>244 suspects</span>
-<span>6636 commits scanned</span>
-<span>2026-04-15</span>
+<span>315 suspects</span>
+<span>8002 commits scanned</span>
+<span>2026-04-16</span>
 </div>
 </header>
 <div class="explainer">
@@ -13409,6 +13409,3930 @@ pub mod run;</div>
 <span>2026-01-29</span>
 <span>Drew Newberry</span>
 <a href="https://github.com/NVIDIA/OpenShell/commit/b0a719df2d4fda4429a2f22af89d5e362c8147c1" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="WWBN/AVideo objects/functionsSecurity.php fix: Add loopback IP validation to enhance security checks in request handling  3273c5b4bc4fe82fc032c9eef9c40d2545a50418">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/WWBN/AVideo/commit/3273c5b4bc4fe82fc032c9eef9c40d2545a50418" target="_blank" rel="noopener">3273c5b4</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">WWBN/AVideo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix: Add loopback IP validation to enhance security checks in request handling</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">objects/functionsSecurity.php (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:security[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">4</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    $remoteAddr = getRemoteAddrFromServerArray($_SERVER);
+    if (!empty($remoteAddr) &amp;&amp; isLoopbackIP($remoteAddr) &amp;&amp; isLoopbackIP(getRealIpAddr())) {
+        return false;
+    }</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Daniel Neto</span>
+<a href="https://github.com/WWBN/AVideo/commit/3273c5b4bc4fe82fc032c9eef9c40d2545a50418" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="23.0" data-searchable="NVIDIA/OpenShell crates/openshell-router/src/backend.rs fix(inference): allowlist routed request headers (#826) UNCLASSIFIED 25d2530b3c581db307caf0ef0607f8bd73938fcb">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/NVIDIA/OpenShell/commit/25d2530b3c581db307caf0ef0607f8bd73938fcb" target="_blank" rel="noopener">25d2530b</a>
+<span class="score-badge score-low">23.0</span>
+<span class="fp-tag">UNCLASSIFIED</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">NVIDIA/OpenShell</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix(inference): allowlist routed request headers (#826)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">crates/openshell-router/src/backend.rs (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">large_penalty</span>
+<span class="signal">+sanitize_request_headers</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.2</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">23.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">12</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">UNCLASSIFIED (similarity: 0.06)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">addr</span>
+<span class="signal">allowed</span>
+<span class="signal">and</span>
+<span class="signal">any</span>
+<span class="signal">async</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">/// Build an HTTP request to the backend configured in `route`.
+
+    // Strip auth and host headers — auth is re-injected above from the route
+    // config, and host must match the upstream.
+    let strip_headers: [&amp;str; 3] = [&#34;authorization&#34;, &#34;x-api-key&#34;, &#34;host&#34;];
+
+    // Forward non-sensitive hea</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">use std::collections::HashSet;
+const COMMON_INFERENCE_REQUEST_HEADERS: [&amp;str; 4] =
+    [&#34;content-type&#34;, &#34;accept&#34;, &#34;accept-encoding&#34;, &#34;user-agent&#34;];
+
+fn sanitize_request_headers(
+    route: &amp;ResolvedRoute,
+    headers: &amp;[(String, String)],
+) -&gt; Vec&lt;(String, String)&gt; {
+    let mut allowed = HashSet::n</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>John T. Myers</span>
+<a href="https://github.com/NVIDIA/OpenShell/commit/25d2530b3c581db307caf0ef0607f8bd73938fcb" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="25.8" data-searchable="strapi/strapi packages/core/content-manager/server/src/controllers/collection-types.ts fix: bulk publish validation on required components in dz (#25687) UNCLASSIFIED f57a81a5a3c8931385191a21e2aead29b3465978">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/strapi/strapi/commit/f57a81a5a3c8931385191a21e2aead29b3465978" target="_blank" rel="noopener">f57a81a5</a>
+<span class="score-badge score-low">25.8</span>
+<span class="fp-tag">UNCLASSIFIED</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">strapi/strapi</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix: bulk publish validation on required components in dz (#25687)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">packages/core/content-manager/server/src/controllers/collection-types.ts (file score: 9)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">moderate</span>
+<span class="signal">+sanitizeOutput</span>
+<span class="signal">+forbidden</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">19</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.3</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">25.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">8</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">UNCLASSIFIED (similarity: 0.07)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">and</span>
+<span class="signal">any</span>
+<span class="signal">async</span>
+<span class="signal">click</span>
+<span class="signal">code</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import { getPopulateForLocalizations } from &#39;../services/utils/populate&#39;;</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import { getPopulateForLocalizations, buildDeepPopulate } from &#39;../services/utils/populate&#39;;
+  async bulkFindForValidation(ctx: any) {
+    const { userAbility } = ctx.state;
+    const { model } = ctx.params;
+    const { documentIds, locale, sort } = ctx.request.body;
+
+    await validateBulkActionInp</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Adrien L</span>
+<a href="https://github.com/strapi/strapi/commit/f57a81a5a3c8931385191a21e2aead29b3465978" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="24.3" data-searchable="psf/requests src/requests/auth.py Move DigestAuth hash algorithms to use usedforsecurity=False (#7310) WEAK_CRYPTO a044b020dea43230585126901684a0f30ec635a8">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/psf/requests/commit/a044b020dea43230585126901684a0f30ec635a8" target="_blank" rel="noopener">a044b020</a>
+<span class="score-badge score-low">24.3</span>
+<span class="fp-tag">WEAK_CRYPTO</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">psf/requests</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Move DigestAuth hash algorithms to use usedforsecurity=False (#7310)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/requests/auth.py (file score: 15)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+<span class="signal">-md5</span>
+<span class="signal">-sha1</span>
+<span class="signal">swap:\bMD5\b→\bSHA256\b</span>
+<span class="signal">swap:\bSHA1\b→\bSHA256\b</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">2.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">24.3</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">1</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">WEAK_CRYPTO (similarity: 0.10)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">sha256</span>
+<span class="signal">sha512</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">                return hashlib.md5(x).hexdigest()
+                return hashlib.sha1(x).hexdigest()
+                return hashlib.sha256(x).hexdigest()
+                return hashlib.sha512(x).hexdigest()
+        cnonce = hashlib.sha1(s).hexdigest()[:16]</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">                return hashlib.md5(x, usedforsecurity=False).hexdigest()
+                return hashlib.sha1(x, usedforsecurity=False).hexdigest()
+                return hashlib.sha256(x, usedforsecurity=False).hexdigest()
+                return hashlib.sha512(x, usedforsecurity=False).hexdigest()
+ </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Nate Prewitt</span>
+<a href="https://github.com/psf/requests/commit/a044b020dea43230585126901684a0f30ec635a8" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="28.7" data-searchable="laravel/framework src/Illuminate/Console/Scheduling/Event.php [13.x] Enforce static calls (#59704)  1b6e77f3ecbf161c162f2237673bc267dd2330fd">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/laravel/framework/commit/1b6e77f3ecbf161c162f2237673bc267dd2330fd" target="_blank" rel="noopener">1b6e77f3</a>
+<span class="score-badge score-low">28.7</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">laravel/framework</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[13.x] Enforce static calls (#59704)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/Illuminate/Console/Scheduling/Event.php (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+<span class="signal">-sha1</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">23</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">28.7</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">16</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">            sha1($this-&gt;expression.$this-&gt;normalizeCommand($this-&gt;command ?? &#39;&#39;));</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">            sha1($this-&gt;expression.self::normalizeCommand($this-&gt;command ?? &#39;&#39;));</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Lucas Michot</span>
+<a href="https://github.com/laravel/framework/commit/1b6e77f3ecbf161c162f2237673bc267dd2330fd" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="35.3" data-searchable="laravel/framework tests/Auth/AuthGuardTest.php [13.x] testsuite (#59702) UNCLASSIFIED 0c22f7bb9d03fcafa653718830bff15b6259c3d4">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/laravel/framework/commit/0c22f7bb9d03fcafa653718830bff15b6259c3d4" target="_blank" rel="noopener">0c22f7bb</a>
+<span class="score-badge score-med">35.3</span>
+<span class="fp-tag">UNCLASSIFIED</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">laravel/framework</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[13.x] testsuite (#59702)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">tests/Auth/AuthGuardTest.php (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">27</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">35.3</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">31</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">UNCLASSIFIED (similarity: 0.05)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">and</span>
+<span class="signal">any</span>
+<span class="signal">case</span>
+<span class="signal">class</span>
+<span class="signal">client</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">        $guard-&gt;expects($this-&gt;once())-&gt;method(&#39;login&#39;)-&gt;with($this-&gt;equalTo($user));
+            static::assertInstanceOf(Authenticatable::class, $user);
+            static::assertInstanceOf(SessionGuard::class, $guard);
+            static::assertInstanceOf(Authenticatable::class, $user);
+         </div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">        $guard-&gt;expects($this-&gt;once())-&gt;method(&#39;login&#39;)-&gt;with($user);
+            $this-&gt;assertInstanceOf(Authenticatable::class, $user);
+            $this-&gt;assertInstanceOf(SessionGuard::class, $guard);
+            $this-&gt;assertInstanceOf(Authenticatable::class, $user);
+            $this-&gt;assertIns</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Lucas Michot</span>
+<a href="https://github.com/laravel/framework/commit/0c22f7bb9d03fcafa653718830bff15b6259c3d4" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="28.2" data-searchable="spring-projects/spring-security web/src/main/java/org/springframework/security/web/authentication/ui/HtmlTemplates.java Polish HtmlTemplates PROTOTYPE_POLLUTION→OVERRIDE 3cf9397a7d9c654eec72d9e9f63ee28aac076325">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/spring-projects/spring-security/commit/3cf9397a7d9c654eec72d9e9f63ee28aac076325" target="_blank" rel="noopener">3cf9397a</a>
+<span class="score-badge score-low">28.2</span>
+<span class="fp-tag">PROTOTYPE_POLLUTION→OVERRIDE</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">spring-projects/spring-security</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Polish HtmlTemplates</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">web/src/main/java/org/springframework/security/web/authentication/ui/HtmlTemplates.java (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:security[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.3</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">28.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">3</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">PROTOTYPE_POLLUTION→OVERRIDE (similarity: 0.07)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">key</span>
+<span class="signal">string</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">				String pattern = Pattern.quote(&#34;{{&#34; + key + &#34;}}&#34;);
+				template = template.replaceAll(pattern, this.values.get(key));</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">				String pattern = &#34;{{&#34; + key + &#34;}}&#34;;
+				template = template.replace(pattern, this.values.get(key));</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Josh Cummings</span>
+<a href="https://github.com/spring-projects/spring-security/commit/3cf9397a7d9c654eec72d9e9f63ee28aac076325" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="tokio-rs/axum axum-macros/tests/debug_handler/fail/single_wrong_return_tuple.stderr feat: add `#[diagnostic::on_unimplemented]` to `IntoResponse` and `IntoResponseParts` (#3723)  309d1bd9530eec2217134cb262760af1df42ee3b">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/tokio-rs/axum/commit/309d1bd9530eec2217134cb262760af1df42ee3b" target="_blank" rel="noopener">309d1bd9</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">tokio-rs/axum</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">feat: add `#[diagnostic::on_unimplemented]` to `IntoResponse` and `IntoResponseParts` (#3723)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">axum-macros/tests/debug_handler/fail/single_wrong_return_tuple.stderr (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:handler[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">5</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">  = note: See `https://docs.rs/axum/0.8/axum/response/trait.IntoResponse.html` for details</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Dihan Nahdi</span>
+<a href="https://github.com/tokio-rs/axum/commit/309d1bd9530eec2217134cb262760af1df42ee3b" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="curl/curl lib/vtls/x509asn1.c unittests: cleanups  7fd35f4c34c0034417c2fcbb69cfcff449f49d0c">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/curl/curl/commit/7fd35f4c34c0034417c2fcbb69cfcff449f49d0c" target="_blank" rel="noopener">7fd35f4c</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">curl/curl</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">unittests: cleanups</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">lib/vtls/x509asn1.c (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:tls[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">36</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block"> * unit test @1657
+ * Unit test @1656</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block"> * @unittest 1657
+ * @unittest 1656
+ *
+ * @unittest 1667</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Daniel Stenberg</span>
+<a href="https://github.com/curl/curl/commit/7fd35f4c34c0034417c2fcbb69cfcff449f49d0c" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="38.8" data-searchable="google/boringssl ssl/ssl_session.cc Add #includes missing from RPK implementation  168e92c64cf80249a91de1bf0b05ee239d9e7082">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/google/boringssl/commit/168e92c64cf80249a91de1bf0b05ee239d9e7082" target="_blank" rel="noopener">168e92c6</a>
+<span class="score-badge score-med">38.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">google/boringssl</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add #includes missing from RPK implementation</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">ssl/ssl_session.cc (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:session[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">31</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">38.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">#include &lt;openssl/pool.h&gt;</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Lily Chen</span>
+<a href="https://github.com/google/boringssl/commit/168e92c64cf80249a91de1bf0b05ee239d9e7082" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="37.5" data-searchable="google/boringssl ssl/extensions.cc Turn SSL_CREDENTIAL into a namespaced opaque struct  58645e460da4b5fa41d155bddaf1f0ef1bb248f6">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/google/boringssl/commit/58645e460da4b5fa41d155bddaf1f0ef1bb248f6" target="_blank" rel="noopener">58645e46</a>
+<span class="score-badge score-med">37.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">google/boringssl</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Turn SSL_CREDENTIAL into a namespaced opaque struct</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">ssl/extensions.cc (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">30</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">37.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">14</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">  SSL_CREDENTIAL *cred = creds[0].get();
+                                     const SSL_CREDENTIAL *cred,
+                                     uint16_t *out) {</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">  SSLCredential *cred = creds[0].get();
+                                     const SSLCredential *cred, uint16_t *out) {</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>David Benjamin</span>
+<a href="https://github.com/google/boringssl/commit/58645e460da4b5fa41d155bddaf1f0ef1bb248f6" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="wolfSSL/wolfssl src/ssl.c src/ssl.c, src/ssl_sess.c, src/x509.c, wolfssl/internal.h: rename wolfssl_get_ex_new_index() to wolfssl_local_get_ex_new_index().  bfca39a97b5d93ca98a1d6cb87be4ad7f3a05ac1">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/wolfSSL/wolfssl/commit/bfca39a97b5d93ca98a1d6cb87be4ad7f3a05ac1" target="_blank" rel="noopener">bfca39a9</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">wolfSSL/wolfssl</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/ssl.c, src/ssl_sess.c, src/x509.c, wolfssl/internal.h: rename wolfssl_get_ex_new_index() to wolfssl_local_get_ex_new_index().</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/ssl.c (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">4</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block"> * get_ex_new_index is a helper function for the following
+int wolfssl_get_ex_new_index(int class_index, long ctx_l, void* ctx_ptr,
+    return wolfssl_get_ex_new_index(WOLF_CRYPTO_EX_INDEX_SSL_CTX, idx, arg,
+                                    new_func, dup_func, free_func);
+    return wolfssl_get_e</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block"> * wolfssl_local_get_ex_new_index is a helper function for the following
+int wolfssl_local_get_ex_new_index(int class_index, long ctx_l, void* ctx_ptr,
+    return wolfssl_local_get_ex_new_index(WOLF_CRYPTO_EX_INDEX_SSL_CTX, idx,
+                                    arg, new_func, dup_func, free_func)</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Daniel Pouzzner</span>
+<a href="https://github.com/wolfSSL/wolfssl/commit/bfca39a97b5d93ca98a1d6cb87be4ad7f3a05ac1" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="golang/go src/compress/flate/load_store.go compress/flate: improve compression speed  388145c51b0781594327b2646894dfaaaaaac0c6">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/golang/go/commit/388145c51b0781594327b2646894dfaaaaaac0c6" target="_blank" rel="noopener">388145c5</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">golang/go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">compress/flate: improve compression speed</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/compress/flate/load_store.go (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">moderate</span>
+<span class="signal">+bounds check</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">46</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package flate
+
+// This file contains functions for loading and storing integers in little endian format.
+// These can be replaced with unsaf</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Klaus Post</span>
+<a href="https://github.com/golang/go/commit/388145c51b0781594327b2646894dfaaaaaac0c6" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="golang/go src/crypto/internal/fips140/drbg/entropy_wasm.go crypto/internal/fips140/drbg: build tag out entropy generation on Wasm  e32ec4742e3a9b5a28635e20806331afd587b429">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/golang/go/commit/e32ec4742e3a9b5a28635e20806331afd587b429" target="_blank" rel="noopener">e32ec474</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">golang/go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">crypto/internal/fips140/drbg: build tag out entropy generation on Wasm</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/crypto/internal/fips140/drbg/entropy_wasm.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:crypto[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">3</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build wasm
+
+package drbg
+
+func readFromEntropy(b []byte) {
+	panic(&#34;FIPS-140 entropy generation is not supported on Wasm&#34;)
+}</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-03-23</span>
+<span>Cherry Mui</span>
+<a href="https://github.com/golang/go/commit/e32ec4742e3a9b5a28635e20806331afd587b429" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="pyca/cryptography src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi Revert "Add ML-KEM-512 support (#14670)" (#14671)  2db5feeac5827d87e74ced25708a9153794684bb">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/pyca/cryptography/commit/2db5feeac5827d87e74ced25708a9153794684bb" target="_blank" rel="noopener">2db5feea</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">pyca/cryptography</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Revert &#34;Add ML-KEM-512 support (#14670)&#34; (#14671)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">12</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">class MLKEM512PrivateKey: ...
+class MLKEM512PublicKey: ...
+def generate_mlkem512_key() -&gt; mlkem.MLKEM512PrivateKey: ...
+def from_mlkem512_seed_bytes(data: Buffer) -&gt; mlkem.MLKEM512PrivateKey: ...
+def from_mlkem512_public_bytes(data: Buffer) -&gt; mlkem.MLKEM512PublicKey: ...</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Alex Gaynor</span>
+<a href="https://github.com/pyca/cryptography/commit/2db5feeac5827d87e74ced25708a9153794684bb" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="pyca/cryptography src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi Add ML-KEM-512 support (#14670)  d4beb60d870a57e46801237cc07da19d1e7a8a97">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/pyca/cryptography/commit/d4beb60d870a57e46801237cc07da19d1e7a8a97" target="_blank" rel="noopener">d4beb60d</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">pyca/cryptography</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add ML-KEM-512 support (#14670)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">12</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">class MLKEM512PrivateKey: ...
+class MLKEM512PublicKey: ...
+def generate_mlkem512_key() -&gt; mlkem.MLKEM512PrivateKey: ...
+def from_mlkem512_seed_bytes(data: Buffer) -&gt; mlkem.MLKEM512PrivateKey: ...
+def from_mlkem512_public_bytes(data: Buffer) -&gt; mlkem.MLKEM512PublicKey: ...</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Alex Gaynor</span>
+<a href="https://github.com/pyca/cryptography/commit/d4beb60d870a57e46801237cc07da19d1e7a8a97" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="pyca/cryptography src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi Add ML-KEM-1024 support (#14669)  bff564b0221bdb703578ee25640f708bd3b5168a">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/pyca/cryptography/commit/bff564b0221bdb703578ee25640f708bd3b5168a" target="_blank" rel="noopener">bff564b0</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">pyca/cryptography</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add ML-KEM-1024 support (#14669)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/cryptography/hazmat/bindings/_rust/openssl/mlkem.pyi (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">12</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">class MLKEM1024PrivateKey: ...
+class MLKEM1024PublicKey: ...
+def generate_mlkem1024_key() -&gt; mlkem.MLKEM1024PrivateKey: ...
+def from_mlkem1024_seed_bytes(data: Buffer) -&gt; mlkem.MLKEM1024PrivateKey: ...
+def from_mlkem1024_public_bytes(data: Buffer) -&gt; mlkem.MLKEM1024PublicKey: ...</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Alex Gaynor</span>
+<a href="https://github.com/pyca/cryptography/commit/bff564b0221bdb703578ee25640f708bd3b5168a" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="33.8" data-searchable="pyca/cryptography src/cryptography/hazmat/backends/openssl/backend.py MLKEM-768 with AWS-LC (#14598)  437507d1edc5594dd3156144877eee3895aa75ee">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/pyca/cryptography/commit/437507d1edc5594dd3156144877eee3895aa75ee" target="_blank" rel="noopener">437507d1</a>
+<span class="score-badge score-med">33.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">pyca/cryptography</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">MLKEM-768 with AWS-LC (#14598)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/cryptography/hazmat/backends/openssl/backend.py (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">27</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">33.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">20</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    def mlkem_supported(self) -&gt; bool:
+        return rust_openssl.CRYPTOGRAPHY_IS_AWSLC
+</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>dm</span>
+<a href="https://github.com/pyca/cryptography/commit/437507d1edc5594dd3156144877eee3895aa75ee" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="pyca/cryptography src/cryptography/hazmat/backends/openssl/backend.py Add ML-DSA support for BoringSSL (#14647)  4fb6ffa04ce657049b00ee5f99724d78fe310846">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/pyca/cryptography/commit/4fb6ffa04ce657049b00ee5f99724d78fe310846" target="_blank" rel="noopener">4fb6ffa0</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">pyca/cryptography</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add ML-DSA support for BoringSSL (#14647)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/cryptography/hazmat/backends/openssl/backend.py (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:ssl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">9</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">        return rust_openssl.CRYPTOGRAPHY_IS_AWSLC</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">        return (
+            rust_openssl.CRYPTOGRAPHY_IS_AWSLC
+            or rust_openssl.CRYPTOGRAPHY_IS_BORINGSSL
+        )</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Alex Gaynor</span>
+<a href="https://github.com/pyca/cryptography/commit/4fb6ffa04ce657049b00ee5f99724d78fe310846" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="25.0" data-searchable="keycloak/keycloak themes/src/main/resources/theme/base/login/resources/js/webauthnAuthenticate.js Pass and use rememberMe option in passkeys authenticators  95cdee91aac1bbff80c520ec40a96fd8ecea8096">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/keycloak/keycloak/commit/95cdee91aac1bbff80c520ec40a96fd8ecea8096" target="_blank" rel="noopener">95cdee91</a>
+<span class="score-badge score-low">25.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">keycloak/keycloak</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Pass and use rememberMe option in passkeys authenticators</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">themes/src/main/resources/theme/base/login/resources/js/webauthnAuthenticate.js (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:login[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">20</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">25.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">15</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    const rememberMe = document.getElementById(&#34;rememberMe&#34;);
+    if (rememberMe) {
+        const rememberMeInput = document.createElement(&#34;input&#34;);
+        rememberMeInput.type = &#34;hidden&#34;;
+        rememberMeInput.name = &#34;rememberMe&#34;;
+        rememberMeInput.value = rememberMe.checked ? &#34;on&#34; : &#34;off&#34;</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Ricardo Martin</span>
+<a href="https://github.com/keycloak/keycloak/commit/95cdee91aac1bbff80c520ec40a96fd8ecea8096" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="golang/go src/compress/flate/load_store.go compress/flate: improve compression speed  388145c51b0781594327b2646894dfaaaaaac0c6">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/golang/go/commit/388145c51b0781594327b2646894dfaaaaaac0c6" target="_blank" rel="noopener">388145c5</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">golang/go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">compress/flate: improve compression speed</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/compress/flate/load_store.go (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">moderate</span>
+<span class="signal">+bounds check</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">46</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package flate
+
+// This file contains functions for loading and storing integers in little endian format.
+// These can be replaced with unsaf</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Klaus Post</span>
+<a href="https://github.com/golang/go/commit/388145c51b0781594327b2646894dfaaaaaac0c6" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="golang/go src/crypto/internal/fips140/drbg/entropy_wasm.go crypto/internal/fips140/drbg: build tag out entropy generation on Wasm  e32ec4742e3a9b5a28635e20806331afd587b429">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/golang/go/commit/e32ec4742e3a9b5a28635e20806331afd587b429" target="_blank" rel="noopener">e32ec474</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">golang/go</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">crypto/internal/fips140/drbg: build tag out entropy generation on Wasm</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/crypto/internal/fips140/drbg/entropy_wasm.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:crypto[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">3</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">// Copyright 2026 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+//go:build wasm
+
+package drbg
+
+func readFromEntropy(b []byte) {
+	panic(&#34;FIPS-140 entropy generation is not supported on Wasm&#34;)
+}</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-03-23</span>
+<span>Cherry Mui</span>
+<a href="https://github.com/golang/go/commit/e32ec4742e3a9b5a28635e20806331afd587b429" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="rust-lang/rust compiler/rustc_expand/src/mbe/macro_parser.rs Rollup merge of #155311 - cyrgani:expand-clean, r=Kivooeo,petrochenkov  439410f68a87bc3020d2167873c84a505912213c">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/rust-lang/rust/commit/439410f68a87bc3020d2167873c84a505912213c" target="_blank" rel="noopener">439410f6</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">rust-lang/rust</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Rollup merge of #155311 - cyrgani:expand-clean, r=Kivooeo,petrochenkov</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">compiler/rustc_expand/src/mbe/macro_parser.rs (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:parser[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">16</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">                    if let Some(separator) = &amp;seq.separator {
+                        locs.push(MatcherLoc::SequenceSep { separator: separator.clone() });</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">                    if let Some(separator) = seq.separator {
+                        locs.push(MatcherLoc::SequenceSep { separator });</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Jonathan Brouwer</span>
+<a href="https://github.com/rust-lang/rust/commit/439410f68a87bc3020d2167873c84a505912213c" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="dotnet/runtime src/coreclr/vm/eepolicy.cpp Make UCO MethodDesc globals DAC-accessible (#126927)  39314d4dc2ca5b4cdd973e7c2068fe23320804a0">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/dotnet/runtime/commit/39314d4dc2ca5b4cdd973e7c2068fe23320804a0" target="_blank" rel="noopener">39314d4d</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">dotnet/runtime</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Make UCO MethodDesc globals DAC-accessible (#126927)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/coreclr/vm/eepolicy.cpp (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:policy[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">11</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">extern MethodDesc* g_pEnvironmentCallEntryPointMethodDesc;
+
+        // Skip Environment.CallEntryPoint so it doesn&#39;t appear in vanilla</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">        // Skip Environment.CallEntryPoint so it doesn&#39;t appear in</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Adeel Mujahid</span>
+<a href="https://github.com/dotnet/runtime/commit/39314d4dc2ca5b4cdd973e7c2068fe23320804a0" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="48.8" data-searchable="redis/redis src/acl.c Add new OBJ_GCRA type (#14905)  3bcfbbe92a60b28c85a163dd920f6777c974bdc4">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/redis/redis/commit/3bcfbbe92a60b28c85a163dd920f6777c974bdc4" target="_blank" rel="noopener">3bcfbbe9</a>
+<span class="score-badge score-med">48.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">redis/redis</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add new OBJ_GCRA type (#14905)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/acl.c (file score: 11)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:acl[._/]</span>
+<span class="signal">surgical</span>
+<span class="signal">+ratelimit</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">39</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">48.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">22</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    {&#34;ratelimit&#34;, ACL_CATEGORY_RATE_LIMIT},</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Mincho Paskalev</span>
+<a href="https://github.com/redis/redis/commit/3bcfbbe92a60b28c85a163dd920f6777c974bdc4" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="28.7" data-searchable="redis/redis src/Makefile Replace fast_float C++ library with pure C implementation (#14661)  670993a89de6ecd8751161d0f866d66f010e76d4">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/redis/redis/commit/670993a89de6ecd8751161d0f866d66f010e76d4" target="_blank" rel="noopener">670993a8</a>
+<span class="score-badge score-low">28.7</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">redis/redis</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Replace fast_float C++ library with pure C implementation (#14661)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/Makefile (file score: 10)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+<span class="signal">-sha1</span>
+<span class="signal">swap:\bSHA1\b→\bSHA256\b</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">23</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">28.7</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">19</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">DEPENDENCY_TARGETS=hiredis linenoise lua hdr_histogram fpconv fast_float xxhash
+FINAL_LIBS=-lm -lstdc++
+FINAL_CFLAGS+= -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src -I../deps/hdr_histogram -I../deps/fpconv -I../deps/fast_float -I../deps/xxhash
+REDIS_SERVER_OBJ=threads_mngr.o memory_prefetc</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">DEPENDENCY_TARGETS=hiredis linenoise lua hdr_histogram fpconv xxhash
+FINAL_LIBS=-lm
+FINAL_CFLAGS+= -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src -I../deps/hdr_histogram -I../deps/fpconv -I../deps/xxhash
+REDIS_SERVER_OBJ=threads_mngr.o memory_prefetch.o adlist.o quicklist.o ae.o anet.o dict</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Salvatore Sanfilippo</span>
+<a href="https://github.com/redis/redis/commit/670993a89de6ecd8751161d0f866d66f010e76d4" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="mongodb/mongo src/mongo/db/validate/validate_adaptor.cpp SERVER-123334 Integrate latest size/count into Collection API (#51746)  7442fa78cd058d00228759004be8d9cde5e45d7a">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/mongodb/mongo/commit/7442fa78cd058d00228759004be8d9cde5e45d7a" target="_blank" rel="noopener">7442fa78</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">mongodb/mongo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">SERVER-123334 Integrate latest size/count into Collection API (#51746)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/mongo/db/validate/validate_adaptor.cpp (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">26</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">                    if (const auto fastCount = coll-&gt;numRecords(opCtx); fastCount != _numRecords) {
+                    if (const auto fastSize = coll-&gt;dataSize(opCtx); fastSize != dataSizeTotal) {
+                    if (const auto fastCount = coll-&gt;numRecords(opCtx); fastCount != _numRecords) {
+  </div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">                    if (const auto fastCount = coll-&gt;latestSizeCount(opCtx).count;
+                        fastCount != _numRecords) {
+                    if (const auto fastSize = coll-&gt;latestSizeCount(opCtx).size;
+                        fastSize != dataSizeTotal) {
+                    if (const a</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Cedric Sirianni</span>
+<a href="https://github.com/mongodb/mongo/commit/7442fa78cd058d00228759004be8d9cde5e45d7a" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="mongodb/mongo jstests/extensions/view_pipeline_validator_extension.js SERVER-121320 Combine featureFlagExtensionViewsAndUnionWith with featureFlagExtensionsInsideHybridSearch (#51436)  c07b170c29f051dfb70a2574c41ee62f4af67faa">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/mongodb/mongo/commit/c07b170c29f051dfb70a2574c41ee62f4af67faa" target="_blank" rel="noopener">c07b170c</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">mongodb/mongo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">SERVER-121320 Combine featureFlagExtensionViewsAndUnionWith with featureFlagExtensionsInsideHybridSearch (#51436)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">jstests/extensions/view_pipeline_validator_extension.js (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">19</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block"> * @tags: [featureFlagExtensionsAPI, featureFlagExtensionViewsAndUnionWith]</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block"> * @tags: [featureFlagExtensionsAPI, featureFlagExtensionsInsideHybridSearch]</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Finley Lau</span>
+<a href="https://github.com/mongodb/mongo/commit/c07b170c29f051dfb70a2574c41ee62f4af67faa" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="31.2" data-searchable="mongodb/mongo jstests/auth/internal_command_auth_validation.js SERVER-122486 SERVER-123719 Make createCollection commit authoritative (#49675)  115d041ce59adaada2ae41c7d96d048d6e7ad24a">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/mongodb/mongo/commit/115d041ce59adaada2ae41c7d96d048d6e7ad24a" target="_blank" rel="noopener">115d041c</a>
+<span class="score-badge score-med">31.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">mongodb/mongo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">SERVER-122486 SERVER-123719 Make createCollection commit authoritative (#49675)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">jstests/auth/internal_command_auth_validation.js (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">25</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">31.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">25</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    _shardsvrCommitCreateCollectionMetadata: {
+        testname: &#34;_shardsvrCommitCreateCollectionMetadata&#34;,
+        command: {
+            _shardsvrCommitCreateCollectionMetadata: &#34;test.x&#34;,
+        },
+    },</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Pol Piñol Castuera</span>
+<a href="https://github.com/mongodb/mongo/commit/115d041ce59adaada2ae41c7d96d048d6e7ad24a" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="23.8" data-searchable="mongodb/mongo src/mongo/db/global_catalog/metadata_consistency_validation/metadata_consistency_util.cpp SERVER-86878 Remove StatusWith from plan_executor_factory::make() (#50226)  c5b0a52ee75685c6f8b777af40f24d306dbe4d54">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/mongodb/mongo/commit/c5b0a52ee75685c6f8b777af40f24d306dbe4d54" target="_blank" rel="noopener">c5b0a52e</a>
+<span class="score-badge score-low">23.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">mongodb/mongo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">SERVER-86878 Remove StatusWith from plan_executor_factory::make() (#50226)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/mongo/db/global_catalog/metadata_consistency_validation/metadata_consistency_util.cpp (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">19</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">23.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">24</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">    return uassertStatusOK(
+        plan_executor_factory::make(expCtx,
+                                    std::move(ws),
+                                    std::move(root),
+                                    boost::none,
+                                    PlanYieldPolicy::YieldPolicy::INTERRUPT</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    return plan_executor_factory::make(expCtx,
+                                       std::move(ws),
+                                       std::move(root),
+                                       boost::none,
+                                       PlanYieldPolicy::YieldPolicy::INTERRUPT_ONLY,
+      </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Niels Lohmann</span>
+<a href="https://github.com/mongodb/mongo/commit/c5b0a52ee75685c6f8b777af40f24d306dbe4d54" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="37.5" data-searchable="mongodb/mongo jstests/auth/lib/commands_lib.js SERVER-122849 Rename 'preventWrites' to 'blockReplicaSetWrites'  (#50744)  f7d0a4be4aa9325ea66632bd5e6649ac351f0b37">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/mongodb/mongo/commit/f7d0a4be4aa9325ea66632bd5e6649ac351f0b37" target="_blank" rel="noopener">f7d0a4be</a>
+<span class="score-badge score-med">37.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">mongodb/mongo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">SERVER-122849 Rename &#39;preventWrites&#39; to &#39;blockReplicaSetWrites&#39;  (#50744)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">jstests/auth/lib/commands_lib.js (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">30</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">37.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">42</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">            testname: &#34;preventWritesForInsufficientDiskSpace&#34;,
+                preventWritesForInsufficientDiskSpace: 1,
+                    !isFeatureEnabled(conn, &#34;featureFlagPreventWritesForInsufficientDiskSpace&#34;)
+                    privileges: [{resource: {cluster: true}, actions: [&#34;preventWrit</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">            testname: &#34;blockReplicaSetWrites&#34;,
+                blockReplicaSetWrites: 1,
+                    !isFeatureEnabled(conn, &#34;featureFlagBlockReplicaSetWrites&#34;)
+                    privileges: [{resource: {cluster: true}, actions: [&#34;blockReplicaSetWrites&#34;]}],</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Anna Maria Nestorov</span>
+<a href="https://github.com/mongodb/mongo/commit/f7d0a4be4aa9325ea66632bd5e6649ac351f0b37" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="27.5" data-searchable="postgres/postgres src/backend/tcop/postgres.c Rework signal handler infrastructure to pass sender info as argument.  3e2a1496bae628c379ca0a11ef5f5ba666f24ae8">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/postgres/postgres/commit/3e2a1496bae628c379ca0a11ef5f5ba666f24ae8" target="_blank" rel="noopener">3e2a1496</a>
+<span class="score-badge score-low">27.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">postgres/postgres</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Rework signal handler infrastructure to pass sender info as argument.</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/backend/tcop/postgres.c (file score: 10)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+<span class="signal">-system(</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">22</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">27.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">32</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">		pqsignal(SIGPIPE, SIG_IGN);
+		pqsignal(SIGUSR2, SIG_IGN);
+		pqsignal(SIGCHLD, SIG_DFL); /* system() requires this on some
+									 * platforms */</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">
+		/*
+		 * Record who sent the signal.  Will be 0 on platforms without
+		 * SA_SIGINFO, which is fine -- ProcessInterrupts() checks for that.
+		 * Only set on the first SIGTERM so we report the original sender.
+		 */
+		if (ProcDieSenderPid == 0)
+		{
+			ProcDieSenderPid = pg_siginfo-&gt;pid;
+			ProcDieS</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Andrew Dunstan</span>
+<a href="https://github.com/postgres/postgres/commit/3e2a1496bae628c379ca0a11ef5f5ba666f24ae8" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="containerd/containerd core/runtime/v2/shim_manager.go Add configuration for socket directory to the shim manager  e07a1aa4910addb4e5ed6ce7ed40e2b4889fa77d">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/containerd/containerd/commit/e07a1aa4910addb4e5ed6ce7ed40e2b4889fa77d" target="_blank" rel="noopener">e07a1aa4</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">containerd/containerd</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Add configuration for socket directory to the shim manager</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">core/runtime/v2/shim_manager.go (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">moderate</span>
+<span class="signal">+filepath.Clean</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">8</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">			socketDir := filepath.Join(ic.Properties[plugins.PropertyStateDir], &#34;..&#34;, &#34;s&#34;)
+				SocketDir:    socketDir,</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">
+	// SocketDir is the directory to place shim sockets. The path must be
+	// short enough to fit within the platform&#39;s unix socket path limit.
+	// Defaults:
+	//  Linux (UID 0):  /run/containerd/s
+	//  Linux (UID &gt;0): /run/$UID/containerd/s or /tmp/containerd-s-$(UID)
+	SocketDir string `toml:&#34;socket_d</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-01-14</span>
+<span>Derek McGowan</span>
+<a href="https://github.com/containerd/containerd/commit/e07a1aa4910addb4e5ed6ce7ed40e2b4889fa77d" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="35.0" data-searchable="hashicorp/consul command/acl/templatedpolicy/formatter.go update: go version to 1.26.2 (#23394)  fc8f069c1d946b90e92d2e74d9b8603cb1413e96">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/hashicorp/consul/commit/fc8f069c1d946b90e92d2e74d9b8603cb1413e96" target="_blank" rel="noopener">fc8f069c</a>
+<span class="score-badge score-med">35.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">hashicorp/consul</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">update: go version to 1.26.2 (#23394)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">command/acl/templatedpolicy/formatter.go (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:acl[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">28</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">35.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">26</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">	buffer.WriteString(fmt.Sprintf(&#34;Name:            %s\n&#34;, templatedPolicy.TemplateName))
+	buffer.WriteString(fmt.Sprintf(&#34;Description:     %s\n&#34;, templatedPolicy.Description))
+			buffer.WriteString(fmt.Sprintf(&#34;Schema:\n%s\n\n&#34;, templatedPolicy.Schema))
+		buffer.WriteString(fmt.Sprintf(&#34;Raw Template:</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">	fmt.Fprintf(&amp;buffer, &#34;Name:            %s\n&#34;, templatedPolicy.TemplateName)
+	fmt.Fprintf(&amp;buffer, &#34;Description:     %s\n&#34;, templatedPolicy.Description)
+			fmt.Fprintf(&amp;buffer, &#34;Schema:\n%s\n\n&#34;, templatedPolicy.Schema)
+		fmt.Fprintf(&amp;buffer, &#34;Raw Template:\n%s\n&#34;, templatedPolicy.Template)
+		fmt.Fp</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Sreeram Narayanan</span>
+<a href="https://github.com/hashicorp/consul/commit/fc8f069c1d946b90e92d2e74d9b8603cb1413e96" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="envoyproxy/envoy envoy/network/connection_handler.h HTTP: add overload action to close idle HTTP connections (#43612)  de4868777365628e649d957aa597202be3a0ed1c">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/envoyproxy/envoy/commit/de4868777365628e649d957aa597202be3a0ed1c" target="_blank" rel="noopener">de486877</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">envoyproxy/envoy</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">HTTP: add overload action to close idle HTTP connections (#43612)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">envoy/network/connection_handler.h (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:handler[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">15</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">  /**
+   * Close idle HTTP connections.
+   */
+  virtual void closeIdleHttpConnections(bool is_saturated) PURE;
+
+
+    // New method for handling idle connection closing
+    virtual void onCloseIdleHttpConnections(bool /*is_saturated*/) {
+      // Default implementation does nothing.
+      // Specific</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Ting Pan</span>
+<a href="https://github.com/envoyproxy/envoy/commit/de4868777365628e649d957aa597202be3a0ed1c" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="26.2" data-searchable="grafana/grafana pkg/registry/apis/secret/encryption/manager/manager.go Secrets: Add context to DEK method signatures (#122750)  9e5310010f00d3fa111d17743cd8e89d3faeea25">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/grafana/grafana/commit/9e5310010f00d3fa111d17743cd8e89d3faeea25" target="_blank" rel="noopener">9e531001</a>
+<span class="score-badge score-low">26.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">grafana/grafana</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Secrets: Add context to DEK method signatures (#122750)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">pkg/registry/apis/secret/encryption/manager/manager.go (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:encrypt</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">21</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">26.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">		if entry, exists := s.dataKeyCache.GetByLabel(namespace, label); exists &amp;&amp; entry.Active {
+		if entry, exists := s.dataKeyCache.GetById(namespace, id); exists &amp;&amp; entry.Active {
+	s.dataKeyCache.Flush(namespace.String())
+			s.dataKeyCache.RemoveExpired()
+	s.dataKeyCache.Set(namespace, entry)</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">		if entry, exists := s.dataKeyCache.GetByLabel(ctx, namespace, label); exists &amp;&amp; entry.Active {
+		if entry, exists := s.dataKeyCache.GetById(ctx, namespace, id); exists &amp;&amp; entry.Active {
+	s.dataKeyCache.Flush(ctx, namespace.String())
+			s.dataKeyCache.RemoveExpired(ctx)
+	s.dataKeyCache.Set(ctx, nam</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Michael Mandrus</span>
+<a href="https://github.com/grafana/grafana/commit/9e5310010f00d3fa111d17743cd8e89d3faeea25" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.9" data-searchable="grafana/grafana public/app/core/components/Page/PageHeader.tsx Datasources: Allow editing data source title (#122053) UNCLASSIFIED 73222a68380b236c2668a1c112db8bfa9ee4779c">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/grafana/grafana/commit/73222a68380b236c2668a1c112db8bfa9ee4779c" target="_blank" rel="noopener">73222a68</a>
+<span class="score-badge score-low">21.9</span>
+<span class="fp-tag">UNCLASSIFIED</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">grafana/grafana</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Datasources: Allow editing data source title (#122053)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">public/app/core/components/Page/PageHeader.tsx (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:header[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.2</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.9</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">9</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">UNCLASSIFIED (similarity: 0.06)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">and</span>
+<span class="signal">async</span>
+<span class="signal">autocomplete</span>
+<span class="signal">class</span>
+<span class="signal">click</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">  const titleElement = onEditTitle ? (
+    &lt;EditableTitle value={navItem.text} onEdit={onEditTitle} /&gt;
+  ) : (
+    &lt;div className={styles.title}&gt;
+      {navItem.img &amp;&amp; &lt;img className={styles.img} src={navItem.img} alt={`logo for ${navItem.text}`} /&gt;}
+      {renderTitle ? renderTitle(navItem.text) : </div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">          &lt;div className={styles.title}&gt;
+            {navItem.img &amp;&amp; &lt;img className={styles.img} src={navItem.img} alt={`logo for ${navItem.text}`} /&gt;}
+            {onEditTitle ? (
+              &lt;EditableTitle value={navItem.text} onEdit={onEditTitle} /&gt;
+            ) : renderTitle ? (
+             </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Matt Cowley</span>
+<a href="https://github.com/grafana/grafana/commit/73222a68380b236c2668a1c112db8bfa9ee4779c" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="grafana/grafana public/app/features/dashboard-scene/edit-pane/EditPaneHeader.tsx Dashboard: Simplify / unify handling of open sidebar pane (#122003)  77d062d2e1b29e131e737df883152c487dcf0996">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/grafana/grafana/commit/77d062d2e1b29e131e737df883152c487dcf0996" target="_blank" rel="noopener">77d062d2</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">grafana/grafana</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Dashboard: Simplify / unify handling of open sidebar pane (#122003)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">public/app/features/dashboard-scene/edit-pane/EditPaneHeader.tsx (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:header[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">30</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">  const pasteTarget = element instanceof RowItem || element instanceof TabItem ? element : undefined;
+                {pasteTarget &amp;&amp; hasCopiedPanel ? (
+                    onClick={() =&gt; editPane.pastePanel(pasteTarget, &#39;editPaneHeader&#39;)}</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">  // TODO this type check here is hacky and should be replaced with a more generic solid solution
+  const canPaste = element instanceof RowItem || element instanceof TabItem ? element : undefined;
+                {canPaste &amp;&amp; hasCopiedPanel ? (
+                    onClick={() =&gt; editPane.pastePanel(</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Torkel Ödegaard</span>
+<a href="https://github.com/grafana/grafana/commit/77d062d2e1b29e131e737df883152c487dcf0996" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="grafana/grafana pkg/registry/apis/preferences/legacy/preferences.go Preferences: Improve list behavior (fix orphaned teams) (#122639)  1049fdc81255cae4916e8fd5d1f7bacf3efd9d7a">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/grafana/grafana/commit/1049fdc81255cae4916e8fd5d1f7bacf3efd9d7a" target="_blank" rel="noopener">1049fdc8</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">grafana/grafana</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Preferences: Improve list behavior (fix orphaned teams) (#122639)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">pkg/registry/apis/preferences/legacy/preferences.go (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">12</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">	if user.GetIdentityType() == authlib.TypeAccessPolicy {
+		user = nil // nill user can see everything
+	}, func(p *preferenceModel) bool {
+		return true</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">	if user.GetIdentityType() != authlib.TypeUser {
+		return nil, fmt.Errorf(&#34;only users may list preferences&#34;)</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Ryan McKinley</span>
+<a href="https://github.com/grafana/grafana/commit/1049fdc81255cae4916e8fd5d1f7bacf3efd9d7a" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="elastic/elasticsearch x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/security/SecurityContext.java Extend `SecondaryAuthentication` to capture and restore transient headers (#146310)  cf7fb1f2ac56a29864fc303c374c8d3af4b90d34">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/elastic/elasticsearch/commit/cf7fb1f2ac56a29864fc303c374c8d3af4b90d34" target="_blank" rel="noopener">cf7fb1f2</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">elastic/elasticsearch</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Extend `SecondaryAuthentication` to capture and restore transient headers (#146310)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/security/SecurityContext.java (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:security[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    /**
+     * Runs the consumer in a new context as the secondary authenticated user, restoring any transient headers
+     * captured during secondary authentication into the new context. When this method returns, the original context is restored.
+     */
+    public &lt;T&gt; T executeWithSecondaryAuthen</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Slobodan Adamović</span>
+<a href="https://github.com/elastic/elasticsearch/commit/cf7fb1f2ac56a29864fc303c374c8d3af4b90d34" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="elastic/elasticsearch modules/reindex/src/main/java/org/elasticsearch/reindex/Reindexer.java Reindex Relocation: Prevent source task override task result (#145947)  5601a0d26b3e60dbc12097ac52be970c6d211e96">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/elastic/elasticsearch/commit/5601a0d26b3e60dbc12097ac52be970c6d211e96" target="_blank" rel="noopener">5601a0d2</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">elastic/elasticsearch</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Reindex Relocation: Prevent source task override task result (#145947)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">modules/reindex/src/main/java/org/elasticsearch/reindex/Reindexer.java (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">11</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">            // source task result should be present for top-level tasks only (e.g. leader or non-sliced worker)
+        assert task.isLeader() || (task.isWorker() &amp;&amp; task.getParentTaskId().isSet() == false)
+            : &#34;Only top level source task result should be stored, result for sliced workers </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Sam Xiao</span>
+<a href="https://github.com/elastic/elasticsearch/commit/5601a0d26b3e60dbc12097ac52be970c6d211e96" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="elastic/elasticsearch x-pack/plugin/inference/src/main/java/org/elasticsearch/xpack/inference/services/contextualai/ContextualAiResponseHandler.java [Inference API] Refactor Contextual AI integration and fix multiple issues (#145700)  fdcf9b2c35e253c7d798e5973fa20d0edf31f84a">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/elastic/elasticsearch/commit/fdcf9b2c35e253c7d798e5973fa20d0edf31f84a" target="_blank" rel="noopener">fdcf9b2c</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">elastic/elasticsearch</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[Inference API] Refactor Contextual AI integration and fix multiple issues (#145700)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">x-pack/plugin/inference/src/main/java/org/elasticsearch/xpack/inference/services/contextualai/ContextualAiResponseHandler.java (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:handler[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">31</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import org.elasticsearch.xpack.inference.services.contextualai.response.ContextualAiErrorResponseEntity;
+        super(requestType, parseFunction, ContextualAiErrorResponseEntity::fromResponse, supportsStreaming);</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import org.elasticsearch.xpack.inference.external.http.retry.ErrorResponse;
+        super(requestType, parseFunction, ErrorResponse::fromResponse, supportsStreaming);
+        } else if (statusCode == 503) {
+            throw new RetryException(true, buildError(SERVER_ERROR, request, result));</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Jan-Kazlouski-elastic</span>
+<a href="https://github.com/elastic/elasticsearch/commit/fdcf9b2c35e253c7d798e5973fa20d0edf31f84a" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="28.7" data-searchable="apache/kafka jmh-benchmarks/src/main/java/org/apache/kafka/jmh/record/CompressedRecordBatchValidationBenchmark.java KAFKA-20297: Move AbstractIterator, CircularIterator, CloseableIterator... into internal (#22052)  2299a06e3199b82969e42d91eab7c40f6a45a0e8">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/apache/kafka/commit/2299a06e3199b82969e42d91eab7c40f6a45a0e8" target="_blank" rel="noopener">2299a06e</a>
+<span class="score-badge score-low">28.7</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">apache/kafka</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">KAFKA-20297: Move AbstractIterator, CircularIterator, CloseableIterator... into internal (#22052)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">jmh-benchmarks/src/main/java/org/apache/kafka/jmh/record/CompressedRecordBatchValidationBenchmark.java (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">23</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">28.7</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">49</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import org.apache.kafka.common.utils.PrimitiveRef;</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import org.apache.kafka.common.utils.internals.PrimitiveRef;</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Ken Huang</span>
+<a href="https://github.com/apache/kafka/commit/2299a06e3199b82969e42d91eab7c40f6a45a0e8" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="23.8" data-searchable="apache/airflow airflow-core/src/airflow/ui/tests/e2e/specs/task-logs.spec.ts E2E: resilient page objects with toPass pattern and simple spec refactoring (#64666)  7aee753be6ba94e5db0ff32721b95334c3a93f90">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/apache/airflow/commit/7aee753be6ba94e5db0ff32721b95334c3a93f90" target="_blank" rel="noopener">7aee753b</a>
+<span class="score-badge score-low">23.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">apache/airflow</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">E2E: resilient page objects with toPass pattern and simple spec refactoring (#64666)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">airflow-core/src/airflow/ui/tests/e2e/specs/task-logs.spec.ts (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">-exec(</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">19</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">23.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">42</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import { expect, test } from &#34;@playwright/test&#34;;
+import { AUTH_FILE, testConfig } from &#34;playwright.config&#34;;
+
+import { TaskInstancePage } from &#34;../pages/TaskInstancePage&#34;;
+  const testDagId = testConfig.testDag.id;
+  let dagRunId: string;
+
+  test.beforeAll(async ({ browser }) =&gt; {
+    test.setTimeout</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import { testConfig } from &#34;playwright.config&#34;;
+import { expect, test } from &#34;tests/e2e/fixtures&#34;;
+  test.beforeEach(async ({ executedDagRun, page, taskInstancePage }) =&gt; {
+    // Clear localStorage — &#34;log settings&#34; test persists toggles that affect subsequent tests.
+    // Swallow SecurityError on </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Yeonguk Choo</span>
+<a href="https://github.com/apache/airflow/commit/7aee753be6ba94e5db0ff32721b95334c3a93f90" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="47.5" data-searchable="go-gitea/gitea templates/user/auth/captcha.tmpl Use Content-Security-Policy: script nonce (#37232)  82bfde2a37b8af833d7b9b703b73a03348b999e3">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/go-gitea/gitea/commit/82bfde2a37b8af833d7b9b703b73a03348b999e3" target="_blank" rel="noopener">82bfde2a</a>
+<span class="score-badge score-med">47.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">go-gitea/gitea</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Use Content-Security-Policy: script nonce (#37232)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">templates/user/auth/captcha.tmpl (file score: 11)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+<span class="signal">+nonce</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">38</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">47.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">18</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">	&lt;script defer src=&#39;{{.RecaptchaAPIScriptURL}}&#39;&gt;&lt;/script&gt;
+	&lt;script defer src=&#39;https://hcaptcha.com/1/api.js&#39;&gt;&lt;/script&gt;
+	&lt;script defer src=&#39;https://challenges.cloudflare.com/turnstile/v0/api.js&#39;&gt;&lt;/script&gt;</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">	&lt;script nonce=&#34;{{ctx.CspScriptNonce}}&#34; defer src=&#39;{{.RecaptchaAPIScriptURL}}&#39;&gt;&lt;/script&gt;
+	&lt;script nonce=&#34;{{ctx.CspScriptNonce}}&#34; defer src=&#39;https://hcaptcha.com/1/api.js&#39;&gt;&lt;/script&gt;
+	&lt;script nonce=&#34;{{ctx.CspScriptNonce}}&#34; defer src=&#39;https://challenges.cloudflare.com/turnstile/v0/api.js&#39;&gt;&lt;/script&gt;</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>wxiaoguang</span>
+<a href="https://github.com/go-gitea/gitea/commit/82bfde2a37b8af833d7b9b703b73a03348b999e3" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.7" data-searchable="go-gitea/gitea eslint.config.ts Remove htmx (#37224) UNCLASSIFIED 2644bb8490e7d6e3be5c4548b02c76eacd196569">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/go-gitea/gitea/commit/2644bb8490e7d6e3be5c4548b02c76eacd196569" target="_blank" rel="noopener">2644bb84</a>
+<span class="score-badge score-low">20.7</span>
+<span class="fp-tag">UNCLASSIFIED</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">go-gitea/gitea</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Remove htmx (#37224)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">eslint.config.ts (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">15</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">1.3</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.7</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">22</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">fingerprint match</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">UNCLASSIFIED (similarity: 0.06)</div>
+<div class="signals" style="margin-top:.25rem">
+<span class="signal">and</span>
+<span class="signal">any</span>
+<span class="signal">async</span>
+<span class="signal">because</span>
+<span class="signal">but</span>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">        {name: &#39;htmx.org&#39;, message: &#39;Use the global htmx instead&#39;, allowTypeImports: true},
+    languageOptions: {globals: {...globals.browser, ...globals.jquery, htmx: false}},</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    languageOptions: {globals: {...globals.browser, ...globals.jquery}},</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>wxiaoguang</span>
+<a href="https://github.com/go-gitea/gitea/commit/2644bb8490e7d6e3be5c4548b02c76eacd196569" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="45.0" data-searchable="gravitational/teleport lib/auth/auth_with_roles.go MWI Scopes[4]: Scoped bot joining and bound keypair support (#65366)  edabc9f89c1ba7c963ac287e8feefb27fa2d4599">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/gravitational/teleport/commit/edabc9f89c1ba7c963ac287e8feefb27fa2d4599" target="_blank" rel="noopener">edabc9f8</a>
+<span class="score-badge score-med">45.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">gravitational/teleport</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">MWI Scopes[4]: Scoped bot joining and bound keypair support (#65366)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">lib/auth/auth_with_roles.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">36</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">45.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">31</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">
+		// We&#39;ve established this is an internal cert renewal, so pass through
+		// the BotInternal flag if set.
+		if a.context.Identity.GetIdentity().BotInternal {
+			certReq.BotInternal = true
+		}</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Tim Buckley</span>
+<a href="https://github.com/gravitational/teleport/commit/edabc9f89c1ba7c963ac287e8feefb27fa2d4599" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="32.5" data-searchable="gravitational/teleport integrations/terraform/provider/resource_teleport_auth_preference.go terraform: Add `ui_config` resource to terraform provider (#65201)  7050ec97cdf3e0317e92fb2f5b6a308c8a53270b">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/gravitational/teleport/commit/7050ec97cdf3e0317e92fb2f5b6a308c8a53270b" target="_blank" rel="noopener">7050ec97</a>
+<span class="score-badge score-med">32.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">gravitational/teleport</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">terraform: Add `ui_config` resource to terraform provider (#65201)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">integrations/terraform/provider/resource_teleport_auth_preference.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">26</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">32.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">26</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">	if trace.IsNotFound(err) {
+		resp.State.RemoveResource(ctx)
+		return
+	}</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Kevin</span>
+<a href="https://github.com/gravitational/teleport/commit/7050ec97cdf3e0317e92fb2f5b6a308c8a53270b" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="47.5" data-searchable="gravitational/teleport lib/auth/auth.go Support username in role templates and expressions (#64888)  1e7abe087397d3a7017085356790685de64de816">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/gravitational/teleport/commit/1e7abe087397d3a7017085356790685de64de816" target="_blank" rel="noopener">1e7abe08</a>
+<span class="score-badge score-med">47.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">gravitational/teleport</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Support username in role templates and expressions (#64888)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">lib/auth/auth.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">38</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">47.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">26</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">		roles[i], err = services.ApplyTraits(req.Roles[i], req.User.GetTraits())
+		roleSet, err := services.FetchRoles(userState.GetRoles(), a, userState.GetTraits())</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">		roles[i], err = services.ApplyTraitsWithContext(req.Roles[i], services.RoleTemplateContext{
+			Username: req.User.GetName(),
+			Traits:   req.User.GetTraits(),
+		})
+		roleSet, err := services.FetchRolesForUser(userState, a)</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Dan Upton</span>
+<a href="https://github.com/gravitational/teleport/commit/1e7abe087397d3a7017085356790685de64de816" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="33.8" data-searchable="gravitational/teleport session/sftputils/local.go session-helper: move the sftp subcommand to reexec.RunAndExit (#65392)  bcffdcbfd68892a047edaba9d49af034c85974ee">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/gravitational/teleport/commit/bcffdcbfd68892a047edaba9d49af034c85974ee" target="_blank" rel="noopener">bcffdcbf</a>
+<span class="score-badge score-med">33.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">gravitational/teleport</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">session-helper: move the sftp subcommand to reexec.RunAndExit (#65392)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">session/sftputils/local.go (file score: 10)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:session[._/]</span>
+<span class="signal">moderate</span>
+<span class="signal">+RealPath</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">27</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">33.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">34</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">package sftp
+
+	&#34;github.com/gravitational/teleport/lib/defaults&#34;
+// localFS provides API for accessing the files on
+type localFS struct{}
+func (l localFS) Type() string {
+func (l localFS) Glob(pattern string) ([]string, error) {
+func (l localFS) Stat(path string) (os.FileInfo, error) {
+func (l localF</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">package sftputils
+// LocalFS provides API for accessing the files on
+type LocalFS struct{}
+func (l LocalFS) Type() string {
+func (l LocalFS) Glob(pattern string) ([]string, error) {
+func (l LocalFS) Stat(path string) (os.FileInfo, error) {
+func (l LocalFS) ReadDir(path string) ([]os.FileInfo, error)</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Edoardo Spadolini</span>
+<a href="https://github.com/gravitational/teleport/commit/bcffdcbfd68892a047edaba9d49af034c85974ee" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="50.0" data-searchable="gravitational/teleport lib/auth/accesspoint/accesspoint.go Beams service dependencies (#65524)  cfa9901bd418aedbee24451950db072c36570875">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/gravitational/teleport/commit/cfa9901bd418aedbee24451950db072c36570875" target="_blank" rel="noopener">cfa9901b</a>
+<span class="score-badge score-med">50.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">gravitational/teleport</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Beams service dependencies (#65524)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">lib/auth/accesspoint/accesspoint.go (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">40</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">50.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">24</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">	Beams                   services.BeamReader
+		Beams:                   cfg.Beams,</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Dan Upton</span>
+<a href="https://github.com/gravitational/teleport/commit/cfa9901bd418aedbee24451950db072c36570875" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="23.8" data-searchable="wazuh/wazuh src/engine/source/builder/src/builders/opfilter/opBuilderHelperFilter.cpp Improve unclasified and indexer metrics  d9022ef483434f0b3887c6d9614bc812828aab36">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/wazuh/wazuh/commit/d9022ef483434f0b3887c6d9614bc812828aab36" target="_blank" rel="noopener">d9022ef4</a>
+<span class="score-badge score-low">23.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">wazuh/wazuh</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Improve unclasified and indexer metrics</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/engine/source/builder/src/builders/opfilter/opBuilderHelperFilter.cpp (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:filter[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">19</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">23.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">34</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">    // Per-space metric: count unclassified events in this space
+    const auto&amp; spaceName = buildCtx-&gt;context().originSpace;
+    auto unclassifiedCounter = fastmetrics::manager().getOrCreateCounter(&#34;space.&#34; + spaceName + &#34;.events.unclassified&#34;);
+
+    // Return Op
+            unclassifiedCounter-&gt;ad</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-10</span>
+<span>Nahuel Figueroa</span>
+<a href="https://github.com/wazuh/wazuh/commit/d9022ef483434f0b3887c6d9614bc812828aab36" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="falcosecurity/falco userspace/engine/formats.cpp fix(userspace): add portable compat wrappers for gmtime_r, localtime_r, strerror_r  5e6fc5784b00c2bc1c42c890f228b10104741b52">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/falcosecurity/falco/commit/5e6fc5784b00c2bc1c42c890f228b10104741b52" target="_blank" rel="noopener">5e6fc578</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">falcosecurity/falco</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix(userspace): add portable compat wrappers for gmtime_r, localtime_r, strerror_r</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">userspace/engine/formats.cpp (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">9</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">		gmtime_r(&amp;evttime, &amp;tm_buf);</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">#include &#34;compat.h&#34;
+		falco_gmtime_r(&amp;evttime, &amp;tm_buf);</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-09</span>
+<span>Leonardo Grasso</span>
+<a href="https://github.com/falcosecurity/falco/commit/5e6fc5784b00c2bc1c42c890f228b10104741b52" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="25.0" data-searchable="drupal/drupal core/modules/basic_auth/tests/src/Functional/BasicAuthTest.php task: #3451483 Improve Dynamic Page Cache headers for HTML and JSON 4xx responses  496796e0a3e9d643bab060ce00aaf4f8bf35755b">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/drupal/drupal/commit/496796e0a3e9d643bab060ce00aaf4f8bf35755b" target="_blank" rel="noopener">496796e0</a>
+<span class="score-badge score-low">25.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">drupal/drupal</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">task: #3451483 Improve Dynamic Page Cache headers for HTML and JSON 4xx responses</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">core/modules/basic_auth/tests/src/Functional/BasicAuthTest.php (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:auth[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">20</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">25.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">10</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">    $assert_response_cacheability = function ($expected_page_cache_header_value, $expected_dynamic_page_cache_header_value) use ($url) {
+      $this-&gt;assertSession()-&gt;responseHeaderEquals(&#39;X-Drupal-Dynamic-Cache&#39;, $expected_dynamic_page_cache_header_value);
+    // 1. First request: cold caches, both</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    $assert_response_cacheability = function ($expected_page_cache_header_value, $expected_dynamic_page_cache_header_sub_request_value) use ($url) {
+      $this-&gt;assertSession()-&gt;responseHeaderEquals(&#39;X-Drupal-Dynamic-Cache&#39;, &#34;UNCACHEABLE (401, sub-request: $expected_dynamic_page_cache_header_sub_re</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>catch</span>
+<a href="https://github.com/drupal/drupal/commit/496796e0a3e9d643bab060ce00aaf4f8bf35755b" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="25.0" data-searchable="directus/directus api/src/services/fields.ts Fix MSSQL schema application failing for text fields with MAX length … (#26934)  1c7b9e7e2465a2c50a2ac74e1cda9d9c2dc4af88">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/directus/directus/commit/1c7b9e7e2465a2c50a2ac74e1cda9d9c2dc4af88" target="_blank" rel="noopener">1c7b9e7e</a>
+<span class="score-badge score-low">25.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">directus/directus</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Fix MSSQL schema application failing for text fields with MAX length … (#26934)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">api/src/services/fields.ts (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+<span class="signal">+maxLength</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">20</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">25.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">8</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">			column = table.string(field.field, field.schema?.max_length ?? existing?.max_length ?? undefined);</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">			// Use !== undefined so an explicit null (meaning MAX / unbounded) is not swallowed by ??.
+			const maxLength =
+				field.schema?.max_length !== undefined ? field.schema.max_length : (existing?.max_length ?? undefined);
+
+			// On MSSQL, null max_length means nvarchar(MAX). Knex&#39;s table.text() is </div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Saquib Beg</span>
+<a href="https://github.com/directus/directus/commit/1c7b9e7e2465a2c50a2ac74e1cda9d9c2dc4af88" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="30.0" data-searchable="payloadcms/payload packages/payload/src/collections/config/sanitize.spec.ts feat(next): add support for custom collection views (#16243)  835a0ad49055dada6c7cffdb5515cb8d8a5ca576">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/payloadcms/payload/commit/835a0ad49055dada6c7cffdb5515cb8d8a5ca576" target="_blank" rel="noopener">835a0ad4</a>
+<span class="score-badge score-med">30.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">payloadcms/payload</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">feat(next): add support for custom collection views (#16243)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">packages/payload/src/collections/config/sanitize.spec.ts (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:sanitiz</span>
+<span class="signal">large_penalty</span>
+<span class="signal">+sanitize</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">24</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">30.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">20</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import type { CollectionConfig } from &#39;./types.js&#39;
+
+import { afterEach, beforeEach, describe, expect, it, vi } from &#39;vitest&#39;
+
+import { warnOnInvalidCustomViews } from &#39;./sanitize.js&#39;
+
+describe(&#39;warnOnInvalidCustomViews&#39;, () =&gt; {
+  let warnSpy: ReturnType&lt;typeof vi.spyOn&gt;
+
+  beforeEach(() =&gt; {
+    wa</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Paul</span>
+<a href="https://github.com/payloadcms/payload/commit/835a0ad49055dada6c7cffdb5515cb8d8a5ca576" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="Azure/azure-sdk-for-python sdk/agentserver/azure-ai-agentserver-responses/azure/ai/agentserver/responses/__init__.py [agentserver-responses] Harden response model, type safety, and builder API (#46302)  310def12efb8089fd362b37c5318d8424660721b">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/Azure/azure-sdk-for-python/commit/310def12efb8089fd362b37c5318d8424660721b" target="_blank" rel="noopener">310def12</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">Azure/azure-sdk-for-python</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[agentserver-responses] Harden response model, type safety, and builder API (#46302)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">sdk/agentserver/azure-ai-agentserver-responses/azure/ai/agentserver/responses/__init__.py (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">35</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">    to_output_item,
+    &#34;to_output_item&#34;,</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Ankit Sinha</span>
+<a href="https://github.com/Azure/azure-sdk-for-python/commit/310def12efb8089fd362b37c5318d8424660721b" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="Azure/azure-cli src/azure-cli/azure/cli/command_modules/storage/_validators.py [Storage] `az storage blob/container/share/file/queue/fs generate-sas`: Add `--user-delegation-tid` to support cross tenant user delegated sas (#33187)  e3d11321e81b0256249bb6b17d0579838dc5213e">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/Azure/azure-cli/commit/e3d11321e81b0256249bb6b17d0579838dc5213e" target="_blank" rel="noopener">e3d11321</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">Azure/azure-cli</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[Storage] `az storage blob/container/share/file/queue/fs generate-sas`: Add `--user-delegation-tid` to support cross tenant user delegated sas (#33187)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/azure-cli/azure/cli/command_modules/storage/_validators.py (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">25</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">            None, &#34;incorrect usage: need to specify &#39;--as-user&#39; when &#39;--user-delegation-oid&#39; is &#34;
+                  &#34;provided&#34;)</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">            None, &#34;incorrect usage: need to specify &#39;--as-user&#39; when &#39;--user-delegation-oid&#39; is provided&#34;)
+
+
+def user_delegation_tid_validator(namespace):
+    if namespace.user_delegation_tid and not namespace.user_delegation_oid:
+        raise argparse.ArgumentError(
+            None, &#34;incorrect us</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Zhiyi Huang</span>
+<a href="https://github.com/Azure/azure-cli/commit/e3d11321e81b0256249bb6b17d0579838dc5213e" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="Azure/azure-cli src/azure-cli/azure/cli/command_modules/containerapp/_validators.py [Containerapp] `az containerapp create`: Support other cloud for acr (#33160)  adb78953b2b0c0debe5be51aa02262baacba0626">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/Azure/azure-cli/commit/adb78953b2b0c0debe5be51aa02262baacba0626" target="_blank" rel="noopener">adb78953</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">Azure/azure-cli</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[Containerapp] `az containerapp create`: Support other cloud for acr (#33160)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/azure-cli/azure/cli/command_modules/containerapp/_validators.py (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">from ._utils import safe_get, is_registry_msi_system
+from ._constants import ACR_IMAGE_SUFFIX, LOG_TYPE_SYSTEM, MANAGED_ENVIRONMENT_RESOURCE_TYPE
+    if registry_identity and ACR_IMAGE_SUFFIX not in (registry_server or &#34;&#34;):
+        raise InvalidArgumentValueError(&#34;--registry-identity: expected an AC</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">from ._utils import safe_get, is_registry_msi_system, is_acr_url
+from ._constants import LOG_TYPE_SYSTEM, MANAGED_ENVIRONMENT_RESOURCE_TYPE
+    if registry_identity and not is_acr_url(registry_server or &#34;&#34;):
+        raise InvalidArgumentValueError(&#34;--registry-identity: expected an ACR registry (*.az</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Greedygre</span>
+<a href="https://github.com/Azure/azure-cli/commit/adb78953b2b0c0debe5be51aa02262baacba0626" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="30.0" data-searchable="FasterXML/jackson-databind src/main/java/tools/jackson/databind/deser/bean/BeanDeserializer.java Fix #5897: skip TokenBuffer allocation for unknown properties in records (#5907)  a7998cc9f989de2154150ab490b4c8c31257f1b0">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/FasterXML/jackson-databind/commit/a7998cc9f989de2154150ab490b4c8c31257f1b0" target="_blank" rel="noopener">a7998cc9</a>
+<span class="score-badge score-med">30.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">FasterXML/jackson-databind</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Fix #5897: skip TokenBuffer allocation for unknown properties in records (#5907)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/main/java/tools/jackson/databind/deser/bean/BeanDeserializer.java (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:deserializ</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">24</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">30.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">            //    properties also separately handled)
+            if (_ignoreAllUnknown) {</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">        final boolean skipUnknown = _shouldSkipUnknowns(ctxt);
+            //    properties also separately handled). Covers `_ignoreAllUnknown` and
+            //    [databind#5897] (final type, no handlers, `FAIL_ON_UNKNOWN_PROPERTIES` off).
+            if (skipUnknown) {</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Viktor Szathmáry</span>
+<a href="https://github.com/FasterXML/jackson-databind/commit/a7998cc9f989de2154150ab490b4c8c31257f1b0" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="FasterXML/jackson-databind src/main/java/tools/jackson/databind/deser/bean/BeanDeserializerBase.java Fix #5911: aliases w/ unwrapped (#5913)  9a7d8eb3e6ae7adba3470ed15a4f1b2361558640">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/FasterXML/jackson-databind/commit/9a7d8eb3e6ae7adba3470ed15a4f1b2361558640" target="_blank" rel="noopener">9a7d8eb3</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">FasterXML/jackson-databind</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Fix #5911: aliases w/ unwrapped (#5913)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/main/java/tools/jackson/databind/deser/bean/BeanDeserializerBase.java (file score: 6)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:deserializ</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">5</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">        // [databind#5911]: also include alias names so outer bean can route
+        // @JsonAlias-matched properties into this unwrapped deserializer.
+        _beanProperties.collectAliasNames(names);</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Tatu Saloranta</span>
+<a href="https://github.com/FasterXML/jackson-databind/commit/9a7d8eb3e6ae7adba3470ed15a4f1b2361558640" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="38.8" data-searchable="lobehub/lobe-chat packages/database/src/models/session.ts ♻️ refactor: createAgent uses `agentModel.create` directly (#13871)  4203e32dc7925d6da13ef318e4971561f46cd7ee">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/lobehub/lobe-chat/commit/4203e32dc7925d6da13ef318e4971561f46cd7ee" target="_blank" rel="noopener">4203e32d</a>
+<span class="score-badge score-med">38.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">lobehub/lobe-chat</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">♻️ refactor: createAgent uses `agentModel.create` directly (#13871)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">packages/database/src/models/session.ts (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:session[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">31</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">38.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">11</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">  /**
+   * @deprecated Use AgentModel.create for creating agents directly.
+   * This method creates both a session and an agent, which is the legacy pattern.
+   */</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Arvin Xu</span>
+<a href="https://github.com/lobehub/lobe-chat/commit/4203e32dc7925d6da13ef318e4971561f46cd7ee" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="lobehub/lobe-chat src/store/chat/slices/aiChat/actions/gatewayEventHandler.ts ♻️ refactor: extract agent-stream into `@lobechat/agent-gateway-client` package (#13866)  dd81642d83fad143fdd0450349f7d4dab3fa5c55">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/lobehub/lobe-chat/commit/dd81642d83fad143fdd0450349f7d4dab3fa5c55" target="_blank" rel="noopener">dd81642d</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">lobehub/lobe-chat</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">♻️ refactor: extract agent-stream into `@lobechat/agent-gateway-client` package (#13866)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">src/store/chat/slices/aiChat/actions/gatewayEventHandler.ts (file score: 4)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:handler[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">18</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import type { ConversationContext } from &#39;@lobechat/types&#39;;
+
+} from &#39;@/libs/agent-stream&#39;;</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">} from &#39;@lobechat/agent-gateway-client&#39;;
+import type { ConversationContext } from &#39;@lobechat/types&#39;;
+</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Arvin Xu</span>
+<a href="https://github.com/lobehub/lobe-chat/commit/dd81642d83fad143fdd0450349f7d4dab3fa5c55" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="lobehub/lobe-chat packages/builtin-tool-activator/src/client/Inspector/ActivateTools/index.tsx 🐛 fix(conversation): improve workflow display when user intervention is pending (#13847)  bc7b798dbbd06d6a0fff8795ec3a140e8030d6fe">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/lobehub/lobe-chat/commit/bc7b798dbbd06d6a0fff8795ec3a140e8030d6fe" target="_blank" rel="noopener">bc7b798d</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">lobehub/lobe-chat</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">🐛 fix(conversation): improve workflow display when user intervention is pending (#13847)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">packages/builtin-tool-activator/src/client/Inspector/ActivateTools/index.tsx (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">13</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">import type { ActivateToolsParams, ActivateToolsState } from &#39;../../../types&#39;;
+      {activatedTools &amp;&amp; activatedTools.length &gt; 0 &amp;&amp; (
+          {activatedTools.map((tool) =&gt; (</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">import type { ActivatedToolInfo, ActivateToolsParams, ActivateToolsState } from &#39;../../../types&#39;;
+  const requestedTools: ActivatedToolInfo[] =
+    identifiers?.map((id) =&gt; ({ apiCount: 0, identifier: id, name: id })) ?? [];
+  const visibleTools =
+    activatedTools &amp;&amp; activatedTools.length &gt; 0 ? ac</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Innei</span>
+<a href="https://github.com/lobehub/lobe-chat/commit/bc7b798dbbd06d6a0fff8795ec3a140e8030d6fe" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="langchain-ai/langchain libs/core/langchain_core/_security/_exceptions.py chore(core): harden private SSRF utilities (#36768)  7d601dc2c6fd58b5dc97b013ba93c287e09490db">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/langchain-ai/langchain/commit/7d601dc2c6fd58b5dc97b013ba93c287e09490db" target="_blank" rel="noopener">7d601dc2</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">langchain-ai/langchain</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">chore(core): harden private SSRF utilities (#36768)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">libs/core/langchain_core/_security/_exceptions.py (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:security[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">9</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">&#34;&#34;&#34;SSRF protection exceptions.&#34;&#34;&#34;
+
+
+class SSRFBlockedError(Exception):
+    &#34;&#34;&#34;Raised when a request is blocked by SSRF protection policy.&#34;&#34;&#34;
+
+    def __init__(self, reason: str) -&gt; None:
+        self.reason = reason
+        super().__init__(f&#34;SSRF blocked: {reason}&#34;)</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>ccurme</span>
+<a href="https://github.com/langchain-ai/langchain/commit/7d601dc2c6fd58b5dc97b013ba93c287e09490db" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="20.0" data-searchable="rabbitmq/rabbitmq-server deps/oauth2_client/Makefile Fix issue relative to download to verify_none  9262aa8d6f47622480b2a138c23fae79c3ceb57f">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/rabbitmq/rabbitmq-server/commit/9262aa8d6f47622480b2a138c23fae79c3ceb57f" target="_blank" rel="noopener">9262aa8d</a>
+<span class="score-badge score-low">20.0</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">rabbitmq/rabbitmq-server</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Fix issue relative to download to verify_none</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">deps/oauth2_client/Makefile (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:oauth</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">16</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">20.0</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">3</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">TEST_DEPS = rabbitmq_ct_helpers cowboy</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">TEST_DEPS = rabbitmq_ct_helpers cowboy meck</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Marcial Rosales</span>
+<a href="https://github.com/rabbitmq/rabbitmq-server/commit/9262aa8d6f47622480b2a138c23fae79c3ceb57f" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="22.5" data-searchable="WWBN/AVideo objects/functionsSecurity.php fix: Add loopback IP validation to enhance security checks in request handling  3273c5b4bc4fe82fc032c9eef9c40d2545a50418">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/WWBN/AVideo/commit/3273c5b4bc4fe82fc032c9eef9c40d2545a50418" target="_blank" rel="noopener">3273c5b4</a>
+<span class="score-badge score-low">22.5</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">WWBN/AVideo</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix: Add loopback IP validation to enhance security checks in request handling</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">objects/functionsSecurity.php (file score: 7)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:security[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">18</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">22.5</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">4</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    $remoteAddr = getRemoteAddrFromServerArray($_SERVER);
+    if (!empty($remoteAddr) &amp;&amp; isLoopbackIP($remoteAddr) &amp;&amp; isLoopbackIP(getRealIpAddr())) {
+        return false;
+    }</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Daniel Neto</span>
+<a href="https://github.com/WWBN/AVideo/commit/3273c5b4bc4fe82fc032c9eef9c40d2545a50418" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="timescale/timescaledb tsl/src/continuous_aggs/invalidation_threshold.h Remove unused function  23ee16ad7ff5af546350f077d9ce6f513871ac7f">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/timescale/timescaledb/commit/23ee16ad7ff5af546350f077d9ce6f513871ac7f" target="_blank" rel="noopener">23ee16ad</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">timescale/timescaledb</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Remove unused function</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">tsl/src/continuous_aggs/invalidation_threshold.h (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:validat</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">extern int64 invalidation_threshold_get(int32 hypertable_id);</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Sven Klemm</span>
+<a href="https://github.com/timescale/timescaledb/commit/23ee16ad7ff5af546350f077d9ce6f513871ac7f" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="23.8" data-searchable="timescale/timescaledb tsl/src/bgw_policy/compression_api.h Remove some unused declarations  96de24ee788dbd7022aaa50f169ae13bcf21fcad">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/timescale/timescaledb/commit/96de24ee788dbd7022aaa50f169ae13bcf21fcad" target="_blank" rel="noopener">96de24ee</a>
+<span class="score-badge score-low">23.8</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">timescale/timescaledb</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">Remove some unused declarations</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">tsl/src/bgw_policy/compression_api.h (file score: 5)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">sec_file:policy[._/]</span>
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">19</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">23.8</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">6</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">int32 policy_compression_get_hypertable_id(const Jsonb *config);</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-14</span>
+<span>Sven Klemm</span>
+<a href="https://github.com/timescale/timescaledb/commit/96de24ee788dbd7022aaa50f169ae13bcf21fcad" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="21.2" data-searchable="astral-sh/ruff crates/ruff_db/src/diagnostic/mod.rs [ty] Add `--fix` mode (#24097)  ee9088eebf068f4b3a14f5ee34607f72d3513186">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/astral-sh/ruff/commit/ee9088eebf068f4b3a14f5ee34607f72d3513186" target="_blank" rel="noopener">ee9088ee</a>
+<span class="score-badge score-low">21.2</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">astral-sh/ruff</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">[ty] Add `--fix` mode (#24097)</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">crates/ruff_db/src/diagnostic/mod.rs (file score: 3)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">surgical</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">17</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">21.2</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">25</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">    pub fn has_applicable_fix(&amp;self, config: &amp;DisplayDiagnosticConfig) -&gt; bool {
+        self.fix()
+            .is_some_and(|fix| fix.applies(config.fix_applicability))</div>
+</div>
+<div class="field">
+<div class="field-label">added code (sample)</div>
+<div class="diff-block">    pub fn has_applicable_fix(&amp;self, fix_applicability: Applicability) -&gt; bool {
+        self.fix().is_some_and(|fix| fix.applies(fix_applicability))</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-15</span>
+<span>Micha Reiser</span>
+<a href="https://github.com/astral-sh/ruff/commit/ee9088eebf068f4b3a14f5ee34607f72d3513186" target="_blank" rel="noopener">view commit</a>
+</div>
+</div>
+<div class="card" data-score="28.7" data-searchable="npm/cli lib/commands/adduser.js fix!: remove npm adduser command  7357d7fd82a61657618d632b5a842d4d04335be5">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="commit-link" href="https://github.com/npm/cli/commit/7357d7fd82a61657618d632b5a842d4d04335be5" target="_blank" rel="noopener">7357d7fd</a>
+<span class="score-badge score-low">28.7</span>
+<span style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">npm/cli</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">commit message</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">fix!: remove npm adduser command</div>
+</div>
+<div class="field">
+<div class="field-label">primary suspect file</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem">lib/commands/adduser.js (file score: 8)</div>
+</div>
+<div class="field">
+<div class="field-label">detection signals</div>
+<div class="signals">
+<span class="signal">moderate</span>
+<span class="signal">-exec (</span>
+</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">score breakdown</div>
+<div class="score-grid">
+<div class="score-item"><span class="label">heuristic</span><span class="value">23</span></div>
+<div class="score-item"><span class="label">fingerprint</span><span class="value">0.0</span></div>
+<div class="score-item"><span class="label">normalized</span><span class="value">28.7</span></div>
+<div class="score-item"><span class="label">files changed</span><span class="value">28</span></div>
+</div>
+</div>
+<div class="field">
+<div class="field-label">removed code (sample)</div>
+<div class="diff-block">const { log, output } = require(&#39;proc-log&#39;)
+const { redactLog: replaceInfo } = require(&#39;@npmcli/redact&#39;)
+const auth = require(&#39;../utils/auth.js&#39;)
+const BaseCommand = require(&#39;../base-cmd.js&#39;)
+
+class AddUser extends BaseCommand {
+  static description = &#39;Add a registry user account&#39;
+  static name = &#39;a</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-02-26</span>
+<span>Michael Smith</span>
+<a href="https://github.com/npm/cli/commit/7357d7fd82a61657618d632b5a842d4d04335be5" target="_blank" rel="noopener">view commit</a>
 </div>
 </div>
 </div>

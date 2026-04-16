@@ -89,8 +89,8 @@ footer a{color:var(--accent)}
 <header>
 <h1><span>OSDC</span> · Open Source Daily Catch</h1>
 <div class="header-meta">
-<span>163 advisories</span>
-<span>33 patterns</span>
+<span>165 advisories</span>
+<span>34 patterns</span>
 <span>2026-04-16</span>
 </div>
 </header>
@@ -98,8 +98,8 @@ footer a{color:var(--accent)}
 <div class="dash-card" style="grid-column:1/-1">
 <h3>overview</h3>
 <div class="stat-grid">
-<div class="stat-box"><div class="stat-val">163</div><div class="stat-label">advisories</div></div>
-<div class="stat-box"><div class="stat-val">33</div><div class="stat-label">patterns</div></div>
+<div class="stat-box"><div class="stat-val">165</div><div class="stat-label">advisories</div></div>
+<div class="stat-box"><div class="stat-val">34</div><div class="stat-label">patterns</div></div>
 <div class="stat-box"><div class="stat-val" id="langCount">0</div><div class="stat-label">languages</div></div>
 <div class="stat-box"><div class="stat-val" id="critCount">0</div><div class="stat-label">critical</div></div>
 </div>
@@ -136,6 +136,145 @@ footer a{color:var(--accent)}
 <span class="count" id="resultCount"></span>
 </div>
 <div id="advisoryList">
+<div class="card" data-severity="CRITICAL" data-language="Python" data-date="2026-04-16" data-pattern="BUFFER_OVERFLOW→STACK" data-searchable="GHSA-2689-5p89-6j3j theopolis/uefi-firmware-parser uefi-firmware BUFFER_OVERFLOW→STACK Buffer Overflow Python The `MakeTable` function, responsible for creating Huffman code mapping tables, did not adequately validate the `BitLen` array values. Specifically, it failed to check if `BitLen[Index]` exceeded 16 or if `Start[Len]` (calculated from `BitLen`) could lead to an out-of-bounds write when indexing the `Table` array, which is allocated on the stack.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-2689-5p89-6j3j" target="_blank" rel="noopener">GHSA-2689-5p89-6j3j</a>
+<span class="sev sev-critical">CRITICAL 9.8</span>
+<span class="pattern">BUFFER_OVERFLOW→STACK</span>
+<span class="lang">Python</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">uefi-firmware · theopolis/uefi-firmware-parser</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The `MakeTable` function, responsible for creating Huffman code mapping tables, did not adequately validate the `BitLen` array values. Specifically, it failed to check if `BitLen[Index]` exceeded 16 or if `Start[Len]` (calculated from `BitLen`) could lead to an out-of-bounds write when indexing the `Table` array, which is allocated on the stack.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker providing specially crafted compressed data could cause a stack out-of-bounds write, potentially leading to arbitrary code execution or denial of service by corrupting stack data or control flow.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/uefi_firmware/compression/Tiano/Decompress.c
++++ b/uefi_firmware/compression/Tiano/Decompress.c
+@@ -208,14 +188,16 @@ Routine Description:
+   }
+ 
+   for (Index = 0; Index &lt; NumOfChar; Index++) {
++    if (BitLen[Index] &gt; 16) {
++      return (UINT16) BAD_TABLE;
++    }
+     Count[BitLen[Index]]++;
+   }
+ 
+@@ -245,18 +227,20 @@ Routine Description:
+ 
+     if (Len &lt;= TableBits) {
+ 
++      if (Start[Len] &gt;= NextCode || NextCode &gt; MaxTableLength) {
++        return (UINT16) BAD_TABLE;
++      }
++
+       for (Index = Start[Len]; Index &lt; NextCode; Index++) {
+-        if(Index &gt;= TableSize)
+-        {
+-          Sd-&gt;mBadAlgorithm = 1;
+-          return (UINT16) BAD_TABLE;
+-        } 
+         Table[Index] = Char;
+       }
++</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch adds checks within the `MakeTable` function to ensure that `BitLen[Index]` does not exceed 16 and that calculated table indices (`Start[Len]`) do not go out of bounds of the `Table` array. It also removes the `mBadAlgorithm` flag and replaces it with a direct return of `BAD_TABLE` upon detection of an invalid table.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Buffer Overflow</span>
+<a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-2689-5p89-6j3j" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="Python" data-date="2026-04-16" data-pattern="BUFFER_OVERFLOW→HEAP" data-searchable="GHSA-hm2w-vr2p-hq7w theopolis/uefi-firmware-parser uefi-firmware BUFFER_OVERFLOW→HEAP Heap Out-of-Bounds Write Python The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.">
+<div class="card-top">
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<a class="card-id" href="https://github.com/advisories/GHSA-hm2w-vr2p-hq7w" target="_blank" rel="noopener">GHSA-hm2w-vr2p-hq7w</a>
+<span class="sev sev-critical">CRITICAL 9.8</span>
+<span class="pattern">BUFFER_OVERFLOW→HEAP</span>
+<span class="lang">Python</span>
+</div>
+<button class="toggle-detail" onclick="toggleCard(this)">expand</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">package</div>
+<div class="field-value" style="font-family:var(--mono)">uefi-firmware · theopolis/uefi-firmware-parser</div>
+</div>
+<div class="field">
+<div class="field-label">root cause</div>
+<div class="field-value">The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.</div>
+</div>
+<div class="detail-hidden">
+<div class="field">
+<div class="field-label">impact</div>
+<div class="field-value">An attacker could craft a malicious compressed UEFI firmware image that, when processed by the decompressor, would trigger a heap out-of-bounds write. This could lead to denial of service (crash), arbitrary code execution, or other memory corruption issues, compromising the integrity and security of the system&#39;s firmware.</div>
+</div>
+<div class="field">
+<div class="field-label">key diff</div>
+<div class="diff-block">--- a/uefi_firmware/compression/Tiano/Decompress.c
++++ b/uefi_firmware/compression/Tiano/Decompress.c
+@@ -208,14 +188,16 @@ Routine Description:
+   }
+ 
+   for (Index = 0; Index &lt; NumOfChar; Index++) {
++    if (BitLen[Index] &gt; 16) {
++      return (UINT16) BAD_TABLE;
++    }
+     Count[BitLen[Index]]++;
+   }
+ 
+   // ... (lines omitted for brevity)
+ 
+     if (Len &lt;= TableBits) {
+ 
++      if (Start[Len] &gt;= NextCode || NextCode &gt; MaxTableLength) {
++        return (UINT16) BAD_TABLE;
++      }
++
+       for (Index = Start[Len]; Index &lt; NextCode; Index++) {
+-        if(Index &gt;= TableSize)
+-        {
+-          Sd-&gt;mBadAlgorithm = 1;
+-          return (UINT16) BAD_TABLE;
+-        } 
+         Table[Index] = Char;
+       }
++
+     } else {</div>
+</div>
+<div class="field">
+<div class="field-label">fix</div>
+<div class="field-value">The patch introduces explicit bounds checks within the `MakeTable` function. It now verifies that `BitLen[Index]` does not exceed 16 and that `Start[Len]` and `NextCode` remain within the `MaxTableLength` before writing to the `Table` array. Additionally, it removes the `mBadAlgorithm` flag and simplifies the `TableSize` calculation, ensuring that all writes to `Table` are within its allocated memory.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-16</span>
+<span>Heap Out-of-Bounds Write</span>
+<a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e" target="_blank" rel="noopener">view commit</a>
+<a href="https://github.com/advisories/GHSA-hm2w-vr2p-hq7w" target="_blank" rel="noopener">advisory</a>
+</div>
+</div>
 <div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-15" data-pattern="UNSANITIZED_INPUT→HEADER" data-searchable="GHSA-247c-9743-5963 fastify/fastify fastify UNSANITIZED_INPUT→HEADER Body Schema Validation Bypass JavaScript The vulnerability existed because the `getEssenceMediaType` function, responsible for extracting the media type from the &#39;Content-Type&#39; header, only split the header string by the semicolon character. This allowed an attacker to prepend a space before the semicolon (e.g., &#39; application/json;charset=utf-8&#39;) to bypass the schema validation logic, as the leading space was not considered a delimiter.">
 <div class="card-top">
 <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
