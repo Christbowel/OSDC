@@ -1,6 +1,5 @@
 import json
 import sqlite3
-from pathlib import Path
 from typing import Optional
 from src.config import DB_PATH, JSONL_PATH
 

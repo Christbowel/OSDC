@@ -1,56 +1,15 @@
 import json
 import sys
 import time
-import os
 import requests
 from datetime import datetime, timezone
-from pathlib import Path
-from src.config import DATA_DIR
+from src.config import DATA_DIR, GITHUB_TOKEN
 from src.heuristics import score_commit
-from src.fingerprint import match_fingerprints
+from src.fingerprint import score_with_fingerprints
+from src.github_api import github_get, get_link_next, GITHUB_API, REQUEST_DELAY
 
 
-GITHUB_API = "https://api.github.com"
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
-REQUEST_DELAY = 0.8
 RESULTS_DIR = DATA_DIR / "deep_scans"
-
-
-def github_get(url: str, params: dict = None) -> dict | list | None:
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    if GITHUB_TOKEN:
-        headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
-
-    full_url = f"{GITHUB_API}{url}" if url.startswith("/") else url
-
-    try:
-        response = requests.get(full_url, headers=headers, params=params, timeout=30)
-        if response.status_code == 403:
-            remaining = response.headers.get("X-RateLimit-Remaining", "?")
-            reset = response.headers.get("X-RateLimit-Reset", "?")
-            print(f"  Rate limited (remaining: {remaining}, reset: {reset})")
-            if remaining == "0":
-                wait = max(int(reset) - int(time.time()), 10)
-                print(f"  Waiting {wait}s for rate limit reset...")
-                time.sleep(wait)
-                return github_get(url, params)
-            return None
-        if response.status_code == 404:
-            return None
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as exc:
-        print(f"  API error: {exc}")
-        return None
-
-
-def get_link_next(response_headers: dict) -> str | None:
-    link = response_headers.get("Link", "")
-    for part in link.split(","):
-        if 'rel="next"' in part:
-            url = part.split(";")[0].strip().strip("<>")
-            return url
-    return None
 
 
 def fetch_all_commits(repo: str, since: str = None, until: str = None, per_page: int = 100) -> list[dict]:
@@ -146,7 +105,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         message = commit.get("commit", {}).get("message", "").split("\n")[0]
 
         if (i + 1) % 50 == 0 or (i + 1) == len(new_commits):
-            print(f"  [{i+1}/{len(new_commits)}] {suspects_count} suspects so far...", flush=True) if 'suspects_count' in dir() else None
+            print(f"  [{i+1}/{len(new_commits)}] {len(suspects)} suspects so far...", flush=True)
 
         detail = github_get(f"/repos/{repo}/commits/{sha}")
         if not detail:
@@ -166,16 +125,9 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
             time.sleep(REQUEST_DELAY)
             continue
 
-        combined_patch = "\n".join(f.get("patch", "") for f in files if f.get("patch"))
-        fingerprint_matches = match_fingerprints(combined_patch)
-
-        best_fp = fingerprint_matches[0] if fingerprint_matches else None
-        fp_score = best_fp["score"] if best_fp else 0.0
-
-        raw_combined = heuristic_result["score"] + (fp_score * 20)
-        normalized = heuristic_result["normalized_score"]
-        if best_fp:
-            normalized = min(normalized + (fp_score * 30), 100)
+        normalized, best_fp, fp_score = score_with_fingerprints(
+            heuristic_result, files
+        )
 
         top_file = heuristic_result["files"][0] if heuristic_result["files"] else {}
         author = detail.get("commit", {}).get("author", {})
@@ -206,7 +158,6 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
         suspects.append(result)
-        suspects_count = len(suspects)
 
         severity = "HIGH" if normalized >= 60 else "MEDIUM" if normalized >= 30 else "LOW"
         print(f"  [{i+1}/{len(new_commits)}] {severity} score={normalized} {sha[:8]} {message[:60]}")
@@ -221,7 +172,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
 
     if suspects:
         print(f"\nResults saved to: {results_path}")
-        print(f"\nTop suspects:")
+        print("\nTop suspects:")
         top = sorted(suspects, key=lambda s: s["normalized_score"], reverse=True)[:10]
         for s in top:
             print(f"  score={s['normalized_score']:5.1f}  {s['commit_sha'][:8]}  {s['message'][:60]}")

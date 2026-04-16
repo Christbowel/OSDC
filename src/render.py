@@ -1,15 +1,14 @@
 import json
 import re
 from datetime import date
-from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from src.config import (
     TEMPLATES_DIR, PATCHES_DIR, DOCS_DIR, ROOT_DIR,
-    README_DAYS_SHOWN, DATA_DIR,
+    DATA_DIR,
 )
 from src.db import (
-    get_advisories_for_date, get_pattern_info,
-    get_recent_dates, get_all_advisories, get_stats,
+    get_pattern_info,
+    get_all_advisories, get_stats,
 )
 
 
@@ -52,22 +51,25 @@ def _clean_text(raw: str) -> str:
     return str(raw).strip()
 
 
+def _enrich_advisory(adv: dict) -> dict:
+    """Clean text fields and attach pattern info."""
+    pattern_info = get_pattern_info(adv["pattern_id"])
+    adv["pattern_info"] = pattern_info
+    adv["occurrences"] = pattern_info["occurrences"] if pattern_info else 1
+    adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
+    adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
+    adv["impact"] = _clean_text(adv.get("impact", ""))
+    adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
+    adv["commit_url"] = adv.get("commit_url", "")
+    return adv
+
+
 def render_daily_patch(target_date: str, advisories: list[dict]):
     PATCHES_DIR.mkdir(parents=True, exist_ok=True)
     env = init_renderer()
     template = env.get_template("patch.md.j2")
 
-    enriched = []
-    for adv in advisories:
-        pattern_info = get_pattern_info(adv["pattern_id"])
-        enriched.append({
-            **adv,
-            "pattern_info": pattern_info,
-            "key_diff": _clean_diff(adv.get("key_diff", "")),
-            "root_cause": _clean_text(adv.get("root_cause", "")),
-            "impact": _clean_text(adv.get("impact", "")),
-            "fix_summary": _clean_text(adv.get("fix_summary", "")),
-        })
+    enriched = [_enrich_advisory({**adv}) for adv in advisories]
 
     content = template.render(
         date=target_date,
@@ -90,13 +92,7 @@ def render_readme():
     )[:50]
 
     for adv in top_advisories:
-        pattern_info = get_pattern_info(adv["pattern_id"])
-        adv["occurrences"] = pattern_info["occurrences"] if pattern_info else 1
-        adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
-        adv["impact"] = _clean_text(adv.get("impact", ""))
-        adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
-        adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
-        adv["commit_url"] = adv.get("commit_url", "")
+        _enrich_advisory(adv)
 
     stats = get_stats()
 
@@ -118,10 +114,7 @@ def render_html_index():
     all_advisories = get_all_advisories()
 
     for adv in all_advisories:
-        adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
-        adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
-        adv["impact"] = _clean_text(adv.get("impact", ""))
-        adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
+        _enrich_advisory(adv)
 
     stats = get_stats()
 

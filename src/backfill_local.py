@@ -1,16 +1,12 @@
-import json
 import sys
-import time
 import requests
 from datetime import datetime, timedelta, timezone
 from src.config import (
-    RATE_LIMIT_DELAY, MAX_DIFF_LINES,
     LLM_SYSTEM_PROMPT, LLM_USER_PROMPT_TEMPLATE,
-    TAXONOMY_PATH, STATE_PATH,
 )
 from src.fetch import fetch_advisories, fetch_commit_diff
 from src.diff_filter import filter_diff
-from src.analyze import load_taxonomy, _parse_llm_response, _ecosystem_to_language
+from src.analyze import load_taxonomy, _parse_llm_response, build_analysis_result
 from src.db import (
     rebuild_from_jsonl, advisory_exists,
     insert_analysis, export_to_jsonl, get_stats,
@@ -64,7 +60,7 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
 
     raw_response = call_ollama(user_prompt)
     if not raw_response:
-        print(f"    Ollama returned nothing")
+        print("    Ollama returned nothing")
         return None
 
     parsed = _parse_llm_response(raw_response)
@@ -75,31 +71,7 @@ def analyze_with_ollama(advisory: dict, filtered_diff: str) -> dict | None:
     if parsed.get("pattern_id") not in taxonomy_ids:
         parsed["pattern_id"] = "UNCLASSIFIED"
 
-    def _str(val):
-        if isinstance(val, dict):
-            return json.dumps(val)
-        if isinstance(val, list):
-            return json.dumps(val)
-        return str(val) if val else ""
-
-    return {
-        "ghsa_id": advisory["ghsa_id"],
-        "date": advisory["published_at"][:10],
-        "cve_id": "",
-        "repo": advisory["repo"],
-        "language": _ecosystem_to_language(advisory["ecosystem"]),
-        "severity": advisory["severity"],
-        "cvss_score": advisory["cvss_score"],
-        "package_name": advisory["package_name"],
-        "pattern_id": parsed["pattern_id"],
-        "vuln_type": _str(parsed.get("vuln_type", "")),
-        "root_cause": _str(parsed.get("root_cause", "")),
-        "impact": _str(parsed.get("impact", "")),
-        "fix_summary": _str(parsed.get("fix_summary", "")),
-        "key_diff": _str(parsed.get("key_diff", "")),
-        "confidence": _str(parsed.get("confidence", "LOW")),
-        "commit_url": advisory["commit_url"],
-    }
+    return build_analysis_result(advisory, parsed)
 
 
 def backfill_local(days: int):
@@ -154,13 +126,13 @@ def backfill_local(days: int):
 
         raw_diff = fetch_commit_diff(advisory["commit_url"])
         if not raw_diff:
-            print(f"    SKIP: no diff")
+            print("    SKIP: no diff")
             errors += 1
             continue
 
         filtered = filter_diff(raw_diff)
         if not filtered:
-            print(f"    SKIP: no relevant files")
+            print("    SKIP: no relevant files")
             continue
 
         result = analyze_with_ollama(advisory, filtered)
@@ -195,12 +167,12 @@ def backfill_local(days: int):
     render_html_index()
 
     stats = get_stats()
-    print(f"\n=== Summary ===")
+    print("\n=== Summary ===")
     print(f"Processed: {processed}")
     print(f"New patterns: {new_patterns}")
     print(f"Errors: {errors}")
     print(f"Total DB: {stats['total_advisories']} advisories, {stats['total_patterns']} patterns")
-    print(f"\nCommit and push:")
+    print("\nCommit and push:")
     print(f"  git add -A && git commit -m 'feat: local backfill — {processed} advisories' && git push")
 
 
