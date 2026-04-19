@@ -1451,7 +1451,7 @@ After:
 <tr><td>Total advisories</td><td>165</td></tr>
 <tr><td>Unique patterns</td><td>34</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-16</td></tr>
+<tr><td>Last updated</td><td>2026-04-19</td></tr>
 </table>
 </details>
 <hr>
