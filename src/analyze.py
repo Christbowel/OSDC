@@ -6,7 +6,6 @@ from src.config import (
     GEMINI_API_KEY, GEMINI_API_URL,
     LLM_SYSTEM_PROMPT, LLM_USER_PROMPT_TEMPLATE,
     TAXONOMY_PATH, RETRY_ATTEMPTS, RETRY_BACKOFF,
-    RATE_LIMIT_DELAY,
 )
 
 
@@ -42,7 +41,7 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
 
     raw_response = _call_gemini(user_prompt)
     if not raw_response:
-        print(f"    DEBUG: _call_gemini returned None")
+        print("    DEBUG: _call_gemini returned None")
         return None
 
     parsed = _parse_llm_response(raw_response)
@@ -107,13 +106,13 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
             data = response.json()
             candidates = data.get("candidates", [])
             if not candidates:
-                print(f"    Gemini: no candidates in response")
+                print("    Gemini: no candidates in response")
                 return None
 
             content = candidates[0].get("content", {})
             parts = content.get("parts", [])
             if not parts:
-                print(f"    Gemini: no parts in response")
+                print("    Gemini: no parts in response")
                 return None
 
             return parts[0].get("text", "")

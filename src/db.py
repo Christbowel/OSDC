@@ -1,6 +1,5 @@
 import json
 import sqlite3
-from pathlib import Path
 from typing import Optional
 from src.config import DB_PATH, JSONL_PATH
 
@@ -63,11 +62,15 @@ def rebuild_from_jsonl():
     conn = sqlite3.connect(str(DB_PATH))
 
     with open(JSONL_PATH, "r") as f:
-        for line in f:
+        for lineno, line in enumerate(f, 1):
             line = line.strip()
             if not line:
                 continue
-            record = json.loads(line)
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                print(f"  WARNING: skipping malformed JSONL at line {lineno}")
+                continue
             record_type = record.get("_type")
 
             if record_type == "advisory":
@@ -197,7 +200,9 @@ def export_to_jsonl():
     conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
 
-    with open(JSONL_PATH, "w") as f:
+    tmp_path = JSONL_PATH.with_suffix(".jsonl.tmp")
+
+    with open(tmp_path, "w") as f:
         for row in conn.execute("SELECT * FROM patterns ORDER BY first_seen"):
             record = dict(row)
             record["_type"] = "pattern"
@@ -208,6 +213,8 @@ def export_to_jsonl():
             record["_type"] = "advisory"
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
+    import os
+    os.replace(tmp_path, JSONL_PATH)
     conn.close()
 
 

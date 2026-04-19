@@ -1,10 +1,8 @@
 import json
 import time
 import sys
-import os
 import requests
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 from src.config import DATA_DIR, GITHUB_TOKEN
 from src.heuristics import score_commit
 from src.fingerprint import match_fingerprints
@@ -47,7 +45,10 @@ def load_existing_results() -> set:
                 line = line.strip()
                 if not line:
                     continue
-                record = json.loads(line)
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
                 seen.add(record.get("commit_sha", ""))
     return seen
 
@@ -202,7 +203,7 @@ def run(hours: int = 24):
     }
     save_silent_state(state)
 
-    print(f"\n=== Summary ===")
+    print("\n=== Summary ===")
     print(f"Repos scanned: {len(watchlist) - skipped_repos}/{len(watchlist)}")
     print(f"Commits analyzed: {total_commits}")
     print(f"Layer 1 pass (heuristics >= 8): {layer1_pass}")
