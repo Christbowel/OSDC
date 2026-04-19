@@ -8,6 +8,22 @@ from src.config import (
 )
 
 
+ECOSYSTEM_LANG_MAP = {
+    "NPM": "JavaScript",
+    "PYPI": "Python",
+    "GO": "Go",
+    "MAVEN": "Java",
+    "NUGET": "C#",
+    "RUBYGEMS": "Ruby",
+    "PACKAGIST": "PHP",
+    "CRATES_IO": "Rust",
+    "PUB": "Dart",
+    "ERLANG": "Erlang",
+    "ACTIONS": "YAML",
+    "SWIFT": "Swift",
+}
+
+
 def graphql_request(query: str, variables: dict) -> dict:
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -23,14 +39,26 @@ def graphql_request(query: str, variables: dict) -> dict:
                 headers=headers,
                 timeout=30,
             )
+            if response.status_code == 403:
+                remaining = response.headers.get("X-RateLimit-Remaining", "?")
+                reset_at = response.headers.get("X-RateLimit-Reset", "0")
+                if remaining == "0":
+                    wait = max(int(reset_at) - int(time.time()), 10)
+                    print(f"  GraphQL rate limited, waiting {wait}s...")
+                    time.sleep(wait)
+                    return graphql_request(query, variables)
+                print(f"  GraphQL 403 (remaining: {remaining})")
+                return {}
             response.raise_for_status()
             data = response.json()
             if "errors" in data:
-                raise RuntimeError(f"GraphQL errors: {data['errors']}")
+                print(f"  GraphQL errors: {data['errors'][:200]}")
+                return {}
             return data
-        except (requests.RequestException, RuntimeError) as exc:
+        except requests.RequestException as exc:
             if attempt == RETRY_ATTEMPTS - 1:
-                raise
+                print(f"  GraphQL request failed: {exc}")
+                return {}
             time.sleep(RETRY_BACKOFF[attempt])
 
     return {}
@@ -75,8 +103,14 @@ def _parse_advisory(node: dict) -> Optional[dict]:
     vulns = node.get("vulnerabilities", {}).get("nodes", [])
     package_info = _extract_package_info(vulns)
 
+    cve_id = _extract_cve_id(node.get("identifiers", []))
+
+    ecosystem = package_info["ecosystem"]
+    language = ECOSYSTEM_LANG_MAP.get(ecosystem.upper(), ecosystem)
+
     return {
         "ghsa_id": ghsa_id,
+        "cve_id": cve_id,
         "summary": node.get("summary", ""),
         "description": node.get("description", ""),
         "severity": node.get("severity", "UNKNOWN"),
@@ -84,9 +118,17 @@ def _parse_advisory(node: dict) -> Optional[dict]:
         "published_at": node.get("publishedAt", ""),
         "commit_url": commit_url,
         "package_name": package_info["name"],
-        "ecosystem": package_info["ecosystem"],
+        "ecosystem": ecosystem,
+        "language": language,
         "repo": _extract_repo_from_commit(commit_url),
     }
+
+
+def _extract_cve_id(identifiers: list[dict]) -> str:
+    for ident in identifiers:
+        if ident.get("type") == "CVE":
+            return ident.get("value", "")
+    return ""
 
 
 def _extract_commit_url(references: list[dict]) -> Optional[str]:
@@ -134,6 +176,17 @@ def fetch_commit_diff(commit_url: str) -> Optional[str]:
             response = requests.get(
                 api_url, headers=headers, timeout=30
             )
+            if response.status_code == 403:
+                remaining = response.headers.get("X-RateLimit-Remaining", "?")
+                reset_at = response.headers.get("X-RateLimit-Reset", "0")
+                if remaining == "0":
+                    wait = max(int(reset_at) - int(time.time()), 10)
+                    print(f"  Diff rate limited, waiting {wait}s...")
+                    time.sleep(wait)
+                    return fetch_commit_diff(commit_url)
+                return None
+            if response.status_code == 404:
+                return None
             response.raise_for_status()
             return response.text
         except requests.RequestException:

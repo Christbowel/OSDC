@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSDC — Threat Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#06080d;--bg2:#0c1017;--bg3:#111722;--bg4:#171f2e;
+--text:#e4e8f1;--muted:#7a8ba8;--dim:#4a5872;
+--accent:#3b82f6;--accent2:#60a5fa;--accent-glow:rgba(59,130,246,.08);
+--red:#ef4444;--red-bg:rgba(239,68,68,.06);--red-border:rgba(239,68,68,.18);--red-glow:rgba(239,68,68,.04);
+--critical:#ef4444;--critical-bg:rgba(239,68,68,.08);--critical-border:rgba(239,68,68,.2);
+--high:#f97316;--high-bg:rgba(249,115,22,.08);--high-border:rgba(249,115,22,.2);
+--moderate:#eab308;--moderate-bg:rgba(234,179,8,.06);--moderate-border:rgba(234,179,8,.15);
+--low:#22c55e;--low-bg:rgba(34,197,94,.06);--low-border:rgba(34,197,94,.15);
+--border:#1a2235;--border2:#243044;
+--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+--radius:8px;--radius-lg:12px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:var(--accent2);text-decoration:none;transition:color .2s}
+a:hover{color:var(--text)}
+
+nav{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-left{display:flex;align-items:center;gap:0}
+.nav-brand{font-family:var(--mono);font-weight:700;font-size:1rem;letter-spacing:-.02em;color:var(--accent2);padding-right:1.5rem;margin-right:.5rem;border-right:1px solid var(--border)}
+.nav-links{display:flex;gap:0}
+.nav-link{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--muted);padding:.75rem 1rem;position:relative;transition:color .2s}
+.nav-link:hover,.nav-link.active{color:var(--text)}
+.nav-link.active::after{content:'';position:absolute;bottom:0;left:1rem;right:1rem;height:2px;background:var(--accent);border-radius:1px}
+.nav-link.threat{color:var(--red);font-weight:700}
+.nav-link.threat.active::after{background:var(--red)}
+.nav-link.threat .pulse-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:6px;animation:pulse 2s infinite}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.gh-link{font-family:var(--mono);font-size:.75rem;color:var(--dim);padding:6px 12px;border:1px solid var(--border);border-radius:6px;transition:all .2s}
+.gh-link:hover{border-color:var(--accent);color:var(--text)}
+
+.container{max-width:1240px;margin:0 auto;padding:0 2rem}
+
+.hero{padding:3rem 0 2rem;border-bottom:1px solid var(--red-border)}
+.hero h1{font-family:var(--mono);font-size:1.5rem;font-weight:700;letter-spacing:-.03em;line-height:1.3}
+.hero h1 span{color:var(--red)}
+.hero-sub{font-size:.9rem;color:var(--muted);margin-top:.75rem;max-width:720px;line-height:1.8}
+.hero-sub strong{color:var(--text);font-weight:600}
+
+.alert-banner{background:var(--red-glow);border:1px solid var(--red-border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:2rem 0;display:flex;align-items:flex-start;gap:1rem}
+.alert-icon{color:var(--red);font-size:1.25rem;margin-top:2px;flex-shrink:0}
+.alert-text{font-size:.85rem;color:var(--muted);line-height:1.7}
+.alert-text strong{color:var(--red);font-weight:600}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:2rem 0;border-bottom:1px solid var(--border)}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem}
+.stat-value{font-family:var(--mono);font-size:2rem;font-weight:700;letter-spacing:-.03em}
+.stat-value.red{color:var(--red)}
+.stat-value.high{color:var(--high)}
+.stat-label{font-family:var(--mono);font-size:.7rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
+
+.toolbar{padding:1.5rem 0;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:220px;padding:.6rem 1rem;padding-left:2.5rem;border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-family:var(--sans);background:var(--bg2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a5872' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E") no-repeat 12px center;color:var(--text);outline:none;transition:border .2s}
+.search:focus{border-color:var(--red)}
+.search::placeholder{color:var(--dim)}
+.filter-select{padding:.6rem .75rem;border:1px solid var(--border);border-radius:var(--radius);font-size:.8rem;font-family:var(--mono);background:var(--bg2);color:var(--text);outline:none;cursor:pointer}
+.filter-select option{background:var(--bg2);color:var(--text)}
+.result-count{font-family:var(--mono);font-size:.75rem;color:var(--dim);margin-left:auto}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:var(--radius-lg);margin-bottom:.75rem;overflow:hidden;transition:border-color .3s,transform .2s}
+.card:hover{border-color:var(--border2);border-left-color:var(--red);transform:translateY(-1px)}
+.card-header{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.25rem;gap:.75rem;flex-wrap:wrap}
+.card-meta{display:flex;align-items:center;gap:.625rem;flex-wrap:wrap}
+.ghsa-id{font-family:var(--mono);font-weight:600;font-size:.8rem;color:var(--accent2)}
+.ghsa-id:hover{color:var(--text)}
+.no-cve-badge{font-family:var(--mono);font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:4px;color:var(--red);background:var(--red-bg);border:1px solid var(--red-border);text-transform:uppercase;letter-spacing:.05em}
+.sev{font-family:var(--mono);font-size:.65rem;font-weight:600;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.sev-critical{color:var(--critical);background:var(--critical-bg);border:1px solid var(--critical-border)}
+.sev-high{color:var(--high);background:var(--high-bg);border:1px solid var(--high-border)}
+.sev-moderate,.sev-medium{color:var(--moderate);background:var(--moderate-bg);border:1px solid var(--moderate-border)}
+.sev-low{color:var(--low);background:var(--low-bg);border:1px solid var(--low-border)}
+.tag{font-family:var(--mono);font-size:.65rem;color:var(--accent2);background:var(--accent-glow);padding:2px 7px;border-radius:4px;border:1px solid rgba(59,130,246,.12)}
+.lang{font-family:var(--mono);font-size:.65rem;color:var(--dim);padding:2px 7px;border:1px solid var(--border);border-radius:4px}
+.expand-btn{font-family:var(--mono);font-size:.7rem;color:var(--dim);background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;cursor:pointer;transition:all .2s}
+.expand-btn:hover{border-color:var(--red);color:var(--red)}
+
+.card-body{padding:0 1.25rem 1rem}
+.field{margin-bottom:.75rem}
+.field-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:.3rem}
+.field-value{font-size:.85rem;color:var(--muted);line-height:1.6}
+.diff{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.3rem;font-family:var(--mono);font-size:.75rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:280px;overflow-y:auto}
+.diff .del{color:#f87171}
+.diff .add{color:#4ade80}
+.hidden{display:none}
+
+.card-footer{display:flex;gap:1rem;padding:.625rem 1.25rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:.7rem}
+.card-footer a{color:var(--accent2)}
+.card-footer span{color:var(--dim)}
+
+footer{text-align:center;padding:3rem 0;color:var(--dim);font-family:var(--mono);font-size:.75rem;border-top:1px solid var(--border)}
+footer a{color:var(--accent2)}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.toolbar{flex-direction:column}.container{padding:0 1rem}.card-header{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<div class="nav-left">
+<a class="nav-brand" href="./">OSDC</a>
+<div class="nav-links">
+<a class="nav-link" href="./">Advisories</a>
+<a class="nav-link" href="./silent.html">Silent Patches</a>
+<a class="nav-link threat active" href="./threats.html">Threat Intel<span class="pulse-dot"></span></a>
+</div>
+</div>
+<div class="nav-right">
+<a class="gh-link" href="https://github.com/Christbowel/OSDC" target="_blank" rel="noopener">GitHub</a>
+</div>
+</div>
+</nav>
+
+<div class="container">
+<section class="hero">
+<h1><span>Threat intelligence</span> — confirmed fixes without CVE</h1>
+<p class="hero-sub">These security advisories were published on GHSA with severity scores and fix commits, but <strong>no CVE identifier has been assigned</strong>. Without a CVE, vulnerability scanners cannot detect affected systems. Downstream users remain unaware and unpatched — creating an exploitation window that advanced persistent threat groups actively monitor.</p>
+</section>
+
+<div class="alert-banner">
+<div class="alert-icon">&#9888;</div>
+<div class="alert-text"><strong>Why this matters.</strong> Nation-state actors and APT groups systematically monitor open source commits for security fixes that lack public disclosure. A fix without a CVE is a roadmap to an exploitable vulnerability in every unpatched installation. The window between silent fix and public awareness is the attacker's advantage. These {{ threats | length }} advisories represent confirmed vulnerabilities with available fixes but zero CVE tracking.</div>
+</div>
+
+<section class="stats">
+<div class="stat">
+<div class="stat-value red">{{ stats.no_cve_count }}</div>
+<div class="stat-label">Fixes without CVE</div>
+</div>
+<div class="stat">
+<div class="stat-value red">{{ stats.no_cve_critical }}</div>
+<div class="stat-label">Critical severity</div>
+</div>
+<div class="stat">
+<div class="stat-value high">{{ stats.no_cve_high }}</div>
+<div class="stat-label">High severity</div>
+</div>
+<div class="stat">
+<div class="stat-value">{{ stats.total_advisories }}</div>
+<div class="stat-label">Total advisories</div>
+</div>
+</section>
+
+<div class="toolbar">
+<input type="text" class="search" id="searchInput" placeholder="Search packages, patterns, repos...">
+<select class="filter-select" id="severityFilter">
+<option value="">All severities</option>
+<option value="CRITICAL">Critical</option>
+<option value="HIGH">High</option>
+<option value="MODERATE">Moderate</option>
+<option value="LOW">Low</option>
+</select>
+<select class="filter-select" id="languageFilter">
+<option value="">All languages</option>
+</select>
+<span class="result-count" id="resultCount"></span>
+</div>
+
+<div id="threatList">
+{% for t in threats %}
+<div class="card" data-severity="{{ t.severity }}" data-language="{{ t.language }}" data-searchable="{{ t.id }} {{ t.repo }} {{ t.package_name }} {{ t.pattern_id }} {{ t.language }} {{ t.root_cause | e }}" style="animation:fadeIn .4s ease {{ loop.index0 * 0.02 }}s both">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/{{ t.id }}" target="_blank" rel="noopener">{{ t.id }}</a>
+<span class="no-cve-badge">No CVE</span>
+<span class="sev sev-{{ t.severity | lower }}">{{ t.severity }} {{ t.cvss_score }}</span>
+<span class="tag">{{ t.pattern_id }}</span>
+<span class="lang">{{ t.language }}</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">{{ t.package_name }} · {{ t.repo }}</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">{{ t.root_cause | e }}</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">{{ t.impact | e }}</div>
+</div>
+{% if t.key_diff %}
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">{{ t.key_diff | e }}</div>
+</div>
+{% endif %}
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">{{ t.fix_summary | e }}</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>{{ t.date }}</span>
+<span>{{ t.vuln_type }}</span>
+<a href="{{ t.commit_url }}" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/{{ t.id }}" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<footer>
+<p>Built by <a href="https://github.com/Christbowel">Christbowel</a> · <a href="https://github.com/Christbowel/OSDC">Source</a></p>
+</footer>
+
+<script>
+function toggleCard(btn){var h=btn.closest('.card').querySelector('.hidden');if(h){h.classList.toggle('hidden');btn.textContent=h.classList.contains('hidden')?'Details':'Collapse'}}
+(function(){
+var cards=document.querySelectorAll('.card');
+var si=document.getElementById('searchInput');
+var sf=document.getElementById('severityFilter');
+var lf=document.getElementById('languageFilter');
+var rc=document.getElementById('resultCount');
+var langSet=new Set();
+cards.forEach(function(c){langSet.add(c.dataset.language)});
+Array.from(langSet).sort().forEach(function(l){var o=document.createElement('option');o.value=l;o.textContent=l;lf.appendChild(o)});
+function f(){var q=si.value.toLowerCase(),s=sf.value,l=lf.value,v=0;
+cards.forEach(function(c){var ms=!q||c.dataset.searchable.toLowerCase().indexOf(q)!==-1;var mv=!s||c.dataset.severity===s;var ml=!l||c.dataset.language===l;var sh=ms&&mv&&ml;c.style.display=sh?'':'none';if(sh)v++});
+rc.textContent=v+' / '+cards.length}
+si.addEventListener('input',f);sf.addEventListener('change',f);lf.addEventListener('change',f);f();
+document.querySelectorAll('.diff').forEach(function(b){var h=b.innerHTML;h=h.replace(/^(-.*)$/gm,'<span class="del">$1</span>');h=h.replace(/^(\+.*)$/gm,'<span class="add">$1</span>');b.innerHTML=h});
+})();
+</script>
+</body>
+</html>

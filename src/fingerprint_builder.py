@@ -4,26 +4,25 @@ import sys
 from pathlib import Path
 from collections import defaultdict
 
-
 EXPERT_FINGERPRINTS = {
     "CWE-79": {
         "name": "XSS",
-        "add_tokens": ["htmlspecialchars", "escape", "sanitize", "encode", "textcontent", "innertext", "dompurify", "bleach", "markupsafe", "xss", "encodeuri", "encodeuricomponent", "createtextnode", "safe", "escapehtml", "noescape"],
+        "add_tokens": ["htmlspecialchars", "escape", "sanitize", "encode", "textcontent", "innertext", "dompurify", "bleach", "markupsafe", "xss", "encodeuri", "encodeuricomponent", "createtextnode", "safe", "escapehtml", "noescape", "htmlentities", "filter_var", "strip_tags"],
         "del_tokens": ["innerhtml", "document.write", "dangerouslysetinnerhtml", "v-html", "outerhtml", "writeln", "unescape"],
     },
     "CWE-89": {
         "name": "SQL_INJECTION",
-        "add_tokens": ["parameterized", "placeholder", "prepare", "prepared", "bindparam", "bindvalue", "sqlparameter", "sanitize", "escape", "quote", "args", "params"],
-        "del_tokens": ["format", "sprintf", "concat", "interpolat", "f-string", "execute", "raw", "query"],
+        "add_tokens": ["parameterized", "placeholder", "prepare", "prepared", "bindparam", "bindvalue", "sqlparameter", "sanitize", "escape", "quote", "args", "params", "preparedstatement", "pdo", "mysqli_prepare"],
+        "del_tokens": ["format", "sprintf", "concat", "interpolat", "f-string", "execute", "raw", "query", "string.format"],
     },
     "CWE-78": {
         "name": "COMMAND_INJECTION",
-        "add_tokens": ["execfile", "execfilesync", "subprocess.run", "shlex.quote", "shellescape", "escapeshellarg", "allowlist", "safelist", "validate", "sanitize"],
-        "del_tokens": ["exec", "eval", "system", "popen", "execsync", "child_process", "shell", "os.system", "passthru", "proc_open"],
+        "add_tokens": ["execfile", "execfilesync", "subprocess.run", "shlex.quote", "shellescape", "escapeshellarg", "allowlist", "safelist", "validate", "sanitize", "processbuilder", "subprocess.check_call"],
+        "del_tokens": ["exec", "eval", "system", "popen", "execsync", "child_process", "shell", "os.system", "passthru", "proc_open", "pcntl_exec", "shell_exec", "runtime.exec", "os.popen", "commands.getoutput"],
     },
     "CWE-22": {
         "name": "PATH_TRAVERSAL",
-        "add_tokens": ["realpath", "filepath.clean", "path.normalize", "abspath", "startswith", "resolve", "basename", "sanitize", "canonicalize", "chroot", "safejoin"],
+        "add_tokens": ["realpath", "filepath.clean", "path.normalize", "abspath", "startswith", "resolve", "basename", "sanitize", "canonicalize", "chroot", "safejoin", "filepath.evalsymlinks", "filepath.abs"],
         "del_tokens": ["path.join", "filepath.join", "os.path.join", "open", "readfile", "writefile", "extract", "mkdir", "unlink"],
     },
     "CWE-352": {
@@ -48,17 +47,17 @@ EXPERT_FINGERPRINTS = {
     },
     "CWE-502": {
         "name": "DESERIALIZATION",
-        "add_tokens": ["safe_load", "weights_only", "allowlist", "whitelist", "json.loads", "defusedxml", "safeloader", "restricted"],
-        "del_tokens": ["pickle.load", "yaml.load", "torch.load", "unserialize", "marshal.load", "objectinputstream", "readobject", "deserialize"],
+        "add_tokens": ["safe_load", "weights_only", "allowlist", "whitelist", "json.loads", "defusedxml", "safeloader", "restricted", "json_decode"],
+        "del_tokens": ["pickle.load", "yaml.load", "torch.load", "unserialize", "marshal.load", "objectinputstream", "readobject", "deserialize", "cpickle", "xmldecoder"],
     },
     "CWE-327": {
         "name": "WEAK_CRYPTO",
-        "add_tokens": ["sha256", "sha384", "sha512", "bcrypt", "argon2", "scrypt", "aes256", "chacha20", "ed25519", "pbkdf2"],
+        "add_tokens": ["sha256", "sha384", "sha512", "bcrypt", "argon2", "scrypt", "aes256", "chacha20", "ed25519", "pbkdf2", "password_hash", "password_verify"],
         "del_tokens": ["md5", "sha1", "des", "rc4", "blowfish", "ecb", "cbc"],
     },
     "CWE-330": {
         "name": "WEAK_RANDOM",
-        "add_tokens": ["secrets", "crypto.randombytes", "securerandom", "csprng", "getrandom", "urandom", "randombytes"],
+        "add_tokens": ["secrets", "crypto.randombytes", "securerandom", "csprng", "getrandom", "urandom", "randombytes", "random_bytes", "random_int", "os.urandom", "secrets.token"],
         "del_tokens": ["math.random", "random.random", "rand", "srand", "mt_rand"],
     },
     "CWE-362": {
@@ -103,8 +102,8 @@ EXPERT_FINGERPRINTS = {
     },
     "CWE-1321": {
         "name": "PROTOTYPE_POLLUTION",
-        "add_tokens": ["hasownproperty", "object.create", "freeze", "seal", "preventextensions", "safeset", "parent", "key"],
-        "del_tokens": ["__proto__", "constructor", "prototype", "assign", "merge", "extend", "set"],
+        "add_tokens": ["hasownproperty", "object.create", "freeze", "seal", "preventextensions", "safeset", "parent", "key", "structuredclone"],
+        "del_tokens": ["__proto__", "constructor", "prototype", "assign", "merge", "extend", "set", "object.assign"],
     },
     "CWE-200": {
         "name": "INFO_DISCLOSURE",
@@ -124,7 +123,7 @@ EXPERT_FINGERPRINTS = {
     "CWE-94": {
         "name": "CODE_INJECTION",
         "add_tokens": ["sandbox", "safeval", "restricted", "allowlist", "validate", "ast.literal_eval"],
-        "del_tokens": ["eval", "exec", "compile", "function", "settimeout", "setinterval"],
+        "del_tokens": ["eval", "exec", "compile", "function", "settimeout", "setinterval", "create_function", "assert", "call_user_func", "scriptengine"],
     },
     "CWE-295": {
         "name": "IMPROPER_CERT_VALIDATION",
@@ -145,6 +144,11 @@ EXPERT_FINGERPRINTS = {
         "name": "RESOURCE_ALLOCATION",
         "add_tokens": ["maxentries", "limit", "cap", "bounded", "pool", "quota", "maxmembers"],
         "del_tokens": ["unlimited", "append", "push", "add", "grow"],
+    },
+    "CWE-119": {
+        "name": "BUFFER_OVERFLOW",
+        "add_tokens": ["strncpy", "snprintf", "fgets", "strlcpy", "strlcat", "memcpy_s", "bounded"],
+        "del_tokens": ["strcpy", "gets", "sprintf", "strcat", "scanf", "malloc"],
     },
 }
 
@@ -186,6 +190,106 @@ def build_fingerprints(output_path: str = "data/fingerprints.json"):
             "sample_count": 100,
         }
 
+    patchdb_loaded = False
+    try:
+        from datasets import load_dataset
+        print("Downloading PatchDB from Hugging Face...")
+        ds = load_dataset("sunlab/patch_db", split="train")
+        print(f"Loaded {len(ds)} samples")
+
+        security_patches = [s for s in ds if s.get("category") == "security"]
+        print(f"Security patches: {len(security_patches)}")
+
+        cwe_tokens = defaultdict(lambda: {"add": defaultdict(int), "del": defaultdict(int), "count": 0})
+
+        noise = {
+            "the", "a", "an", "is", "are", "was", "were", "be", "been",
+            "have", "has", "had", "do", "does", "did", "will", "would",
+            "could", "should", "may", "might", "must", "shall",
+            "if", "else", "elif", "then", "for", "while", "in", "not",
+            "and", "or", "but", "with", "from", "to", "of", "at", "by",
+            "return", "def", "function", "class", "var", "let", "const",
+            "int", "string", "bool", "void", "null", "none", "true", "false",
+            "this", "self", "new", "import", "from", "export", "module",
+            "public", "private", "protected", "static", "final",
+            "try", "catch", "except", "finally", "throw", "raise",
+            "err", "error", "fmt", "log", "print", "printf",
+        }
+
+        for i, sample in enumerate(security_patches):
+            cwe_id = sample.get("CWE_ID", "NA")
+            diff_code = sample.get("diff_code", "")
+
+            if not diff_code or cwe_id == "NA":
+                continue
+
+            add_t, del_t = parse_diff(diff_code)
+            add_t -= noise
+            del_t -= noise
+            add_t = {t for t in add_t if len(t) > 2}
+            del_t = {t for t in del_t if len(t) > 2}
+
+            entry = cwe_tokens[cwe_id]
+            entry["count"] += 1
+            for token in add_t:
+                entry["add"][token] += 1
+            for token in del_t:
+                entry["del"][token] += 1
+
+            if (i + 1) % 2000 == 0:
+                print(f"  Processed {i + 1}/{len(security_patches)}")
+
+        print(f"Building PatchDB fingerprints for {len(cwe_tokens)} CWE categories...")
+
+        for cwe_id, data in cwe_tokens.items():
+            if data["count"] < 3:
+                continue
+
+            min_freq = max(2, data["count"] // 10)
+
+            top_add = sorted(
+                [(t, c) for t, c in data["add"].items() if c >= min_freq],
+                key=lambda x: x[1], reverse=True
+            )[:50]
+
+            top_del = sorted(
+                [(t, c) for t, c in data["del"].items() if c >= min_freq],
+                key=lambda x: x[1], reverse=True
+            )[:50]
+
+            if not top_add and not top_del:
+                continue
+
+            pdb_key = f"PDB:{cwe_id}"
+            existing = fingerprints.get(cwe_id, {})
+
+            if pdb_key not in fingerprints:
+                fingerprints[pdb_key] = {
+                    "name": existing.get("name", cwe_id),
+                    "add_tokens": [t for t, _ in top_add],
+                    "del_tokens": [t for t, _ in top_del],
+                    "sample_count": data["count"],
+                }
+            else:
+                fp = fingerprints[pdb_key]
+                for t, _ in top_add:
+                    if t not in fp["add_tokens"]:
+                        fp["add_tokens"].append(t)
+                for t, _ in top_del:
+                    if t not in fp["del_tokens"]:
+                        fp["del_tokens"].append(t)
+                fp["sample_count"] += data["count"]
+
+        patchdb_loaded = True
+        print(f"  PatchDB patterns added: {len([k for k in fingerprints if k.startswith('PDB:')])}")
+
+    except ImportError:
+        print("PatchDB not available (install: pip install datasets)")
+        print("Using expert fingerprints only")
+    except Exception as exc:
+        print(f"PatchDB loading failed: {exc}")
+        print("Using expert fingerprints only")
+
     osdc_jsonl = Path("data/patterns.jsonl")
     if osdc_jsonl.exists():
         print("Enriching with OSDC live data...")
@@ -195,22 +299,24 @@ def build_fingerprints(output_path: str = "data/fingerprints.json"):
                 line = line.strip()
                 if not line:
                     continue
-                record = json.loads(line)
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
                 if record.get("_type") != "advisory":
                     continue
 
                 key_diff = record.get("key_diff", "")
                 pattern_id = record.get("pattern_id", "")
-                if not pattern_id or not key_diff:
+                if not pattern_id or not key_diff or pattern_id == "UNCLASSIFIED":
                     continue
 
-                add_tokens, del_tokens = parse_diff(key_diff)
-
-                noise = {"the", "a", "is", "are", "return", "def", "function", "if", "else", "for", "while", "this", "self", "var", "let", "const", "err", "error", "nil", "null", "none", "true", "false", "new", "import"}
-                add_tokens -= noise
-                del_tokens -= noise
-                add_tokens = {t for t in add_tokens if len(t) > 2}
-                del_tokens = {t for t in del_tokens if len(t) > 2}
+                add_t, del_t = parse_diff(key_diff)
+                noise_small = {"the", "a", "is", "are", "return", "def", "function", "if", "else", "for", "while", "this", "self", "var", "let", "const", "err", "error", "nil", "null", "none", "true", "false", "new", "import"}
+                add_t -= noise_small
+                del_t -= noise_small
+                add_t = {t for t in add_t if len(t) > 2}
+                del_t = {t for t in del_t if len(t) > 2}
 
                 osdc_key = f"OSDC:{pattern_id}"
                 if osdc_key not in fingerprints:
@@ -223,34 +329,31 @@ def build_fingerprints(output_path: str = "data/fingerprints.json"):
 
                 fp = fingerprints[osdc_key]
                 fp["sample_count"] += 1
-                for t in add_tokens:
+                for t in add_t:
                     if t not in fp["add_tokens"]:
                         fp["add_tokens"].append(t)
-                for t in del_tokens:
+                for t in del_t:
                     if t not in fp["del_tokens"]:
                         fp["del_tokens"].append(t)
 
                 osdc_count += 1
 
         print(f"  Processed {osdc_count} OSDC advisories")
-        print(f"  Added {len([k for k in fingerprints if k.startswith('OSDC:')])} OSDC patterns")
-    else:
-        print("No OSDC data found (data/patterns.jsonl missing)")
 
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(fingerprints, f, indent=2, ensure_ascii=False)
 
+    expert_count = len(EXPERT_FINGERPRINTS)
+    pdb_count = len([k for k in fingerprints if k.startswith("PDB:")])
+    osdc_count = len([k for k in fingerprints if k.startswith("OSDC:")])
+
     print(f"\nFingerprints saved to {output_path}")
     print(f"Total patterns: {len(fingerprints)}")
-    print(f"  Expert CWE: {len(EXPERT_FINGERPRINTS)}")
-    print(f"  OSDC live: {len([k for k in fingerprints if k.startswith('OSDC:')])}")
-
-    print(f"\nTop patterns by token count:")
-    top = sorted(fingerprints.items(), key=lambda x: len(x[1]["add_tokens"]) + len(x[1]["del_tokens"]), reverse=True)[:10]
-    for pid, data in top:
-        total = len(data["add_tokens"]) + len(data["del_tokens"])
-        print(f"  {pid} ({data['name']}): {total} tokens, {data['sample_count']} samples")
+    print(f"  Expert CWE: {expert_count}")
+    if patchdb_loaded:
+        print(f"  PatchDB: {pdb_count}")
+    print(f"  OSDC live: {osdc_count}")
 
 
 if __name__ == "__main__":
