@@ -150,14 +150,14 @@ footer a{color:var(--accent2)}
 <div>
 <h1><span>Open Source</span> Daily Catch</h1>
 <p class="hero-sub">Automated patch intelligence. Security advisories analyzed with LLM-powered classification, cross-ecosystem pattern correlation, and fix quality scoring.</p>
-<div class="hero-badge">Live — scanning 165 advisories across 2026-04-20</div>
+<div class="hero-badge">Live — scanning 170 advisories across 2026-04-20</div>
 </div>
 </div>
 </section>
 
 <section class="stats">
 <div class="stat">
-<div class="stat-value" id="statAdv">165</div>
+<div class="stat-value" id="statAdv">170</div>
 <div class="stat-label">Advisories analyzed</div>
 </div>
 <div class="stat">
@@ -213,6 +213,277 @@ footer a{color:var(--accent2)}
 </div>
 
 <div id="advisoryList">
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-17" data-pattern="UNSANITIZED_INPUT→COMMAND" data-searchable="GHSA-2cq5-mf3v-mx44 openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND Command Injection JavaScript The application failed to correctly identify and handle &#39;busybox&#39; and &#39;toybox&#39; as opaque multiplexers for command execution. This led to an incomplete unwrapping of command arguments, allowing an attacker to bypass security checks designed to ensure stable interpreter approval binding for mutable script runners.">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-2cq5-mf3v-mx44" target="_blank" rel="noopener">GHSA-2cq5-mf3v-mx44</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="tag">UNSANITIZED_INPUT→COMMAND</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">openclaw · openclaw/openclaw</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The application failed to correctly identify and handle &#39;busybox&#39; and &#39;toybox&#39; as opaque multiplexers for command execution. This led to an incomplete unwrapping of command arguments, allowing an attacker to bypass security checks designed to ensure stable interpreter approval binding for mutable script runners.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could execute arbitrary commands by crafting specific inputs that leverage busybox or toybox applets, bypassing the intended security approval mechanisms.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/src/node-host/invoke-system-run-plan.ts
++++ b/src/node-host/invoke-system-run-plan.ts
+@@ -47,6 +47,8 @@ const GENERIC_MUTABLE_SCRIPT_RUNNERS = new Set([
+   &#34;vite-node&#34;,
+ ]);
+ 
++const OPAQUE_MUTABLE_SCRIPT_RUNNERS = new Set([&#34;busybox&#34;, &#34;toybox&#34;]);
++
+ const BUN_SUBCOMMANDS = new Set([
+   &#34;add&#34;,
+   &#34;audit&#34;,
+@@ -295,6 +297,9 @@ function unwrapArgvForMutableOperand(argv: string[]): { argv: string[]; baseIndex
+     } else if (shellMultiplexerUnwrap.kind === &#34;unwrapped&#34;) {
+       baseIndex += current.length - shellMultiplexerUnwrap.argv.length;
+       current = shellMultiplexerUnwrap.argv;
++      if (OPAQUE_MUTABLE_SCRIPT_RUNNERS.has(shellMultiplexerUnwrap.wrapper)) {
++        opaqueMultiplexerSeen = true;
++      }
+       continue;
+     }
+     const packageManagerUnwrap = unwrapKnownPackageManagerInvocation(current);</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch introduces a new set `OPAQUE_MUTABLE_SCRIPT_RUNNERS` for &#39;busybox&#39; and &#39;toybox&#39;. It modifies the argument unwrapping logic to detect these opaque multiplexers and explicitly marks them as requiring stable interpreter approval binding, preventing the bypass of security checks.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-17</span>
+<span>Command Injection</span>
+<a href="https://github.com/openclaw/openclaw/commit/666f48d9b882a8a1415ca53f9567c72499d850c9" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/GHSA-2cq5-mf3v-mx44" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-17" data-pattern="MISSING_AUTHZ→RESOURCE" data-searchable="GHSA-2gvc-4f3c-2855 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE Missing Authorization JavaScript The system incorrectly trusted authorization entries from a direct message (DM) pairing store for control commands in non-DM Matrix rooms. This allowed an attacker to potentially execute commands in a room where they should not have had authorization if a DM pairing entry existed for them.">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-2gvc-4f3c-2855" target="_blank" rel="noopener">GHSA-2gvc-4f3c-2855</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="tag">MISSING_AUTHZ→RESOURCE</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">openclaw · openclaw/openclaw</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The system incorrectly trusted authorization entries from a direct message (DM) pairing store for control commands in non-DM Matrix rooms. This allowed an attacker to potentially execute commands in a room where they should not have had authorization if a DM pairing entry existed for them.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could bypass intended authorization checks and execute control commands in Matrix rooms where they were not authorized, potentially leading to unauthorized actions or control over the room.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">-        const storeAllowFrom = await readStoreAllowFrom();
++        const storeAllowFrom = isDirectMessage ? await readStoreAllowFrom() : [];</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch modifies the `createMatrixRoomMessageHandler` function to conditionally load `storeAllowFrom` entries. It now only loads these entries if the message is identified as a direct message (`isDirectMessage` is true); otherwise, `storeAllowFrom` is initialized as an empty array, preventing unauthorized access based on DM pairing store entries in non-DM contexts.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-17</span>
+<span>Missing Authorization</span>
+<a href="https://github.com/openclaw/openclaw/commit/2bfd808a83116bd888e3e2633a61473fa2ed81b6" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/GHSA-2gvc-4f3c-2855" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-17" data-pattern="PATH_TRAVERSAL→FILE_READ" data-searchable="GHSA-66r7-m7xm-v49h openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ Path Traversal JavaScript The application allowed media tags in reply text to specify local file paths without sufficient validation. The `resolveQQBotLocalMediaPath` function, which was intended to normalize paths, did not adequately prevent directory traversal sequences (e.g., `../`) from escaping the intended media directory, leading to arbitrary file read.">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-66r7-m7xm-v49h" target="_blank" rel="noopener">GHSA-66r7-m7xm-v49h</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="tag">PATH_TRAVERSAL→FILE_READ</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">openclaw · openclaw/openclaw</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The application allowed media tags in reply text to specify local file paths without sufficient validation. The `resolveQQBotLocalMediaPath` function, which was intended to normalize paths, did not adequately prevent directory traversal sequences (e.g., `../`) from escaping the intended media directory, leading to arbitrary file read.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could craft a reply text containing a malicious media tag to read any file on the server&#39;s file system that the application had permissions to access. This could lead to sensitive information disclosure.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/extensions/qqbot/src/outbound.ts
++++ b/extensions/qqbot/src/outbound.ts
+@@ -279,7 +279,11 @@ export async function sendPhoto(
+   imagePath: string,
+ ): Promise&lt;OutboundResult&gt; {
+   const prefix = ctx.logPrefix ?? &#34;[qqbot]&#34;;
+-  const mediaPath = resolveQQBotLocalMediaPath(normalizePath(imagePath));
++  const resolvedMediaPath = resolveOutboundMediaPath(imagePath, prefix, &#34;image&#34;);
++  if (!resolvedMediaPath.ok) {
++    return { channel: &#34;qqbot&#34;, error: resolvedMediaPath.error };
++  }
++  const mediaPath = resolvedMediaPath.mediaPath;
+   const isLocal = isLocalFilePath(mediaPath);
+   const isHttp = mediaPath.startsWith(&#34;http://&#34;) || mediaPath.startsWith(&#34;https://&#34;);
+   const isData = mediaPath.startsWith(&#34;data:&#34;);</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch introduces a new `resolveOutboundMediaPath` function that performs more robust path validation. It explicitly checks if a resolved path is within a set of allowed root directories using `isPathWithinRoot` and `fs.realpathSync` to prevent directory traversal. It also introduces `resolveExistingPathWithinRoots` and `resolveMissingPathWithinMediaRoot` for stricter control over file access.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-17</span>
+<span>Path Traversal</span>
+<a href="https://github.com/openclaw/openclaw/commit/604777e4414cc3b2ff8861f18f4fb04374c702c6" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/GHSA-66r7-m7xm-v49h" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
+<div class="card" data-severity="HIGH" data-language="JavaScript" data-date="2026-04-17" data-pattern="PATH_TRAVERSAL→FILE_READ" data-searchable="GHSA-mr34-9552-qr95 openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ Path Traversal JavaScript The application allowed embedding media files specified by local file paths or file:// URLs without sufficient validation. Specifically, it did not properly normalize or restrict paths, allowing an attacker to potentially reference files outside the intended media directory, including Windows network paths (UNC paths).">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-mr34-9552-qr95" target="_blank" rel="noopener">GHSA-mr34-9552-qr95</a>
+<span class="sev sev-high">HIGH 0.0</span>
+<span class="tag">PATH_TRAVERSAL→FILE_READ</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">openclaw · openclaw/openclaw</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The application allowed embedding media files specified by local file paths or file:// URLs without sufficient validation. Specifically, it did not properly normalize or restrict paths, allowing an attacker to potentially reference files outside the intended media directory, including Windows network paths (UNC paths).</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could embed arbitrary local files from the server&#39;s filesystem into webchat messages, leading to information disclosure. In the case of Windows network paths, it could potentially lead to Server Message Block (SMB) relay attacks or other network-based attacks.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/src/gateway/server-methods/chat-webchat-media.ts
++++ b/src/gateway/server-methods/chat-webchat-media.ts
+@@ -40,7 +40,7 @@ function resolveLocalMediaPathForEmbedding(raw: string): string | null {
+   }
+   if (trimmed.startsWith(&#34;file:&#34;)) {
+     try {
+-      const p = fileURLToPath(trimmed);
++      const p = safeFileURLToPath(trimmed);
+       if (!path.isAbsolute(p)) {
+         return null;
+       }
+@@ -52,6 +52,11 @@ function resolveLocalMediaPathForEmbedding(raw: string): string | null {
+   if (!path.isAbsolute(trimmed)) {
+     return null;
+   }
++  try {
++    assertNoWindowsNetworkPath(trimmed, &#34;Local media path&#34;);
++  } catch {
++    return null;
++  }
+   return trimmed;
+ }</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch introduces a new `reply-media-paths.runtime.js` module and integrates a path normalizer. It also updates `chat-webchat-media.ts` to use `safeFileURLToPath` and `assertNoWindowsNetworkPath` to prevent path traversal and block Windows network paths, ensuring that only local, absolute, and non-network paths within the allowed scope can be embedded.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-17</span>
+<span>Path Traversal</span>
+<a href="https://github.com/openclaw/openclaw/commit/1470de5d3e0970856d86cd99336bb8ada3fe87da" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/GHSA-mr34-9552-qr95" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
+<div class="card" data-severity="CRITICAL" data-language="JavaScript" data-date="2026-04-17" data-pattern="MISSING_VERIFICATION→SIGNATURE" data-searchable="GHSA-xh72-v6v9-mwhc openclaw/openclaw openclaw MISSING_VERIFICATION→SIGNATURE Authentication Bypass JavaScript The application&#39;s Feishu webhook and card-action validation logic had insecure defaults. If the `encryptKey` for webhook signatures or the `token` for card actions was missing or empty, the validation functions would return `true`, effectively bypassing the security checks and allowing unauthenticated access.">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-xh72-v6v9-mwhc" target="_blank" rel="noopener">GHSA-xh72-v6v9-mwhc</a>
+<span class="sev sev-critical">CRITICAL 0.0</span>
+<span class="tag">MISSING_VERIFICATION→SIGNATURE</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.8rem;color:var(--text)">openclaw · openclaw/openclaw</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The application&#39;s Feishu webhook and card-action validation logic had insecure defaults. If the `encryptKey` for webhook signatures or the `token` for card actions was missing or empty, the validation functions would return `true`, effectively bypassing the security checks and allowing unauthenticated access.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could send unauthenticated requests to the Feishu webhook or card-action endpoints, potentially triggering unintended actions or gaining unauthorized access to functionality that should be protected by cryptographic signatures or tokens.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/extensions/feishu/src/monitor.transport.ts
++++ b/extensions/feishu/src/monitor.transport.ts
+@@ -56,7 +56,7 @@ function isFeishuWebhookSignatureValid(params: {
+ }): boolean {
+   const encryptKey = params.encryptKey?.trim();
+   if (!encryptKey) {
+-    return true;
++    return false;
+   }
+ 
+   const timestampHeader = params.headers[&#34;x-lark-request-timestamp&#34;];</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch changes the default behavior of `isFeishuWebhookSignatureValid` and `beginFeishuCardActionToken` functions. If the `encryptKey` or `token` is missing or empty, these functions now return `false`, ensuring that validation fails closed. Additionally, the webhook monitor now explicitly throws an error if `encryptKey` is not configured, and card actions are rejected if the token is missing.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-04-17</span>
+<span>Authentication Bypass</span>
+<a href="https://github.com/openclaw/openclaw/commit/c8003f1b33ed2924be5f62131bd28742c5a41aae" target="_blank" rel="noopener">Commit</a>
+<a href="https://github.com/advisories/GHSA-xh72-v6v9-mwhc" target="_blank" rel="noopener">Advisory</a>
+</div>
+</div>
 <div class="card" data-severity="CRITICAL" data-language="Python" data-date="2026-04-16" data-pattern="BUFFER_OVERFLOW→STACK" data-searchable="GHSA-2689-5p89-6j3j theopolis/uefi-firmware-parser uefi-firmware BUFFER_OVERFLOW→STACK Buffer Overflow Python The `MakeTable` function, responsible for creating Huffman code mapping tables, did not adequately validate the `BitLen` array values. Specifically, it failed to check if `BitLen[Index]` exceeded 16 or if `Start[Len]` (calculated from `BitLen`) could lead to an out-of-bounds write when indexing the `Table` array, which is allocated on the stack.">
 <div class="card-header">
 <div class="card-meta">

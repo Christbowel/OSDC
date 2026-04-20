@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-165-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-170-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-34-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -318,10 +318,36 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-m5gr-86j6-99jp">Advisory</a> · <a href="https://github.com/gramps-project/gramps-web-api/commit/3ed4342711e3ec849552df09b1fe2fbf2ca5c29a">Commit</a>
 </p>
 <hr>
+<h3>GHSA-xh72-v6v9-mwhc</h3>
+<p>
+<code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
+<code>openclaw</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 6x across ecosystem
+</p>
+<p><b>Root cause</b> : The application&#39;s Feishu webhook and card-action validation logic had insecure defaults. If the `encryptKey` for webhook signatures or the `token` for card actions was missing or empty, the validation functions would return `true`, effectively bypassing the security checks and allowing unauthenticated access.</p>
+<p><b>Impact</b> : An attacker could send unauthenticated requests to the Feishu webhook or card-action endpoints, potentially triggering unintended actions or gaining unauthorized access to functionality that should be protected by cryptographic signatures or tokens.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/extensions/feishu/src/monitor.transport.ts
++++ b/extensions/feishu/src/monitor.transport.ts
+@@ -56,7 +56,7 @@ function isFeishuWebhookSignatureValid(params: {
+ }): boolean {
+   const encryptKey = params.encryptKey?.trim();
+   if (!encryptKey) {
+-    return true;
++    return false;
+   }
+ 
+   const timestampHeader = params.headers[&#34;x-lark-request-timestamp&#34;];</pre>
+</details>
+<p><b>Fix</b> : The patch changes the default behavior of `isFeishuWebhookSignatureValid` and `beginFeishuCardActionToken` functions. If the `encryptKey` or `token` is missing or empty, these functions now return `false`, ensuring that validation fails closed. Additionally, the webhook monitor now explicitly throws an error if `encryptKey` is not configured, and card actions are rejected if the token is missing.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-xh72-v6v9-mwhc">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/c8003f1b33ed2924be5f62131bd28742c5a41aae">Commit</a>
+</p>
+<hr>
 <h3>GHSA-wvhv-qcqf-f3cx</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 11x across ecosystem
+<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s file-based Access Control List (ACL) mechanism, which uses &#39;.goshs&#39; files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a &#39;.goshs&#39; file in the immediate directory, failing to consider ACLs defined in parent directories, and some operations lacked any ACL enforcement.</p>
 <p><b>Impact</b> : An attacker could bypass intended access restrictions to delete, create, or modify files and directories, including potentially sensitive ones, even if a parent directory&#39;s &#39;.goshs&#39; file explicitly denied such actions.</p>
@@ -456,7 +482,7 @@ After:
 <h3>GHSA-3p24-9x7v-7789</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-13 · Java<br>
-<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
+<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -497,7 +523,7 @@ if (!Array.isArray(index)) {
 <h3>GHSA-5gfj-64gh-mgmw</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-08 · Python<br>
-<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 10x across ecosystem
+<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The `safe_join` function did not properly validate the resolved path to ensure it stayed within the agent&#39;s WORKING_DIRECTORY.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to read or write files outside of the intended directory, potentially leading to unauthorized access or data corruption.</p>
@@ -574,7 +600,7 @@ else
 <h3>GHSA-chqc-8p9q-pq6q</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-08 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not sanitize input for control characters, allowing attackers to inject CRLF sequences that could manipulate FTP commands.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to execute arbitrary FTP commands on the server, potentially leading to unauthorized access or data manipulation.</p>
@@ -651,7 +677,7 @@ this.baseUrl = normalizedBase;</pre>
 <h3>GHSA-6v7q-wjvx-w8wg</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 13x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for FTP commands, allowing control characters to be injected.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary FTP commands using credentials and MKD commands due to the lack of proper input validation.</p>
@@ -726,7 +752,7 @@ After:
 <h3>GHSA-hc36-c89j-5f4j</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-09 · Ruby<br>
-<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 5x across ecosystem
+<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 6x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not verify the certifier signatures before persisting them.</p>
 <p><b>Impact</b> : An attacker could potentially bypass security checks by providing unverified signatures, leading to unauthorized access or manipulation of data.</p>
@@ -831,7 +857,7 @@ err = os.Rename(fullPath, targetPath)</pre>
 <h3>GHSA-w5xj-99cg-rccm</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-14 · Ruby<br>
-<code>decidim-core</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 11x across ecosystem
+<code>decidim-core</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The application logic for handling amendments (accepting, rejecting, reacting, promoting) did not properly check the component&#39;s settings. Specifically, the `can_react_to_emendation?` and `allowed_to_promote?` methods in `AmendmentsHelper` lacked checks against the `amendment_reaction_enabled` and `amendment_promotion_enabled` component settings, respectively. This allowed any authenticated user to perform these actions regardless of the component&#39;s configuration.</p>
 <p><b>Impact</b> : An attacker could accept or reject amendments, react to them, or promote rejected amendments, even if the component&#39;s settings explicitly disabled these functionalities. This could lead to unauthorized manipulation of the amendment process and undermine the integrity of the platform&#39;s participatory features.</p>
@@ -899,7 +925,7 @@ After:
 <h3>GHSA-9hfr-gw99-8rhx</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-09 · Ruby<br>
-<code>bsv-sdk</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 11x across ecosystem
+<code>bsv-sdk</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly handle responses indicating that a transaction was not accepted, leading to the treatment of INVALID/MALFORMED/ORPHAN responses as successful broadcasts.</p>
 <p><b>Impact</b> : An attacker could potentially treat invalid or malformed transactions as successful, allowing for unauthorized use of resources or manipulation of the system.</p>
@@ -1199,6 +1225,126 @@ After:
 <a href="https://github.com/advisories/GHSA-pg8g-f2hf-x82m">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/d7c3210cd6f5fdfdc1beff4c9541673e814354d5">Commit</a>
 </p>
 <hr>
+<h3>GHSA-2cq5-mf3v-mx44</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-17 · JavaScript<br>
+<code>openclaw</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 14x across ecosystem
+</p>
+<p><b>Root cause</b> : The application failed to correctly identify and handle &#39;busybox&#39; and &#39;toybox&#39; as opaque multiplexers for command execution. This led to an incomplete unwrapping of command arguments, allowing an attacker to bypass security checks designed to ensure stable interpreter approval binding for mutable script runners.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary commands by crafting specific inputs that leverage busybox or toybox applets, bypassing the intended security approval mechanisms.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/node-host/invoke-system-run-plan.ts
++++ b/src/node-host/invoke-system-run-plan.ts
+@@ -47,6 +47,8 @@ const GENERIC_MUTABLE_SCRIPT_RUNNERS = new Set([
+   &#34;vite-node&#34;,
+ ]);
+ 
++const OPAQUE_MUTABLE_SCRIPT_RUNNERS = new Set([&#34;busybox&#34;, &#34;toybox&#34;]);
++
+ const BUN_SUBCOMMANDS = new Set([
+   &#34;add&#34;,
+   &#34;audit&#34;,
+@@ -295,6 +297,9 @@ function unwrapArgvForMutableOperand(argv: string[]): { argv: string[]; baseIndex
+     } else if (shellMultiplexerUnwrap.kind === &#34;unwrapped&#34;) {
+       baseIndex += current.length - shellMultiplexerUnwrap.argv.length;
+       current = shellMultiplexerUnwrap.argv;
++      if (OPAQUE_MUTABLE_SCRIPT_RUNNERS.has(shellMultiplexerUnwrap.wrapper)) {
++        opaqueMultiplexerSeen = true;
++      }
+       continue;
+     }
+     const packageManagerUnwrap = unwrapKnownPackageManagerInvocation(current);</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new set `OPAQUE_MUTABLE_SCRIPT_RUNNERS` for &#39;busybox&#39; and &#39;toybox&#39;. It modifies the argument unwrapping logic to detect these opaque multiplexers and explicitly marks them as requiring stable interpreter approval binding, preventing the bypass of security checks.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2cq5-mf3v-mx44">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/666f48d9b882a8a1415ca53f9567c72499d850c9">Commit</a>
+</p>
+<hr>
+<h3>GHSA-2gvc-4f3c-2855</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-17 · JavaScript<br>
+<code>openclaw</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The system incorrectly trusted authorization entries from a direct message (DM) pairing store for control commands in non-DM Matrix rooms. This allowed an attacker to potentially execute commands in a room where they should not have had authorization if a DM pairing entry existed for them.</p>
+<p><b>Impact</b> : An attacker could bypass intended authorization checks and execute control commands in Matrix rooms where they were not authorized, potentially leading to unauthorized actions or control over the room.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-        const storeAllowFrom = await readStoreAllowFrom();
++        const storeAllowFrom = isDirectMessage ? await readStoreAllowFrom() : [];</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the `createMatrixRoomMessageHandler` function to conditionally load `storeAllowFrom` entries. It now only loads these entries if the message is identified as a direct message (`isDirectMessage` is true); otherwise, `storeAllowFrom` is initialized as an empty array, preventing unauthorized access based on DM pairing store entries in non-DM contexts.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2gvc-4f3c-2855">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/2bfd808a83116bd888e3e2633a61473fa2ed81b6">Commit</a>
+</p>
+<hr>
+<h3>GHSA-66r7-m7xm-v49h</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-17 · JavaScript<br>
+<code>openclaw</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed media tags in reply text to specify local file paths without sufficient validation. The `resolveQQBotLocalMediaPath` function, which was intended to normalize paths, did not adequately prevent directory traversal sequences (e.g., `../`) from escaping the intended media directory, leading to arbitrary file read.</p>
+<p><b>Impact</b> : An attacker could craft a reply text containing a malicious media tag to read any file on the server&#39;s file system that the application had permissions to access. This could lead to sensitive information disclosure.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/extensions/qqbot/src/outbound.ts
++++ b/extensions/qqbot/src/outbound.ts
+@@ -279,7 +279,11 @@ export async function sendPhoto(
+   imagePath: string,
+ ): Promise&lt;OutboundResult&gt; {
+   const prefix = ctx.logPrefix ?? &#34;[qqbot]&#34;;
+-  const mediaPath = resolveQQBotLocalMediaPath(normalizePath(imagePath));
++  const resolvedMediaPath = resolveOutboundMediaPath(imagePath, prefix, &#34;image&#34;);
++  if (!resolvedMediaPath.ok) {
++    return { channel: &#34;qqbot&#34;, error: resolvedMediaPath.error };
++  }
++  const mediaPath = resolvedMediaPath.mediaPath;
+   const isLocal = isLocalFilePath(mediaPath);
+   const isHttp = mediaPath.startsWith(&#34;http://&#34;) || mediaPath.startsWith(&#34;https://&#34;);
+   const isData = mediaPath.startsWith(&#34;data:&#34;);</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `resolveOutboundMediaPath` function that performs more robust path validation. It explicitly checks if a resolved path is within a set of allowed root directories using `isPathWithinRoot` and `fs.realpathSync` to prevent directory traversal. It also introduces `resolveExistingPathWithinRoots` and `resolveMissingPathWithinMediaRoot` for stricter control over file access.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-66r7-m7xm-v49h">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/604777e4414cc3b2ff8861f18f4fb04374c702c6">Commit</a>
+</p>
+<hr>
+<h3>GHSA-mr34-9552-qr95</h3>
+<p>
+<code>HIGH 0.0</code> · 2026-04-17 · JavaScript<br>
+<code>openclaw</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed embedding media files specified by local file paths or file:// URLs without sufficient validation. Specifically, it did not properly normalize or restrict paths, allowing an attacker to potentially reference files outside the intended media directory, including Windows network paths (UNC paths).</p>
+<p><b>Impact</b> : An attacker could embed arbitrary local files from the server&#39;s filesystem into webchat messages, leading to information disclosure. In the case of Windows network paths, it could potentially lead to Server Message Block (SMB) relay attacks or other network-based attacks.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/gateway/server-methods/chat-webchat-media.ts
++++ b/src/gateway/server-methods/chat-webchat-media.ts
+@@ -40,7 +40,7 @@ function resolveLocalMediaPathForEmbedding(raw: string): string | null {
+   }
+   if (trimmed.startsWith(&#34;file:&#34;)) {
+     try {
+-      const p = fileURLToPath(trimmed);
++      const p = safeFileURLToPath(trimmed);
+       if (!path.isAbsolute(p)) {
+         return null;
+       }
+@@ -52,6 +52,11 @@ function resolveLocalMediaPathForEmbedding(raw: string): string | null {
+   if (!path.isAbsolute(trimmed)) {
+     return null;
+   }
++  try {
++    assertNoWindowsNetworkPath(trimmed, &#34;Local media path&#34;);
++  } catch {
++    return null;
++  }
+   return trimmed;
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `reply-media-paths.runtime.js` module and integrates a path normalizer. It also updates `chat-webchat-media.ts` to use `safeFileURLToPath` and `assertNoWindowsNetworkPath` to prevent path traversal and block Windows network paths, ensuring that only local, absolute, and non-network paths within the allowed scope can be embedded.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-mr34-9552-qr95">Advisory</a> · <a href="https://github.com/openclaw/openclaw/commit/1470de5d3e0970856d86cd99336bb8ada3fe87da">Commit</a>
+</p>
+<hr>
 <h3>GHSA-4x48-cgf9-q33f</h3>
 <p>
 <code>HIGH 0.0</code> · 2026-04-14 · JavaScript<br>
@@ -1258,161 +1404,6 @@ After:
 <a href="https://github.com/advisories/GHSA-hv4r-mvr4-25vw">Advisory</a> · <a href="https://github.com/minio/minio/commit/76913a9fd5c6e5c2dbd4e8c7faf56ed9e9e24091">Commit</a>
 </p>
 <hr>
-<h3>GHSA-pm7q-rjjx-979p</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-14 · Go<br>
-<code>github.com/oxia-db/oxia</code> · Pattern: <code>CREDENTIAL_LEAK→LOG_EXPOSURE</code> · 2x across ecosystem
-</p>
-<p><b>Root cause</b> : The application was logging the full bearer token in debug messages when an authentication failure occurred. This meant that if debug logging was enabled, the sensitive authentication token could be exposed in logs, making it accessible to anyone with access to the log files.</p>
-<p><b>Impact</b> : An attacker with access to the system&#39;s log files could retrieve full bearer tokens, potentially allowing them to impersonate users or gain unauthorized access to the system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/oxiad/common/rpc/auth/interceptor.go
-+++ b/oxiad/common/rpc/auth/interceptor.go
-@@ -98,8 +98,21 @@ func validateTokenWithContext(ctx context.Context, provider AuthenticationProvid
- 	if userName, err = provider.Authenticate(ctx, token); err != nil {
- 		slog.Debug(&#34;Failed to authenticate token&#34;,
- 			slog.String(&#34;peer&#34;, peerMeta.Addr.String()),
--			slog.String(&#34;token&#34;, token))
-+			slog.String(&#34;token&#34;, redactToken(token)))
- 		return &#34;&#34;, err
- 	}
- 	return userName, nil
- }
-+
-+// redactToken returns a redacted version of a token for safe logging.
-+// For tokens longer than 8 characters, at most the last 8 characters are
-+// preserved and the rest is replaced with &#34;[REDACTED]&#34;. Tokens of 8 characters
-+// or fewer are fully redacted to &#34;[REDACTED]&#34;.
-+func redactToken(token string) string {
-+	const suffixLen = 8
-+	const prefix = &#34;[REDACTED]&#34;
-+	if len(token) &lt;= suffixLen {
-+		return prefix
-+	}
-+	return prefix + token[len(token)-suffixLen:]
-+}</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `redactToken` function that masks the bearer token before it is logged. Instead of logging the full token, it now logs a redacted version, preserving only the last 8 characters for longer tokens and fully redacting shorter ones, prefixed with &#34;[REDACTED]&#34;.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-pm7q-rjjx-979p">Advisory</a> · <a href="https://github.com/oxia-db/oxia/commit/f7259d0ebc739fc95ff19f93c823433850857416">Commit</a>
-</p>
-<hr>
-<h3>GHSA-pq8p-wc4f-vg7j</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The application previously had a command injection vulnerability (CVE-2026-33502) in the `wget` function, which was used to fetch content from a URL provided by user input. The original fix was incomplete, as it did not restrict access to the `test.php` endpoint, allowing unauthenticated attackers to still trigger the vulnerable `wget` function.</p>
-<p><b>Impact</b> : An unauthenticated attacker could execute arbitrary commands on the server by manipulating the `statsURL` parameter, leading to full system compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/plugin/Live/test.php
-+++ b/plugin/Live/test.php
-@@ -1,3 +1,8 @@
- &lt;?php
-+
-+require_once dirname(__FILE__) . &#39;/../../videos/configuration.php&#39;;
-+
-+if (!User::isAdmin()) {
-+    http_response_code(403);
-+    exit(&#39;Forbidden&#39;);
-+}
- 
- $timeStarted = microtime(true);</pre>
-</details>
-<p><b>Fix</b> : The patch introduces an authentication check at the beginning of the `test.php` file, requiring the user to be an administrator. If the user is not an admin, access is denied with a 403 Forbidden status code.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-pq8p-wc4f-vg7j">Advisory</a> · <a href="https://github.com/WWBN/AVideo/commit/1e6cf03e93b5a5318204b010ea28440b0d9a5ab3">Commit</a>
-</p>
-<hr>
-<h3>GHSA-r2pg-r6h7-crf3</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-13 · Go<br>
-<code>github.com/external-secrets/external-secrets</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 15x across ecosystem
-</p>
-<p><b>Root cause</b> : The External Secrets Operator&#39;s v2 template engine included the `getHostByName` function from the Sprig library. This function allowed templates to perform DNS lookups, which could be abused to exfiltrate sensitive information (secrets) by encoding them into DNS queries to an attacker-controlled domain.</p>
-<p><b>Impact</b> : An attacker with control over the template content could exfiltrate secrets stored in the External Secrets Operator by encoding them into DNS queries and sending them to a domain they control.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/runtime/template/v2/template.go
-+++ b/runtime/template/v2/template.go
-@@ -87,7 +87,7 @@ func init() {
- 	sprigFuncs := sprig.TxtFuncMap()
- 	delete(sprigFuncs, &#34;env&#34;)
- 	delete(sprigFuncs, &#34;expandenv&#34;)
--
-+	delete(sprigFuncs, &#34;getHostByName&#34;)
- 	maps.Copy(tplFuncs, sprigFuncs)</pre>
-</details>
-<p><b>Fix</b> : The patch removes the `getHostByName` function from the list of available functions in the v2 template engine. This prevents templates from performing DNS lookups, thereby mitigating the risk of DNS-based secret exfiltration.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-r2pg-r6h7-crf3">Advisory</a> · <a href="https://github.com/external-secrets/external-secrets/commit/6800989bdc12782ca2605d3b8bf7f2876a16551a">Commit</a>
-</p>
-<hr>
-<h3>GHSA-whj4-6x5x-4v2j</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-13 · Python<br>
-<code>pillow</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 5x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used `gzip.decompress` on the entire input stream without any size limits. An attacker could craft a compressed FITS file that, when decompressed, expands to an extremely large size, consuming excessive memory and CPU resources.</p>
-<p><b>Impact</b> : An attacker could cause a denial of service by providing a specially crafted FITS GZIP file, leading to resource exhaustion (memory and CPU) and potentially crashing the application or making it unresponsive.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/PIL/FitsImagePlugin.py
-+++ b/src/PIL/FitsImagePlugin.py
-@@ -128,8 +128,9 @@ class FitsGzipDecoder(ImageFile.PyDecoder):
- 
-     def decode(self, buffer: bytes | Image.SupportsArrayInterface) -&gt; tuple[int, int]:
-         assert self.fd is not None
--        value = gzip.decompress(self.fd.read())
--
--        rows = []
--        offset = 0
--        number_of_bits = min(self.args[0] // 8, 4)
--        for y in range(self.state.ysize):
--            row = bytearray()
--            for x in range(self.state.xsize):
--                row += value[offset + (4 - number_of_bits) : offset + 4]
--                offset += 4
--            rows.append(row)
-+        with gzip.open(self.fd) as fp:
-+            value = fp.read(self.state.xsize * self.state.ysize * 4)
-+
-+            rows = []
-+            offset = 0
-+            number_of_bits = min(self.args[0] // 8, 4)
-+            for y in range(self.state.ysize):
-+                row = bytearray()
-+                for x in range(self.state.xsize):
-+                    row += value[offset + (4 - number_of_bits) : offset + 4]
-+                    offset += 4
-+                rows.append(row)</pre>
-</details>
-<p><b>Fix</b> : The patch replaces `gzip.decompress(self.fd.read())` with `gzip.open(self.fd) as fp: value = fp.read(self.state.xsize * self.state.ysize * 4)`. This change limits the amount of data read from the decompressed stream to a size calculated based on the image dimensions, preventing excessive memory allocation.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-whj4-6x5x-4v2j">Advisory</a> · <a href="https://github.com/python-pillow/Pillow/commit/3cb854e8b2bab43f40e342e665f9340d861aa628">Commit</a>
-</p>
-<hr>
-<h3>GHSA-q5jf-9vfq-h4h7</h3>
-<p>
-<code>HIGH 0.0</code> · 2026-04-10 · Go<br>
-<code>helm.sh/helm/v4</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 5x across ecosystem
-</p>
-<p><b>Root cause</b> : The plugin installation process did not check for the presence of a .prov file, allowing unsigned plugins to be installed without verification.</p>
-<p><b>Impact</b> : An attacker could install and execute unsigned plugins, potentially gaining unauthorized access or executing malicious code on the system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- fmt.Fprintf(os.Stderr, &#34;WARNING: No provenance file found for plugin. Plugin is not signed and cannot be verified.\n&#34;)
-After:
-+ return nil, fmt.Errorf(&#34;plugin verification failed: no provenance file (.prov) found&#34;)</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that an error is returned if no .prov file is found during plugin installation, preventing the installation of unsigned plugins.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-q5jf-9vfq-h4h7">Advisory</a> · <a href="https://github.com/helm/helm/commit/05fa37973dc9e42b76e1d2883494c87174b6074f">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1448,7 +1439,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>165</td></tr>
+<tr><td>Total advisories</td><td>170</td></tr>
 <tr><td>Unique patterns</td><td>34</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-04-20</td></tr>
