@@ -198,6 +198,32 @@ After:
 <a href="https://github.com/advisories/GHSA-2689-5p89-6j3j">Advisory</a> · <a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e">Commit</a>
 </p>
 <hr>
+<h3>GHSA-gvvw-8j96-8g5r</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+</p>
+<p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
+<p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">Before:
+Largest -= (Block.Gap + 1);
+Count = Block.AckBlock + 1;
+
+After:
+if (Count &gt; Largest + 1) {
+    *InvalidFrame = TRUE;
+    return FALSE;
+}
+Largest -= (Block.Gap + 1);
+Count = Block.AckBlock + 1;</pre>
+</details>
+<p><b>Fix</b> : The patch adds a validation check to ensure that Count is within a safe range before proceeding with further operations, preventing potential privilege escalation.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-gvvw-8j96-8g5r">Advisory</a> · <a href="https://github.com/microsoft/msquic/commit/1e6e999b199430effeefee3d85baa0c9dd35ad5e">Commit</a>
+</p>
+<hr>
 <h3>GHSA-hm2w-vr2p-hq7w</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
@@ -241,32 +267,6 @@ After:
 <p><b>Fix</b> : The patch introduces explicit bounds checks within the `MakeTable` function. It now verifies that `BitLen[Index]` does not exceed 16 and that `Start[Len]` and `NextCode` remain within the `MaxTableLength` before writing to the `Table` array. Additionally, it removes the `mBadAlgorithm` flag and simplifies the `TableSize` calculation, ensuring that all writes to `Table` are within its allocated memory.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-hm2w-vr2p-hq7w">Advisory</a> · <a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e">Commit</a>
-</p>
-<hr>
-<h3>GHSA-gvvw-8j96-8g5r</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
-<p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-Largest -= (Block.Gap + 1);
-Count = Block.AckBlock + 1;
-
-After:
-if (Count &gt; Largest + 1) {
-    *InvalidFrame = TRUE;
-    return FALSE;
-}
-Largest -= (Block.Gap + 1);
-Count = Block.AckBlock + 1;</pre>
-</details>
-<p><b>Fix</b> : The patch adds a validation check to ensure that Count is within a safe range before proceeding with further operations, preventing potential privilege escalation.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-gvvw-8j96-8g5r">Advisory</a> · <a href="https://github.com/microsoft/msquic/commit/1e6e999b199430effeefee3d85baa0c9dd35ad5e">Commit</a>
 </p>
 <hr>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
@@ -1101,6 +1101,55 @@ After:
 <a href="https://github.com/advisories/GHSA-77fj-vx54-gvh7">Advisory</a> · <a href="https://github.com/gomarkdown/markdown/commit/759bbc3e32073c3bc4e25969c132fc520eda2778">Commit</a>
 </p>
 <hr>
+<h3>GHSA-fwvm-ggf6-2p4x</h3>
+<p>
+<code>HIGH 7.5</code> · 2026-04-14 · C#<br>
+<code>Magick.NET-Q8-x86</code> · Pattern: <code>XML_EXTERNAL_ENTITY→FILE_READ</code> · 2x across ecosystem
+</p>
+<p><b>Root cause</b> : The function `DestroyXMLTree` did not properly handle XML external entities, leading to a potential stack overflow.</p>
+<p><b>Impact</b> : An attacker could exploit this vulnerability to read arbitrary files on the server or cause a denial of service by triggering a stack overflow.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">Before:
+static void DestroyXMLTreeChild(XMLTreeInfo *xml_info)
+{
+  XMLTreeInfo
+    *child,
+    *node;
+
+  child=xml_info-&gt;child;
+  while(child != (XMLTreeInfo *) NULL)
+  {
+    node=child;
+    child=node-&gt;child;
+    node-&gt;child=(XMLTreeInfo *) NULL;
+    (void) DestroyXMLTree(node);
+  }
+}
+
+After:
+static void DestroyXMLTreeChild(XMLTreeInfo *xml_info,
+  const size_t depth)
+{
+  XMLTreeInfo
+    *child,
+    *node;
+
+  child=xml_info-&gt;child;
+  while (child != (XMLTreeInfo *) NULL)
+  {
+    node=child;
+    child=node-&gt;child;
+    node-&gt;child=(XMLTreeInfo *) NULL;
+    (void) DestroyXMLTree_(node,depth+1);
+  }
+}</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new function `DestroyXMLTree_` that includes a depth parameter to prevent excessive recursion and mitigate the risk of a stack overflow.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fwvm-ggf6-2p4x">Advisory</a> · <a href="https://github.com/ImageMagick/ImageMagick/commit/ccdc01180276aa2cb3d4a32a611aa4f417061cd8">Commit</a>
+</p>
+<hr>
 <h3>GHSA-w5xj-99cg-rccm</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-14 · Ruby<br>
@@ -1165,55 +1214,6 @@ After:
 <p><b>Fix</b> : The patch added additional checks to ensure that the length of the input data does not exceed the size of the buffer being accessed.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-x9h5-r9v2-vcww">Advisory</a> · <a href="https://github.com/ImageMagick/ImageMagick/commit/4c72003e9e54a4ebaa938d239e75f5d285527ebe">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fwvm-ggf6-2p4x</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-14 · C#<br>
-<code>Magick.NET-Q8-x86</code> · Pattern: <code>XML_EXTERNAL_ENTITY→FILE_READ</code> · 2x across ecosystem
-</p>
-<p><b>Root cause</b> : The function `DestroyXMLTree` did not properly handle XML external entities, leading to a potential stack overflow.</p>
-<p><b>Impact</b> : An attacker could exploit this vulnerability to read arbitrary files on the server or cause a denial of service by triggering a stack overflow.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-static void DestroyXMLTreeChild(XMLTreeInfo *xml_info)
-{
-  XMLTreeInfo
-    *child,
-    *node;
-
-  child=xml_info-&gt;child;
-  while(child != (XMLTreeInfo *) NULL)
-  {
-    node=child;
-    child=node-&gt;child;
-    node-&gt;child=(XMLTreeInfo *) NULL;
-    (void) DestroyXMLTree(node);
-  }
-}
-
-After:
-static void DestroyXMLTreeChild(XMLTreeInfo *xml_info,
-  const size_t depth)
-{
-  XMLTreeInfo
-    *child,
-    *node;
-
-  child=xml_info-&gt;child;
-  while (child != (XMLTreeInfo *) NULL)
-  {
-    node=child;
-    child=node-&gt;child;
-    node-&gt;child=(XMLTreeInfo *) NULL;
-    (void) DestroyXMLTree_(node,depth+1);
-  }
-}</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new function `DestroyXMLTree_` that includes a depth parameter to prevent excessive recursion and mitigate the risk of a stack overflow.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fwvm-ggf6-2p4x">Advisory</a> · <a href="https://github.com/ImageMagick/ImageMagick/commit/ccdc01180276aa2cb3d4a32a611aa4f417061cd8">Commit</a>
 </p>
 <hr>
 <h3>GHSA-hwqh-2684-54fc</h3>
