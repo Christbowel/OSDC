@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-260-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-262-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-40-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -284,7 +284,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 10x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -357,7 +357,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 10x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -421,7 +421,7 @@ After: profile.EmailVerified.IsVerified()</pre>
 <h3>GHSA-xh72-v6v9-mwhc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 10x across ecosystem
+<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the presence of an encryptKey before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by sending a request without an encryptKey, allowing unauthorized access to webhook and card-action endpoints.</p>
@@ -495,7 +495,7 @@ After:
 <h3>GHSA-2679-6mx9-h9xc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 10x across ecosystem
+<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
@@ -562,7 +562,7 @@ After:
 <h3>GHSA-66hx-chf7-3332</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 2x across ecosystem
+<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 3x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
 <p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
@@ -683,7 +683,7 @@ if not (new_path.startswith(base + os.sep) or new_path == base):
 <h3>GHSA-qxpc-96fq-wwmg</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-07 · Java<br>
-<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 2x across ecosystem
+<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 3x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch fails to properly validate the user&#39;s permissions before allowing them to drop an identity, potentially escalating their privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to escalate their privileges within the Cassandra environment by dropping identities and assuming roles they are not authorized to.</p>
@@ -881,7 +881,7 @@ After:
 <h3>GHSA-75hx-xj24-mqrw</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 10x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not handle authentication errors securely, potentially revealing sensitive information in error messages.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to gain insights into the system&#39;s internal workings and potentially identify valid usernames or other sensitive data.</p>
@@ -1356,7 +1356,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>260</td></tr>
+<tr><td>Total advisories</td><td>262</td></tr>
 <tr><td>Unique patterns</td><td>40</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-04-21</td></tr>
