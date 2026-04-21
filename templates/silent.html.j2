@@ -10,7 +10,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
 --bg:#07101e;--bg2:#0c1728;--bg3:#101f33;--bg4:#162843;
---text:#cfe0f5;--muted:#6a8daf;--dim:#334f6b;
+--text:#e4f0fb;--muted:#aecde8;--dim:#628aaf;
 --accent:#05d8f0;--accent2:#22d3ee;--accent-glow:rgba(5,216,240,.12);
 --critical:#f43f5e;--critical-bg:rgba(244,63,94,.08);--critical-border:rgba(244,63,94,.22);
 --high:#fb923c;--high-bg:rgba(251,146,60,.08);--high-border:rgba(251,146,60,.22);
@@ -56,6 +56,8 @@ nav{background:rgba(7,16,30,.88);border-bottom:1px solid var(--border);position:
 .sstat-val{font-family:var(--mono);font-size:2rem;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--text)}
 .sstat-val.orange{color:var(--orange)}
 .sstat-val.crit{color:var(--critical)}
+.sstat-val.purple{color:#a78bfa}
+.sstat-val.cyan{color:var(--accent)}
 .sstat-lbl{font-family:var(--mono);font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:.5rem}
 
 .pipeline{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin:1.75rem 0}
@@ -103,10 +105,15 @@ nav{background:rgba(7,16,30,.88);border-bottom:1px solid var(--border);position:
 .score-item{display:flex;justify-content:space-between;align-items:center;padding:.3rem .6rem;background:var(--bg);border-radius:4px;font-size:.72rem;font-family:var(--mono)}
 .score-item .label{color:var(--dim)}
 .score-item .value{color:var(--accent2);font-weight:600}
-.diff{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.3rem;font-family:var(--mono);font-size:.72rem;line-height:1.75;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:280px;overflow-y:auto}
-.diff .del{color:#f87171}
-.diff .add{color:#4ade80}
+.diff{background:#050d18;border:1px solid var(--border);border-radius:var(--radius);padding:.5rem 0;margin-top:.4rem;font-family:var(--mono);font-size:.72rem;line-height:1.85;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto}
+.diff .del{display:block;background:rgba(244,63,94,.18);color:#fca5a5;padding:1px 1rem;border-left:3px solid rgba(244,63,94,.8)}
+.diff .add{display:block;background:rgba(52,211,153,.14);color:#6ee7b7;padding:1px 1rem;border-left:3px solid rgba(52,211,153,.7)}
 .hidden{display:none}
+.card[data-score]{border-left:2px solid var(--orange-border)}
+.card[data-score^="6"],.card[data-score^="7"],.card[data-score^="8"],.card[data-score^="9"],.card[data-score="100"]{border-left:2px solid var(--critical)}
+.card.score-hi{border-left:2px solid var(--critical)}
+.card.score-md{border-left:2px solid var(--orange)}
+.card.score-lo{border-left:2px solid var(--moderate)}
 .card-footer{display:flex;gap:1rem;padding:.6rem 1.25rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:.68rem;align-items:center}
 .card-footer a{color:var(--accent2)}
 .card-footer a:hover{color:var(--text)}
@@ -162,11 +169,11 @@ footer a:hover{color:var(--text)}
 <div class="sstat-lbl">High score (≥ 60)</div>
 </div>
 <div class="sstat">
-<div class="sstat-val" id="statFp">—</div>
+<div class="sstat-val purple" id="statFp">—</div>
 <div class="sstat-lbl">Fingerprint matches</div>
 </div>
 <div class="sstat">
-<div class="sstat-val" id="statRepos">—</div>
+<div class="sstat-val cyan" id="statRepos">—</div>
 <div class="sstat-lbl">Unique repos</div>
 </div>
 </div>
@@ -203,7 +210,7 @@ footer a:hover{color:var(--text)}
 
 <div id="suspectList">
 {% for s in suspects %}
-<div class="card" data-score="{{ s.normalized_score }}" data-searchable="{{ s.repo }} {{ s.top_file }} {{ s.message }} {{ s.fingerprint_match or '' }} {{ s.commit_sha }}" style="animation:fadeIn .35s ease {{ loop.index0 * 0.03 }}s both">
+<div class="card {% if s.normalized_score >= 60 %}score-hi{% elif s.normalized_score >= 30 %}score-md{% else %}score-lo{% endif %}" data-score="{{ s.normalized_score }}" data-searchable="{{ s.repo }} {{ s.top_file }} {{ s.message }} {{ s.fingerprint_match or '' }} {{ s.commit_sha }}" style="animation:fadeIn .35s ease {{ loop.index0 * 0.03 }}s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="sha-link" href="{{ s.commit_url }}" target="_blank" rel="noopener">{{ s.commit_sha[:8] }}</a>
