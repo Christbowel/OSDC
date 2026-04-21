@@ -10,7 +10,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
 --bg:#07101e;--bg2:#0c1728;--bg3:#101f33;--bg4:#162843;
---text:#cfe0f5;--muted:#6a8daf;--dim:#334f6b;
+--text:#e4f0fb;--muted:#aecde8;--dim:#628aaf;
 --accent:#05d8f0;--accent2:#22d3ee;--accent-glow:rgba(5,216,240,.12);
 --critical:#f43f5e;--critical-bg:rgba(244,63,94,.08);--critical-border:rgba(244,63,94,.22);
 --high:#fb923c;--high-bg:rgba(251,146,60,.08);--high-border:rgba(251,146,60,.22);
@@ -52,6 +52,10 @@ nav{background:rgba(7,16,30,.88);border-bottom:1px solid var(--border);position:
 .hero-stats{display:flex;align-items:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
 .hstat{font-family:var(--mono);font-size:.78rem;display:flex;flex-direction:column;gap:.2rem}
 .hstat-val{color:var(--text);font-weight:700;font-size:1.25rem;letter-spacing:-.02em;line-height:1}
+.hstat-val.c-cyan{color:var(--accent)}
+.hstat-val.c-purple{color:#a78bfa}
+.hstat-val.c-red{color:var(--critical)}
+.hstat-val.c-green{color:var(--low)}
 .hstat-lbl{color:var(--dim);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em}
 .hstat-sep{width:1px;height:36px;background:var(--border)}
 
@@ -62,6 +66,8 @@ nav{background:rgba(7,16,30,.88);border-bottom:1px solid var(--border);position:
 .sstat-val{font-family:var(--mono);font-size:2rem;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--text)}
 .sstat-val.accent{color:var(--accent)}
 .sstat-val.crit{color:var(--critical)}
+.sstat-val.purple{color:#a78bfa}
+.sstat-val.green{color:var(--low)}
 .sstat-lbl{font-family:var(--mono);font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:.5rem}
 
 .container{max-width:1280px;margin:0 auto;padding:0 2rem}
@@ -109,10 +115,14 @@ nav{background:rgba(7,16,30,.88);border-bottom:1px solid var(--border);position:
 .field{margin-bottom:.75rem}
 .field-label{font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.11em;color:var(--dim);margin-bottom:.3rem}
 .field-value{font-size:.83rem;color:var(--muted);line-height:1.65}
-.diff{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;margin-top:.3rem;font-family:var(--mono);font-size:.72rem;line-height:1.75;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:280px;overflow-y:auto}
-.diff .del{color:#f87171}
-.diff .add{color:#4ade80}
+.diff{background:#050d18;border:1px solid var(--border);border-radius:var(--radius);padding:.5rem 0;margin-top:.4rem;font-family:var(--mono);font-size:.72rem;line-height:1.85;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto}
+.diff .del{display:block;background:rgba(244,63,94,.18);color:#fca5a5;padding:1px 1rem;border-left:3px solid rgba(244,63,94,.8)}
+.diff .add{display:block;background:rgba(52,211,153,.14);color:#6ee7b7;padding:1px 1rem;border-left:3px solid rgba(52,211,153,.7)}
 .hidden{display:none}
+.card[data-severity="CRITICAL"]{border-left:2px solid var(--critical)}
+.card[data-severity="HIGH"]{border-left:2px solid var(--high)}
+.card[data-severity="MODERATE"]{border-left:2px solid var(--moderate)}
+.card[data-severity="LOW"]{border-left:2px solid var(--low)}
 .card-footer{display:flex;gap:1rem;padding:.6rem 1.25rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:.68rem;align-items:center}
 .card-footer a{color:var(--accent2)}
 .card-footer a:hover{color:var(--text)}
@@ -160,22 +170,22 @@ footer a:hover{color:var(--text)}
 <p class="hero-sub">Automated patch intelligence — GHSA advisories analyzed with LLM classification, cross-ecosystem pattern correlation, and fix quality scoring.</p>
 <div class="hero-stats">
 <div class="hstat">
-<span class="hstat-val">260</span>
+<span class="hstat-val c-cyan">260</span>
 <span class="hstat-lbl">Advisories</span>
 </div>
 <div class="hstat-sep"></div>
 <div class="hstat">
-<span class="hstat-val">40</span>
+<span class="hstat-val c-purple">40</span>
 <span class="hstat-lbl">Patterns</span>
 </div>
 <div class="hstat-sep"></div>
 <div class="hstat">
-<span class="hstat-val" id="statCrit">—</span>
+<span class="hstat-val c-red" id="statCrit">—</span>
 <span class="hstat-lbl">Critical</span>
 </div>
 <div class="hstat-sep"></div>
 <div class="hstat">
-<span class="hstat-val" id="statLang">—</span>
+<span class="hstat-val c-green" id="statLang">—</span>
 <span class="hstat-lbl">Languages</span>
 </div>
 </div>
@@ -13453,36 +13463,43 @@ var frame=0;
 function draw(){
 W=canvas.width;H=canvas.height;
 ctx.clearRect(0,0,W,H);
-ctx.strokeStyle='rgba(25,48,74,.45)';ctx.lineWidth=.5;
+// Grid - more visible
+ctx.strokeStyle='rgba(40,90,165,.55)';ctx.lineWidth=.6;
 var gridX=W/16,gridY=H/8;
 for(var x=0;x<W;x+=gridX){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
 for(var y=0;y<H;y+=gridY){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
-pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],1.1,0,Math.PI*2);ctx.fillStyle='rgba(50,80,115,.65)';ctx.fill()});
+// City dots - bright and visible
+pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],1.5,0,Math.PI*2);ctx.fillStyle='rgba(100,175,245,.82)';ctx.fill()});
 conns.forEach(function(c){
 var ap=pts[c.a],bp=pts[c.b];
 var ex=ap[0]+(bp[0]-ap[0])*c.t,ey=ap[1]+(bp[1]-ap[1])*c.t;
 ctx.beginPath();ctx.moveTo(ap[0],ap[1]);ctx.lineTo(ex,ey);
-ctx.strokeStyle='rgba(5,216,240,.18)';ctx.lineWidth=.7;ctx.stroke();
-ctx.beginPath();ctx.arc(ex,ey,1.8,0,Math.PI*2);ctx.fillStyle='rgba(5,216,240,.85)';ctx.fill();
+ctx.strokeStyle='rgba(5,216,240,.5)';ctx.lineWidth=.9;ctx.stroke();
+ctx.beginPath();ctx.arc(ex,ey,2.2,0,Math.PI*2);ctx.fillStyle='rgba(5,216,240,.95)';ctx.fill();
 c.t+=c.speed;if(c.t>1)c.t=0;
 });
-active.forEach(function(i){
-var p=pts[i];
-ctx.shadowBlur=12;ctx.shadowColor='rgba(5,216,240,.7)';
-ctx.beginPath();ctx.arc(p[0],p[1],2.5,0,Math.PI*2);ctx.fillStyle='#05d8f0';ctx.fill();
+// Active nodes - use multiple colors like Shodan
+var nodeColors=['#05d8f0','#f43f5e','#a78bfa','#fbbf24','#34d399','#fb923c'];
+active.forEach(function(i,idx){
+var p=pts[i];var nc=nodeColors[idx%nodeColors.length];
+ctx.shadowBlur=16;ctx.shadowColor=nc;
+ctx.beginPath();ctx.arc(p[0],p[1],3,0,Math.PI*2);ctx.fillStyle=nc;ctx.fill();
 ctx.shadowBlur=0;
 });
 rings.forEach(function(ring){
 if(frame<ring.phase)return;
-var p=pts[ring.idx];
+var p=pts[ring.idx];var nc=nodeColors[active.indexOf(ring.idx)%nodeColors.length]||'#05d8f0';
 var a=ring.alpha*(1-ring.r/ring.maxR);
 ctx.beginPath();ctx.arc(p[0],p[1],ring.r,0,Math.PI*2);
-ctx.strokeStyle='rgba(5,216,240,'+a+')';ctx.lineWidth=1;ctx.stroke();
+ctx.strokeStyle=nc.replace(')',','+a+')').replace('rgb(','rgba(').replace('#','').replace(/^([0-9a-f]{6})(.*)$/,'rgba('+parseInt('$1'.substring(0,2),16)+','+parseInt('$1'.substring(2,4),16)+','+parseInt('$1'.substring(4,6),16)+','+a+')');
+// simpler: just use with fixed opacity approach
+ctx.strokeStyle='rgba(5,216,240,'+a+')';ctx.lineWidth=1.2;ctx.stroke();
 ring.r+=ring.speed;
-if(ring.r>ring.maxR){ring.r=0;ring.phase=0;ring.maxR=30+Math.random()*20;}
+if(ring.r>ring.maxR){ring.r=0;ring.phase=0;ring.maxR=28+Math.random()*22;}
 });
+// Lighter vignette so map stays visible
 var g=ctx.createRadialGradient(W*.15,H*.5,0,W*.5,H*.5,W*.7);
-g.addColorStop(0,'rgba(7,16,30,0)');g.addColorStop(.6,'rgba(7,16,30,.1)');g.addColorStop(1,'rgba(7,16,30,.8)');
+g.addColorStop(0,'rgba(7,16,30,0)');g.addColorStop(.5,'rgba(7,16,30,.05)');g.addColorStop(1,'rgba(7,16,30,.65)');
 ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
 frame++;requestAnimationFrame(draw);
 }
@@ -13505,7 +13522,7 @@ if(em)ecos[em[0].toLowerCase()]=(ecos[em[0].toLowerCase()]||0)+1;
 document.getElementById('statLang').textContent=langSet.size;
 document.getElementById('statCrit').textContent=sevs.CRITICAL;
 Array.from(langSet).sort().forEach(function(l){var o=document.createElement('option');o.value=l;o.textContent=l;lf.appendChild(o)});
-var gc='rgba(25,48,74,.5)',tc='#334f6b';
+var gc='rgba(25,60,100,.5)',tc='#628aaf';
 function makeBars(id,data,max){
 var el=document.getElementById(id);
 el.innerHTML=Object.entries(data).sort(function(a,b){return b[1]-a[1]}).slice(0,8).map(function(item,i){
