@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-262-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-40-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-272-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-41-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -201,7 +201,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -272,7 +272,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -468,7 +468,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 27x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 28x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -540,10 +540,43 @@ After:
 <a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
 </p>
 <hr>
+<h3>GHSA-2gw9-c2r2-f5qf</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-04-21 · Go<br>
+<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 4x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed authenticated users to update their profile without proper authorization checks on all fields. Specifically, the `IsAdmin` field within the user&#39;s session profile could be modified by a non-admin user through the `UpdateProfile` API endpoint.</p>
+<p><b>Impact</b> : An authenticated non-admin user could elevate their privileges to that of an administrator, gaining full control over the application and potentially sensitive data or functionality.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">- 	data := session.Profile()
+- 	if err := utils.HttpJsonRequest(w, r, &amp;data); err != nil {
+- 		return err
++ 	profile := session.Profile()
++ 	if !profile.IsAdmin {
++ 		// Name is the only updatable field in the profile for non-admins
++ 		var payload types.MemberProfile
++ 		if err := utils.HttpJsonRequest(w, r, &amp;payload); err != nil {
++ 			return err
++ 		}
++ 		profile.Name = payload.Name
++ 	} else {
++ 		if err := utils.HttpJsonRequest(w, r, &amp;profile); err != nil {
++ 			return err
++ 		}
+  	}
+- 	err := api.sessions.Update(session.ID(), data)
++ 	err := api.sessions.Update(session.ID(), profile)</pre>
+</details>
+<p><b>Fix</b> : The patch introduces an authorization check in the `UpdateProfile` function. Non-admin users are now restricted to only updating their `Name` field, while the `IsAdmin` field and other sensitive profile attributes are protected from unauthorized modification.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2gw9-c2r2-f5qf">Advisory</a> · <a href="https://github.com/m1k1o/neko/commit/6b561feb9016badea99ae7305091c0ff55e1d114">Commit</a>
+</p>
+<hr>
 <h3>GHSA-29qv-4j9f-fjw5</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-16 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch changes the function `isSafeProperty` to `isSafeObjectProperty`, which may not cover all cases as intended.</p>
 <p><b>Impact</b> : An attacker could potentially access unsafe properties or methods of objects, leading to potential security vulnerabilities.</p>
@@ -562,7 +595,7 @@ After:
 <h3>GHSA-66hx-chf7-3332</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 3x across ecosystem
+<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 4x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
 <p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
@@ -632,7 +665,7 @@ After:
 <h3>GHSA-jvff-x2qm-6286</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-10 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate that the index parameter was an array, allowing attackers to manipulate object attributes improperly.</p>
 <p><b>Impact</b> : An attacker could potentially modify or delete arbitrary properties of objects, leading to unauthorized data manipulation or loss.</p>
@@ -683,7 +716,7 @@ if not (new_path.startswith(base + os.sep) or new_path == base):
 <h3>GHSA-qxpc-96fq-wwmg</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-07 · Java<br>
-<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 3x across ecosystem
+<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 4x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch fails to properly validate the user&#39;s permissions before allowing them to drop an identity, potentially escalating their privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to escalate their privileges within the Cassandra environment by dropping identities and assuming roles they are not authorized to.</p>
@@ -776,7 +809,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 27x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 28x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -801,6 +834,35 @@ this.baseUrl = normalizedBase;</pre>
 <p><b>Fix</b> : The patch normalizes the `baseUrl` by removing any embedded credentials and ensuring it does not end with a trailing slash, enhancing defense-in-depth against SSRF attacks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-4ggg-h7ph-26qr">Advisory</a> · <a href="https://github.com/czlonkowski/n8n-mcp/commit/d9d847f230923d96e0857ccecf3a4dedcc9b0096">Commit</a>
+</p>
+<hr>
+<h3>GHSA-m6rx-7pvw-2f73</h3>
+<p>
+<code>HIGH 8.4</code> · 2026-04-21 · JavaScript<br>
+<code>@gitlawb/openclaude</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the sandbox permission check logic had an early-exit flaw. It only explicitly handled &#39;passthrough&#39; behavior, allowing &#39;deny&#39; or &#39;ask&#39; behaviors to implicitly bypass the intended security checks and proceed as if permission was granted.</p>
+<p><b>Impact</b> : An attacker could bypass the sandbox restrictions, potentially leading to unauthorized file system access (path traversal) or execution of arbitrary commands outside the intended secure environment.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/tools/BashTool/bashPermissions.ts
++++ b/src/tools/BashTool/bashPermissions.ts
+@@ -1814,7 +1814,10 @@ export async function bashToolHasPermission(
+       input,
+       appState.toolPermissionContext,
+     )
+-    if (sandboxAutoAllowResult.behavior !== &#39;passthrough&#39;) {
++    if (
++      sandboxAutoAllowResult.behavior === &#39;deny&#39; ||
++      sandboxAutoAllowResult.behavior === &#39;ask&#39;
++    ) {
+       return sandboxAutoAllowResult
+     }
+   }</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the conditional logic to explicitly check for &#39;deny&#39; or &#39;ask&#39; behaviors from the sandbox auto-allow result. If either of these behaviors is detected, the function now correctly returns the sandbox result, preventing the bypass.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-m6rx-7pvw-2f73">Advisory</a> · <a href="https://github.com/Gitlawb/openclaude/commit/7002cb302b78ea2a19da3f26226de24e2903fa1d">Commit</a>
 </p>
 <hr>
 <h3>GHSA-vvfw-4m39-fjqf</h3>
@@ -904,7 +966,7 @@ After:
 <h3>GHSA-ccq9-r5cw-5hwq</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>CORS_MISCONFIGURATION→ORIGIN</code> · 2x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>CORS_MISCONFIGURATION→ORIGIN</code> · 3x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s CORS policy, specifically in the `allowOrigin` function when `allowAll` was true, would reflect the `Origin` header from the request and set `Access-Control-Allow-Credentials: true`. This was intended for public resources but was applied to sensitive API endpoints, allowing any origin to make credentialed requests.</p>
 <p><b>Impact</b> : An attacker could craft a malicious webpage to make cross-origin requests to sensitive API endpoints on the vulnerable AVideo instance. Since `Access-Control-Allow-Credentials: true` was set, the victim&#39;s browser would include session cookies, enabling the attacker to read session-authenticated API responses and potentially achieve account takeover.</p>
@@ -953,7 +1015,7 @@ if (method === &#39;clone&#39; &amp;&amp; isCloneSwitch(&#39;u&#39;, arg)) {</pr
 <h3>GHSA-hc36-c89j-5f4j</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-09 · Ruby<br>
-<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 6x across ecosystem
+<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 7x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not verify the certifier signatures before persisting them.</p>
 <p><b>Impact</b> : An attacker could potentially bypass security checks by providing unverified signatures, leading to unauthorized access or manipulation of data.</p>
@@ -1022,6 +1084,43 @@ err = os.Rename(fullPath, targetPath)</pre>
 <p><b>Fix</b> : The patch introduced a path sanitization function `sanitizePath` to ensure that only valid paths are used for file operations, preventing directory traversal attacks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2943-crp8-38xx">Advisory</a> · <a href="https://github.com/patrickhener/goshs/commit/141c188ce270ffbec087844a50e5e695b7da7744">Commit</a>
+</p>
+<hr>
+<h3>GHSA-7gcj-phff-2884</h3>
+<p>
+<code>HIGH 7.5</code> · 2026-04-21 · JavaScript<br>
+<code>signalk-server</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 6x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability description mentions an &#34;Unauthenticated Regular Expression Denial of Service (ReDoS) via WebSocket Subscription Paths&#34;. However, the provided diff primarily addresses a different issue: the lack of rate limiting for login attempts over WebSockets. Previously, only HTTP login attempts were rate-limited using &#39;express-rate-limit&#39;. WebSocket login attempts were not subject to any rate limiting, allowing an attacker to make an unlimited number of login attempts.</p>
+<p><b>Impact</b> : An attacker could perform an unlimited number of login attempts via WebSocket, potentially leading to a brute-force attack on user credentials or a denial of service by overwhelming the server with login requests.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/interfaces/ws.ts
++++ b/src/interfaces/ws.ts
+@@ -725,6 +740,20 @@ function wsInterface(app: WsApp, spark: Spark, msg: WsMessage): void {
+   }
+ 
+   function processLoginRequest(app: WsApp, spark: Spark, msg: WsMessage): void {
++    const rateLimiter = app.securityStrategy.loginRateLimiter
++    if (rateLimiter) {
++      const { allowed } = rateLimiter.check(getClientIp(app, spark))
++      if (!allowed) {
++        spark.write({
++          requestId: msg.requestId,
++          state: &#39;COMPLETED&#39;,
++          statusCode: 429,
++          message: LOGIN_RATE_LIMIT_MESSAGE
++        })
++        return
++      }
++    }
++
+     app.securityStrategy
+       .login(msg.login!.username, msg.login!.password)</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `LoginRateLimiter` module to handle rate limiting for login attempts. This custom rate limiter is now applied to both HTTP and WebSocket login requests, preventing an attacker from making an excessive number of attempts from a single IP address within a defined window.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-7gcj-phff-2884">Advisory</a> · <a href="https://github.com/SignalK/signalk-server/commit/215d81eb700d5419c3396a0fbf23f2e246dfac2d">Commit</a>
 </p>
 <hr>
 <h3>GHSA-27h3-crw2-q36w</h3>
@@ -1219,7 +1318,7 @@ After:
 <h3>GHSA-hwqh-2684-54fc</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-10 · Java<br>
-<code>org.springframework.cloud:spring-cloud-gateway</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
+<code>org.springframework.cloud:spring-cloud-gateway</code> · Pattern: <code>UNCLASSIFIED</code> · 48x across ecosystem
 </p>
 <p><b>Root cause</b> : The original code did not properly validate the length of the SSL bundle string before checking if it exists in the bundles list.</p>
 <p><b>Impact</b> : An attacker could provide a maliciously crafted SSL bundle name that bypasses the validation, potentially leading to unauthorized access or other security issues.</p>
@@ -1262,65 +1361,6 @@ After:
 <a href="https://github.com/advisories/GHSA-9hfr-gw99-8rhx">Advisory</a> · <a href="https://github.com/sgbett/bsv-ruby-sdk/commit/4992e8a265fd914a7eeb0405c69d1ff0122a84cc">Commit</a>
 </p>
 <hr>
-<h3>GHSA-mh2q-q3fh-2475</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-07 · Go<br>
-<code>go.opentelemetry.io/otel/propagation</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly limit the number of members or bytes in the baggage header, leading to excessive allocations and potential denial-of-service amplification.</p>
-<p><b>Impact</b> : An attacker could cause the application to allocate an excessive amount of memory by sending a large number of small baggage headers. This could lead to resource exhaustion and potentially crash the application.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- maxMembers = 180
-- maxBytesPerMembers = 4096
-After:
-+ maxMembers = 64</pre>
-</details>
-<p><b>Fix</b> : The patch limits the maximum number of members in the baggage header to 64, reducing the risk of excessive allocations and potential denial-of-service amplification.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-mh2q-q3fh-2475">Advisory</a> · <a href="https://github.com/open-telemetry/opentelemetry-go/commit/aa1894e09e3fe66860c7885cb40f98901b35277f">Commit</a>
-</p>
-<hr>
-<h3>GHSA-3p65-76g6-3w7r</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-06 · Go<br>
-<code>github.com/distribution/distribution</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 27x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not validate the &#39;realm&#39; parameter in the &#39;WWW-Authenticate&#39; header, allowing attackers to perform SSRF attacks by manipulating the realm value.</p>
-<p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or services that are not supposed to be accessible from outside the network.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) {
-After:
-	if strings.EqualFold(c.Scheme, &#34;bearer&#34;) &amp;&amp; realmAllowed(remote, c.Parameters[&#34;realm&#34;]) {</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a function `realmAllowed` that checks if the &#39;realm&#39; parameter is allowed based on the remote URL, preventing attackers from manipulating the realm value for SSRF attacks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-3p65-76g6-3w7r">Advisory</a> · <a href="https://github.com/distribution/distribution/commit/cc5d5fa4ba02157501e6afa2cc6a903ad0338e7b">Commit</a>
-</p>
-<hr>
-<h3>GHSA-f2g3-hh2r-cwgc</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-06 · Go<br>
-<code>github.com/distribution/distribution</code> · Pattern: <code>UNCLASSIFIED</code> · 47x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly validate or sanitize input when interacting with the Redis cache.</p>
-<p><b>Impact</b> : An attacker could potentially manipulate the Redis cache to access stale blob data, leading to unauthorized access or data corruption.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- member, err := rsrbds.upstream.pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()
-After:
-+ pool := rsrbds.upstream.pool
-+ member, err := pool.SIsMember(ctx, rsrbds.repositoryBlobSetKey(rsrbds.repo), dgst.String()).Result()</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that the Redis pool is used consistently and correctly for all operations, preventing potential misuse of the cache.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-f2g3-hh2r-cwgc">Advisory</a> · <a href="https://github.com/distribution/distribution/commit/078b0783f239b4115d1a979e66f08832084e9d1d">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1331,7 +1371,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 40 normalized pattern IDs
+             Map to closed taxonomy of 41 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1356,10 +1396,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>262</td></tr>
-<tr><td>Unique patterns</td><td>40</td></tr>
+<tr><td>Total advisories</td><td>272</td></tr>
+<tr><td>Unique patterns</td><td>41</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-21</td></tr>
+<tr><td>Last updated</td><td>2026-04-22</td></tr>
 </table>
 </details>
 <hr>
