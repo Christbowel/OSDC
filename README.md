@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-293-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-294-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-41-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -324,6 +324,29 @@ After:
 <p><b>Fix</b> : Moved the `login_optionally_required` decorator below all route decorators to ensure proper authentication checks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-jmrh-xmgh-x9j4">Advisory</a> · <a href="https://github.com/dgtlmoon/changedetection.io/commit/31a760c2147e3e73a403baf6d7de34dc50429c85">Commit</a>
+</p>
+<hr>
+<h3>GHSA-v529-vhwc-wfc5</h3>
+<p>
+<code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
+<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 7x across ecosystem
+</p>
+<p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">Before:
+query += &#34;WHERE T0.PACKET_TIMESECONDS &lt; &#39;#{start_time}&#39; LIMIT -1&#34;
+result = @@conn.exec(query)
+
+After:
+query += &#34;WHERE T0.PACKET_TIMESECONDS &lt; $1 LIMIT -1&#34;
+query_params &lt;&lt; start_time
+result = @@conn.exec_params(query, query_params)</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the `tsdb_lookup` and `create_table` methods in both Ruby and Python implementations to use parameterized queries. Instead of directly interpolating user input into the SQL string, placeholders ($1, $2 or %s) are used, and the values are passed as separate parameters to the database driver&#39;s `exec_params` or `execute` method.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-v529-vhwc-wfc5">Advisory</a> · <a href="https://github.com/OpenC3/cosmos/commit/9ba60c09c8836a37a2e4ea67ab35fe403e041415">Commit</a>
 </p>
 <hr>
 <h3>GHSA-6973-8887-87ff</h3>
@@ -1190,7 +1213,7 @@ err = os.Rename(fullPath, targetPath)</pre>
 <h3>GHSA-4948-f92q-f432</h3>
 <p>
 <code>HIGH 7.5</code> · 2026-04-22 · JavaScript<br>
-<code>@nocobase/database</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 6x across ecosystem
+<code>@nocobase/database</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 7x across ecosystem
 </p>
 <p><b>Root cause</b> : The application constructed SQL queries by directly concatenating user-controlled input (e.g., `scopeValue`, `nodeIds`) into the SQL string without proper sanitization or using parameterized queries. This allowed an attacker to inject arbitrary SQL code.</p>
 <p><b>Impact</b> : An attacker could manipulate database queries, potentially leading to unauthorized data access, modification, or deletion, and could even execute arbitrary commands on the underlying database server depending on the database&#39;s privileges.</p>
@@ -1386,29 +1409,6 @@ err = os.Rename(fullPath, targetPath)</pre>
 <a href="https://github.com/advisories/GHSA-7gcj-phff-2884">Advisory</a> · <a href="https://github.com/SignalK/signalk-server/commit/215d81eb700d5419c3396a0fbf23f2e246dfac2d">Commit</a>
 </p>
 <hr>
-<h3>GHSA-27h3-crw2-q36w</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-16 · Java<br>
-<code>org.apache.skywalking:server-core</code> · Pattern: <code>INFO_DISCLOSURE→ERROR_MESSAGE</code> · 5x across ecosystem
-</p>
-<p><b>Root cause</b> : The /debugging/config/dump endpoint did not properly sanitize configuration information before returning it to the client.</p>
-<p><b>Impact</b> : An attacker could potentially leak sensitive configuration details, which may include passwords, API keys, or other confidential data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- value = &#34;******&#34;;
-After:
-+ properties.forEach((k, v) -&gt; {
-+ String configKey = moduleName + &#34;.&#34; + providerName + &#34;.&#34; + key + &#34;.&#34; + k;
-+ String configValue = maskConfigValue(k.toString(), v.toString(), keywords);
-+ configList.put(configKey, configValue);
-+ });</pre>
-</details>
-<p><b>Fix</b> : The patch adds proper sanitization of configuration values by checking if they are instances of Properties and then masking each key-value pair individually.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-27h3-crw2-q36w">Advisory</a> · <a href="https://github.com/apache/skywalking/commit/5a3f6260e4dd681a9132204e5299064bef079886">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1444,7 +1444,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>293</td></tr>
+<tr><td>Total advisories</td><td>294</td></tr>
 <tr><td>Unique patterns</td><td>41</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-04-23</td></tr>
