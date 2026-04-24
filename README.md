@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-294-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-297-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-41-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -68,7 +68,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 12x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -159,7 +159,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 19x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -460,7 +460,7 @@ After:
 <h3>GHSA-m5gr-86j6-99jp</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 12x across ecosystem
+<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -544,7 +544,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 29x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -614,6 +614,86 @@ After:
 <p><b>Fix</b> : The patch adds a check for the class name during deserialization to prevent untrusted objects from being deserialized.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
+</p>
+<hr>
+<h3>GHSA-8h25-q488-4hxw</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-04-23 · JavaScript<br>
+<code>openlearnx</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed users to execute arbitrary code in a sandboxed environment (Docker containers). However, the initial sandbox implementation for Python lacked robust static analysis to prevent the import of dangerous modules or the use of sensitive functions, enabling an attacker to escape the sandbox and execute arbitrary commands on the host system.</p>
+<p><b>Impact</b> : An attacker could escape the Docker container and execute arbitrary commands on the underlying host system, leading to full system compromise, data exfiltration, or further network penetration.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/backend/services/real_compiler_service.py
++++ b/backend/services/real_compiler_service.py
+@@ -36,6 +36,68 @@
+                 &#39;cpu_limit&#39;: &#39;1.0&#39;
+             }
+         }
+-        
+-        # Start execution worker
++        self.blocked_python_modules = {
++            &#34;os&#34;,
++            &#34;socket&#34;,
++            &#34;subprocess&#34;,
++            &#34;pty&#34;,
++            &#34;multiprocessing&#34;,
++            &#34;ctypes&#34;,
++            &#34;resource&#34;,
++            &#34;pwd&#34;,
++            &#34;grp&#34;,
++            &#34;signal&#34;,
++            &#34;fcntl&#34;,
++            &#34;selectors&#34;,
++            &#34;pathlib&#34;,
++            &#34;shutil&#34;,
++        }
++        self.blocked_python_calls = {
++            &#34;eval&#34;,
++            &#34;exec&#34;,
++            &#34;compile&#34;,
++            &#34;__import__&#34;,
++            &#34;open&#34;,
++            &#34;input&#34;,
++            &#34;globals&#34;,
++            &#34;locals&#34;,
++            &#34;vars&#34;,
++            &#34;getattr&#34;,
++            &#34;setattr&#34;,
++            &#34;delattr&#34;,
++        }
++        self.blocked_python_attrs = {
++            &#34;fork&#34;,
++            &#34;forkpty&#34;,
++            &#34;spawn&#34;,
++            &#34;spawnl&#34;,
++            &#34;spawnlp&#34;,
++            &#34;spawnv&#34;,
++            &#34;spawnvp&#34;,
++            &#34;system&#34;,
++            &#34;popen&#34;,
++            &#34;execl&#34;,
++            &#34;execle&#34;,
++            &#34;execlp&#34;,
++            &#34;execv&#34;,
++            &#34;execve&#34;,
++            &#34;execvp&#34;,
++            &#34;setsid&#34;,
++            &#34;dup2&#34;,
++        }
++        self.blocked_patterns = {
++            &#34;javascript&#34;: [
++                r&#34;require\s*\(\s*[&#39;\&#34;]child_process[&#39;\&#34;]\s*\)&#34;,
++                r&#34;require\s*\(\s*[&#39;\&#34;]net[&#39;\&#34;]\s*\)&#34;,
++                r&#34;require\s*\(\s*[&#39;\&#34;]dgram[&#39;\&#34;]\s*\)&#34;,
++                r&#34;process\.env&#34;,
++                r&#34;process\.binding&#34;,
++                r&#34;fs\.readFile|fs\.writeFile</pre>
+</details>
+<p><b>Fix</b> : The patch introduces static analysis for Python code to block dangerous modules (e.g., os, subprocess) and functions (e.g., eval, exec, open) that could be used for sandbox escape. It also adds regex-based blocking for dangerous patterns in JavaScript and other languages, and generally tightens resource limits and timeouts for all language executions.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-8h25-q488-4hxw">Advisory</a> · <a href="https://github.com/th30d4y/OpenLearnX/commit/14765d7d1856d564747c55c5412e2f38feab079e">Commit</a>
 </p>
 <hr>
 <h3>GHSA-2gw9-c2r2-f5qf</h3>
@@ -703,7 +783,7 @@ After:
 <h3>GHSA-3p24-9x7v-7789</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-13 · Java<br>
-<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 19x across ecosystem
+<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -888,7 +968,7 @@ else
 <h3>GHSA-chqc-8p9q-pq6q</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-08 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 19x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not sanitize input for control characters, allowing attackers to inject CRLF sequences that could manipulate FTP commands.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to execute arbitrary FTP commands on the server, potentially leading to unauthorized access or data manipulation.</p>
@@ -911,7 +991,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 29x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -1018,7 +1098,7 @@ After:
 <h3>GHSA-6v7q-wjvx-w8wg</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 19x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for FTP commands, allowing control characters to be injected.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary FTP commands using credentials and MKD commands due to the lack of proper input validation.</p>
@@ -1115,7 +1195,7 @@ After:
 <h3>GHSA-jcxm-m3jx-f287</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-13 · JavaScript<br>
-<code>simple-git</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 19x across ecosystem
+<code>simple-git</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for the &#39;clone&#39; operation, allowing attackers to bypass intended restrictions.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the system running the vulnerable application.</p>
@@ -1187,7 +1267,7 @@ After:
 <h3>GHSA-2943-crp8-38xx</h3>
 <p>
 <code>HIGH 7.7</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 12x across ecosystem
+<code>github.com/patrickhener/goshs</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code directly used the target path from the SFTP request without sanitization, allowing attackers to write files in arbitrary locations on the server.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to overwrite or create files on the server, potentially leading to data loss, unauthorized access, or further exploitation of the system.</p>
@@ -1372,43 +1452,6 @@ err = os.Rename(fullPath, targetPath)</pre>
 <a href="https://github.com/advisories/GHSA-w937-fg2h-xhq2">Advisory</a> · <a href="https://github.com/locize/locize/commit/d006b75fadb8e8ab77b023e462850fc6e9170735">Commit</a>
 </p>
 <hr>
-<h3>GHSA-7gcj-phff-2884</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-21 · JavaScript<br>
-<code>signalk-server</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability description mentions an &#34;Unauthenticated Regular Expression Denial of Service (ReDoS) via WebSocket Subscription Paths&#34;. However, the provided diff primarily addresses a different issue: the lack of rate limiting for login attempts over WebSockets. Previously, only HTTP login attempts were rate-limited using &#39;express-rate-limit&#39;. WebSocket login attempts were not subject to any rate limiting, allowing an attacker to make an unlimited number of login attempts.</p>
-<p><b>Impact</b> : An attacker could perform an unlimited number of login attempts via WebSocket, potentially leading to a brute-force attack on user credentials or a denial of service by overwhelming the server with login requests.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/interfaces/ws.ts
-+++ b/src/interfaces/ws.ts
-@@ -725,6 +740,20 @@ function wsInterface(app: WsApp, spark: Spark, msg: WsMessage): void {
-   }
- 
-   function processLoginRequest(app: WsApp, spark: Spark, msg: WsMessage): void {
-+    const rateLimiter = app.securityStrategy.loginRateLimiter
-+    if (rateLimiter) {
-+      const { allowed } = rateLimiter.check(getClientIp(app, spark))
-+      if (!allowed) {
-+        spark.write({
-+          requestId: msg.requestId,
-+          state: &#39;COMPLETED&#39;,
-+          statusCode: 429,
-+          message: LOGIN_RATE_LIMIT_MESSAGE
-+        })
-+        return
-+      }
-+    }
-+
-     app.securityStrategy
-       .login(msg.login!.username, msg.login!.password)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new `LoginRateLimiter` module to handle rate limiting for login attempts. This custom rate limiter is now applied to both HTTP and WebSocket login requests, preventing an attacker from making an excessive number of attempts from a single IP address within a defined window.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-7gcj-phff-2884">Advisory</a> · <a href="https://github.com/SignalK/signalk-server/commit/215d81eb700d5419c3396a0fbf23f2e246dfac2d">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1444,10 +1487,10 @@ err = os.Rename(fullPath, targetPath)</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>294</td></tr>
+<tr><td>Total advisories</td><td>297</td></tr>
 <tr><td>Unique patterns</td><td>41</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-23</td></tr>
+<tr><td>Last updated</td><td>2026-04-24</td></tr>
 </table>
 </details>
 <hr>
