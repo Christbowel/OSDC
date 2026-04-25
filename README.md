@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-297-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-41-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-309-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-43-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -39,7 +39,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 18x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -156,10 +156,62 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-8x35-hph8-37hq</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
+</p>
+<p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/npm/install.js
++++ b/npm/install.js
+@@ -100,9 +100,27 @@
+ }
+ 
+ async function runLinux (folderName, filePattern) {
+-  const ver = await getVer()
+-  const target = resolve(__dirname, `../electerm-${ver.replace(&#39;v&#39;, &#39;&#39;)}-${folderName}`)
+-  const targetNew = resolve(__dirname, &#39;../electerm&#39;)
+-  exec(`rm -rf</pre>
+</details>
+<p><b>Fix</b> : The patch introduces `sanitizeVersion` and `sanitizeFilename` functions to validate and clean inputs before they are used in shell commands. It also replaces `exec` with `execSync` for synchronous execution and `execFile` for safer execution of specific binaries, avoiding direct shell command construction with untrusted input.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-8x35-hph8-37hq">Advisory</a> · <a href="https://github.com/electerm/electerm/commit/59708b38c8a52f5db59d7d4eff98e31d573128ee">Commit</a>
+</p>
+<hr>
+<h3>GHSA-xhj4-g6w8-2xjw</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 10x across ecosystem
+</p>
+<p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
+<p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/ztype/array_decode.go
++++ b/ztype/array_decode.go
+ 	arraySize := array.FixedSize
+ 	
+ 	// Limit the initial capacity to a reasonable number to avoid excessive memory allocation.
+ 	// This is needed in case the input is untrusted could have an overly large value.
+-	array.RawArray = make([]T, 0, arraySize)
++	if maxInitialArrayCapacityInt == 0 {
++		array.RawArray = make([]T, 0, arraySize)
++	} else {
++		array.RawArray = make([]T, 0, min(arraySize, maxInitialArrayCapacityInt))
++	}</pre>
+</details>
+<p><b>Fix</b> : The patch introduces maximum initial capacity limits for arrays, byte buffers, and strings during deserialization. These limits are configurable via environment variables (ZSERIO_MAX_INITIAL_ARRAY_SIZE, ZSERIO_MAX_INITIAL_BLOB_SIZE, ZSERIO_MAX_INITIAL_STRING_SIZE) and prevent excessive memory allocation based on untrusted input.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-xhj4-g6w8-2xjw">Advisory</a> · <a href="https://github.com/woven-by-toyota/go-zserio/commit/39ef1decde7e9766207794d396018776b33c6e45">Commit</a>
+</p>
+<hr>
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -352,7 +404,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-6973-8887-87ff</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-22 · RUST<br>
-<code>nimiq-block</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 4x across ecosystem
+<code>nimiq-block</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 5x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from improper validation of `BitSet` indices representing validator slots. An attacker could craft a `BitSet` with out-of-range indices or indices that, when truncated to `u16`, would map to valid slots. This allowed them to bypass the quorum check for skip blocks and equivocation proofs by making it appear as if enough validators had signed, even if they hadn&#39;t.</p>
 <p><b>Impact</b> : An attacker could forge valid skip blocks or equivocation proofs without the required supermajority of validator signatures. This could lead to a denial of service, allowing them to halt or disrupt the blockchain&#39;s consensus mechanism.</p>
@@ -381,7 +433,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 18x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -516,7 +568,7 @@ After:
 <h3>GHSA-wvhv-qcqf-f3cx</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 17x across ecosystem
+<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s file-based Access Control List (ACL) mechanism, which uses &#39;.goshs&#39; files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a &#39;.goshs&#39; file in the immediate directory, failing to consider ACLs defined in parent directories, and some operations lacked any ACL enforcement.</p>
 <p><b>Impact</b> : An attacker could bypass intended access restrictions to delete, create, or modify files and directories, including potentially sensitive ones, even if a parent directory&#39;s &#39;.goshs&#39; file explicitly denied such actions.</p>
@@ -544,7 +596,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 30x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -619,7 +671,7 @@ After:
 <h3>GHSA-8h25-q488-4hxw</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-23 · JavaScript<br>
-<code>openlearnx</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>openlearnx</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to execute arbitrary code in a sandboxed environment (Docker containers). However, the initial sandbox implementation for Python lacked robust static analysis to prevent the import of dangerous modules or the use of sensitive functions, enabling an attacker to escape the sandbox and execute arbitrary commands on the host system.</p>
 <p><b>Impact</b> : An attacker could escape the Docker container and execute arbitrary commands on the underlying host system, leading to full system compromise, data exfiltration, or further network penetration.</p>
@@ -783,7 +835,7 @@ After:
 <h3>GHSA-3p24-9x7v-7789</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-13 · Java<br>
-<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -900,7 +952,7 @@ else
 <h3>GHSA-855c-r2vq-c292</h3>
 <p>
 <code>HIGH 8.7</code> · 2026-04-16 · JavaScript<br>
-<code>apostrophe</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 18x across ecosystem
+<code>apostrophe</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : Untrusted data in SEO fields was being embedded directly into a `&lt;script&gt;` tag without proper sanitization.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTML/JS, leading to potential session hijacking or other malicious activities.</p>
@@ -922,7 +974,7 @@ else
 <h3>GHSA-9pr4-rf97-79qh</h3>
 <p>
 <code>HIGH 8.7</code> · 2026-04-13 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 18x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unrestricted upload of assets and served them with their original Content-Type, including &#39;text/html&#39; and &#39;image/svg+xml&#39;. This enabled an attacker to upload malicious HTML or SVG files containing JavaScript, which would then execute in the victim&#39;s browser when the asset was viewed.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary JavaScript in the context of the victim&#39;s browser, leading to session hijacking, defacement, or redirection to malicious sites.</p>
@@ -968,7 +1020,7 @@ else
 <h3>GHSA-chqc-8p9q-pq6q</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-08 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not sanitize input for control characters, allowing attackers to inject CRLF sequences that could manipulate FTP commands.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to execute arbitrary FTP commands on the server, potentially leading to unauthorized access or data manipulation.</p>
@@ -991,7 +1043,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 30x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -1098,7 +1150,7 @@ After:
 <h3>GHSA-6v7q-wjvx-w8wg</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for FTP commands, allowing control characters to be injected.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary FTP commands using credentials and MKD commands due to the lack of proper input validation.</p>
@@ -1195,7 +1247,7 @@ After:
 <h3>GHSA-jcxm-m3jx-f287</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-13 · JavaScript<br>
-<code>simple-git</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 20x across ecosystem
+<code>simple-git</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for the &#39;clone&#39; operation, allowing attackers to bypass intended restrictions.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the system running the vulnerable application.</p>
@@ -1239,6 +1291,24 @@ After:
 <p><b>Fix</b> : The patch adds verification for certifier signatures, ensuring that only valid signatures are persisted.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-hc36-c89j-5f4j">Advisory</a> · <a href="https://github.com/sgbett/bsv-ruby-sdk/commit/4992e8a265fd914a7eeb0405c69d1ff0122a84cc">Commit</a>
+</p>
+<hr>
+<h3>GHSA-fpjq-c37h-cqcv</h3>
+<p>
+<code>HIGH 7.7</code> · 2026-04-24 · Go<br>
+<code>github.com/kyverno/kyverno</code> · Pattern: <code>NULL_DEREF→CRASH</code> · 3x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the code directly type-asserted an interface value to a string without checking if the assertion would succeed. If the underlying value was not a string, this would cause a panic (runtime error) in the Kyverno controller.</p>
+<p><b>Impact</b> : An attacker could craft a malicious policy that, when processed by the Kyverno controller, would cause the controller to crash and enter a restart loop, leading to a denial of service for the Kyverno admission controller.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-	patcher := NewPatcher(fe[&#34;patchStrategicMerge&#34;], fe[&#34;patchesJson6902&#34;].(string))
++	jsonPatch, _ := fe[&#34;patchesJson6902&#34;].(string)
++	patcher := NewPatcher(fe[&#34;patchStrategicMerge&#34;], jsonPatch)</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a safe type assertion for &#39;patchesJson6902&#39;. It now explicitly checks if the assertion to a string type is successful. If it fails, the &#39;jsonPatch&#39; variable will be an empty string, preventing the panic.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fpjq-c37h-cqcv">Advisory</a> · <a href="https://github.com/kyverno/kyverno/commit/76c8fdbe87328722e099e1fd44c3f21c9f7809cb">Commit</a>
 </p>
 <hr>
 <h3>GHSA-hv99-mxm5-q397</h3>
@@ -1290,168 +1360,6 @@ err = os.Rename(fullPath, targetPath)</pre>
 <a href="https://github.com/advisories/GHSA-2943-crp8-38xx">Advisory</a> · <a href="https://github.com/patrickhener/goshs/commit/141c188ce270ffbec087844a50e5e695b7da7744">Commit</a>
 </p>
 <hr>
-<h3>GHSA-4948-f92q-f432</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-22 · JavaScript<br>
-<code>@nocobase/database</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The application constructed SQL queries by directly concatenating user-controlled input (e.g., `scopeValue`, `nodeIds`) into the SQL string without proper sanitization or using parameterized queries. This allowed an attacker to inject arbitrary SQL code.</p>
-<p><b>Impact</b> : An attacker could manipulate database queries, potentially leading to unauthorized data access, modification, or deletion, and could even execute arbitrary commands on the underlying database server depending on the database&#39;s privileges.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/packages/plugins/@nocobase/plugin-field-sort/src/server/sort-field.ts
-+++ b/packages/plugins/@nocobase/plugin-field-sort/src/server/sort-field.ts
-@@ -120,21 +120,29 @@ export class SortField extends Field {
-       const sortColumnName = queryInterface.quoteIdentifier(this.collection.model.rawAttributes[this.name].field);
- 
-       let sql: string;
-+      let bind: any[] | undefined;
- 
-       const whereClause =
-         scopeKey &amp;&amp; scopeValue
-           ? (() =&gt; {
-               const filteredScopeValue = scopeValue.filter((v) =&gt; v !== null);
--              if (filteredScopeValue.length === 0) {
--                return &#39;&#39;;
-+              const clauses: string[] = [];
-+
-+              if (filteredScopeValue.length &gt; 0) {
-+                bind = filteredScopeValue;
-+                const placeholders = filteredScopeValue.map((_, index) =&gt; `$${index + 1}`).join(&#39;, &#39;);
-+                clauses.push(`${queryInterface.quoteIdentifier(scopeKey)} IN (${placeholders})`);
-               }
--              const initialClause = `
--  WHERE ${queryInterface.quoteIdentifier(scopeKey)} IN (${filteredScopeValue.map((v) =&gt; `&#39;${v}&#39;`).join(&#39;, &#39;)})`;
-+
-+              if (scopeValue.includes(null)) {
-+                clauses.push(`${queryInterface.quoteIdentifier(scopeKey)} IS NULL`);
-+              }
-+
-+              if (clauses.length === 0) {
-+                return &#39;&#39;;
-+              }
-+              return `
-+  WHERE ${clauses.join(&#39; OR &#39;)}`;
-             })()
-           : &#39;&#39;;
- 
-@@ -180,6 +188,7 @@ export class SortField extends Field {
-   `;
-       }
-       await this.collection.db.sequelize.query(sql, {
-+        bind,
-         transaction,
-       });
-     };</pre>
-</details>
-<p><b>Fix</b> : The patch refactors the SQL query construction to use parameterized queries with bind variables. Instead of directly embedding user input into the SQL string, placeholders are used, and the actual values are passed separately in a `bind` object or array, preventing SQL injection.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-4948-f92q-f432">Advisory</a> · <a href="https://github.com/nocobase/nocobase/commit/202e2b8efe44ba90adbf1087f6f70881ff947604">Commit</a>
-</p>
-<hr>
-<h3>GHSA-7c4j-2m43-2mgh</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-22 · RUST<br>
-<code>nimiq-primitives</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of BLS voting keys within election macro block proposals. An attacker could craft a block containing an invalid BLS public key that, when processed by a node, would cause a panic (uncompress().unwrap()) during the hashing or verification process, leading to a node crash.</p>
-<p><b>Impact</b> : An attacker could send a specially crafted election macro block to a Nimiq node, causing it to crash and potentially disrupting the network&#39;s consensus process or individual node operation.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/primitives/block/src/macro_block.rs
-+++ b/primitives/block/src/macro_block.rs
-@@ -244,6 +244,12 @@ impl MacroHeader {
-         if self.is_election() != self.validators.is_some() {
-             return Err(BlockError::InvalidValidators);
-         }
-+        // Validate that all BLS voting keys can be decompressed and structural invariants hold.
-+        if let Some(ref validators) = self.validators {
-+            validators
-+                .validate_keys()
-+                .map_err(|_| BlockError::InvalidValidators)?;
-+        }
-         Ok(())
-     }</pre>
-</details>
-<p><b>Fix</b> : The patch introduces explicit validation for BLS voting keys in macro block headers and validator sets. It adds a `validate_keys()` method to the `Validators` struct and calls it during `MacroHeader::verify()` and `BlockQueue` processing, ensuring that invalid keys are rejected before they can cause a panic.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-7c4j-2m43-2mgh">Advisory</a> · <a href="https://github.com/nimiq/core-rs-albatross/commit/e10eaebcd7774e5da6d0ff5e88ed13503474f0ff">Commit</a>
-</p>
-<hr>
-<h3>GHSA-w937-fg2h-xhq2</h3>
-<p>
-<code>HIGH 7.5</code> · 2026-04-22 · JavaScript<br>
-<code>locize</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 18x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from two main issues: a lack of origin validation for incoming postMessage events and insufficient sanitization of HTML content and attribute values provided by the InContext editor. An attacker could send malicious messages from any origin, which would then be processed and potentially lead to script execution or attribute manipulation.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary JavaScript in the context of the victim&#39;s browser, leading to session hijacking, data theft, defacement, or redirection to malicious sites. They could also hijack event handlers or inject dangerous URLs.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/api/postMessage.js
-+++ b/src/api/postMessage.js
-@@ -146,8 +146,24 @@ export const api = {
-   }
- }
- 
-+// Compute the expected origin once at module load.
-+const getExpectedIframeOrigin = () =&gt; {
-+  try {
-+    return new URL(getIframeUrl()).origin
-+  } catch (err) {
-+    return null
-+  }
-+}
-+
- if (typeof window !== &#39;undefined&#39;) {
-   window.addEventListener(&#39;message&#39;, e =&gt; {
-+    const expectedOrigin = getExpectedIframeOrigin()
-+    if (!expectedOrigin || e.origin !== expectedOrigin) return
-+
-     const { sender, /* senderAPIVersion, */ action, message, payload } = e.data
-     // console.warn(sender, action, message, payload)
- 
-```
-```diff
---- a/src/api/handleEditKey.js
-+++ b/src/api/handleEditKey.js
-@@ -16,6 +74,9 @@ export function setValueOnNode (meta, value) {
-     item.node.textContent = txtWithHiddenMeta
-   } else if (meta.textType.indexOf(&#39;attr:&#39;) === 0) {
-     const attr = meta.textType.replace(&#39;attr:&#39;, &#39;&#39;)
-+    // Drop writes to dangerous attribute names (event handlers, style) and
-+    // reject javascript:/data:/vbscript:/file: URLs on href/src/action/etc.
-+    if (!isSafeAttributeWrite(attr, txtWithHiddenMeta)) return
-     item.node.setAttribute(attr, txtWithHiddenMeta)
-   } else if (meta.textType === &#39;html&#39;) {
-     const id = `${meta.textType}-${meta.children}`
-@@ -29,9 +90,11 @@ export function setValueOnNode (meta, value) {
-       item.originalChildNodes = clones
-     }
- 
-+    const sanitisedHtml = sanitizeTranslationHtml(txtWithHiddenMeta)
-+
-     // simple case - contains all inner HTML - so just replace it
-     if (item.children[id].length === item.node.childNodes.length) {
--      item.node.innerHTML = txtWithHiddenMeta
-+      item.node.innerHTML = sanitisedHtml
-     } else {
-       // more complex...add somewhere in between
-       const children = item.children[id]
-@@ -40,7 +103,7 @@ export function setValueOnNode (meta, value) {
- 
-       // append to dummy
-       const dummy = document.createElement(&#39;div&#39;)
--      dummy.innerHTML = txtWithHiddenMeta
-+      dummy.innerHTML = sanitisedHtml
- 
-       // loop over all childs and append them to source node before first child (the one having the startMarker)
-       const nodes = []</pre>
-</details>
-<p><b>Fix</b> : The patch introduces origin validation for all incoming postMessage events, ensuring that only messages from the expected locize InContext editor iframe are processed. Additionally, it implements robust HTML sanitization for translated content, stripping dangerous tags, event handlers, and unsafe URL schemes (like `javascript:`) from attributes before they are rendered in the DOM.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-w937-fg2h-xhq2">Advisory</a> · <a href="https://github.com/locize/locize/commit/d006b75fadb8e8ab77b023e462850fc6e9170735">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1462,7 +1370,7 @@ err = os.Rename(fullPath, targetPath)</pre>
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 41 normalized pattern IDs
+             Map to closed taxonomy of 43 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1487,10 +1395,10 @@ err = os.Rename(fullPath, targetPath)</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>297</td></tr>
-<tr><td>Unique patterns</td><td>41</td></tr>
+<tr><td>Total advisories</td><td>309</td></tr>
+<tr><td>Unique patterns</td><td>43</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-24</td></tr>
+<tr><td>Last updated</td><td>2026-04-25</td></tr>
 </table>
 </details>
 <hr>
