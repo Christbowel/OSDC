@@ -1398,7 +1398,7 @@ err = os.Rename(fullPath, targetPath)</pre>
 <tr><td>Total advisories</td><td>309</td></tr>
 <tr><td>Unique patterns</td><td>43</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-25</td></tr>
+<tr><td>Last updated</td><td>2026-04-26</td></tr>
 </table>
 </details>
 <hr>
