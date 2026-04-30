@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-323-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-332-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-43-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -68,7 +68,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -184,7 +184,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 11x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -277,7 +277,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 51x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -348,7 +348,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 51x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -381,7 +381,7 @@ After:
 <h3>GHSA-v529-vhwc-wfc5</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 7x across ecosystem
+<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
@@ -462,7 +462,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 20x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -512,7 +512,7 @@ After:
 <h3>GHSA-m5gr-86j6-99jp</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
+<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -751,7 +751,7 @@ After:
 <h3>GHSA-2gw9-c2r2-f5qf</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-21 · Go<br>
-<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 7x across ecosystem
+<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed authenticated users to update their profile without proper authorization checks on all fields. Specifically, the `IsAdmin` field within the user&#39;s session profile could be modified by a non-admin user through the `UpdateProfile` API endpoint.</p>
 <p><b>Impact</b> : An authenticated non-admin user could elevate their privileges to that of an administrator, gaining full control over the application and potentially sensitive data or functionality.</p>
@@ -784,7 +784,7 @@ After:
 <h3>GHSA-29qv-4j9f-fjw5</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-16 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 51x across ecosystem
+<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch changes the function `isSafeProperty` to `isSafeObjectProperty`, which may not cover all cases as intended.</p>
 <p><b>Impact</b> : An attacker could potentially access unsafe properties or methods of objects, leading to potential security vulnerabilities.</p>
@@ -803,7 +803,7 @@ After:
 <h3>GHSA-66hx-chf7-3332</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 7x across ecosystem
+<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
 <p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
@@ -873,7 +873,7 @@ After:
 <h3>GHSA-jvff-x2qm-6286</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-10 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 51x across ecosystem
+<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate that the index parameter was an array, allowing attackers to manipulate object attributes improperly.</p>
 <p><b>Impact</b> : An attacker could potentially modify or delete arbitrary properties of objects, leading to unauthorized data manipulation or loss.</p>
@@ -895,7 +895,7 @@ if (!Array.isArray(index)) {
 <h3>GHSA-5gfj-64gh-mgmw</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-08 · Python<br>
-<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 20x across ecosystem
+<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The `safe_join` function did not properly validate the resolved path to ensure it stayed within the agent&#39;s WORKING_DIRECTORY.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to read or write files outside of the intended directory, potentially leading to unauthorized access or data corruption.</p>
@@ -924,7 +924,7 @@ if not (new_path.startswith(base + os.sep) or new_path == base):
 <h3>GHSA-qxpc-96fq-wwmg</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-07 · Java<br>
-<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 7x across ecosystem
+<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch fails to properly validate the user&#39;s permissions before allowing them to drop an identity, potentially escalating their privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to escalate their privileges within the Cassandra environment by dropping identities and assuming roles they are not authorized to.</p>
@@ -1073,7 +1073,7 @@ this.baseUrl = normalizedBase;</pre>
 <h3>GHSA-m6rx-7pvw-2f73</h3>
 <p>
 <code>HIGH 8.4</code> · 2026-04-21 · JavaScript<br>
-<code>@gitlawb/openclaude</code> · Pattern: <code>UNCLASSIFIED</code> · 51x across ecosystem
+<code>@gitlawb/openclaude</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the sandbox permission check logic had an early-exit flaw. It only explicitly handled &#39;passthrough&#39; behavior, allowing &#39;deny&#39; or &#39;ask&#39; behaviors to implicitly bypass the intended security checks and proceed as if permission was granted.</p>
 <p><b>Impact</b> : An attacker could bypass the sandbox restrictions, potentially leading to unauthorized file system access (path traversal) or execution of arbitrary commands outside the intended secure environment.</p>
@@ -1200,7 +1200,7 @@ After:
 <h3>GHSA-wgx6-g857-jjf7</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-22 · Ruby<br>
-<code>openc3</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 7x across ecosystem
+<code>openc3</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The `verify_no_service` method, intended to verify either a password or a session token, had a flaw where it would prioritize checking for a session token even when explicitly told to only check for a password. This meant that if an attacker had a valid session token, they could use it in place of a password to perform actions that should require the actual user&#39;s password, such as resetting the password.</p>
 <p><b>Impact</b> : An attacker with a hijacked session token could bypass the password verification step and reset the user&#39;s password, gaining persistent access to the account. This effectively allows session hijacking to lead to full account takeover.</p>
@@ -1293,6 +1293,31 @@ After:
 <a href="https://github.com/advisories/GHSA-hc36-c89j-5f4j">Advisory</a> · <a href="https://github.com/sgbett/bsv-ruby-sdk/commit/4992e8a265fd914a7eeb0405c69d1ff0122a84cc">Commit</a>
 </p>
 <hr>
+<h3>GHSA-55wf-5m3q-6jjf</h3>
+<p>
+<code>HIGH 7.7</code> · 2026-04-29 · PHP<br>
+<code>ipl/web</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the application was setting a custom multipart content header without explicitly defining a Content-Type header that would prevent browsers from interpreting the response as HTML. This allowed an attacker to craft a malicious search request that, when reflected in the response, could execute arbitrary JavaScript in the victim&#39;s browser.</p>
+<p><b>Impact</b> : An attacker could inject arbitrary client-side scripts into the web page, leading to session hijacking, defacement, or redirection to malicious sites.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/Compat/CompatController.php
++++ b/src/Compat/CompatController.php
+@@ -501,7 +501,9 @@ public function postDispatch()
+             }
+         } else {
+             $partSeparator = base64_encode(random_bytes(16));
+-            $this-&gt;getResponse()-&gt;setHeader(&#39;X-Icinga-Multipart-Content&#39;, $partSeparator);
++            $this-&gt;getResponse()
++                -&gt;setHeader(&#39;X-Icinga-Multipart-Content&#39;, $partSeparator)
++                -&gt;setHeader(&#39;Content-Type&#39;, &#39;application/vnd.icinga+multipart&#39;, True);</pre>
+</details>
+<p><b>Fix</b> : The patch adds a `Content-Type` header with the value `application/vnd.icinga+multipart` to explicitly define the content type of the response. This prevents browsers from misinterpreting the response as HTML, thereby mitigating the reflected XSS vulnerability.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-55wf-5m3q-6jjf">Advisory</a> · <a href="https://github.com/Icinga/ipl-web/commit/f387e92504d7a03bb857d1aee9b7410e06dd065d">Commit</a>
+</p>
+<hr>
 <h3>GHSA-fpjq-c37h-cqcv</h3>
 <p>
 <code>HIGH 7.7</code> · 2026-04-24 · Go<br>
@@ -1314,7 +1339,7 @@ After:
 <h3>GHSA-hv99-mxm5-q397</h3>
 <p>
 <code>HIGH 7.7</code> · 2026-04-16 · Python<br>
-<code>weblate</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 20x across ecosystem
+<code>weblate</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input when constructing file paths, allowing attackers to read arbitrary files via symlinks.</p>
 <p><b>Impact</b> : An attacker could potentially read sensitive files on the server, leading to data exposure or further exploitation.</p>
@@ -1332,32 +1357,6 @@ After:
 <p><b>Fix</b> : The patch introduced a validation step to ensure that file paths are correctly constructed and sanitized before being accessed, preventing symlink attacks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-hv99-mxm5-q397">Advisory</a> · <a href="https://github.com/WeblateOrg/weblate/commit/5db3a2a2e047ecaab627a8731cd744a30b2f51d3">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2943-crp8-38xx</h3>
-<p>
-<code>HIGH 7.7</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 13x across ecosystem
-</p>
-<p><b>Root cause</b> : The code directly used the target path from the SFTP request without sanitization, allowing attackers to write files in arbitrary locations on the server.</p>
-<p><b>Impact</b> : An attacker could use this vulnerability to overwrite or create files on the server, potentially leading to data loss, unauthorized access, or further exploitation of the system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-err := os.Rename(fullPath, r.Target)
-
-After:
-targetPath, err := sanitizePath(r.Target, root)
-if err != nil {
-	logger.LogSFTPRequestBlocked(r, ip, err)
-	sftpServer.HandleWebhookSend(&#34;sftp&#34;, r, ip, true)
-	return err
-}
-err = os.Rename(fullPath, targetPath)</pre>
-</details>
-<p><b>Fix</b> : The patch introduced a path sanitization function `sanitizePath` to ensure that only valid paths are used for file operations, preventing directory traversal attacks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2943-crp8-38xx">Advisory</a> · <a href="https://github.com/patrickhener/goshs/commit/141c188ce270ffbec087844a50e5e695b7da7744">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1395,10 +1394,10 @@ err = os.Rename(fullPath, targetPath)</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>323</td></tr>
+<tr><td>Total advisories</td><td>332</td></tr>
 <tr><td>Unique patterns</td><td>43</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-29</td></tr>
+<tr><td>Last updated</td><td>2026-04-30</td></tr>
 </table>
 </details>
 <hr>
