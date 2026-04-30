@@ -1,12 +1,12 @@
 {
-  "run_at": "2026-04-30T15:46:06.545803+00:00",
+  "run_at": "2026-04-30T23:53:32.359825+00:00",
   "run_number": 1,
-  "fetched": 0,
-  "new": 0,
-  "analyzed": 0,
+  "fetched": 7,
+  "new": 7,
+  "analyzed": 6,
   "new_patterns": 0,
-  "errors": 0,
+  "errors": 1,
   "pending": 0,
-  "total_advisories": 332,
+  "total_advisories": 338,
   "total_patterns": 43
 }
