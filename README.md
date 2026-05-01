@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-332-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-338-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-43-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -360,7 +360,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -485,7 +485,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -507,6 +507,52 @@ After:
 <p><b>Fix</b> : The patch adds access control by passing `overrideAccess: false` and `req` to Payload&#39;s local API, ensuring that collection-level access rules are enforced.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
+</p>
+<hr>
+<h3>GHSA-f6qq-3m3h-4g42</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-04-30 · Go<br>
+<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the Patreon OAuth2 provider incorrectly generated the local user ID. Instead of using the unique ID provided by Patreon (uinfoJSON.Data.ID), it used an uninitialized or default value from userInfo.ID, which was likely constant or empty across all users. This resulted in all authenticated Patreon users being assigned the same local user ID.</p>
+<p><b>Impact</b> : An attacker could impersonate any other Patreon-authenticated user by simply logging in with their own Patreon account. This allows for cross-user impersonation and unauthorized access to other users&#39; data or actions within the application.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-				userInfo.ID = &#34;patreon_&#34; + token.HashID(sha1.New(), userInfo.ID)
++				userInfo.ID = &#34;patreon_&#34; + token.HashID(sha1.New(), uinfoJSON.Data.ID)</pre>
+</details>
+<p><b>Fix</b> : The patch corrects the user ID generation logic for the Patreon OAuth2 provider. It changes the source of the ID used for hashing from the potentially uninitialized `userInfo.ID` to the unique and correct `uinfoJSON.Data.ID` obtained from the Patreon user information JSON response. This ensures each Patreon user gets a unique local ID.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-f6qq-3m3h-4g42">Advisory</a> · <a href="https://github.com/go-pkgz/auth/commit/c0b15ee72a8401da83c01781c16636c521f42698">Commit</a>
+</p>
+<hr>
+<h3>GHSA-rcmw-7mc7-3rj7</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
+<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+</p>
+<p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
+<p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/sentry/auth/helper.py
++++ b/src/sentry/auth/helper.py
+@@ -1017,7 +1017,11 @@ def _finish_setup_pipeline(self, identity: Mapping[str, Any]) -&gt; HttpResponseRed
+             organization_id=self.organization.id, provider=self.provider.key, config=config
+         )
+ 
+-        self.auth_handler(identity).handle_attach_identity(om)
++        # The setup flow should always link the identity to the admin who is
++        # performing setup, so override the email to ensure resolve_email_to_user
++        # returns the authenticated user rather than whoever the IdP asserted.
++        setup_identity = {**identity, &#34;email&#34;: request.user.email}
++        self.auth_handler(setup_identity).handle_attach_identity(om)
+ 
+         auth.mark_sso_complete(request, self.organization.id)</pre>
+</details>
+<p><b>Fix</b> : The patch ensures that during the SAML SSO setup flow, the identity is always linked to the email of the administrator who is currently logged in and performing the setup. It explicitly overrides the email from the IdP&#39;s response with the authenticated user&#39;s email before attaching the identity.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-rcmw-7mc7-3rj7">Advisory</a> · <a href="https://github.com/getsentry/sentry/commit/0c67558ae7fe08738912d4c5233b53ead048da3b">Commit</a>
 </p>
 <hr>
 <h3>GHSA-m5gr-86j6-99jp</h3>
@@ -549,7 +595,7 @@ After: profile.EmailVerified.IsVerified()</pre>
 <h3>GHSA-xh72-v6v9-mwhc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the presence of an encryptKey before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by sending a request without an encryptKey, allowing unauthorized access to webhook and card-action endpoints.</p>
@@ -596,7 +642,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 35x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -623,7 +669,7 @@ After:
 <h3>GHSA-2679-6mx9-h9xc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
@@ -751,7 +797,7 @@ After:
 <h3>GHSA-2gw9-c2r2-f5qf</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-21 · Go<br>
-<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
+<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed authenticated users to update their profile without proper authorization checks on all fields. Specifically, the `IsAdmin` field within the user&#39;s session profile could be modified by a non-admin user through the `UpdateProfile` API endpoint.</p>
 <p><b>Impact</b> : An authenticated non-admin user could elevate their privileges to that of an administrator, gaining full control over the application and potentially sensitive data or functionality.</p>
@@ -803,7 +849,7 @@ After:
 <h3>GHSA-66hx-chf7-3332</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
+<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
 <p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
@@ -924,7 +970,7 @@ if not (new_path.startswith(base + os.sep) or new_path == base):
 <h3>GHSA-qxpc-96fq-wwmg</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-07 · Java<br>
-<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
+<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch fails to properly validate the user&#39;s permissions before allowing them to drop an identity, potentially escalating their privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to escalate their privileges within the Cassandra environment by dropping identities and assuming roles they are not authorized to.</p>
@@ -1040,10 +1086,32 @@ if (/[\r\n\0]/.test(path)) {
 <a href="https://github.com/advisories/GHSA-chqc-8p9q-pq6q">Advisory</a> · <a href="https://github.com/patrickjuchli/basic-ftp/commit/2ecc8e2c500c5234115f06fd1dbde1aa03d70f4b">Commit</a>
 </p>
 <hr>
+<h3>GHSA-56c3-vfp2-5qqj</h3>
+<p>
+<code>HIGH 8.5</code> · 2026-04-30 · JavaScript<br>
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
+</p>
+<p><b>Root cause</b> : The `validateUrlSync()` function in `n8n-mcp`&#39;s SSRF protection mechanism did not adequately handle IPv4-mapped IPv6 addresses. While it had checks for some private IPv6 ranges and IPv4 addresses, it failed to recognize that IPv4-mapped IPv6 addresses (e.g., `::ffff:169.254.169.254`) could embed arbitrary IPv4 addresses, effectively bypassing the existing IPv4-only checks.</p>
+<p><b>Impact</b> : An attacker could craft a URL using an IPv4-mapped IPv6 address to bypass the SSRF protection, allowing them to access internal network resources, cloud metadata endpoints, or other sensitive services that should have been blocked.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-      if (resolvedIP === &#39;::1&#39; ||         // Loopback
+-          resolvedIP === &#39;::&#39; ||          // Unspecified address
+-          resolvedIP.startsWith(&#39;fe80:&#39;) || // Link-local
+-          resolvedIP.startsWith(&#39;fc00:&#39;) || // Unique local (fc00::/7)
+-          resolvedIP.startsWith(&#39;fd00:&#39;) || // Unique local (fd00::/8)
+-          resolvedIP.startsWith(&#39;::ffff:&#39;)) { // IPv4-mapped IPv6
++      if (SSRFProtection.isPrivateOrMappedIpv6(resolvedIP)) {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new static method `isPrivateOrMappedIpv6()` which performs comprehensive checks for various private and mapped IPv6 address types, including IPv4-mapped, link-local, unique-local, 6to4, and NAT64 addresses. This new function is then integrated into both the synchronous and asynchronous URL validation logic to ensure these addresses are blocked.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-56c3-vfp2-5qqj">Advisory</a> · <a href="https://github.com/czlonkowski/n8n-mcp/commit/9639f757853149f0cb16663cc8b6b6468f27a25f">Commit</a>
+</p>
+<hr>
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 35x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -1177,7 +1245,7 @@ After:
 <h3>GHSA-75hx-xj24-mqrw</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 12x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not handle authentication errors securely, potentially revealing sensitive information in error messages.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to gain insights into the system&#39;s internal workings and potentially identify valid usernames or other sensitive data.</p>
@@ -1200,7 +1268,7 @@ After:
 <h3>GHSA-wgx6-g857-jjf7</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-22 · Ruby<br>
-<code>openc3</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 8x across ecosystem
+<code>openc3</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The `verify_no_service` method, intended to verify either a password or a session token, had a flaw where it would prioritize checking for a session token even when explicitly told to only check for a password. This meant that if an attacker had a valid session token, they could use it in place of a password to perform actions that should require the actual user&#39;s password, such as resetting the password.</p>
 <p><b>Impact</b> : An attacker with a hijacked session token could bypass the password verification step and reset the user&#39;s password, gaining persistent access to the account. This effectively allows session hijacking to lead to full account takeover.</p>
@@ -1271,7 +1339,7 @@ if (method === &#39;clone&#39; &amp;&amp; isCloneSwitch(&#39;u&#39;, arg)) {</pr
 <h3>GHSA-hc36-c89j-5f4j</h3>
 <p>
 <code>HIGH 8.1</code> · 2026-04-09 · Ruby<br>
-<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 7x across ecosystem
+<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 8x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not verify the certifier signatures before persisting them.</p>
 <p><b>Impact</b> : An attacker could potentially bypass security checks by providing unverified signatures, leading to unauthorized access or manipulation of data.</p>
@@ -1291,72 +1359,6 @@ After:
 <p><b>Fix</b> : The patch adds verification for certifier signatures, ensuring that only valid signatures are persisted.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-hc36-c89j-5f4j">Advisory</a> · <a href="https://github.com/sgbett/bsv-ruby-sdk/commit/4992e8a265fd914a7eeb0405c69d1ff0122a84cc">Commit</a>
-</p>
-<hr>
-<h3>GHSA-55wf-5m3q-6jjf</h3>
-<p>
-<code>HIGH 7.7</code> · 2026-04-29 · PHP<br>
-<code>ipl/web</code> · Pattern: <code>UNCLASSIFIED</code> · 52x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the application was setting a custom multipart content header without explicitly defining a Content-Type header that would prevent browsers from interpreting the response as HTML. This allowed an attacker to craft a malicious search request that, when reflected in the response, could execute arbitrary JavaScript in the victim&#39;s browser.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary client-side scripts into the web page, leading to session hijacking, defacement, or redirection to malicious sites.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/Compat/CompatController.php
-+++ b/src/Compat/CompatController.php
-@@ -501,7 +501,9 @@ public function postDispatch()
-             }
-         } else {
-             $partSeparator = base64_encode(random_bytes(16));
--            $this-&gt;getResponse()-&gt;setHeader(&#39;X-Icinga-Multipart-Content&#39;, $partSeparator);
-+            $this-&gt;getResponse()
-+                -&gt;setHeader(&#39;X-Icinga-Multipart-Content&#39;, $partSeparator)
-+                -&gt;setHeader(&#39;Content-Type&#39;, &#39;application/vnd.icinga+multipart&#39;, True);</pre>
-</details>
-<p><b>Fix</b> : The patch adds a `Content-Type` header with the value `application/vnd.icinga+multipart` to explicitly define the content type of the response. This prevents browsers from misinterpreting the response as HTML, thereby mitigating the reflected XSS vulnerability.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-55wf-5m3q-6jjf">Advisory</a> · <a href="https://github.com/Icinga/ipl-web/commit/f387e92504d7a03bb857d1aee9b7410e06dd065d">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fpjq-c37h-cqcv</h3>
-<p>
-<code>HIGH 7.7</code> · 2026-04-24 · Go<br>
-<code>github.com/kyverno/kyverno</code> · Pattern: <code>NULL_DEREF→CRASH</code> · 3x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the code directly type-asserted an interface value to a string without checking if the assertion would succeed. If the underlying value was not a string, this would cause a panic (runtime error) in the Kyverno controller.</p>
-<p><b>Impact</b> : An attacker could craft a malicious policy that, when processed by the Kyverno controller, would cause the controller to crash and enter a restart loop, leading to a denial of service for the Kyverno admission controller.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-	patcher := NewPatcher(fe[&#34;patchStrategicMerge&#34;], fe[&#34;patchesJson6902&#34;].(string))
-+	jsonPatch, _ := fe[&#34;patchesJson6902&#34;].(string)
-+	patcher := NewPatcher(fe[&#34;patchStrategicMerge&#34;], jsonPatch)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a safe type assertion for &#39;patchesJson6902&#39;. It now explicitly checks if the assertion to a string type is successful. If it fails, the &#39;jsonPatch&#39; variable will be an empty string, preventing the panic.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fpjq-c37h-cqcv">Advisory</a> · <a href="https://github.com/kyverno/kyverno/commit/76c8fdbe87328722e099e1fd44c3f21c9f7809cb">Commit</a>
-</p>
-<hr>
-<h3>GHSA-hv99-mxm5-q397</h3>
-<p>
-<code>HIGH 7.7</code> · 2026-04-16 · Python<br>
-<code>weblate</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly sanitize input when constructing file paths, allowing attackers to read arbitrary files via symlinks.</p>
-<p><b>Impact</b> : An attacker could potentially read sensitive files on the server, leading to data exposure or further exploitation.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
--                fullname = os.path.join(translation.component.full_path, filename)
-After:
-+                try:
-+                    fullname = getter()
-+                except ValidationError:
-+                    continue
-+                if fullname and os.path.exists(fullname):</pre>
-</details>
-<p><b>Fix</b> : The patch introduced a validation step to ensure that file paths are correctly constructed and sanitized before being accessed, preventing symlink attacks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-hv99-mxm5-q397">Advisory</a> · <a href="https://github.com/WeblateOrg/weblate/commit/5db3a2a2e047ecaab627a8731cd744a30b2f51d3">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1394,10 +1396,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>332</td></tr>
+<tr><td>Total advisories</td><td>338</td></tr>
 <tr><td>Unique patterns</td><td>43</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-04-30</td></tr>
+<tr><td>Last updated</td><td>2026-05-01</td></tr>
 </table>
 </details>
 <hr>
