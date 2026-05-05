@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-338-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-43-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-361-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-44-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -15,7 +15,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -39,7 +39,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -68,7 +68,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 14x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 17x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -99,7 +99,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 3x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 4x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -159,7 +159,7 @@
 <h3>GHSA-8x35-hph8-37hq</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
@@ -184,7 +184,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 13x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -211,7 +211,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -360,7 +360,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -433,7 +433,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -459,10 +459,35 @@ result = @@conn.exec_params(query, query_params)</pre>
 <a href="https://github.com/advisories/GHSA-8wrq-fv5f-pfp2">Advisory</a> · <a href="https://github.com/parisneo/lollms/commit/9767b882dbc893c388a286856beeaead69b8292a">Commit</a>
 </p>
 <hr>
+<h3>GHSA-fv26-4939-62fh</h3>
+<p>
+<code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
+<p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- resources/views/system/importer/app.blade.php
++++ /dev/null
+@@ -1,90 +0,0 @@
+-&lt;!DOCTYPE html&gt;
+-&lt;html lang=&#34;en&#34;&gt;
+
+--- resources/views/system/importer/step1-configure.blade.php
++++ /dev/null
+@@ -1,132 +0,0 @@
+-@extends(&#39;system.importer.app&#39;)</pre>
+</details>
+<p><b>Fix</b> : The patch completely removes the vulnerable /importer functionality by deleting all associated view files. This eliminates the unauthorized access point and prevents the database wipe from being triggered by unauthenticated users.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fv26-4939-62fh">Advisory</a> · <a href="https://github.com/phpvms/phpvms/commit/f59ba8e0e8fc25c60c3faf14e526cfd49df3f7dc">Commit</a>
+</p>
+<hr>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -485,7 +510,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -509,10 +534,80 @@ After:
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
 </p>
 <hr>
+<h3>GHSA-xj4f-8jjg-vx4q</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-05-04 · Java<br>
+<code>org.openmrs.api:openmrs-api</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 1x across ecosystem
+</p>
+<p><b>Root cause</b> : The application used Apache Velocity for evaluating user-supplied criteria in `ConceptReferenceRangeUtility.java`. The `evaluateCriteria` method directly passed unsanitized user input into `velocityEngine.evaluate()`, allowing an attacker to inject Velocity Template Language (VTL) directives. Since Velocity templates can execute arbitrary Java code, this led to Remote Code Execution (RCE).</p>
+<p><b>Impact</b> : An authenticated attacker with privileges to create or modify ConceptReferenceRange objects could store malicious Velocity templates. When these templates were evaluated, the attacker could achieve arbitrary code execution on the server, leading to full system compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/api/src/main/java/org/openmrs/util/ConceptReferenceRangeUtility.java
++++ b/api/src/main/java/org/openmrs/util/ConceptReferenceRangeUtility.java
+@@ -96,387 +128,383 @@ public boolean evaluateCriteria(String criteria, ConceptReferenceRangeContext co
+ 			throw new IllegalArgumentException(&#34;Failed to evaluate criteria with reason: criteria is empty&#34;);
+ 		}
+ 
+-		VelocityContext velocityContext = new VelocityContext();
+-		velocityContext.put(&#34;fn&#34;, this);
+-		velocityContext.put(&#34;patient&#34;, HibernateUtil.getRealObjectFromProxy(context.getPerson()));
+-		velocityContext.put(&#34;context&#34;, context);
+-
+-		velocityContext.put(&#34;obs&#34;, context.getObs());
+-		velocityContext.put(&#34;encounter&#34;, context.getEncounter());
+-		velocityContext.put(&#34;date&#34;, context.getDate());
+-
+-		VelocityEngine velocityEngine = new VelocityEngine();
+-		try {
+-			Properties props = new Properties();
+-			props.put(&#34;runtime.log.logsystem.log4j.category&#34;, &#34;velocity&#34;);
+-			props.put(&#34;runtime.log.logsystem.log4j.logger&#34;, &#34;velocity&#34;);
+-			velocityEngine.init(props);
+-		} catch (Exception e) {
+-			throw new APIException(&#34;Failed to create the velocity engine: &#34; + e.getMessage(), e);
+-		}
+-
+-		StringWriter writer = new StringWriter();
+-		String wrappedCriteria = &#34;#set( $criteria = &#34; + criteria + &#34; )$criteria&#34;;
++		Map&lt;String, Object&gt; root = new HashMap&lt;&gt;();
++		root.put(&#34;$fn&#34;, functions);
++		root.put(&#34;$patient&#34;, HibernateUtil.getRealObjectFromProxy(context.getPerson()));
++		root.put(&#34;$context&#34;, context);
++		root.put(&#34;$obs&#34;, context.getObs());
++		root.put(&#34;$encounter&#34;, context.getEncounter());
++		root.put(&#34;$date&#34;, context.getDate());
+ 
+ 		try {
+-			velocityEngine.evaluate(velocityContext, writer, ConceptReferenceRangeUtility.class.getName(), wrappedCriteria);
+-			return Boolean.parseBoolean(writer.toString());
+-		} catch (ParseErrorException e) {
+-			throw new APIException(&#34;An error occurred while evaluating criteria. Invalid criteria: &#34; + criteria, e);
++			Expression expression = EXPRESSION_CACHE.get(criteria, PARSER::parseExpression);
++			Boolean result = expression.getValue(EVAL_CONTEXT, root, Boolean.class);
++			return result != null &amp;&amp; result;
++		} catch (SpelEvaluationException e) {
++			SpelMessage msg = e.getMessageCode();
++			if (msg == SpelMessage.METHOD_CALL_ON_NULL_OBJECT_NOT_ALLOWED
++			        || msg == SpelMessage.PROPERTY_OR_FIELD_NOT_READABLE_ON_NULL) {
++				return false;
++			}
++			throw new APIException(&#34;An error occurred while evaluating criteria: &#34; + criteria, e);
+ 		} catch (Exception e) {
+-			throw new APIException(&#34;An error occurred while evaluating criteria: &#34;, e);
++			throw new APIException(&#34;An error occurred while evaluating criteria: &#34; + criteria, e);
+ 		}
+ 	}</pre>
+</details>
+<p><b>Fix</b> : The patch replaces the vulnerable Apache Velocity template engine with Spring Expression Language (SpEL). It also introduces a `CriteriaFunctions` class to explicitly define available functions, preventing direct access to arbitrary Java methods. Additionally, a cache for parsed expressions is implemented to improve performance.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-xj4f-8jjg-vx4q">Advisory</a> · <a href="https://github.com/openmrs/openmrs-core/commit/8d1c193">Commit</a>
+</p>
+<hr>
 <h3>GHSA-f6qq-3m3h-4g42</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Go<br>
-<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
+<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the Patreon OAuth2 provider incorrectly generated the local user ID. Instead of using the unique ID provided by Patreon (uinfoJSON.Data.ID), it used an uninitialized or default value from userInfo.ID, which was likely constant or empty across all users. This resulted in all authenticated Patreon users being assigned the same local user ID.</p>
 <p><b>Impact</b> : An attacker could impersonate any other Patreon-authenticated user by simply logging in with their own Patreon account. This allows for cross-user impersonation and unauthorized access to other users&#39; data or actions within the application.</p>
@@ -529,7 +624,7 @@ After:
 <h3>GHSA-rcmw-7mc7-3rj7</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
-<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
 <p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
@@ -558,7 +653,7 @@ After:
 <h3>GHSA-m5gr-86j6-99jp</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 14x across ecosystem
+<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 17x across ecosystem
 </p>
 <p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -595,7 +690,7 @@ After: profile.EmailVerified.IsVerified()</pre>
 <h3>GHSA-xh72-v6v9-mwhc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the presence of an encryptKey before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by sending a request without an encryptKey, allowing unauthorized access to webhook and card-action endpoints.</p>
@@ -614,7 +709,7 @@ After:
 <h3>GHSA-wvhv-qcqf-f3cx</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 22x across ecosystem
+<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 24x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s file-based Access Control List (ACL) mechanism, which uses &#39;.goshs&#39; files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a &#39;.goshs&#39; file in the immediate directory, failing to consider ACLs defined in parent directories, and some operations lacked any ACL enforcement.</p>
 <p><b>Impact</b> : An attacker could bypass intended access restrictions to delete, create, or modify files and directories, including potentially sensitive ones, even if a parent directory&#39;s &#39;.goshs&#39; file explicitly denied such actions.</p>
@@ -642,7 +737,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -669,7 +764,7 @@ After:
 <h3>GHSA-2679-6mx9-h9xc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
@@ -714,10 +809,69 @@ After:
 <a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
 </p>
 <hr>
+<h3>GHSA-q4ph-8x8g-95f8</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-05-04 · PHP<br>
+<code>azuracast/azuracast</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from an incomplete migration from `cleanUpString` to `toRawString` for handling user-supplied input, specifically the remote relay password. The `cleanUpString` function was removed, but the password field was not consistently passed through the more robust `toRawString` function, allowing special characters to be injected directly into the Liquidsoap configuration.</p>
+<p><b>Impact</b> : An attacker could inject arbitrary Liquidsoap code into the configuration, potentially leading to remote code execution or other malicious actions on the server where Liquidsoap is running.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/backend/src/Radio/Backend/Liquidsoap/ConfigWriter.php
++++ b/backend/src/Radio/Backend/Liquidsoap/ConfigWriter.php
+@@ -1205,14 +1205,12 @@ private function getOutputString(
+             $outputParams[] = &#39;user = &#39; . self::toRawString($source-&gt;username);
+         }
+ 
+-        $password = self::cleanUpString($source-&gt;password);
+-        $adapterType = $source-&gt;adapterType;
+-        if (FrontendAdapters::Shoutcast === $adapterType) {
+-            $password .= &#39;:#&#39; . $id;
+-        }
+-        $outputParams[] = &#39;password = &#34;&#39; . $password . &#39;&#34;&#39;;
++        $password = $source-&gt;password;
++        $adapterType = $source-&gt;adapterType;
++        if (FrontendAdapters::Shoutcast === $adapterType) {
++            $password .= &#39;:#&#39; . $id;
++        }
++        $outputParams[] = &#39;password = &#39; . self::toRawString($password);</pre>
+</details>
+<p><b>Fix</b> : The patch removes the `cleanUpString` function and ensures that the remote relay password, along with other sensitive parameters, is consistently processed by the `toRawString` function. This function properly escapes special characters, preventing code injection into the Liquidsoap configuration.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-q4ph-8x8g-95f8">Advisory</a> · <a href="https://github.com/AzuraCast/AzuraCast/commit/d6b8422fc2c36269df9d1adec89dfbba58828915">Commit</a>
+</p>
+<hr>
+<h3>GHSA-vp2f-cqqp-478j</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-05-04 · PHP<br>
+<code>azuracast/azuracast</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 17x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed user-controlled input in the `flowIdentifier` parameter to be used in file paths without proper sanitization. This enabled an attacker to use directory traversal sequences (e.g., `../`) to write files outside of the intended upload directory.</p>
+<p><b>Impact</b> : An attacker could upload arbitrary files to any location on the server, potentially leading to remote code execution by placing a malicious script in a web-accessible directory.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/backend/src/Service/Flow.php
++++ b/backend/src/Service/Flow.php
+@@ -64,7 +65,9 @@ public static function process(
+             return self::handleStandardUpload($request, $tempDir);
+         }
+ 
+-        $flowIdentifier = $params[&#39;flowIdentifier&#39;];
++        $pathNormalizer = new WhitespacePathNormalizer();
++
++        $flowIdentifier = $pathNormalizer-&gt;normalizePath($params[&#39;flowIdentifier&#39;]);
+         $flowChunkNumber = (int)($params[&#39;flowChunkNumber&#39;] ?? 1);</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `WhitespacePathNormalizer` to sanitize the `flowIdentifier` parameter, ensuring that path traversal sequences are removed or normalized before being used in file operations. Additionally, the `upload` and `download` methods now explicitly normalize paths before passing them to the underlying adapter.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-vp2f-cqqp-478j">Advisory</a> · <a href="https://github.com/AzuraCast/AzuraCast/commit/18c793b4427eb49e67a2fea99a89f1c9d9dd808d">Commit</a>
+</p>
+<hr>
 <h3>GHSA-8h25-q488-4hxw</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-23 · JavaScript<br>
-<code>openlearnx</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>openlearnx</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to execute arbitrary code in a sandboxed environment (Docker containers). However, the initial sandbox implementation for Python lacked robust static analysis to prevent the import of dangerous modules or the use of sensitive functions, enabling an attacker to escape the sandbox and execute arbitrary commands on the host system.</p>
 <p><b>Impact</b> : An attacker could escape the Docker container and execute arbitrary commands on the underlying host system, leading to full system compromise, data exfiltration, or further network penetration.</p>
@@ -797,7 +951,7 @@ After:
 <h3>GHSA-2gw9-c2r2-f5qf</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-21 · Go<br>
-<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
+<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed authenticated users to update their profile without proper authorization checks on all fields. Specifically, the `IsAdmin` field within the user&#39;s session profile could be modified by a non-admin user through the `UpdateProfile` API endpoint.</p>
 <p><b>Impact</b> : An authenticated non-admin user could elevate their privileges to that of an administrator, gaining full control over the application and potentially sensitive data or functionality.</p>
@@ -849,7 +1003,7 @@ After:
 <h3>GHSA-66hx-chf7-3332</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
+<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
 <p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
@@ -881,7 +1035,7 @@ After:
 <h3>GHSA-3p24-9x7v-7789</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-13 · Java<br>
-<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>gov.nsa.emissary:emissary</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-controlled input for IN_FILE_ENDING and OUT_FILE_ENDING configuration parameters to be used directly in shell commands without proper sanitization. This enabled attackers to inject arbitrary shell commands by crafting malicious file ending values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -941,7 +1095,7 @@ if (!Array.isArray(index)) {
 <h3>GHSA-5gfj-64gh-mgmw</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-08 · Python<br>
-<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 22x across ecosystem
+<code>agixt</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The `safe_join` function did not properly validate the resolved path to ensure it stayed within the agent&#39;s WORKING_DIRECTORY.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to read or write files outside of the intended directory, potentially leading to unauthorized access or data corruption.</p>
@@ -970,7 +1124,7 @@ if not (new_path.startswith(base + os.sep) or new_path == base):
 <h3>GHSA-qxpc-96fq-wwmg</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-07 · Java<br>
-<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
+<code>org.apache.cassandra:cassandra-all</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch fails to properly validate the user&#39;s permissions before allowing them to drop an identity, potentially escalating their privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to escalate their privileges within the Cassandra environment by dropping identities and assuming roles they are not authorized to.</p>
@@ -998,7 +1152,7 @@ else
 <h3>GHSA-855c-r2vq-c292</h3>
 <p>
 <code>HIGH 8.7</code> · 2026-04-16 · JavaScript<br>
-<code>apostrophe</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
+<code>apostrophe</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : Untrusted data in SEO fields was being embedded directly into a `&lt;script&gt;` tag without proper sanitization.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTML/JS, leading to potential session hijacking or other malicious activities.</p>
@@ -1020,7 +1174,7 @@ else
 <h3>GHSA-9pr4-rf97-79qh</h3>
 <p>
 <code>HIGH 8.7</code> · 2026-04-13 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 19x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unrestricted upload of assets and served them with their original Content-Type, including &#39;text/html&#39; and &#39;image/svg+xml&#39;. This enabled an attacker to upload malicious HTML or SVG files containing JavaScript, which would then execute in the victim&#39;s browser when the asset was viewed.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary JavaScript in the context of the victim&#39;s browser, leading to session hijacking, defacement, or redirection to malicious sites.</p>
@@ -1040,7 +1194,7 @@ else
 <h3>GHSA-c3h8-g69v-pjrg</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-22 · JavaScript<br>
-<code>i18next-http-middleware</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 3x across ecosystem
+<code>i18next-http-middleware</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 4x across ecosystem
 </p>
 <p><b>Root cause</b> : The application failed to properly sanitize user-controlled input, specifically the &#39;Content-Language&#39; header and language/namespace identifiers. This allowed attackers to inject control characters into HTTP headers, leading to response splitting, and to use specially crafted strings (e.g., &#39;__proto__&#39;, &#39;..&#39;, &#39;/&#39;, &#39;\&#39;) to trigger prototype pollution, path traversal, or denial-of-service conditions when these values were used in internal operations or forwarded to backend connectors.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to HTTP response splitting, cache poisoning, or cross-site scripting. They could also achieve prototype pollution to alter application behavior, perform path traversal to access or manipulate files, or cause a denial of service by triggering crashes or resource exhaustion.</p>
@@ -1066,7 +1220,7 @@ else
 <h3>GHSA-chqc-8p9q-pq6q</h3>
 <p>
 <code>HIGH 8.6</code> · 2026-04-08 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not sanitize input for control characters, allowing attackers to inject CRLF sequences that could manipulate FTP commands.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to execute arbitrary FTP commands on the server, potentially leading to unauthorized access or data manipulation.</p>
@@ -1089,7 +1243,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-56c3-vfp2-5qqj</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-30 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The `validateUrlSync()` function in `n8n-mcp`&#39;s SSRF protection mechanism did not adequately handle IPv4-mapped IPv6 addresses. While it had checks for some private IPv6 ranges and IPv4 addresses, it failed to recognize that IPv4-mapped IPv6 addresses (e.g., `::ffff:169.254.169.254`) could embed arbitrary IPv4 addresses, effectively bypassing the existing IPv4-only checks.</p>
 <p><b>Impact</b> : An attacker could craft a URL using an IPv4-mapped IPv6 address to bypass the SSRF protection, allowing them to access internal network resources, cloud metadata endpoints, or other sensitive services that should have been blocked.</p>
@@ -1111,7 +1265,7 @@ if (/[\r\n\0]/.test(path)) {
 <h3>GHSA-4ggg-h7ph-26qr</h3>
 <p>
 <code>HIGH 8.5</code> · 2026-04-08 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 37x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the `instance-URL` header, allowing attackers to perform SSRF attacks.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to access internal resources or perform actions on behalf of other users within the same network.</p>
@@ -1218,7 +1372,7 @@ After:
 <h3>GHSA-6v7q-wjvx-w8wg</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
+<code>basic-ftp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize input for FTP commands, allowing control characters to be injected.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary FTP commands using credentials and MKD commands due to the lack of proper input validation.</p>
@@ -1245,7 +1399,7 @@ After:
 <h3>GHSA-75hx-xj24-mqrw</h3>
 <p>
 <code>HIGH 8.2</code> · 2026-04-10 · JavaScript<br>
-<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 13x across ecosystem
+<code>n8n-mcp</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not handle authentication errors securely, potentially revealing sensitive information in error messages.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to gain insights into the system&#39;s internal workings and potentially identify valid usernames or other sensitive data.</p>
@@ -1265,102 +1419,6 @@ After:
 <a href="https://github.com/advisories/GHSA-75hx-xj24-mqrw">Advisory</a> · <a href="https://github.com/czlonkowski/n8n-mcp/commit/ca9d4b3df6419b8338983be98f7940400f78bde3">Commit</a>
 </p>
 <hr>
-<h3>GHSA-wgx6-g857-jjf7</h3>
-<p>
-<code>HIGH 8.1</code> · 2026-04-22 · Ruby<br>
-<code>openc3</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 9x across ecosystem
-</p>
-<p><b>Root cause</b> : The `verify_no_service` method, intended to verify either a password or a session token, had a flaw where it would prioritize checking for a session token even when explicitly told to only check for a password. This meant that if an attacker had a valid session token, they could use it in place of a password to perform actions that should require the actual user&#39;s password, such as resetting the password.</p>
-<p><b>Impact</b> : An attacker with a hijacked session token could bypass the password verification step and reset the user&#39;s password, gaining persistent access to the account. This effectively allows session hijacking to lead to full account takeover.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-    def self.verify_no_service(token, no_password: true)
-+    def self.verify_no_service(token, mode: :token)
-...
--      unless no_password
--        return true if @@pw_hash_cache and (time - @@pw_hash_cache_time) &lt; PW_HASH_CACHE_TIMEOUT and Argon2::Password.verify_password(token, @@pw_hash_cache)
-+      unless mode == :password
-+        return true if @@session_cache and (time - @@session_cache_time) &lt; SESSION_CACHE_TIMEOUT and @@session_cache[token]</pre>
-</details>
-<p><b>Fix</b> : The patch refactors the `verify_no_service` method to use a `mode` parameter (password, token, or any) instead of a boolean `no_password`. This ensures that when password verification is explicitly requested, the method strictly checks the provided input against the stored password hash and does not fall back to checking session tokens.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-wgx6-g857-jjf7">Advisory</a> · <a href="https://github.com/OpenC3/cosmos/commit/2e623714e3426d5ae81b6f8239d4a2a6937ef776">Commit</a>
-</p>
-<hr>
-<h3>GHSA-ccq9-r5cw-5hwq</h3>
-<p>
-<code>HIGH 8.1</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>CORS_MISCONFIGURATION→ORIGIN</code> · 3x across ecosystem
-</p>
-<p><b>Root cause</b> : The application&#39;s CORS policy, specifically in the `allowOrigin` function when `allowAll` was true, would reflect the `Origin` header from the request and set `Access-Control-Allow-Credentials: true`. This was intended for public resources but was applied to sensitive API endpoints, allowing any origin to make credentialed requests.</p>
-<p><b>Impact</b> : An attacker could craft a malicious webpage to make cross-origin requests to sensitive API endpoints on the vulnerable AVideo instance. Since `Access-Control-Allow-Credentials: true` was set, the victim&#39;s browser would include session cookies, enabling the attacker to read session-authenticated API responses and potentially achieve account takeover.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-        if (!empty($requestOrigin)) {
--            header(&#39;Access-Control-Allow-Origin: &#39; . $requestOrigin);
--            header(&#39;Access-Control-Allow-Credentials: true&#39;);
--        } else {
--            header(&#39;Access-Control-Allow-Origin: *&#39;);
-+        if (!empty($requestOrigin) &amp;&amp; !empty($siteOriginForAllowAll) &amp;&amp; $requestOrigin === $siteOriginForAllowAll) {
-+            header(&#39;Access-Control-Allow-Origin: &#39; . $requestOrigin);
-+            header(&#39;Access-Control-Allow-Credentials: true&#39;);
-+        } else {
-+            header(&#39;Access-Control-Allow-Origin: *&#39;);</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the `allowOrigin` function to explicitly check if the `requestOrigin` matches the `siteOriginForAllowAll` when `allowAll` is true. If they match, the origin is reflected with credentials. Otherwise, a wildcard origin (`*`) is used without credentials, preventing third-party origins from making credentialed requests.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-ccq9-r5cw-5hwq">Advisory</a> · <a href="https://github.com/WWBN/AVideo/commit/caf705f38eae0ccfac4c3af1587781355d24495e">Commit</a>
-</p>
-<hr>
-<h3>GHSA-jcxm-m3jx-f287</h3>
-<p>
-<code>HIGH 8.1</code> · 2026-04-13 · JavaScript<br>
-<code>simple-git</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 22x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly sanitize input for the &#39;clone&#39; operation, allowing attackers to bypass intended restrictions.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary commands on the system running the vulnerable application.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Added:
-const CLONE_OPTIONS = /^\ *(-|--|--no-)[\\\dlsqvnobucj]+/;
-
-function isCloneSwitch(char: string, arg: string | unknown) {
-   return Boolean(typeof arg === &#39;string&#39; &amp;&amp; CLONE_OPTIONS.test(arg) &amp;&amp; arg.includes(char));
-}
-
-Changed:
-if (method === &#39;clone&#39; &amp;&amp; isCloneSwitch(&#39;u&#39;, arg)) {</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new function `isCloneSwitch` to validate command-line options for the &#39;clone&#39; operation, ensuring only safe options are accepted.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-jcxm-m3jx-f287">Advisory</a> · <a href="https://github.com/steveukx/git-js/commit/1effd8e5012a5da05a9776512fac3e39b11f2d2d">Commit</a>
-</p>
-<hr>
-<h3>GHSA-hc36-c89j-5f4j</h3>
-<p>
-<code>HIGH 8.1</code> · 2026-04-09 · Ruby<br>
-<code>bsv-wallet</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 8x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not verify the certifier signatures before persisting them.</p>
-<p><b>Impact</b> : An attacker could potentially bypass security checks by providing unverified signatures, leading to unauthorized access or manipulation of data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
--      REJECTED_STATUSES = %w[REJECTED DOUBLE_SPEND_ATTEMPTED].freeze
-After:
-+      REJECTED_STATUSES = %w[
-+        REJECTED
-+        DOUBLE_SPEND_ATTEMPTED
-+        INVALID
-+        MALFORMED
-+        MINED_IN_STALE_BLOCK
-+      ].freeze</pre>
-</details>
-<p><b>Fix</b> : The patch adds verification for certifier signatures, ensuring that only valid signatures are persisted.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-hc36-c89j-5f4j">Advisory</a> · <a href="https://github.com/sgbett/bsv-ruby-sdk/commit/4992e8a265fd914a7eeb0405c69d1ff0122a84cc">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1371,7 +1429,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 43 normalized pattern IDs
+             Map to closed taxonomy of 44 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1396,10 +1454,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>338</td></tr>
-<tr><td>Unique patterns</td><td>43</td></tr>
+<tr><td>Total advisories</td><td>361</td></tr>
+<tr><td>Unique patterns</td><td>44</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-05-04</td></tr>
+<tr><td>Last updated</td><td>2026-05-05</td></tr>
 </table>
 </details>
 <hr>
