@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-399-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-403-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-46-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -260,7 +260,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 19x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -436,7 +436,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -573,7 +573,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-fv26-4939-62fh</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
 <p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
@@ -621,7 +621,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -643,6 +643,36 @@ After:
 <p><b>Fix</b> : The patch adds access control by passing `overrideAccess: false` and `req` to Payload&#39;s local API, ensuring that collection-level access rules are enforced.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
+</p>
+<hr>
+<h3>GHSA-fwj3-42wh-8673</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-05-07 · Go<br>
+<code>github.com/gtsteffaniak/filebrowser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_DELETE</code> · 5x across ecosystem
+</p>
+<p><b>Root cause</b> : The application did not properly sanitize user-supplied paths in the DELETE API for public shares. An attacker could provide a path containing &#39;..&#39; sequences, which would allow them to traverse outside the intended directory and delete arbitrary files on the server.</p>
+<p><b>Impact</b> : An unauthenticated attacker could delete any file on the server that the FileBrowser process has write permissions to, potentially leading to denial of service or data loss.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/backend/http/middleware.go
++++ b/backend/http/middleware.go
+@@ -53,7 +53,11 @@ type handleFunc func(w http.ResponseWriter, r *http.Request, data *requestContex
+ func withHashFileHelper(fn handleFunc) handleFunc {
+ 	return withOrWithoutUserHelper(func(w http.ResponseWriter, r *http.Request, data *requestContext) (int, error) {
+ 		hash := r.URL.Query().Get(&#34;hash&#34;)
+-		path := r.URL.Query().Get(&#34;path&#34;)
++		inputPath := r.URL.Query().Get(&#34;path&#34;)
++		path, err := utils.SanitizeUserPath(inputPath)
++		if err != nil &amp;&amp; inputPath != &#34;&#34; {
++			return http.StatusBadRequest, err
++		}
+ 
+ 		// Get the file link by hash
+ 		link, err := store.Share.GetByHash(hash)</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `utils.SanitizeUserPath` function to validate and sanitize user-provided paths, specifically in the `withHashFileHelper` and `resourceBulkDeleteHandler` functions. This prevents path traversal sequences like &#39;..&#39; from being interpreted by the file system.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fwj3-42wh-8673">Advisory</a> · <a href="https://github.com/gtsteffaniak/filebrowser/commit/112740bdd41de7d5eb01e13ba49d406bfc463f69">Commit</a>
 </p>
 <hr>
 <h3>GHSA-w48r-jppp-rcfw</h3>
@@ -769,7 +799,7 @@ After:
 <h3>GHSA-rcmw-7mc7-3rj7</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
-<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
 <p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
@@ -902,7 +932,7 @@ for member in zip_file.namelist():
 <h3>GHSA-2g9v-7mr5-fgjg</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · Go<br>
-<code>github.com/l3montree-dev/devguard</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>github.com/l3montree-dev/devguard</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed an unauthenticated user to assert an arbitrary identity and gain administrative privileges by simply setting the `X-Admin-Token` HTTP header. This header was checked before any other authentication mechanisms, effectively bypassing all security controls.</p>
 <p><b>Impact</b> : An attacker could gain full administrative access to the application without any prior authentication, leading to complete compromise of the system and data.</p>
@@ -1000,7 +1030,7 @@ After: profile.EmailVerified.IsVerified()</pre>
 <h3>GHSA-xh72-v6v9-mwhc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the presence of an encryptKey before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by sending a request without an encryptKey, allowing unauthorized access to webhook and card-action endpoints.</p>
@@ -1074,7 +1104,7 @@ After:
 <h3>GHSA-2679-6mx9-h9xc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
@@ -1195,7 +1225,7 @@ After:
 <h3>GHSA-xhw7-j96h-c3g5</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-05-05 · C#<br>
-<code>YAFNET.Core</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 19x across ecosystem
+<code>YAFNET.Core</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The `PageSecurityCheckAttribute` was removed from the `ForumPage` base class, which meant that the security checks previously performed by this attribute were no longer automatically applied to pages inheriting from `ForumPage`. The logic for checking admin page access was moved into an `OnPageHandlerExecutionAsync` override, but the critical check for `BoardContext.Current.IsAdmin` was not sufficient on its own to prevent unauthorized access to specific admin functionalities like `/Admin/RunSql` without proper `AdminPageUserAccess` verification.</p>
 <p><b>Impact</b> : An attacker could bypass authorization checks for admin pages, specifically gaining access to the `/Admin/RunSql` endpoint. This allowed for blind SQL execution, potentially leading to data exfiltration, modification, or other severe database compromises.</p>
@@ -1678,28 +1708,6 @@ else
 <a href="https://github.com/advisories/GHSA-qxpc-96fq-wwmg">Advisory</a> · <a href="https://github.com/apache/cassandra/commit/b584a435970e5125e1def5148d943c39569dc7af">Commit</a>
 </p>
 <hr>
-<h3>GHSA-855c-r2vq-c292</h3>
-<p>
-<code>HIGH 8.7</code> · 2026-04-16 · JavaScript<br>
-<code>apostrophe</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 20x across ecosystem
-</p>
-<p><b>Root cause</b> : Untrusted data in SEO fields was being embedded directly into a `&lt;script&gt;` tag without proper sanitization.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary HTML/JS, leading to potential session hijacking or other malicious activities.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">- // No changes before this point
-+ module.exports = function safeJsonForScript(data) {
-  return JSON.stringify(data, null, 2)
-    .replace(/&lt;/g, &#39;\u003c&#39;)
-    .replace(/ /g, &#39;\u2028&#39;)
-    .replace(/ /g, &#39;\u2029&#39;);
-};</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `safeJsonForScript` function that escapes critical characters to prevent XSS attacks by ensuring the JSON string is safe to embed in an HTML `&lt;script&gt;` tag.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-855c-r2vq-c292">Advisory</a> · <a href="https://github.com/apostrophecms/apostrophe/commit/0e57dd07a56ae1ba1e3af646ba026db4d0ab5bb3">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1735,7 +1743,7 @@ else
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>399</td></tr>
+<tr><td>Total advisories</td><td>403</td></tr>
 <tr><td>Unique patterns</td><td>46</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-05-07</td></tr>
