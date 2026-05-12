@@ -4,13 +4,47 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-428-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-46-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-446-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-47-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
 </p>
 </div>
+<hr>
+<h3>GHSA-g8f2-4f4f-5jqw</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 1x across ecosystem
+</p>
+<p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
+<p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/executor/ops/prop.ts
++++ b/src/executor/ops/prop.ts
+@@ -93,12 +93,15 @@ addOps&lt;unknown, PropertyKey&gt;(LispType.Prop, ({ done, a, b, obj, context, scope,
+     }
+   }
+ 
+-  const val = a[b as keyof typeof a] as unknown;
+   if (typeof a === &#39;function&#39;) {
+     if (b === &#39;prototype&#39; &amp;&amp; !context.ctx.sandboxedFunctions.has(a)) {
+       throw new SandboxAccessError(`Access to prototype of global object is not permitted`);
+     }
++    if ([&#39;caller&#39;, &#39;callee&#39;, &#39;arguments&#39;].includes(b as string)) {
++      throw new SandboxAccessError(`Access to &#39;${b as string}&#39; property is not permitted`);
++    }
+   }
++  const val = a[b as keyof typeof a] as unknown;
+ 
+   if (b === &#39;__proto__&#39; &amp;&amp; !context.ctx.sandboxedFunctions.has(val?.constructor as any)) {
+     throw new SandboxAccessError(`Access to prototype of global object is not permitted`);</pre>
+</details>
+<p><b>Fix</b> : The patch explicitly disallows access to the &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39; properties when a property is accessed on a function within the sandboxed environment. It introduces a check that throws a SandboxAccessError if an attempt is made to access these forbidden properties.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-g8f2-4f4f-5jqw">Advisory</a> · <a href="https://github.com/nyariv/SandboxJS/commit/826865251232611ec94078bab5a18ec875dad4a5">Commit</a>
+</p>
 <hr>
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
@@ -82,7 +116,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 21x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -278,7 +312,7 @@
 <h3>GHSA-xg82-2hrv-hf64</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-08 · PHP<br>
-<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 29x across ecosystem
+<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users with &#39;view&#39; permissions on an object to upload files associated with that object. This is a weaker permission than &#39;update&#39;, which should be required for file uploads, leading to an authorization bypass for file modification.</p>
 <p><b>Impact</b> : An attacker with only &#39;view&#39; permissions on an object could upload arbitrary files, potentially leading to remote code execution if the uploaded file is a malicious script (e.g., PHP file) and the server is configured to execute it.</p>
@@ -413,7 +447,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 54x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 55x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -484,7 +518,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 54x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 55x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -569,7 +603,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 21x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -658,7 +692,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 25x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 26x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -908,7 +942,7 @@ for member in zip_file.namelist():
 <h3>GHSA-fxc7-fm93-6q77</h3>
 <p>
 <code>CRITICAL 9.0</code> · 2026-05-05 · Java<br>
-<code>com.arcadedb:arcadedb-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 29x across ecosystem
+<code>com.arcadedb:arcadedb-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The ArcadeDB server did not properly enforce security configurations for newly created databases and had a flawed logic for merging database-specific and wildcard security group configurations. This allowed users to create databases without proper security settings and bypass intended authorization rules by exploiting how group permissions were retrieved.</p>
 <p><b>Impact</b> : An attacker could create new databases that are unsecured by default, gaining unauthorized access to them. They could also potentially bypass authorization checks on existing databases by manipulating schema properties or exploiting the flawed group configuration merge logic, leading to data access or modification across databases.</p>
@@ -1067,7 +1101,7 @@ for member in zip_file.namelist():
 <h3>GHSA-vj3m-2g9h-vm4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 54x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 55x across ecosystem
 </p>
 <p><b>Root cause</b> : The system was vulnerable to multiple issues: Zip Slip due to improper validation of archive entry names during extraction, XSS due to insufficient sanitization of user-controlled attribute names in media objects and a weak XSS detection regex, and XXE due to parsing untrusted SVG files without disabling external entity loading.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (Zip Slip), inject malicious scripts (XSS), or read local files and potentially perform server-side requests (XXE). These could lead to remote code execution, data theft, or website defacement.</p>
@@ -1147,7 +1181,7 @@ After:
 <h3>GHSA-wvhv-qcqf-f3cx</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-10 · Go<br>
-<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 29x across ecosystem
+<code>github.com/patrickhener/goshs</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s file-based Access Control List (ACL) mechanism, which uses &#39;.goshs&#39; files, was not consistently applied across all state-changing operations (delete, mkdir, put, upload). Specifically, the ACL check only looked for a &#39;.goshs&#39; file in the immediate directory, failing to consider ACLs defined in parent directories, and some operations lacked any ACL enforcement.</p>
 <p><b>Impact</b> : An attacker could bypass intended access restrictions to delete, create, or modify files and directories, including potentially sensitive ones, even if a parent directory&#39;s &#39;.goshs&#39; file explicitly denied such actions.</p>
@@ -1686,7 +1720,7 @@ After:
 <h3>GHSA-29qv-4j9f-fjw5</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-16 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 54x across ecosystem
+<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 55x across ecosystem
 </p>
 <p><b>Root cause</b> : The patch changes the function `isSafeProperty` to `isSafeObjectProperty`, which may not cover all cases as intended.</p>
 <p><b>Impact</b> : An attacker could potentially access unsafe properties or methods of objects, leading to potential security vulnerabilities.</p>
@@ -1702,38 +1736,6 @@ After:
 <a href="https://github.com/advisories/GHSA-29qv-4j9f-fjw5">Advisory</a> · <a href="https://github.com/josdejong/mathjs/commit/513ab2a0e01004af91b31aada68fae8a821326ad">Commit</a>
 </p>
 <hr>
-<h3>GHSA-66hx-chf7-3332</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-04-14 · Python<br>
-<code>pyload-ng</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 17x across ecosystem
-</p>
-<p><b>Root cause</b> : The application did not invalidate user sessions when a user&#39;s password, role, or permissions were changed. This allowed users to retain their old privileges until their session naturally expired or they manually logged out, even after an administrator had downgraded their access.</p>
-<p><b>Impact</b> : An attacker or a malicious insider could maintain elevated privileges or access to resources that should have been revoked, potentially leading to unauthorized actions or data access.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/pyload/webui/app/blueprints/json_blueprint.py
-+++ b/src/pyload/webui/app/blueprints/json_blueprint.py
-@@ -9,7 +9,7 @@
- from pyload.core.api import Role
- from pyload.core.utils import format, fs
- 
--from ..helpers import get_permission, login_required, permlist, render_template, set_permission
-+from ..helpers import clear_all_user_sessions, get_permission, login_required, permlist, render_template, set_permission
- 
- bp = flask.Blueprint(&#34;json&#34;, __name__)
- 
-@@ -360,6 +360,7 @@ def change_password(user_login, user_curpw, user_newpw):
-     if not done:
-         return jsonify(False), 403  #: Wrong password
- 
-+    clear_all_user_sessions(user_login)
-     return jsonify(True)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `clear_all_user_sessions` function and calls it whenever a user&#39;s password is changed, or their role or permissions are updated. This ensures that any active sessions for the affected user are immediately invalidated, forcing them to re-authenticate with their new, updated privileges.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-66hx-chf7-3332">Advisory</a> · <a href="https://github.com/pyload/pyload/commit/e95804fb0d06cbb07d2ba380fc494d9ff89b68c1">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1744,7 +1746,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 46 normalized pattern IDs
+             Map to closed taxonomy of 47 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1769,10 +1771,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>428</td></tr>
-<tr><td>Unique patterns</td><td>46</td></tr>
+<tr><td>Total advisories</td><td>446</td></tr>
+<tr><td>Unique patterns</td><td>47</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-05-11</td></tr>
+<tr><td>Last updated</td><td>2026-05-12</td></tr>
 </table>
 </details>
 <hr>
