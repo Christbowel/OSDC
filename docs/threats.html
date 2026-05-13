@@ -152,12 +152,12 @@ footer a:hover{color:var(--text)}
 
 <div class="alert-banner">
 <div class="alert-icon">!</div>
-<div class="alert-text"><strong>Why this matters.</strong> Nation-state actors systematically monitor open source commits for security fixes that lack public disclosure. A fix without a CVE is a roadmap to an exploitable vulnerability in every unpatched installation. These 302 advisories represent confirmed vulnerabilities with available fixes but zero CVE tracking.</div>
+<div class="alert-text"><strong>Why this matters.</strong> Nation-state actors systematically monitor open source commits for security fixes that lack public disclosure. A fix without a CVE is a roadmap to an exploitable vulnerability in every unpatched installation. These 303 advisories represent confirmed vulnerabilities with available fixes but zero CVE tracking.</div>
 </div>
 
 <div class="stats-strip">
 <div class="sstat">
-<div class="sstat-val red">302</div>
+<div class="sstat-val red">303</div>
 <div class="sstat-lbl">Fixes without CVE</div>
 </div>
 <div class="sstat">
@@ -169,13 +169,13 @@ footer a:hover{color:var(--text)}
 <div class="sstat-lbl">High severity</div>
 </div>
 <div class="sstat">
-<div class="sstat-val">449</div>
+<div class="sstat-val">450</div>
 <div class="sstat-lbl">Total advisories</div>
 </div>
 </div>
 
 <div class="section-header">
-<span class="section-label">302 entries</span>
+<span class="section-label">303 entries</span>
 <span class="section-header-line"></span>
 </div>
 
@@ -16710,7 +16710,103 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-88gm-j2wx-58h6" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-57r2-h2wj-g887 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The system was incorrectly recording awareness events from isolated cron jobs as &#39;trusted&#39; system events. This meant that events originating from potentially untrusted or less privileged contexts were being logged with the same trust level as internal, trusted system events, blurring the lines of event provenance and integrity." style="animation:fadeIn .35s ease 7.1000000000000005s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xr5h-phrj-8vxv withastro/astro astro MISSING_VERIFICATION→SIGNATURE JavaScript The encryption scheme for server island parameters (componentExport, props, slots) did not include authenticated additional data (AAD) specific to the component. This allowed an attacker to take encrypted parameters from one component and replay them in the context of another component, as the encryption system would not detect the context mismatch." style="animation:fadeIn .35s ease 7.1000000000000005s both">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-xr5h-phrj-8vxv" target="_blank" rel="noopener">GHSA-xr5h-phrj-8vxv</a>
+<span class="no-cve-badge">No CVE</span>
+<span class="sev sev-low">LOW 0.0</span>
+<span class="tag">MISSING_VERIFICATION→SIGNATURE</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.78rem;color:var(--text)">astro · withastro/astro</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The encryption scheme for server island parameters (componentExport, props, slots) did not include authenticated additional data (AAD) specific to the component. This allowed an attacker to take encrypted parameters from one component and replay them in the context of another component, as the encryption system would not detect the context mismatch.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could potentially reuse encrypted data intended for one component with a different component, leading to unexpected behavior or data manipulation if the components process the replayed data differently.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/packages/astro/src/core/encryption.ts
++++ b/packages/astro/src/core/encryption.ts
+@@ -81,36 +81,34 @@ const IV_LENGTH = 24;
+ 
+ /**
+  * Using a CryptoKey, encrypt a string into a base64 string.
++ * @param additionalData Optional authenticated context (e.g. &#34;props:ComponentName&#34;) that is
++ *   verified during decryption but not included in the ciphertext. Both sides must agree on
++ *   the same value or decryption will fail.
+  */
+-export async function encryptString(key: CryptoKey, raw: string) {
++export async function encryptString(key: CryptoKey, raw: string, additionalData?: string) {
+ 	const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH / 2));
+ 	const data = encoder.encode(raw);
+-	const buffer = await crypto.subtle.encrypt(
+-		{
+-			name: ALGORITHM,
+-			iv,
+-		},
+-		key,
+-		data,
+-	);
++	const params: AesGcmParams = { name: ALGORITHM, iv };
++	if (additionalData) {
++		params.additionalData = encoder.encode(additionalData);
++	}
++	const buffer = await crypto.subtle.encrypt(params, key, data);
+ 	// iv is 12, hex brings it to 24
+ 	return encodeHexUpperCase(iv) + encodeBase64(new Uint8Array(buffer));
+ }
+ 
+ /**
+  * Takes a base64 encoded string, decodes it and returns the decrypted text.
++ * @param additionalData Must match the value used during encryption, or decryption will fail.
+  */
+-export async function decryptString(key: CryptoKey, encoded: string) {
++export async function decryptString(key: CryptoKey, encoded: string, additionalData?: string) {
+ 	const iv = decodeHex(encoded.slice(0, IV_LENGTH)) as Uint8Array&lt;ArrayBuffer&gt;;
+ 	const dataArray = decodeBase64(encoded.slice(IV_LENGTH)) as Uint8Array&lt;ArrayBuffer&gt;;
+-	const decryptedBuffer = await crypto.subtle.decrypt(
+-		{
+-			name: ALGORITHM,
+-			iv,
+-		},
+-		key,
+-		dataArray,
+-	);
++	const params: AesGcmParams = { name: ALGORITHM, iv };
++	if (additionalData) {
++		params.additionalData = encoder.encode(additionalData);
++	}
++	const decryptedBuffer = await crypto.subtle.decrypt(params, key, dataArray);
+ 	const decryptedString = decoder.decode(decryptedBuffer);
+ 	return decryptedString;
+ }</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch modifies the `encryptString` and `decryptString` functions to accept an optional `additionalData` parameter. This parameter is now used to include component-specific context (e.g., `export:ComponentName`, `props:ComponentName`, `slots:ComponentName`) during encryption and decryption, ensuring that encrypted parameters can only be validly decrypted and used within their intended component context.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-05-13</span>
+<span>Cross-component replay</span>
+<a href="https://github.com/withastro/astro/commit/3d82220a1549e699e34ed433f3846a919f4c02bd" target="_blank" rel="noopener">Commit ↗</a>
+<a href="https://github.com/advisories/GHSA-xr5h-phrj-8vxv" target="_blank" rel="noopener">Advisory ↗</a>
+</div>
+</div>
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-57r2-h2wj-g887 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The system was incorrectly recording awareness events from isolated cron jobs as &#39;trusted&#39; system events. This meant that events originating from potentially untrusted or less privileged contexts were being logged with the same trust level as internal, trusted system events, blurring the lines of event provenance and integrity." style="animation:fadeIn .35s ease 7.125s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-57r2-h2wj-g887" target="_blank" rel="noopener">GHSA-57r2-h2wj-g887</a>
@@ -16763,7 +16859,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-57r2-h2wj-g887" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-c4qg-j8jg-42q5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed direct media uploads via a URL without proper validation of the provided URL. This meant that an attacker could supply an arbitrary URL, which the server would then attempt to fetch, bypassing the existing SSRF protection mechanism intended for other fetch operations." style="animation:fadeIn .35s ease 7.125s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-c4qg-j8jg-42q5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed direct media uploads via a URL without proper validation of the provided URL. This meant that an attacker could supply an arbitrary URL, which the server would then attempt to fetch, bypassing the existing SSRF protection mechanism intended for other fetch operations." style="animation:fadeIn .35s ease 7.15s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-c4qg-j8jg-42q5" target="_blank" rel="noopener">GHSA-c4qg-j8jg-42q5</a>
@@ -16815,7 +16911,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-c4qg-j8jg-42q5" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-j4c5-89f5-f3pm openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application&#39;s SSRF policy for browser CDP (Chrome DevTools Protocol) profiles was not correctly applying strict-mode checks. Specifically, when creating a CDP profile, the hostnames derived from `cdpUrl` were unconditionally added to the allowed hostnames list, bypassing the intended SSRF policy checks that would normally restrict access to private networks or unapproved hosts." style="animation:fadeIn .35s ease 7.15s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-j4c5-89f5-f3pm openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application&#39;s SSRF policy for browser CDP (Chrome DevTools Protocol) profiles was not correctly applying strict-mode checks. Specifically, when creating a CDP profile, the hostnames derived from `cdpUrl` were unconditionally added to the allowed hostnames list, bypassing the intended SSRF policy checks that would normally restrict access to private networks or unapproved hosts." style="animation:fadeIn .35s ease 7.175000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j4c5-89f5-f3pm" target="_blank" rel="noopener">GHSA-j4c5-89f5-f3pm</a>
@@ -16876,7 +16972,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-j4c5-89f5-f3pm" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-v8qf-fr4g-28p2 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application&#39;s assistant media route, specifically for retrieving media, did not properly enforce scope-based authorization when the request was made via a trusted-proxy. While other authentication methods were checked, the trusted-proxy path allowed access without verifying the necessary &#39;assistant.media.get&#39; scope." style="animation:fadeIn .35s ease 7.175000000000001s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-v8qf-fr4g-28p2 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application&#39;s assistant media route, specifically for retrieving media, did not properly enforce scope-based authorization when the request was made via a trusted-proxy. While other authentication methods were checked, the trusted-proxy path allowed access without verifying the necessary &#39;assistant.media.get&#39; scope." style="animation:fadeIn .35s ease 7.2s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-v8qf-fr4g-28p2" target="_blank" rel="noopener">GHSA-v8qf-fr4g-28p2</a>
@@ -16946,7 +17042,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-v8qf-fr4g-28p2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xrq9-jm7v-g9h7 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application did not properly restrict device pairing actions (listing, approving, rejecting) to the device that initiated the pairing request. An authenticated device could perform these actions on behalf of any other device, as long as it knew the request ID, without proper authorization checks." style="animation:fadeIn .35s ease 7.2s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xrq9-jm7v-g9h7 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application did not properly restrict device pairing actions (listing, approving, rejecting) to the device that initiated the pairing request. An authenticated device could perform these actions on behalf of any other device, as long as it knew the request ID, without proper authorization checks." style="animation:fadeIn .35s ease 7.2250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xrq9-jm7v-g9h7" target="_blank" rel="noopener">GHSA-xrq9-jm7v-g9h7</a>
@@ -17019,7 +17115,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-xrq9-jm7v-g9h7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-j88v-2chj-qfwx jackc/pgx github.com/jackc/pgx UNSANITIZED_INPUT→SQL Go The vulnerability stemmed from the SQL lexer&#39;s failure to correctly parse PostgreSQL dollar-quoted string literals. When sanitizing SQL queries, the lexer would incorrectly identify placeholders (e.g., $1, $2) within these dollar-quoted strings, leading to premature substitution and potential injection if an attacker could control parts of the query." style="animation:fadeIn .35s ease 7.2250000000000005s both">
+<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-j88v-2chj-qfwx jackc/pgx github.com/jackc/pgx UNSANITIZED_INPUT→SQL Go The vulnerability stemmed from the SQL lexer&#39;s failure to correctly parse PostgreSQL dollar-quoted string literals. When sanitizing SQL queries, the lexer would incorrectly identify placeholders (e.g., $1, $2) within these dollar-quoted strings, leading to premature substitution and potential injection if an attacker could control parts of the query." style="animation:fadeIn .35s ease 7.25s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j88v-2chj-qfwx" target="_blank" rel="noopener">GHSA-j88v-2chj-qfwx</a>
@@ -17074,7 +17170,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-j88v-2chj-qfwx" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-xmgf-hq76-4vx2 rust-openssl/rust-openssl openssl BUFFER_OVERFLOW→HEAP RUST The vulnerability existed because the `openssl` crate&#39;s PEM password callback trampoline did not validate the length returned by the user-provided callback. If the callback returned a length greater than the actual buffer size, it could lead to an out-of-bounds read when OpenSSL attempted to use this oversized length to derive the decryption key." style="animation:fadeIn .35s ease 7.25s both">
+<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-xmgf-hq76-4vx2 rust-openssl/rust-openssl openssl BUFFER_OVERFLOW→HEAP RUST The vulnerability existed because the `openssl` crate&#39;s PEM password callback trampoline did not validate the length returned by the user-provided callback. If the callback returned a length greater than the actual buffer size, it could lead to an out-of-bounds read when OpenSSL attempted to use this oversized length to derive the decryption key." style="animation:fadeIn .35s ease 7.275s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xmgf-hq76-4vx2" target="_blank" rel="noopener">GHSA-xmgf-hq76-4vx2</a>
@@ -17125,7 +17221,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-xmgf-hq76-4vx2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-7ccv-rp6m-rffr openbao/openbao github.com/openbao/openbao MISSING_VERIFICATION→SIGNATURE Go The vulnerability existed because OpenBao&#39;s certificate authentication renewal process only checked the Subject Key ID (SKID) and Authority Key ID (AKID) of the client certificate for identity verification during token renewal. It did not store or verify the full raw certificate, allowing an attacker to renew a token using a different certificate as long as it shared the same SKID and AKID as the original, valid certificate." style="animation:fadeIn .35s ease 7.275s both">
+<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-7ccv-rp6m-rffr openbao/openbao github.com/openbao/openbao MISSING_VERIFICATION→SIGNATURE Go The vulnerability existed because OpenBao&#39;s certificate authentication renewal process only checked the Subject Key ID (SKID) and Authority Key ID (AKID) of the client certificate for identity verification during token renewal. It did not store or verify the full raw certificate, allowing an attacker to renew a token using a different certificate as long as it shared the same SKID and AKID as the original, valid certificate." style="animation:fadeIn .35s ease 7.300000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7ccv-rp6m-rffr" target="_blank" rel="noopener">GHSA-7ccv-rp6m-rffr</a>
@@ -17201,7 +17297,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-7ccv-rp6m-rffr" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gc9r-867r-j85f openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The function `isFeedbackInvokeAuthorized` did not check the sender&#39;s authorization before processing an invoke request." style="animation:fadeIn .35s ease 7.300000000000001s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gc9r-867r-j85f openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The function `isFeedbackInvokeAuthorized` did not check the sender&#39;s authorization before processing an invoke request." style="animation:fadeIn .35s ease 7.325s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-gc9r-867r-j85f" target="_blank" rel="noopener">GHSA-gc9r-867r-j85f</a>
@@ -17263,7 +17359,7 @@ Before:
 <a href="https://github.com/advisories/GHSA-gc9r-867r-j85f" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-r77c-2cmr-7p47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The patch adds a new field &#39;session&#39; to the delivery payload but does not address how this session context is handled or sanitized." style="animation:fadeIn .35s ease 7.325s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-r77c-2cmr-7p47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The patch adds a new field &#39;session&#39; to the delivery payload but does not address how this session context is handled or sanitized." style="animation:fadeIn .35s ease 7.3500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-r77c-2cmr-7p47" target="_blank" rel="noopener">GHSA-r77c-2cmr-7p47</a>
@@ -17311,7 +17407,7 @@ After:
 <a href="https://github.com/advisories/GHSA-r77c-2cmr-7p47" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-3g92-f9ch-qjcm Plonky3/Plonky3 p3-symmetric WEAK_CRYPTO→HASH RUST The sponge construction used to get a hash function from a cryptographic permutation is not collision resistant for inputs of different lengths." style="animation:fadeIn .35s ease 7.3500000000000005s both">
+<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-3g92-f9ch-qjcm Plonky3/Plonky3 p3-symmetric WEAK_CRYPTO→HASH RUST The sponge construction used to get a hash function from a cryptographic permutation is not collision resistant for inputs of different lengths." style="animation:fadeIn .35s ease 7.375s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-3g92-f9ch-qjcm" target="_blank" rel="noopener">GHSA-3g92-f9ch-qjcm</a>
@@ -17357,7 +17453,7 @@ After:
 <a href="https://github.com/advisories/GHSA-3g92-f9ch-qjcm" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gj9q-8w99-mp8j openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The code did not properly handle file access checks between the existence check and the actual read operation." style="animation:fadeIn .35s ease 7.375s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gj9q-8w99-mp8j openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The code did not properly handle file access checks between the existence check and the actual read operation." style="animation:fadeIn .35s ease 7.4s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-gj9q-8w99-mp8j" target="_blank" rel="noopener">GHSA-gj9q-8w99-mp8j</a>
@@ -17408,7 +17504,7 @@ After:
 <a href="https://github.com/advisories/GHSA-gj9q-8w99-mp8j" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-fj52-5g4h-gmq8 pyload/pyload pyload-ng SESSION_FIXATION→HIJACK Python The code did not invalidate user sessions after permission changes, allowing attackers to hijack sessions." style="animation:fadeIn .35s ease 7.4s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-fj52-5g4h-gmq8 pyload/pyload pyload-ng SESSION_FIXATION→HIJACK Python The code did not invalidate user sessions after permission changes, allowing attackers to hijack sessions." style="animation:fadeIn .35s ease 7.425000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fj52-5g4h-gmq8" target="_blank" rel="noopener">GHSA-fj52-5g4h-gmq8</a>
@@ -17455,7 +17551,7 @@ After:
 <a href="https://github.com/advisories/GHSA-fj52-5g4h-gmq8" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-pjjw-68hj-v9mw astral-sh/uv uv PATH_TRAVERSAL→FILE_DELETE Python The code directly uses user input to delete files without proper validation or sanitization." style="animation:fadeIn .35s ease 7.425000000000001s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-pjjw-68hj-v9mw astral-sh/uv uv PATH_TRAVERSAL→FILE_DELETE Python The code directly uses user input to delete files without proper validation or sanitization." style="animation:fadeIn .35s ease 7.45s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-pjjw-68hj-v9mw" target="_blank" rel="noopener">GHSA-pjjw-68hj-v9mw</a>
@@ -17507,7 +17603,7 @@ After:
 <a href="https://github.com/advisories/GHSA-pjjw-68hj-v9mw" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-x7mm-9vvv-64w8 unjs/unhead unhead UNCLASSIFIED JavaScript The `streamKey` parameter was being directly injected into an inline script without any validation or sanitization." style="animation:fadeIn .35s ease 7.45s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-x7mm-9vvv-64w8 unjs/unhead unhead UNCLASSIFIED JavaScript The `streamKey` parameter was being directly injected into an inline script without any validation or sanitization." style="animation:fadeIn .35s ease 7.4750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-x7mm-9vvv-64w8" target="_blank" rel="noopener">GHSA-x7mm-9vvv-64w8</a>
@@ -17553,7 +17649,7 @@ After:
 <a href="https://github.com/advisories/GHSA-x7mm-9vvv-64w8" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-r758-8hxw-4845 EmilStenstrom/justhtml justhtml UNSANITIZED_INPUT→XSS Python The parser did not properly sanitize HTML input, allowing for Cross-Site Scripting (XSS) attacks." style="animation:fadeIn .35s ease 7.4750000000000005s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-r758-8hxw-4845 EmilStenstrom/justhtml justhtml UNSANITIZED_INPUT→XSS Python The parser did not properly sanitize HTML input, allowing for Cross-Site Scripting (XSS) attacks." style="animation:fadeIn .35s ease 7.5s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-r758-8hxw-4845" target="_blank" rel="noopener">GHSA-r758-8hxw-4845</a>
@@ -17620,7 +17716,7 @@ class JustHTML:
 <a href="https://github.com/advisories/GHSA-r758-8hxw-4845" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-767m-xrhc-fxm7 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The `send` and `poll` handlers in `send.ts` did not check for proper authentication before allowing access to admin-class Telegram config and cron persistence." style="animation:fadeIn .35s ease 7.5s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-767m-xrhc-fxm7 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The `send` and `poll` handlers in `send.ts` did not check for proper authentication before allowing access to admin-class Telegram config and cron persistence." style="animation:fadeIn .35s ease 7.525s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-767m-xrhc-fxm7" target="_blank" rel="noopener">GHSA-767m-xrhc-fxm7</a>
@@ -17665,7 +17761,7 @@ After:
 <a href="https://github.com/advisories/GHSA-767m-xrhc-fxm7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-fqrj-m88p-qf3v openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle or sanitize error messages that could reveal sensitive information." style="animation:fadeIn .35s ease 7.525s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-fqrj-m88p-qf3v openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle or sanitize error messages that could reveal sensitive information." style="animation:fadeIn .35s ease 7.550000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fqrj-m88p-qf3v" target="_blank" rel="noopener">GHSA-fqrj-m88p-qf3v</a>
