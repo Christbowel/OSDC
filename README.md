@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-447-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-449-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-47-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -354,7 +354,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 25x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 26x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -632,7 +632,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-pxm6-mhxr-q4mj</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 17x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The Grav user registration process lacked server-side validation for critical privilege-related fields like &#39;groups&#39; and &#39;access&#39;. This allowed an attacker to include these fields in their registration form submission, and the application would honor these values, effectively granting them elevated privileges.</p>
 <p><b>Impact</b> : An attacker could register a new user account and assign themselves administrative or other high-privilege roles, leading to full control over the Grav instance.</p>
@@ -876,7 +876,7 @@ After:
 <h3>GHSA-f6qq-3m3h-4g42</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Go<br>
-<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 17x across ecosystem
+<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the Patreon OAuth2 provider incorrectly generated the local user ID. Instead of using the unique ID provided by Patreon (uinfoJSON.Data.ID), it used an uninitialized or default value from userInfo.ID, which was likely constant or empty across all users. This resulted in all authenticated Patreon users being assigned the same local user ID.</p>
 <p><b>Impact</b> : An attacker could impersonate any other Patreon-authenticated user by simply logging in with their own Patreon account. This allows for cross-user impersonation and unauthorized access to other users&#39; data or actions within the application.</p>
@@ -962,6 +962,54 @@ for member in zip_file.namelist():
 <p><b>Fix</b> : The patch ensures that newly created databases inherit the server&#39;s security configuration. It also refines the logic for retrieving database group configurations, specifically for wildcard (&#39;*&#39;) entries, to correctly merge or return specific database groups, preventing unintended authorization bypasses.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
+</p>
+<hr>
+<h3>GHSA-m77w-p5jj-xmhg</h3>
+<p>
+<code>CRITICAL 0.0</code> · 2026-05-12 · JavaScript<br>
+<code>openclaude</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 18x across ecosystem
+</p>
+<p><b>Root cause</b> : The `dangerouslyDisableSandbox` parameter in the BashTool was exposed to the AI model. Although the prompt attempted to guide the model on when to use it, the model could directly set this parameter in its tool calls, bypassing the intended user approval flow and security restrictions.</p>
+<p><b>Impact</b> : An attacker, via a malicious AI model, could execute arbitrary commands outside the sandbox environment, leading to potential remote code execution, data exfiltration, or system compromise on the host running the OpenClaude application.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/tools/BashTool/BashTool.tsx
++++ b/src/tools/BashTool/BashTool.tsx
+@@ -240,21 +240,28 @@ For commands that are harder to parse at a glance (piped commands, obscure flags
+   run_in_background: semanticBoolean(z.boolean().optional()).describe(`Set to true to run this command in the background. Use Read to read the output later.`), 
+   dangerouslyDisableSandbox: semanticBoolean(z.boolean().optional()).describe(&#39;Set this to true to dangerously override sandbox mode and run commands without sandboxing.&#39;),
++  _dangerouslyDisableSandboxApproved: z.boolean().optional().describe(&#39;Internal: user-approved sandbox override&#39;),
+   _simulatedSedEdit: z.object({
+     filePath: z.string(),
+     newContent: z.string()
+   }).optional().describe(&#39;Internal: pre-computed sed edit result from preview&#39;)
+ }));
+ 
+-// Always omit _simulatedSedEdit from the model-facing schema. It is an internal-only
+-// field set by SedEditPermissionRequest after the user approves a sed edit preview.
+-// Exposing it in the schema would let the model bypass permission checks and the
+-// sandbox by pairing an innocuous command with an arbitrary file write.
++// Always omit internal-only fields from the model-facing schema.
++// _simulatedSedEdit is set by SedEditPermissionRequest after the user approves a
++// sed edit preview; exposing it would let the model bypass permission checks and
++// the sandbox by pairing an innocuous command with an arbitrary file write.
++// dangerouslyDisableSandbox is also omitted because sandbox escape must be tied
++// to trusted user/internal provenance, not model-controlled tool input.
+ // Also conditionally remove run_in_background when background tasks are disabled.
+ const inputSchema = lazySchema(() =&gt; isBackgroundTasksDisabled ? fullInputSchema().omit({
+   run_in_background: true,
++  dangerouslyDisableSandbox: true,
++  _dangerouslyDisableSandboxApproved: true,
+   _simulatedSedEdit: true
+ }) : fullInputSchema().omit({
++  dangerouslyDisableSandbox: true,
++  _dangerouslyDisableSandboxApproved: true,
+   _simulatedSedEdit: true
+ }));</pre>
+</details>
+<p><b>Fix</b> : The patch removes `dangerouslyDisableSandbox` from the model-facing schema of the BashTool and PowerShellTool. It introduces an internal-only `_dangerouslyDisableSandboxApproved` flag, which must be true for the sandbox to be disabled. This ensures that sandbox disabling can only be triggered by trusted internal logic, not directly by the AI model&#39;s input.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-m77w-p5jj-xmhg">Advisory</a> · <a href="https://github.com/Gitlawb/openclaude/commit/aab489055c53dd64369414116fe93226d2656273">Commit</a>
 </p>
 <hr>
 <h3>GHSA-mpm8-cx2p-626q</h3>
@@ -1362,7 +1410,7 @@ After:
 <h3>GHSA-r945-h4vm-h736</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav-plugin-api</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 17x across ecosystem
+<code>getgrav/grav-plugin-api</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The API&#39;s user update endpoint allowed users to modify their own &#39;access&#39; field, which controls permissions. While a check existed to prevent unauthorized users from updating *other* users, it did not adequately restrict the fields a user could modify when updating their *own* profile. This oversight meant a user with basic API access could grant themselves &#39;api.super&#39; or &#39;admin.super&#39; privileges.</p>
 <p><b>Impact</b> : An attacker with a low-privileged API access token could elevate their account to a Super Admin, gaining full control over the Grav instance, including data manipulation, configuration changes, and potentially remote code execution.</p>
@@ -1687,7 +1735,7 @@ After:
 <h3>GHSA-2gw9-c2r2-f5qf</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-04-21 · Go<br>
-<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 17x across ecosystem
+<code>github.com/m1k1o/neko/server</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed authenticated users to update their profile without proper authorization checks on all fields. Specifically, the `IsAdmin` field within the user&#39;s session profile could be modified by a non-admin user through the `UpdateProfile` API endpoint.</p>
 <p><b>Impact</b> : An authenticated non-admin user could elevate their privileges to that of an administrator, gaining full control over the application and potentially sensitive data or functionality.</p>
@@ -1715,25 +1763,6 @@ After:
 <p><b>Fix</b> : The patch introduces an authorization check in the `UpdateProfile` function. Non-admin users are now restricted to only updating their `Name` field, while the `IsAdmin` field and other sensitive profile attributes are protected from unauthorized modification.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2gw9-c2r2-f5qf">Advisory</a> · <a href="https://github.com/m1k1o/neko/commit/6b561feb9016badea99ae7305091c0ff55e1d114">Commit</a>
-</p>
-<hr>
-<h3>GHSA-29qv-4j9f-fjw5</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-04-16 · JavaScript<br>
-<code>mathjs</code> · Pattern: <code>UNCLASSIFIED</code> · 55x across ecosystem
-</p>
-<p><b>Root cause</b> : The patch changes the function `isSafeProperty` to `isSafeObjectProperty`, which may not cover all cases as intended.</p>
-<p><b>Impact</b> : An attacker could potentially access unsafe properties or methods of objects, leading to potential security vulnerabilities.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- if (isSafeProperty(object, prop)) {
-After:
-+ if (isSafeObjectProperty(object, prop) || isSafeArrayProperty(object, prop)) {</pre>
-</details>
-<p><b>Fix</b> : The patch updates the function name and logic to ensure that only safe object properties are accessed, preventing potential security issues.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-29qv-4j9f-fjw5">Advisory</a> · <a href="https://github.com/josdejong/mathjs/commit/513ab2a0e01004af91b31aada68fae8a821326ad">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1771,10 +1800,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>447</td></tr>
+<tr><td>Total advisories</td><td>449</td></tr>
 <tr><td>Unique patterns</td><td>47</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-05-12</td></tr>
+<tr><td>Last updated</td><td>2026-05-13</td></tr>
 </table>
 </details>
 <hr>
