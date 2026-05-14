@@ -152,12 +152,12 @@ footer a:hover{color:var(--text)}
 
 <div class="alert-banner">
 <div class="alert-icon">!</div>
-<div class="alert-text"><strong>Why this matters.</strong> Nation-state actors systematically monitor open source commits for security fixes that lack public disclosure. A fix without a CVE is a roadmap to an exploitable vulnerability in every unpatched installation. These 310 advisories represent confirmed vulnerabilities with available fixes but zero CVE tracking.</div>
+<div class="alert-text"><strong>Why this matters.</strong> Nation-state actors systematically monitor open source commits for security fixes that lack public disclosure. A fix without a CVE is a roadmap to an exploitable vulnerability in every unpatched installation. These 311 advisories represent confirmed vulnerabilities with available fixes but zero CVE tracking.</div>
 </div>
 
 <div class="stats-strip">
 <div class="sstat">
-<div class="sstat-val red">310</div>
+<div class="sstat-val red">311</div>
 <div class="sstat-lbl">Fixes without CVE</div>
 </div>
 <div class="sstat">
@@ -169,13 +169,13 @@ footer a:hover{color:var(--text)}
 <div class="sstat-lbl">High severity</div>
 </div>
 <div class="sstat">
-<div class="sstat-val">457</div>
+<div class="sstat-val">458</div>
 <div class="sstat-lbl">Total advisories</div>
 </div>
 </div>
 
 <div class="section-header">
-<span class="section-label">310 entries</span>
+<span class="section-label">311 entries</span>
 <span class="section-header-line"></span>
 </div>
 
@@ -12444,7 +12444,66 @@ After:
 <a href="https://github.com/advisories/GHSA-6j8j-4qp3-36p2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-6jh4-47v2-4g37 mantisbt/mantisbt mantisbt/mantisbt UNSANITIZED_INPUT→XSS PHP The application was reflecting user-controlled input from the &#39;redirect&#39; parameter directly into an HTML input field without proper HTML entity encoding. An attacker could manipulate the &#39;redirect&#39; URL to inject malicious HTML or JavaScript." style="animation:fadeIn .35s ease 5.2250000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7mqx-wwh4-f9fw strapi/strapi @strapi/plugin-users-permissions DOS→RESOURCE_EXHAUSTION JavaScript The rate-limiting mechanism in Strapi&#39;s users-permissions plugin used an attacker-controlled &#39;email&#39; field from the request body as part of its key for certain authentication routes. By varying the &#39;email&#39; value in successive requests, an attacker could generate a new rate-limit key for each request, effectively bypassing the per-IP throttling and allowing an unlimited number of attempts." style="animation:fadeIn .35s ease 5.2250000000000005s both">
+<div class="card-header">
+<div class="card-meta">
+<a class="ghsa-id" href="https://github.com/advisories/GHSA-7mqx-wwh4-f9fw" target="_blank" rel="noopener">GHSA-7mqx-wwh4-f9fw</a>
+<span class="no-cve-badge">No CVE</span>
+<span class="sev sev-moderate">MODERATE 0.0</span>
+<span class="tag">DOS→RESOURCE_EXHAUSTION</span>
+<span class="lang">JavaScript</span>
+</div>
+<button class="expand-btn" onclick="toggleCard(this)">Details</button>
+</div>
+<div class="card-body">
+<div class="field">
+<div class="field-label">Package</div>
+<div class="field-value" style="font-family:var(--mono);font-size:.78rem;color:var(--text)">@strapi/plugin-users-permissions · strapi/strapi</div>
+</div>
+<div class="field">
+<div class="field-label">Root cause</div>
+<div class="field-value">The rate-limiting mechanism in Strapi&#39;s users-permissions plugin used an attacker-controlled &#39;email&#39; field from the request body as part of its key for certain authentication routes. By varying the &#39;email&#39; value in successive requests, an attacker could generate a new rate-limit key for each request, effectively bypassing the per-IP throttling and allowing an unlimited number of attempts.</div>
+</div>
+<div class="hidden">
+<div class="field">
+<div class="field-label">Impact</div>
+<div class="field-value">An attacker could bypass rate limits on authentication-related endpoints, potentially enabling brute-force attacks on user accounts or other resource-intensive operations without being throttled.</div>
+</div>
+<div class="field">
+<div class="field-label">Key diff</div>
+<div class="diff">--- a/packages/plugins/users-permissions/server/middlewares/rateLimit.js
++++ b/packages/plugins/users-permissions/server/middlewares/rateLimit.js
+-      const userIdentifier = toLower(ctx.request.body.email) || &#39;unknownIdentifier&#39;;
+-      const requestPath = isString(ctx.request.path)
+-        ? toLower(path.normalize(ctx.request.path))
+-        : &#39;invalidPath&#39;;
+-
+-      const loadConfig = {
+-        interval: { min: 5 },
+-        max: 5,
+-        prefixKey: `${userIdentifier}:${requestPath}:${ctx.request.ip}`,
+-        handler() {
+-          throw new RateLimitError();
+-        },
+-        ...rateLimitConfig,
+-        ...config,
+-      };
++      const loadConfig = buildRateLimitLoadConfig(ctx, rateLimitConfig, config);</div>
+</div>
+<div class="field">
+<div class="field-label">Fix summary</div>
+<div class="field-value">The patch refactors the rate-limiting middleware to intelligently construct the prefix key. It introduces logic to determine if a route&#39;s identifier should include the &#39;email&#39; field. For routes where &#39;email&#39; is not the primary identifier or is attacker-controlled, the &#39;email&#39; field is excluded from the rate-limit key, ensuring that the rate limit is applied consistently based on IP and path.</div>
+</div>
+</div>
+</div>
+<div class="card-footer">
+<span>2026-05-13</span>
+<span>Rate Limit Bypass</span>
+<a href="https://github.com/strapi/strapi/commit/5e0d243cba9830e6f791de6a94798bcde51468db" target="_blank" rel="noopener">Commit ↗</a>
+<a href="https://github.com/advisories/GHSA-7mqx-wwh4-f9fw" target="_blank" rel="noopener">Advisory ↗</a>
+</div>
+</div>
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-6jh4-47v2-4g37 mantisbt/mantisbt mantisbt/mantisbt UNSANITIZED_INPUT→XSS PHP The application was reflecting user-controlled input from the &#39;redirect&#39; parameter directly into an HTML input field without proper HTML entity encoding. An attacker could manipulate the &#39;redirect&#39; URL to inject malicious HTML or JavaScript." style="animation:fadeIn .35s ease 5.25s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-6jh4-47v2-4g37" target="_blank" rel="noopener">GHSA-6jh4-47v2-4g37</a>
@@ -12487,7 +12546,7 @@ After:
 <a href="https://github.com/advisories/GHSA-6jh4-47v2-4g37" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-6m6c-36f7-fhxh mermaid-js/mermaid mermaid DOS→INFINITE_LOOP JavaScript The `fixTaskDates` function, responsible for adjusting task end dates to avoid excluded dates, lacked a mechanism to prevent an infinite loop. If all subsequent dates were excluded, the `endTime` would continuously increment without ever finding a valid date, leading to resource exhaustion." style="animation:fadeIn .35s ease 5.25s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-6m6c-36f7-fhxh mermaid-js/mermaid mermaid DOS→INFINITE_LOOP JavaScript The `fixTaskDates` function, responsible for adjusting task end dates to avoid excluded dates, lacked a mechanism to prevent an infinite loop. If all subsequent dates were excluded, the `endTime` would continuously increment without ever finding a valid date, leading to resource exhaustion." style="animation:fadeIn .35s ease 5.275s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-6m6c-36f7-fhxh" target="_blank" rel="noopener">GHSA-6m6c-36f7-fhxh</a>
@@ -12542,7 +12601,7 @@ After:
 <a href="https://github.com/advisories/GHSA-6m6c-36f7-fhxh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-87f9-hvmw-gh4p mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid library allowed user-provided CSS in the `themeCSS` configuration option to escape the intended SVG element&#39;s scope. While `stylis` was used to namespace the CSS, it did not correctly handle advanced selectors like `:not(&amp;)`, which could be used to negate the namespace and apply styles to the entire document." style="animation:fadeIn .35s ease 5.275s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-87f9-hvmw-gh4p mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid library allowed user-provided CSS in the `themeCSS` configuration option to escape the intended SVG element&#39;s scope. While `stylis` was used to namespace the CSS, it did not correctly handle advanced selectors like `:not(&amp;)`, which could be used to negate the namespace and apply styles to the entire document." style="animation:fadeIn .35s ease 5.300000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-87f9-hvmw-gh4p" target="_blank" rel="noopener">GHSA-87f9-hvmw-gh4p</a>
@@ -12600,7 +12659,7 @@ After:
 <a href="https://github.com/advisories/GHSA-87f9-hvmw-gh4p" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-crmx-4p49-46m2 mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The `access_can_view_bugnote_revisions` function did not verify if a user had access to the parent bug associated with a bugnote revision. It only checked if the user met the `bug_revision_view_threshold` or was the bugnote&#39;s reporter, allowing access to bugnote revision metadata even if the user&#39;s access to the main bug was revoked." style="animation:fadeIn .35s ease 5.300000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-crmx-4p49-46m2 mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The `access_can_view_bugnote_revisions` function did not verify if a user had access to the parent bug associated with a bugnote revision. It only checked if the user met the `bug_revision_view_threshold` or was the bugnote&#39;s reporter, allowing access to bugnote revision metadata even if the user&#39;s access to the main bug was revoked." style="animation:fadeIn .35s ease 5.325s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-crmx-4p49-46m2" target="_blank" rel="noopener">GHSA-crmx-4p49-46m2</a>
@@ -12667,7 +12726,7 @@ After:
 <a href="https://github.com/advisories/GHSA-crmx-4p49-46m2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-ghcm-xqfw-q4vr mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid diagramming tool did not properly sanitize user-supplied input in `classDef` definitions within state diagrams. This allowed attackers to inject arbitrary HTML, including style tags and other elements, by crafting malicious `classDef` values." style="animation:fadeIn .35s ease 5.325s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-ghcm-xqfw-q4vr mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid diagramming tool did not properly sanitize user-supplied input in `classDef` definitions within state diagrams. This allowed attackers to inject arbitrary HTML, including style tags and other elements, by crafting malicious `classDef` values." style="animation:fadeIn .35s ease 5.3500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-ghcm-xqfw-q4vr" target="_blank" rel="noopener">GHSA-ghcm-xqfw-q4vr</a>
@@ -12724,7 +12783,7 @@ After:
 <a href="https://github.com/advisories/GHSA-ghcm-xqfw-q4vr" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-j7v9-f46r-2rp4 mantisbt/mantisbt mantisbt/mantisbt UNSANITIZED_INPUT→XSS PHP The application was dynamically generating HTML input and select elements using user-controlled custom field IDs without properly sanitizing or encoding these IDs. This allowed an attacker to inject malicious HTML/JavaScript into the &#39;name&#39; attribute of these elements." style="animation:fadeIn .35s ease 5.3500000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-j7v9-f46r-2rp4 mantisbt/mantisbt mantisbt/mantisbt UNSANITIZED_INPUT→XSS PHP The application was dynamically generating HTML input and select elements using user-controlled custom field IDs without properly sanitizing or encoding these IDs. This allowed an attacker to inject malicious HTML/JavaScript into the &#39;name&#39; attribute of these elements." style="animation:fadeIn .35s ease 5.375s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j7v9-f46r-2rp4" target="_blank" rel="noopener">GHSA-j7v9-f46r-2rp4</a>
@@ -12781,7 +12840,7 @@ After:
 <a href="https://github.com/advisories/GHSA-j7v9-f46r-2rp4" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-pq86-j2c2-47f6 mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The vulnerability existed because the `mc_issue_update` API endpoint did not properly enforce authorization checks when updating individual bugnotes within an issue. While the API handled issue-level access, it failed to verify if the user had the necessary permissions to edit a specific bugnote, allowing any authenticated user with access to an issue to modify any bugnote associated with it." style="animation:fadeIn .35s ease 5.375s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-pq86-j2c2-47f6 mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The vulnerability existed because the `mc_issue_update` API endpoint did not properly enforce authorization checks when updating individual bugnotes within an issue. While the API handled issue-level access, it failed to verify if the user had the necessary permissions to edit a specific bugnote, allowing any authenticated user with access to an issue to modify any bugnote associated with it." style="animation:fadeIn .35s ease 5.4s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-pq86-j2c2-47f6" target="_blank" rel="noopener">GHSA-pq86-j2c2-47f6</a>
@@ -12833,7 +12892,7 @@ After:
 <a href="https://github.com/advisories/GHSA-pq86-j2c2-47f6" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-rmp5-5jj7-gmvf mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The application did not consistently enforce authorization checks for accessing issue attachments. Specifically, the `IssueFileGetCommand` and `file_can_view_or_download` functions did not verify if the current user still had access to view the associated issue, allowing users who previously had access to a private issue to retain access to its attachments even after their access to the issue itself was revoked." style="animation:fadeIn .35s ease 5.4s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-rmp5-5jj7-gmvf mantisbt/mantisbt mantisbt/mantisbt MISSING_AUTHZ→RESOURCE PHP The application did not consistently enforce authorization checks for accessing issue attachments. Specifically, the `IssueFileGetCommand` and `file_can_view_or_download` functions did not verify if the current user still had access to view the associated issue, allowing users who previously had access to a private issue to retain access to its attachments even after their access to the issue itself was revoked." style="animation:fadeIn .35s ease 5.425000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-rmp5-5jj7-gmvf" target="_blank" rel="noopener">GHSA-rmp5-5jj7-gmvf</a>
@@ -12904,7 +12963,7 @@ After:
 <a href="https://github.com/advisories/GHSA-rmp5-5jj7-gmvf" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-xcj9-5m2h-648r mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid diagramming library did not properly sanitize user-supplied input in `classDefs` within diagrams. This allowed an attacker to inject arbitrary CSS, specifically by closing existing CSS blocks and opening new ones, leading to a bypass of intended styling restrictions." style="animation:fadeIn .35s ease 5.425000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-xcj9-5m2h-648r mermaid-js/mermaid mermaid UNSANITIZED_INPUT→XSS JavaScript The Mermaid diagramming library did not properly sanitize user-supplied input in `classDefs` within diagrams. This allowed an attacker to inject arbitrary CSS, specifically by closing existing CSS blocks and opening new ones, leading to a bypass of intended styling restrictions." style="animation:fadeIn .35s ease 5.45s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xcj9-5m2h-648r" target="_blank" rel="noopener">GHSA-xcj9-5m2h-648r</a>
@@ -12955,7 +13014,7 @@ After:
 <a href="https://github.com/advisories/GHSA-xcj9-5m2h-648r" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Erlang" data-searchable="GHSA-375f-4r2h-f99j mtrudel/bandit bandit INSECURE_DEFAULT→CONFIG Erlang The Bandit web server library incorrectly determined the URI scheme (HTTP/HTTPS) by trusting the client-supplied request target, even when the connection itself was plaintext. This allowed an attacker to trick the server into believing a plaintext connection was secure (HTTPS) if they manipulated the request target." style="animation:fadeIn .35s ease 5.45s both">
+<div class="card" data-severity="MODERATE" data-language="Erlang" data-searchable="GHSA-375f-4r2h-f99j mtrudel/bandit bandit INSECURE_DEFAULT→CONFIG Erlang The Bandit web server library incorrectly determined the URI scheme (HTTP/HTTPS) by trusting the client-supplied request target, even when the connection itself was plaintext. This allowed an attacker to trick the server into believing a plaintext connection was secure (HTTPS) if they manipulated the request target." style="animation:fadeIn .35s ease 5.4750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-375f-4r2h-f99j" target="_blank" rel="noopener">GHSA-375f-4r2h-f99j</a>
@@ -13005,7 +13064,7 @@ After:
 <a href="https://github.com/advisories/GHSA-375f-4r2h-f99j" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-687h-xw6f-q2qw Lookyloo/PlaywrightCapture PlaywrightCapture SSRF→INTERNAL_ACCESS Python The PlaywrightCapture library, designed to capture web pages, did not adequately restrict the URLs that could be loaded by the underlying Playwright browser instance. This allowed an attacker to instruct the browser to access local files (e.g., file:///) or internal network resources, bypassing intended network boundaries." style="animation:fadeIn .35s ease 5.4750000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-687h-xw6f-q2qw Lookyloo/PlaywrightCapture PlaywrightCapture SSRF→INTERNAL_ACCESS Python The PlaywrightCapture library, designed to capture web pages, did not adequately restrict the URLs that could be loaded by the underlying Playwright browser instance. This allowed an attacker to instruct the browser to access local files (e.g., file:///) or internal network resources, bypassing intended network boundaries." style="animation:fadeIn .35s ease 5.5s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-687h-xw6f-q2qw" target="_blank" rel="noopener">GHSA-687h-xw6f-q2qw</a>
@@ -13108,7 +13167,7 @@ After:
 <a href="https://github.com/advisories/GHSA-687h-xw6f-q2qw" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-7r92-3jgr-r65q svvqt/pyquorum pyquorum TIMING_SIDE_CHANNEL→TOKEN_LEAK Python The original `mul_mod` function implemented modular multiplication using a variable-time algorithm (repeated addition and shifting). The number of operations depended on the value of the exponent `b`, specifically the number of set bits and the magnitude of `exp`. This created a timing side-channel where an attacker could potentially deduce information about secret values by measuring the execution time of the multiplication." style="animation:fadeIn .35s ease 5.5s both">
+<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-7r92-3jgr-r65q svvqt/pyquorum pyquorum TIMING_SIDE_CHANNEL→TOKEN_LEAK Python The original `mul_mod` function implemented modular multiplication using a variable-time algorithm (repeated addition and shifting). The number of operations depended on the value of the exponent `b`, specifically the number of set bits and the magnitude of `exp`. This created a timing side-channel where an attacker could potentially deduce information about secret values by measuring the execution time of the multiplication." style="animation:fadeIn .35s ease 5.525s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7r92-3jgr-r65q" target="_blank" rel="noopener">GHSA-7r92-3jgr-r65q</a>
@@ -13166,7 +13225,7 @@ After:
 <a href="https://github.com/advisories/GHSA-7r92-3jgr-r65q" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-9phm-9p8f-hw5m unjs/ufo nitropack OPEN_REDIRECT→PHISHING JavaScript The `withoutBase` utility function, intended to remove a base path from a URL, did not properly handle multiple leading slashes. When a base path like `/legacy` was removed from an input like `/legacy//evil.com`, the function would return `//evil.com`, which is a protocol-relative URL. Browsers interpret such URLs as redirects to the specified domain using the current page&#39;s protocol." style="animation:fadeIn .35s ease 5.525s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-9phm-9p8f-hw5m unjs/ufo nitropack OPEN_REDIRECT→PHISHING JavaScript The `withoutBase` utility function, intended to remove a base path from a URL, did not properly handle multiple leading slashes. When a base path like `/legacy` was removed from an input like `/legacy//evil.com`, the function would return `//evil.com`, which is a protocol-relative URL. Browsers interpret such URLs as redirects to the specified domain using the current page&#39;s protocol." style="animation:fadeIn .35s ease 5.550000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-9phm-9p8f-hw5m" target="_blank" rel="noopener">GHSA-9phm-9p8f-hw5m</a>
@@ -13210,7 +13269,7 @@ After:
 <a href="https://github.com/advisories/GHSA-9phm-9p8f-hw5m" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-fhq3-2gf3-8f3j MISP/misp-modules misp-modules SSRF→INTERNAL_ACCESS Python The `misp-modules` library&#39;s `html_to_markdown` expansion module was designed to fetch HTML from a given URL. While it included a `is_safe_url` function to block requests to private IP ranges, this check was only applied to the hostname&#39;s resolved IP addresses. It did not prevent requests to URLs that could resolve to a blocked IP address via a DNS rebinding attack or if the hostname itself was an IP address not explicitly in the blocked list but still internal." style="animation:fadeIn .35s ease 5.550000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-fhq3-2gf3-8f3j MISP/misp-modules misp-modules SSRF→INTERNAL_ACCESS Python The `misp-modules` library&#39;s `html_to_markdown` expansion module was designed to fetch HTML from a given URL. While it included a `is_safe_url` function to block requests to private IP ranges, this check was only applied to the hostname&#39;s resolved IP addresses. It did not prevent requests to URLs that could resolve to a blocked IP address via a DNS rebinding attack or if the hostname itself was an IP address not explicitly in the blocked list but still internal." style="animation:fadeIn .35s ease 5.575s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fhq3-2gf3-8f3j" target="_blank" rel="noopener">GHSA-fhq3-2gf3-8f3j</a>
@@ -13256,7 +13315,7 @@ After:
 <a href="https://github.com/advisories/GHSA-fhq3-2gf3-8f3j" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="RUST" data-searchable="GHSA-qxrw-f6fh-34r7 LemmyNet/lemmy lemmy_api INFO_DISCLOSURE→ERROR_MESSAGE RUST The `resend_verification_email` endpoint previously returned distinct error messages or behaviors depending on whether an email address existed in the system. An unauthenticated attacker could use this difference to enumerate registered email addresses." style="animation:fadeIn .35s ease 5.575s both">
+<div class="card" data-severity="MODERATE" data-language="RUST" data-searchable="GHSA-qxrw-f6fh-34r7 LemmyNet/lemmy lemmy_api INFO_DISCLOSURE→ERROR_MESSAGE RUST The `resend_verification_email` endpoint previously returned distinct error messages or behaviors depending on whether an email address existed in the system. An unauthenticated attacker could use this difference to enumerate registered email addresses." style="animation:fadeIn .35s ease 5.6000000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-qxrw-f6fh-34r7" target="_blank" rel="noopener">GHSA-qxrw-f6fh-34r7</a>
@@ -13324,7 +13383,7 @@ After:
 <a href="https://github.com/advisories/GHSA-qxrw-f6fh-34r7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-55cf-xx38-4p9p openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed workspace-specific .dotenv files to override critical environment variables that control connector endpoint hosts. This meant that a malicious workspace could redefine where the application&#39;s connectors (e.g., IRC, Mattermost, Matrix, Synology Chat) would send requests, bypassing intended network restrictions." style="animation:fadeIn .35s ease 5.6000000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-55cf-xx38-4p9p openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed workspace-specific .dotenv files to override critical environment variables that control connector endpoint hosts. This meant that a malicious workspace could redefine where the application&#39;s connectors (e.g., IRC, Mattermost, Matrix, Synology Chat) would send requests, bypassing intended network restrictions." style="animation:fadeIn .35s ease 5.625s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-55cf-xx38-4p9p" target="_blank" rel="noopener">GHSA-55cf-xx38-4p9p</a>
@@ -13391,7 +13450,7 @@ After:
 <a href="https://github.com/advisories/GHSA-55cf-xx38-4p9p" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-5h3g-6xhh-rg6p openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The original code used `fsPromises.readFile(hostPath)` after a basic path safety assertion. This approach was vulnerable to Time-of-Check to Time-of-Use (TOCTOU) race conditions, where an attacker could swap a legitimate file with a symlink to an arbitrary file outside the intended root after the initial path check but before the file was actually read." style="animation:fadeIn .35s ease 5.625s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-5h3g-6xhh-rg6p openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The original code used `fsPromises.readFile(hostPath)` after a basic path safety assertion. This approach was vulnerable to Time-of-Check to Time-of-Use (TOCTOU) race conditions, where an attacker could swap a legitimate file with a symlink to an arbitrary file outside the intended root after the initial path check but before the file was actually read." style="animation:fadeIn .35s ease 5.65s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-5h3g-6xhh-rg6p" target="_blank" rel="noopener">GHSA-5h3g-6xhh-rg6p</a>
@@ -13455,7 +13514,7 @@ After:
 <a href="https://github.com/advisories/GHSA-5h3g-6xhh-rg6p" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-75xq-5h9v-w6px ruby/net-imap net-imap UNSANITIZED_INPUT→COMMAND Ruby The `net-imap` gem&#39;s `getquota`, `getquotaroot`, and `setquota` methods previously accepted unvalidated `Symbol` inputs for mailbox names or quota roots. This allowed an attacker to inject arbitrary IMAP commands by crafting a malicious symbol, which would then be sent directly to the IMAP server." style="animation:fadeIn .35s ease 5.65s both">
+<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-75xq-5h9v-w6px ruby/net-imap net-imap UNSANITIZED_INPUT→COMMAND Ruby The `net-imap` gem&#39;s `getquota`, `getquotaroot`, and `setquota` methods previously accepted unvalidated `Symbol` inputs for mailbox names or quota roots. This allowed an attacker to inject arbitrary IMAP commands by crafting a malicious symbol, which would then be sent directly to the IMAP server." style="animation:fadeIn .35s ease 5.675000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-75xq-5h9v-w6px" target="_blank" rel="noopener">GHSA-75xq-5h9v-w6px</a>
@@ -13506,7 +13565,7 @@ After:
 <a href="https://github.com/advisories/GHSA-75xq-5h9v-w6px" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-87pf-fpwv-p7m7 ruby/net-imap net-imap DOS→RESOURCE_EXHAUSTION Ruby The `net-imap` library&#39;s SCRAM authenticator did not properly validate the `iterations` parameter received from the server during authentication. A malicious server could send an arbitrarily high iteration count, leading the client to perform an extremely computationally intensive PBKDF2 operation." style="animation:fadeIn .35s ease 5.675000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-87pf-fpwv-p7m7 ruby/net-imap net-imap DOS→RESOURCE_EXHAUSTION Ruby The `net-imap` library&#39;s SCRAM authenticator did not properly validate the `iterations` parameter received from the server during authentication. A malicious server could send an arbitrarily high iteration count, leading the client to perform an extremely computationally intensive PBKDF2 operation." style="animation:fadeIn .35s ease 5.7s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-87pf-fpwv-p7m7" target="_blank" rel="noopener">GHSA-87pf-fpwv-p7m7</a>
@@ -13576,7 +13635,7 @@ After:
 <a href="https://github.com/advisories/GHSA-87pf-fpwv-p7m7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-93rg-2xm5-2p9v openclaw/openclaw openclaw MISSING_AUTH→ENDPOINT JavaScript The `control-ui-bootstrap.ts` endpoint, which provides configuration for the UI, did not require authentication. This allowed unauthenticated users to fetch sensitive configuration details that should have been protected." style="animation:fadeIn .35s ease 5.7s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-93rg-2xm5-2p9v openclaw/openclaw openclaw MISSING_AUTH→ENDPOINT JavaScript The `control-ui-bootstrap.ts` endpoint, which provides configuration for the UI, did not require authentication. This allowed unauthenticated users to fetch sensitive configuration details that should have been protected." style="animation:fadeIn .35s ease 5.7250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-93rg-2xm5-2p9v" target="_blank" rel="noopener">GHSA-93rg-2xm5-2p9v</a>
@@ -13634,7 +13693,7 @@ After:
 <a href="https://github.com/advisories/GHSA-93rg-2xm5-2p9v" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-hm49-wcqc-g2xg ruby/net-imap net-imap UNSANITIZED_INPUT→COMMAND Ruby The `setquota` method in `net-imap` directly concatenated user-supplied input (`storage_limit`) into a command string without proper escaping or validation. The `RawData.new` wrapper was intended to prevent interpretation, but the underlying `send_command` method still processed the string as part of the IMAP command, allowing injection." style="animation:fadeIn .35s ease 5.7250000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="Ruby" data-searchable="GHSA-hm49-wcqc-g2xg ruby/net-imap net-imap UNSANITIZED_INPUT→COMMAND Ruby The `setquota` method in `net-imap` directly concatenated user-supplied input (`storage_limit`) into a command string without proper escaping or validation. The `RawData.new` wrapper was intended to prevent interpretation, but the underlying `send_command` method still processed the string as part of the IMAP command, allowing injection." style="animation:fadeIn .35s ease 5.75s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-hm49-wcqc-g2xg" target="_blank" rel="noopener">GHSA-hm49-wcqc-g2xg</a>
@@ -13692,7 +13751,7 @@ After:
 <a href="https://github.com/advisories/GHSA-hm49-wcqc-g2xg" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-cwcx-382v-8m9g WeblateOrg/weblate weblate SSRF→INTERNAL_ACCESS Python The vulnerability stemmed from an incomplete validation of repository URLs. While `validate_repo_url` was intended to prevent SSRF, it was not consistently applied to all code paths that handled external repository URLs, specifically in the `get_remote_branch` method. This oversight allowed an authenticated attacker to bypass existing URL validation." style="animation:fadeIn .35s ease 5.75s both">
+<div class="card" data-severity="MODERATE" data-language="Python" data-searchable="GHSA-cwcx-382v-8m9g WeblateOrg/weblate weblate SSRF→INTERNAL_ACCESS Python The vulnerability stemmed from an incomplete validation of repository URLs. While `validate_repo_url` was intended to prevent SSRF, it was not consistently applied to all code paths that handled external repository URLs, specifically in the `get_remote_branch` method. This oversight allowed an authenticated attacker to bypass existing URL validation." style="animation:fadeIn .35s ease 5.775s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-cwcx-382v-8m9g" target="_blank" rel="noopener">GHSA-cwcx-382v-8m9g</a>
@@ -13743,7 +13802,7 @@ After:
 <a href="https://github.com/advisories/GHSA-cwcx-382v-8m9g" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c28g-vh7m-fm7v openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The vulnerability stemmed from an overly broad authorization check for owner-enforced commands. Specifically, the system incorrectly allowed wildcard channel senders to be considered command owners if no specific owner allowlist was configured, or if the owner state indicated &#39;allowAll&#39;, or if there were no specific owner candidates." style="animation:fadeIn .35s ease 5.775s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c28g-vh7m-fm7v openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The vulnerability stemmed from an overly broad authorization check for owner-enforced commands. Specifically, the system incorrectly allowed wildcard channel senders to be considered command owners if no specific owner allowlist was configured, or if the owner state indicated &#39;allowAll&#39;, or if there were no specific owner candidates." style="animation:fadeIn .35s ease 5.800000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-c28g-vh7m-fm7v" target="_blank" rel="noopener">GHSA-c28g-vh7m-fm7v</a>
@@ -13797,7 +13856,7 @@ After:
 <a href="https://github.com/advisories/GHSA-c28g-vh7m-fm7v" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-gfg9-5357-hv4c openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The application allowed embedding audio files in webchat messages by resolving local file paths or file:// URLs provided by an agent. It lacked proper validation to ensure that these paths were restricted to a set of allowed local root directories, enabling an attacker to specify arbitrary file paths on the server." style="animation:fadeIn .35s ease 5.800000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-gfg9-5357-hv4c openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The application allowed embedding audio files in webchat messages by resolving local file paths or file:// URLs provided by an agent. It lacked proper validation to ensure that these paths were restricted to a set of allowed local root directories, enabling an attacker to specify arbitrary file paths on the server." style="animation:fadeIn .35s ease 5.825s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-gfg9-5357-hv4c" target="_blank" rel="noopener">GHSA-gfg9-5357-hv4c</a>
@@ -13848,7 +13907,7 @@ After:
 <a href="https://github.com/advisories/GHSA-gfg9-5357-hv4c" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-vjgj-42f6-7997 tinfoil-factory/netfoil github.com/tinfoil-factory/netfoil INSECURE_DEFAULT→CONFIG Go The optional seccomp sandboxing in netfoil was not correctly applied because a critical system call, `unix.SYS_RT_SIGACTION`, was missing from the allowlist. This omission meant that the intended security restrictions were not fully enforced, allowing certain operations that should have been blocked." style="animation:fadeIn .35s ease 5.825s both">
+<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-vjgj-42f6-7997 tinfoil-factory/netfoil github.com/tinfoil-factory/netfoil INSECURE_DEFAULT→CONFIG Go The optional seccomp sandboxing in netfoil was not correctly applied because a critical system call, `unix.SYS_RT_SIGACTION`, was missing from the allowlist. This omission meant that the intended security restrictions were not fully enforced, allowing certain operations that should have been blocked." style="animation:fadeIn .35s ease 5.8500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-vjgj-42f6-7997" target="_blank" rel="noopener">GHSA-vjgj-42f6-7997</a>
@@ -13899,7 +13958,7 @@ After:
 <a href="https://github.com/advisories/GHSA-vjgj-42f6-7997" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2xcp-x87w-q377 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The system allowed hook mapping templates to generate session keys without enforcing the `hooks.allowRequestSessionKey` policy. This meant that even if the policy was set to disallow externally supplied session keys, a templated session key from a hook mapping could bypass this restriction." style="animation:fadeIn .35s ease 5.8500000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2xcp-x87w-q377 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The system allowed hook mapping templates to generate session keys without enforcing the `hooks.allowRequestSessionKey` policy. This meant that even if the policy was set to disallow externally supplied session keys, a templated session key from a hook mapping could bypass this restriction." style="animation:fadeIn .35s ease 5.875s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-2xcp-x87w-q377" target="_blank" rel="noopener">GHSA-2xcp-x87w-q377</a>
@@ -13954,7 +14013,7 @@ After:
 <a href="https://github.com/advisories/GHSA-2xcp-x87w-q377" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-72q8-jcmc-97wx openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The system incorrectly determined the chat type (P2P vs. group) for Feishu card actions. It relied on a fallback logic that assumed a chat_id implied a group chat, and otherwise P2P. This misclassification allowed certain actions intended for group chats to be processed as P2P (Direct Message) interactions, bypassing specific DM policies." style="animation:fadeIn .35s ease 5.875s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-72q8-jcmc-97wx openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The system incorrectly determined the chat type (P2P vs. group) for Feishu card actions. It relied on a fallback logic that assumed a chat_id implied a group chat, and otherwise P2P. This misclassification allowed certain actions intended for group chats to be processed as P2P (Direct Message) interactions, bypassing specific DM policies." style="animation:fadeIn .35s ease 5.9s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-72q8-jcmc-97wx" target="_blank" rel="noopener">GHSA-72q8-jcmc-97wx</a>
@@ -14005,7 +14064,7 @@ After:
 <a href="https://github.com/advisories/GHSA-72q8-jcmc-97wx" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7jm2-g593-4qrc openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system allowed agents to mutate certain gateway configuration paths that were intended to be protected operator settings. The `assertGatewayConfigMutationAllowed` function, which acts as a trust boundary, did not correctly identify and prevent changes to these sensitive configurations, especially for array-based settings with `id` fields." style="animation:fadeIn .35s ease 5.9s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7jm2-g593-4qrc openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system allowed agents to mutate certain gateway configuration paths that were intended to be protected operator settings. The `assertGatewayConfigMutationAllowed` function, which acts as a trust boundary, did not correctly identify and prevent changes to these sensitive configurations, especially for array-based settings with `id` fields." style="animation:fadeIn .35s ease 5.925000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7jm2-g593-4qrc" target="_blank" rel="noopener">GHSA-7jm2-g593-4qrc</a>
@@ -14226,7 +14285,7 @@ After:
 <a href="https://github.com/advisories/GHSA-7jm2-g593-4qrc" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-h2vw-ph2c-jvwf openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed workspace-specific environment variables to override critical service endpoints, specifically `MINIMAX_API_HOST`. This meant a malicious workspace could define its own host for the MiniMax API, which the application would then use for credentialed requests." style="animation:fadeIn .35s ease 5.925000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-h2vw-ph2c-jvwf openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed workspace-specific environment variables to override critical service endpoints, specifically `MINIMAX_API_HOST`. This meant a malicious workspace could define its own host for the MiniMax API, which the application would then use for credentialed requests." style="animation:fadeIn .35s ease 5.95s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-h2vw-ph2c-jvwf" target="_blank" rel="noopener">GHSA-h2vw-ph2c-jvwf</a>
@@ -14283,7 +14342,7 @@ After:
 <a href="https://github.com/advisories/GHSA-h2vw-ph2c-jvwf" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-hxvm-xjvf-93f3 openclaw/openclaw openclaw INSECURE_DEFAULT→CONFIG JavaScript The application allowed workspace-specific .env files to override environment variables that were intended for runtime control. This meant that an untrusted workspace configuration could potentially alter the behavior of the OpenClaw runtime by setting variables with the &#39;OPENCLAW_&#39; prefix." style="animation:fadeIn .35s ease 5.95s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-hxvm-xjvf-93f3 openclaw/openclaw openclaw INSECURE_DEFAULT→CONFIG JavaScript The application allowed workspace-specific .env files to override environment variables that were intended for runtime control. This meant that an untrusted workspace configuration could potentially alter the behavior of the OpenClaw runtime by setting variables with the &#39;OPENCLAW_&#39; prefix." style="animation:fadeIn .35s ease 5.9750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-hxvm-xjvf-93f3" target="_blank" rel="noopener">GHSA-hxvm-xjvf-93f3</a>
@@ -14336,7 +14395,7 @@ After:
 <a href="https://github.com/advisories/GHSA-hxvm-xjvf-93f3" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-mj59-h3q9-ghfh openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The application allowed environment variables for the MCP stdio server to be loaded directly from workspace configuration files without proper validation. This meant that a malicious configuration could inject dangerous environment variables that could alter the behavior or security context of the launched process." style="animation:fadeIn .35s ease 5.9750000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-mj59-h3q9-ghfh openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The application allowed environment variables for the MCP stdio server to be loaded directly from workspace configuration files without proper validation. This meant that a malicious configuration could inject dangerous environment variables that could alter the behavior or security context of the launched process." style="animation:fadeIn .35s ease 6.0s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-mj59-h3q9-ghfh" target="_blank" rel="noopener">GHSA-mj59-h3q9-ghfh</a>
@@ -14388,7 +14447,7 @@ After:
 <a href="https://github.com/advisories/GHSA-mj59-h3q9-ghfh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-qrp5-gfw2-gxv4 openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system allowed caller-provided `groupId` values to influence tool policy without sufficient server-side verification against trusted session metadata. This meant that bundled tools (like MCP/LSP tools) could bypass configured tool policies if an attacker supplied an arbitrary `groupId` that would otherwise grant access to those tools." style="animation:fadeIn .35s ease 6.0s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-qrp5-gfw2-gxv4 openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system allowed caller-provided `groupId` values to influence tool policy without sufficient server-side verification against trusted session metadata. This meant that bundled tools (like MCP/LSP tools) could bypass configured tool policies if an attacker supplied an arbitrary `groupId` that would otherwise grant access to those tools." style="animation:fadeIn .35s ease 6.025s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-qrp5-gfw2-gxv4" target="_blank" rel="noopener">GHSA-qrp5-gfw2-gxv4</a>
@@ -14473,7 +14532,7 @@ After:
 <a href="https://github.com/advisories/GHSA-qrp5-gfw2-gxv4" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-xhjw-95fp-8vgq traefik/traefik github.com/traefik/traefik MISSING_AUTHZ→RESOURCE Go The Traefik Kubernetes CRD provider allowed users to reference middleware resources from other namespaces without proper authorization checks, even when cross-namespace references were explicitly disabled. The `createChainMiddleware` function did not correctly enforce the `AllowCrossNamespace` setting, permitting a middleware in one namespace to bind to a middleware in another namespace." style="animation:fadeIn .35s ease 6.025s both">
+<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-xhjw-95fp-8vgq traefik/traefik github.com/traefik/traefik MISSING_AUTHZ→RESOURCE Go The Traefik Kubernetes CRD provider allowed users to reference middleware resources from other namespaces without proper authorization checks, even when cross-namespace references were explicitly disabled. The `createChainMiddleware` function did not correctly enforce the `AllowCrossNamespace` setting, permitting a middleware in one namespace to bind to a middleware in another namespace." style="animation:fadeIn .35s ease 6.050000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xhjw-95fp-8vgq" target="_blank" rel="noopener">GHSA-xhjw-95fp-8vgq</a>
@@ -14539,7 +14598,7 @@ After:
 <a href="https://github.com/advisories/GHSA-xhjw-95fp-8vgq" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-6vgr-cp5c-ffx3 openbao/openbao github.com/openbao/openbao UNSANITIZED_INPUT→SQL Go The vulnerability existed because the &#39;schema&#39; variable, which could contain user-controlled input, was directly interpolated into a SQL query string without proper escaping or quoting. This allowed an attacker to inject arbitrary SQL commands into the `REVOKE ALL PRIVILEGES` statement." style="animation:fadeIn .35s ease 6.050000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-6vgr-cp5c-ffx3 openbao/openbao github.com/openbao/openbao UNSANITIZED_INPUT→SQL Go The vulnerability existed because the &#39;schema&#39; variable, which could contain user-controlled input, was directly interpolated into a SQL query string without proper escaping or quoting. This allowed an attacker to inject arbitrary SQL commands into the `REVOKE ALL PRIVILEGES` statement." style="animation:fadeIn .35s ease 6.075s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-6vgr-cp5c-ffx3" target="_blank" rel="noopener">GHSA-6vgr-cp5c-ffx3</a>
@@ -14589,7 +14648,7 @@ After:
 <a href="https://github.com/advisories/GHSA-6vgr-cp5c-ffx3" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2767-2q9v-9326 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate or sanitize the URL before making a request, allowing an attacker to trigger SSRF." style="animation:fadeIn .35s ease 6.075s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2767-2q9v-9326 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate or sanitize the URL before making a request, allowing an attacker to trigger SSRF." style="animation:fadeIn .35s ease 6.1000000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-2767-2q9v-9326" target="_blank" rel="noopener">GHSA-2767-2q9v-9326</a>
@@ -14648,7 +14707,7 @@ After:
 <a href="https://github.com/advisories/GHSA-2767-2q9v-9326" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-49cg-279w-m73x openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript Empty approver lists could grant explicit approval authorization without proper validation." style="animation:fadeIn .35s ease 6.1000000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-49cg-279w-m73x openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript Empty approver lists could grant explicit approval authorization without proper validation." style="animation:fadeIn .35s ease 6.125s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-49cg-279w-m73x" target="_blank" rel="noopener">GHSA-49cg-279w-m73x</a>
@@ -14699,7 +14758,7 @@ if (approvers.length === 0) {
 <a href="https://github.com/advisories/GHSA-49cg-279w-m73x" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-527m-976r-jf79 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The existing-session browser interaction routes did not properly enforce SSRF policy enforcement." style="animation:fadeIn .35s ease 6.125s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-527m-976r-jf79 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The existing-session browser interaction routes did not properly enforce SSRF policy enforcement." style="animation:fadeIn .35s ease 6.15s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-527m-976r-jf79" target="_blank" rel="noopener">GHSA-527m-976r-jf79</a>
@@ -14752,7 +14811,7 @@ async function assertExistingSessionPostInteractionNavigationAllowed(params: {
 <a href="https://github.com/advisories/GHSA-527m-976r-jf79" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-536q-mj95-h29h openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code missed complete navigation guard coverage for SSRF vulnerabilities." style="animation:fadeIn .35s ease 6.15s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-536q-mj95-h29h openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code missed complete navigation guard coverage for SSRF vulnerabilities." style="animation:fadeIn .35s ease 6.175000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-536q-mj95-h29h" target="_blank" rel="noopener">GHSA-536q-mj95-h29h</a>
@@ -14812,7 +14871,7 @@ export async function clickViaPlaywright(opts: {
 <a href="https://github.com/advisories/GHSA-536q-mj95-h29h" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-5gjc-grvm-m88j openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The operator.write commands were not properly restricted to require the &#39;operator.admin&#39; scope." style="animation:fadeIn .35s ease 6.175000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-5gjc-grvm-m88j openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The operator.write commands were not properly restricted to require the &#39;operator.admin&#39; scope." style="animation:fadeIn .35s ease 6.2s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-5gjc-grvm-m88j" target="_blank" rel="noopener">GHSA-5gjc-grvm-m88j</a>
@@ -14861,7 +14920,7 @@ if (requiresAdminToMutateDreaming(ctx.gatewayClientScopes)) {
 <a href="https://github.com/advisories/GHSA-5gjc-grvm-m88j" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7g8c-cfr3-vqqr openclaw/openclaw openclaw UNSANITIZED_INPUT→XSS JavaScript The code did not sanitize the `name` field from external input before using it in system events." style="animation:fadeIn .35s ease 6.2s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7g8c-cfr3-vqqr openclaw/openclaw openclaw UNSANITIZED_INPUT→XSS JavaScript The code did not sanitize the `name` field from external input before using it in system events." style="animation:fadeIn .35s ease 6.2250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7g8c-cfr3-vqqr" target="_blank" rel="noopener">GHSA-7g8c-cfr3-vqqr</a>
@@ -14906,7 +14965,7 @@ After:
 <a href="https://github.com/advisories/GHSA-7g8c-cfr3-vqqr" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7wv4-cc7p-jhxc openclaw/openclaw openclaw OPEN_REDIRECT→PHISHING JavaScript The code did not properly sanitize environment variables that could be used for endpoint redirection." style="animation:fadeIn .35s ease 6.2250000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-7wv4-cc7p-jhxc openclaw/openclaw openclaw OPEN_REDIRECT→PHISHING JavaScript The code did not properly sanitize environment variables that could be used for endpoint redirection." style="animation:fadeIn .35s ease 6.25s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7wv4-cc7p-jhxc" target="_blank" rel="noopener">GHSA-7wv4-cc7p-jhxc</a>
@@ -14976,7 +15035,7 @@ Added blocked suffixes:
 <a href="https://github.com/advisories/GHSA-7wv4-cc7p-jhxc" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-92jp-89mq-4374 openclaw/openclaw openclaw MISSING_AUTH→ENDPOINT JavaScript The original code did not check if the browser authentication was verified before exposing the interactive browser session credentials." style="animation:fadeIn .35s ease 6.25s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-92jp-89mq-4374 openclaw/openclaw openclaw MISSING_AUTH→ENDPOINT JavaScript The original code did not check if the browser authentication was verified before exposing the interactive browser session credentials." style="animation:fadeIn .35s ease 6.275s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-92jp-89mq-4374" target="_blank" rel="noopener">GHSA-92jp-89mq-4374</a>
@@ -15029,7 +15088,7 @@ After:
 <a href="https://github.com/advisories/GHSA-92jp-89mq-4374" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c4qm-58hj-j6pj openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate the URL before navigating to it, allowing an attacker to perform SSRF attacks." style="animation:fadeIn .35s ease 6.275s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c4qm-58hj-j6pj openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate the URL before navigating to it, allowing an attacker to perform SSRF attacks." style="animation:fadeIn .35s ease 6.300000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-c4qm-58hj-j6pj" target="_blank" rel="noopener">GHSA-c4qm-58hj-j6pj</a>
@@ -15082,7 +15141,7 @@ if (ssrfPolicyOpts.ssrfPolicy) {
 <a href="https://github.com/advisories/GHSA-c4qm-58hj-j6pj" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c9h3-5p7r-mrjh openclaw/openclaw openclaw UNCLASSIFIED JavaScript The vulnerability existed because the code did not properly sanitize input related to media parameters." style="animation:fadeIn .35s ease 6.300000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-c9h3-5p7r-mrjh openclaw/openclaw openclaw UNCLASSIFIED JavaScript The vulnerability existed because the code did not properly sanitize input related to media parameters." style="animation:fadeIn .35s ease 6.325s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-c9h3-5p7r-mrjh" target="_blank" rel="noopener">GHSA-c9h3-5p7r-mrjh</a>
@@ -15128,7 +15187,7 @@ const SANDBOX_MEDIA_PARAM_KEYS = [&#34;media&#34;, &#34;path&#34;, &#34;filePath
 <a href="https://github.com/advisories/GHSA-c9h3-5p7r-mrjh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-f7fh-qg34-x2xh openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate the target URL before establishing a WebSocket connection." style="animation:fadeIn .35s ease 6.325s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-f7fh-qg34-x2xh openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not validate the target URL before establishing a WebSocket connection." style="animation:fadeIn .35s ease 6.3500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-f7fh-qg34-x2xh" target="_blank" rel="noopener">GHSA-f7fh-qg34-x2xh</a>
@@ -15174,7 +15233,7 @@ After:
 <a href="https://github.com/advisories/GHSA-f7fh-qg34-x2xh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-f934-5rqf-xx47 openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The code did not properly sanitize the input path, allowing attackers to read arbitrary files on the server." style="animation:fadeIn .35s ease 6.3500000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-f934-5rqf-xx47 openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The code did not properly sanitize the input path, allowing attackers to read arbitrary files on the server." style="animation:fadeIn .35s ease 6.375s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-f934-5rqf-xx47" target="_blank" rel="noopener">GHSA-f934-5rqf-xx47</a>
@@ -15243,7 +15302,7 @@ function buildQmdProcessPath(rawPath: string | undefined): string {
 <a href="https://github.com/advisories/GHSA-f934-5rqf-xx47" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-g2hm-779g-vm32 openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system incorrectly assumed that &#39;wake-triggered&#39; events, especially those from untrusted webhooks, would not lead to a full heartbeat run if no tasks were due. This allowed untrusted events to bypass the &#39;senderIsOwner&#39; check, which is crucial for restricting actions to authorized users, leading to a potential privilege escalation." style="animation:fadeIn .35s ease 6.375s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-g2hm-779g-vm32 openclaw/openclaw openclaw PRIVILEGE_ESCALATION→ROLE JavaScript The system incorrectly assumed that &#39;wake-triggered&#39; events, especially those from untrusted webhooks, would not lead to a full heartbeat run if no tasks were due. This allowed untrusted events to bypass the &#39;senderIsOwner&#39; check, which is crucial for restricting actions to authorized users, leading to a potential privilege escalation." style="animation:fadeIn .35s ease 6.4s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-g2hm-779g-vm32" target="_blank" rel="noopener">GHSA-g2hm-779g-vm32</a>
@@ -15295,7 +15354,7 @@ function buildQmdProcessPath(rawPath: string | undefined): string {
 <a href="https://github.com/advisories/GHSA-g2hm-779g-vm32" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-g375-h3v6-4873 openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The original regex did not properly sanitize input, allowing for potential command injection." style="animation:fadeIn .35s ease 6.4s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-g375-h3v6-4873 openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The original regex did not properly sanitize input, allowing for potential command injection." style="animation:fadeIn .35s ease 6.425000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-g375-h3v6-4873" target="_blank" rel="noopener">GHSA-g375-h3v6-4873</a>
@@ -15344,7 +15403,7 @@ return (
 <a href="https://github.com/advisories/GHSA-g375-h3v6-4873" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-j6c7-3h5x-99g9 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly detect and handle shell-wrapper detection, allowing for potential injection of environment assignment keys." style="animation:fadeIn .35s ease 6.425000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-j6c7-3h5x-99g9 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly detect and handle shell-wrapper detection, allowing for potential injection of environment assignment keys." style="animation:fadeIn .35s ease 6.45s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j6c7-3h5x-99g9" target="_blank" rel="noopener">GHSA-j6c7-3h5x-99g9</a>
@@ -15387,7 +15446,7 @@ return (
 <a href="https://github.com/advisories/GHSA-j6c7-3h5x-99g9" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jf25-7968-h2h5 openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_WRITE JavaScript The code did not properly sanitize or validate the `outPath` parameter when writing files to a workspace-only filesystem." style="animation:fadeIn .35s ease 6.45s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jf25-7968-h2h5 openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_WRITE JavaScript The code did not properly sanitize or validate the `outPath` parameter when writing files to a workspace-only filesystem." style="animation:fadeIn .35s ease 6.4750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-jf25-7968-h2h5" target="_blank" rel="noopener">GHSA-jf25-7968-h2h5</a>
@@ -15439,7 +15498,7 @@ After:
 <a href="https://github.com/advisories/GHSA-jf25-7968-h2h5" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jhpv-5j76-m56h openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The original code did not properly sanitize or validate the input path for file reads, allowing attackers to access local files through a crafted input." style="animation:fadeIn .35s ease 6.4750000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jhpv-5j76-m56h openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The original code did not properly sanitize or validate the input path for file reads, allowing attackers to access local files through a crafted input." style="animation:fadeIn .35s ease 6.5s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-jhpv-5j76-m56h" target="_blank" rel="noopener">GHSA-jhpv-5j76-m56h</a>
@@ -15489,7 +15548,7 @@ After:
 <a href="https://github.com/advisories/GHSA-jhpv-5j76-m56h" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jwrq-8g5x-5fhm openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The code did not properly handle authorization for queue batches, potentially allowing unauthorized access to resources." style="animation:fadeIn .35s ease 6.5s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jwrq-8g5x-5fhm openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The code did not properly handle authorization for queue batches, potentially allowing unauthorized access to resources." style="animation:fadeIn .35s ease 6.525s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-jwrq-8g5x-5fhm" target="_blank" rel="noopener">GHSA-jwrq-8g5x-5fhm</a>
@@ -15536,7 +15595,7 @@ resolveOriginRoutingMetadata(items: FollowupRun[]): OriginRoutingMetadata</div>
 <a href="https://github.com/advisories/GHSA-jwrq-8g5x-5fhm" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-qmwg-qprg-3j38 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly validate or sanitize the URL before navigating to it, allowing an attacker to pivot into local CDP and regain file reads." style="animation:fadeIn .35s ease 6.525s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-qmwg-qprg-3j38 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly validate or sanitize the URL before navigating to it, allowing an attacker to pivot into local CDP and regain file reads." style="animation:fadeIn .35s ease 6.550000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-qmwg-qprg-3j38" target="_blank" rel="noopener">GHSA-qmwg-qprg-3j38</a>
@@ -15582,7 +15641,7 @@ function didCrossDocumentUrlChange(page: { url(): string }, previousUrl: string)
 <a href="https://github.com/advisories/GHSA-qmwg-qprg-3j38" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-rj2p-j66c-mgqh openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly handle SSRF policy failures against the CDP endpoint." style="animation:fadeIn .35s ease 6.550000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-rj2p-j66c-mgqh openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly handle SSRF policy failures against the CDP endpoint." style="animation:fadeIn .35s ease 6.575s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-rj2p-j66c-mgqh" target="_blank" rel="noopener">GHSA-rj2p-j66c-mgqh</a>
@@ -15639,7 +15698,7 @@ try {
 <a href="https://github.com/advisories/GHSA-rj2p-j66c-mgqh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-xq94-r468-qwgj openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly validate the hostname of the CDP endpoint, allowing DNS rebinding attacks." style="animation:fadeIn .35s ease 6.575s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-xq94-r468-qwgj openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly validate the hostname of the CDP endpoint, allowing DNS rebinding attacks." style="animation:fadeIn .35s ease 6.6000000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xq94-r468-qwgj" target="_blank" rel="noopener">GHSA-xq94-r468-qwgj</a>
@@ -15697,7 +15756,7 @@ After:
 <a href="https://github.com/advisories/GHSA-xq94-r468-qwgj" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Java" data-searchable="GHSA-xmj9-7625-f634 datasharingframework/dsf dev.dsf:dsf-bpe-server TIMING_SIDE_CHANNEL→TOKEN_LEAK Java The code does not properly handle the timing of OIDC provider discovery and JWKS resource requests, which could allow an attacker to perform a timing side-channel attack." style="animation:fadeIn .35s ease 6.6000000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="Java" data-searchable="GHSA-xmj9-7625-f634 datasharingframework/dsf dev.dsf:dsf-bpe-server TIMING_SIDE_CHANNEL→TOKEN_LEAK Java The code does not properly handle the timing of OIDC provider discovery and JWKS resource requests, which could allow an attacker to perform a timing side-channel attack." style="animation:fadeIn .35s ease 6.625s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xmj9-7625-f634" target="_blank" rel="noopener">GHSA-xmj9-7625-f634</a>
@@ -15750,7 +15809,7 @@ return new BaseOidcClientWithCache(new BaseOidcClientJersey(oidcProviderRealmBas
 <a href="https://github.com/advisories/GHSA-xmj9-7625-f634" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-xp4f-g2cm-rhg7 pmmp/PocketMine-MP pocketmine/pocketmine-mp UNCLASSIFIED PHP The code was logging potentially sensitive data without proper sanitization or truncation." style="animation:fadeIn .35s ease 6.625s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-xp4f-g2cm-rhg7 pmmp/PocketMine-MP pocketmine/pocketmine-mp UNCLASSIFIED PHP The code was logging potentially sensitive data without proper sanitization or truncation." style="animation:fadeIn .35s ease 6.65s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xp4f-g2cm-rhg7" target="_blank" rel="noopener">GHSA-xp4f-g2cm-rhg7</a>
@@ -15800,7 +15859,7 @@ After:
 <a href="https://github.com/advisories/GHSA-xp4f-g2cm-rhg7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-3m9m-24vh-39wx craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS PHP The application allowed asset uploads via a URL without properly validating the scheme of the provided URL. This enabled an attacker to specify arbitrary schemes like `gopher://`, `file://`, or `ftp://`, which could be used to make requests to internal resources or local files." style="animation:fadeIn .35s ease 6.65s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-3m9m-24vh-39wx craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS PHP The application allowed asset uploads via a URL without properly validating the scheme of the provided URL. This enabled an attacker to specify arbitrary schemes like `gopher://`, `file://`, or `ftp://`, which could be used to make requests to internal resources or local files." style="animation:fadeIn .35s ease 6.675000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-3m9m-24vh-39wx" target="_blank" rel="noopener">GHSA-3m9m-24vh-39wx</a>
@@ -15867,7 +15926,7 @@ After:
 <a href="https://github.com/advisories/GHSA-3m9m-24vh-39wx" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-5879-4fmr-xwf2 WWBN/AVideo wwbn/avideo PATH_TRAVERSAL→FILE_DELETE PHP The code did not properly sanitize the input for file deletion, allowing attackers to traverse directories and potentially delete arbitrary files on the server." style="animation:fadeIn .35s ease 6.675000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-5879-4fmr-xwf2 WWBN/AVideo wwbn/avideo PATH_TRAVERSAL→FILE_DELETE PHP The code did not properly sanitize the input for file deletion, allowing attackers to traverse directories and potentially delete arbitrary files on the server." style="animation:fadeIn .35s ease 6.7s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-5879-4fmr-xwf2" target="_blank" rel="noopener">GHSA-5879-4fmr-xwf2</a>
@@ -15921,7 +15980,7 @@ After:
 <a href="https://github.com/advisories/GHSA-5879-4fmr-xwf2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-8q5w-mmxf-48jg siyuan-note/siyuan github.com/siyuan-note/siyuan/kernel UNSANITIZED_INPUT→XSS Go The `luteEngine` was not configured to sanitize input, allowing potential XSS attacks." style="animation:fadeIn .35s ease 6.7s both">
+<div class="card" data-severity="MODERATE" data-language="Go" data-searchable="GHSA-8q5w-mmxf-48jg siyuan-note/siyuan github.com/siyuan-note/siyuan/kernel UNSANITIZED_INPUT→XSS Go The `luteEngine` was not configured to sanitize input, allowing potential XSS attacks." style="animation:fadeIn .35s ease 6.7250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-8q5w-mmxf-48jg" target="_blank" rel="noopener">GHSA-8q5w-mmxf-48jg</a>
@@ -15968,7 +16027,7 @@ After:
 <a href="https://github.com/advisories/GHSA-8q5w-mmxf-48jg" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-95wr-3f2v-v2wh craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS PHP The `actionResourceJs` endpoint in `AppController.php` directly fetched a URL provided by the user via a Guzzle client without sufficient validation or sanitization. This allowed an attacker to control the URL that the server would request, leading to a Server-Side Request Forgery." style="animation:fadeIn .35s ease 6.7250000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-95wr-3f2v-v2wh craftcms/cms craftcms/cms SSRF→INTERNAL_ACCESS PHP The `actionResourceJs` endpoint in `AppController.php` directly fetched a URL provided by the user via a Guzzle client without sufficient validation or sanitization. This allowed an attacker to control the URL that the server would request, leading to a Server-Side Request Forgery." style="animation:fadeIn .35s ease 6.75s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-95wr-3f2v-v2wh" target="_blank" rel="noopener">GHSA-95wr-3f2v-v2wh</a>
@@ -16040,7 +16099,7 @@ After:
 <a href="https://github.com/advisories/GHSA-95wr-3f2v-v2wh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-jq2f-59pj-p3m3 craftcms/cms craftcms/cms MISSING_AUTHZ→RESOURCE PHP The application was missing an authorization check in the `actionSavePermissions` and `_saveUserGroups` methods. This allowed users who did not have the necessary permissions to modify user groups or permissions to still trigger these actions." style="animation:fadeIn .35s ease 6.75s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-jq2f-59pj-p3m3 craftcms/cms craftcms/cms MISSING_AUTHZ→RESOURCE PHP The application was missing an authorization check in the `actionSavePermissions` and `_saveUserGroups` methods. This allowed users who did not have the necessary permissions to modify user groups or permissions to still trigger these actions." style="animation:fadeIn .35s ease 6.775s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-jq2f-59pj-p3m3" target="_blank" rel="noopener">GHSA-jq2f-59pj-p3m3</a>
@@ -16103,7 +16162,7 @@ After:
 <a href="https://github.com/advisories/GHSA-jq2f-59pj-p3m3" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-m7r8-6q9j-m2hc WWBN/AVideo wwbn/avideo UNSANITIZED_INPUT→XSS PHP The original code did not properly sanitize the &#39;href&#39; attribute of inline links, allowing attackers to inject malicious scripts." style="animation:fadeIn .35s ease 6.775s both">
+<div class="card" data-severity="MODERATE" data-language="PHP" data-searchable="GHSA-m7r8-6q9j-m2hc WWBN/AVideo wwbn/avideo UNSANITIZED_INPUT→XSS PHP The original code did not properly sanitize the &#39;href&#39; attribute of inline links, allowing attackers to inject malicious scripts." style="animation:fadeIn .35s ease 6.800000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-m7r8-6q9j-m2hc" target="_blank" rel="noopener">GHSA-m7r8-6q9j-m2hc</a>
@@ -16152,7 +16211,7 @@ if ($href !== &#39;&#39; &amp;&amp; !preg_match(&#39;/^(https?://|mailto:|/|#)/i
 <a href="https://github.com/advisories/GHSA-m7r8-6q9j-m2hc" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-r4q5-vmmm-2653 follow-redirects/follow-redirects follow-redirects OPEN_REDIRECT→PHISHING JavaScript The code did not properly sanitize HTTP headers before redirecting to a cross-domain target." style="animation:fadeIn .35s ease 6.800000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-r4q5-vmmm-2653 follow-redirects/follow-redirects follow-redirects OPEN_REDIRECT→PHISHING JavaScript The code did not properly sanitize HTTP headers before redirecting to a cross-domain target." style="animation:fadeIn .35s ease 6.825s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-r4q5-vmmm-2653" target="_blank" rel="noopener">GHSA-r4q5-vmmm-2653</a>
@@ -16198,7 +16257,7 @@ removeMatchingHeaders(this._headerFilter, this._options.headers);</div>
 <a href="https://github.com/advisories/GHSA-r4q5-vmmm-2653" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2f7j-rp58-mr42 openclaw/openclaw openclaw INFO_DISCLOSURE→DIRECTORY_LISTING JavaScript The function `buildGatewaySnapshot` exposed sensitive configuration and state paths to non-admin clients without proper authorization checks." style="animation:fadeIn .35s ease 6.825s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-2f7j-rp58-mr42 openclaw/openclaw openclaw INFO_DISCLOSURE→DIRECTORY_LISTING JavaScript The function `buildGatewaySnapshot` exposed sensitive configuration and state paths to non-admin clients without proper authorization checks." style="animation:fadeIn .35s ease 6.8500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-2f7j-rp58-mr42" target="_blank" rel="noopener">GHSA-2f7j-rp58-mr42</a>
@@ -16248,7 +16307,7 @@ After:
 <a href="https://github.com/advisories/GHSA-2f7j-rp58-mr42" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-3q42-xmxv-9vfr openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The vulnerability existed because the code did not check if the caller had the required &#39;operator.admin&#39; scope before allowing them to set admin-class talk voice config persistence." style="animation:fadeIn .35s ease 6.8500000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-3q42-xmxv-9vfr openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The vulnerability existed because the code did not check if the caller had the required &#39;operator.admin&#39; scope before allowing them to set admin-class talk voice config persistence." style="animation:fadeIn .35s ease 6.875s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-3q42-xmxv-9vfr" target="_blank" rel="noopener">GHSA-3q42-xmxv-9vfr</a>
@@ -16295,7 +16354,7 @@ return { text: `⚠️ ${commandLabel} set requires operator.admin for gateway c
 <a href="https://github.com/advisories/GHSA-3q42-xmxv-9vfr" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-42mx-vp8m-j7qh openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_WRITE JavaScript The `replaceDirectoryContents` function did not properly sanitize directory names, allowing attackers to traverse the filesystem and execute arbitrary code." style="animation:fadeIn .35s ease 6.875s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-42mx-vp8m-j7qh openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_WRITE JavaScript The `replaceDirectoryContents` function did not properly sanitize directory names, allowing attackers to traverse the filesystem and execute arbitrary code." style="animation:fadeIn .35s ease 6.9s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-42mx-vp8m-j7qh" target="_blank" rel="noopener">GHSA-42mx-vp8m-j7qh</a>
@@ -16352,7 +16411,7 @@ After:
 <a href="https://github.com/advisories/GHSA-42mx-vp8m-j7qh" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-4g5x-2jfc-xm98 openclaw/openclaw openclaw DOS→RESOURCE_EXHAUSTION JavaScript The original code did not limit the number of media downloads per message, which could lead to excessive disk usage." style="animation:fadeIn .35s ease 6.9s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-4g5x-2jfc-xm98 openclaw/openclaw openclaw DOS→RESOURCE_EXHAUSTION JavaScript The original code did not limit the number of media downloads per message, which could lead to excessive disk usage." style="animation:fadeIn .35s ease 6.925000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-4g5x-2jfc-xm98" target="_blank" rel="noopener">GHSA-4g5x-2jfc-xm98</a>
@@ -16398,7 +16457,7 @@ After:
 <a href="https://github.com/advisories/GHSA-4g5x-2jfc-xm98" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-4p4f-fc8q-84m3 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not normalize URLs for trust comparison, allowing attackers to bypass security checks by manipulating URL casing or fragments." style="animation:fadeIn .35s ease 6.925000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-4p4f-fc8q-84m3 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not normalize URLs for trust comparison, allowing attackers to bypass security checks by manipulating URL casing or fragments." style="animation:fadeIn .35s ease 6.95s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-4p4f-fc8q-84m3" target="_blank" rel="noopener">GHSA-4p4f-fc8q-84m3</a>
@@ -16444,7 +16503,7 @@ self.screen.navigate(to: initialUrl, trustA2UIActions: true)</div>
 <a href="https://github.com/advisories/GHSA-4p4f-fc8q-84m3" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-846p-hgpv-vphc openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The code did not properly sanitize or validate the input path for local file reading, allowing attackers to read arbitrary files on the server." style="animation:fadeIn .35s ease 6.95s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-846p-hgpv-vphc openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_READ JavaScript The code did not properly sanitize or validate the input path for local file reading, allowing attackers to read arbitrary files on the server." style="animation:fadeIn .35s ease 6.9750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-846p-hgpv-vphc" target="_blank" rel="noopener">GHSA-846p-hgpv-vphc</a>
@@ -16492,7 +16551,7 @@ After:
 <a href="https://github.com/advisories/GHSA-846p-hgpv-vphc" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-98ch-45wp-ch47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly validate or sanitize environment override keys, allowing attackers to bypass system.run approval binding." style="animation:fadeIn .35s ease 6.9750000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-98ch-45wp-ch47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly validate or sanitize environment override keys, allowing attackers to bypass system.run approval binding." style="animation:fadeIn .35s ease 7.0s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-98ch-45wp-ch47" target="_blank" rel="noopener">GHSA-98ch-45wp-ch47</a>
@@ -16537,7 +16596,7 @@ After:
 <a href="https://github.com/advisories/GHSA-98ch-45wp-ch47" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-fh32-73r9-rgh5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly sanitize the input host by removing trailing dots before checking if it was &#39;localhost&#39;. This allowed attackers to bypass remote loopback protections." style="animation:fadeIn .35s ease 7.0s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-fh32-73r9-rgh5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The code did not properly sanitize the input host by removing trailing dots before checking if it was &#39;localhost&#39;. This allowed attackers to bypass remote loopback protections." style="animation:fadeIn .35s ease 7.025s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fh32-73r9-rgh5" target="_blank" rel="noopener">GHSA-fh32-73r9-rgh5</a>
@@ -16579,7 +16638,7 @@ After:
 <a href="https://github.com/advisories/GHSA-fh32-73r9-rgh5" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-fwjq-xwfj-gv75 openclaw/openclaw openclaw UNSANITIZED_INPUT→REGEX JavaScript The code did not properly sanitize or validate the `agentSessionKey` input before using it to determine session visibility." style="animation:fadeIn .35s ease 7.025s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-fwjq-xwfj-gv75 openclaw/openclaw openclaw UNSANITIZED_INPUT→REGEX JavaScript The code did not properly sanitize or validate the `agentSessionKey` input before using it to determine session visibility." style="animation:fadeIn .35s ease 7.050000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fwjq-xwfj-gv75" target="_blank" rel="noopener">GHSA-fwjq-xwfj-gv75</a>
@@ -16629,7 +16688,7 @@ After:
 <a href="https://github.com/advisories/GHSA-fwjq-xwfj-gv75" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jj6q-rrrf-h66h openclaw/openclaw openclaw TIMING_SIDE_CHANNEL→TOKEN_LEAK JavaScript The code used a vulnerable timing-safe string comparison function that leaked length information through timing." style="animation:fadeIn .35s ease 7.050000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-jj6q-rrrf-h66h openclaw/openclaw openclaw TIMING_SIDE_CHANNEL→TOKEN_LEAK JavaScript The code used a vulnerable timing-safe string comparison function that leaked length information through timing." style="animation:fadeIn .35s ease 7.075s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-jj6q-rrrf-h66h" target="_blank" rel="noopener">GHSA-jj6q-rrrf-h66h</a>
@@ -16684,7 +16743,7 @@ After:
 <a href="https://github.com/advisories/GHSA-jj6q-rrrf-h66h" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-m34q-h93w-vg5x openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_DELETE JavaScript The code did not properly validate or sanitize the remote path input, allowing attackers to delete arbitrary remote directories when roots were mis-scoped." style="animation:fadeIn .35s ease 7.075s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-m34q-h93w-vg5x openclaw/openclaw openclaw PATH_TRAVERSAL→FILE_DELETE JavaScript The code did not properly validate or sanitize the remote path input, allowing attackers to delete arbitrary remote directories when roots were mis-scoped." style="animation:fadeIn .35s ease 7.1000000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-m34q-h93w-vg5x" target="_blank" rel="noopener">GHSA-m34q-h93w-vg5x</a>
@@ -16732,7 +16791,7 @@ After:
 <a href="https://github.com/advisories/GHSA-m34q-h93w-vg5x" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-rxmx-g7hr-8mx4 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The original code used a single key for deduplication that did not include the chat ID and sender ID, allowing reused message IDs in other chats or from other senders to collide." style="animation:fadeIn .35s ease 7.1000000000000005s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-rxmx-g7hr-8mx4 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The original code used a single key for deduplication that did not include the chat ID and sender ID, allowing reused message IDs in other chats or from other senders to collide." style="animation:fadeIn .35s ease 7.125s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-rxmx-g7hr-8mx4" target="_blank" rel="noopener">GHSA-rxmx-g7hr-8mx4</a>
@@ -16777,7 +16836,7 @@ const key = [target.path, target.account.accountId, update.event_name, chatId, s
 <a href="https://github.com/advisories/GHSA-rxmx-g7hr-8mx4" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-w6wx-jq6j-6mcj openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle the `dlx` command options, allowing for potential injection of malicious operands." style="animation:fadeIn .35s ease 7.125s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-w6wx-jq6j-6mcj openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle the `dlx` command options, allowing for potential injection of malicious operands." style="animation:fadeIn .35s ease 7.15s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-w6wx-jq6j-6mcj" target="_blank" rel="noopener">GHSA-w6wx-jq6j-6mcj</a>
@@ -16833,7 +16892,7 @@ After:
 <a href="https://github.com/advisories/GHSA-w6wx-jq6j-6mcj" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-wpc6-37g7-8q4w openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The code did not properly sanitize input options for shell wrapper scripts, allowing attackers to execute arbitrary commands through disqualifying script options." style="animation:fadeIn .35s ease 7.15s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-wpc6-37g7-8q4w openclaw/openclaw openclaw UNSANITIZED_INPUT→COMMAND JavaScript The code did not properly sanitize input options for shell wrapper scripts, allowing attackers to execute arbitrary commands through disqualifying script options." style="animation:fadeIn .35s ease 7.175000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-wpc6-37g7-8q4w" target="_blank" rel="noopener">GHSA-wpc6-37g7-8q4w</a>
@@ -16885,7 +16944,7 @@ After:
 <a href="https://github.com/advisories/GHSA-wpc6-37g7-8q4w" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-wwfp-w96m-c6x8 openclaw/openclaw openclaw IDOR→DATA_ACCESS JavaScript The pairing requests were not properly grouped by account ID before pruning, allowing an attacker to bypass the pending-request cap per channel." style="animation:fadeIn .35s ease 7.175000000000001s both">
+<div class="card" data-severity="MODERATE" data-language="JavaScript" data-searchable="GHSA-wwfp-w96m-c6x8 openclaw/openclaw openclaw IDOR→DATA_ACCESS JavaScript The pairing requests were not properly grouped by account ID before pruning, allowing an attacker to bypass the pending-request cap per channel." style="animation:fadeIn .35s ease 7.2s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-wwfp-w96m-c6x8" target="_blank" rel="noopener">GHSA-wwfp-w96m-c6x8</a>
@@ -16950,7 +17009,7 @@ After:
 <a href="https://github.com/advisories/GHSA-wwfp-w96m-c6x8" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="C#" data-searchable="GHSA-h39g-6x3c-7fq9 xoofx/zio Zio PATH_TRAVERSAL→FILE_READ C# The code did not properly sanitize or validate the input path, allowing attackers to traverse directories and access files outside of the intended subfilesystem root." style="animation:fadeIn .35s ease 7.2s both">
+<div class="card" data-severity="LOW" data-language="C#" data-searchable="GHSA-h39g-6x3c-7fq9 xoofx/zio Zio PATH_TRAVERSAL→FILE_READ C# The code did not properly sanitize or validate the input path, allowing attackers to traverse directories and access files outside of the intended subfilesystem root." style="animation:fadeIn .35s ease 7.2250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-h39g-6x3c-7fq9" target="_blank" rel="noopener">GHSA-h39g-6x3c-7fq9</a>
@@ -16999,7 +17058,7 @@ After:
 <a href="https://github.com/advisories/GHSA-h39g-6x3c-7fq9" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="PHP" data-searchable="GHSA-f9jp-856v-8642 pmmp/PocketMine-MP pocketmine/pocketmine-mp UNCLASSIFIED PHP The code does not properly check if a player is connected before allowing them to interact with the game." style="animation:fadeIn .35s ease 7.2250000000000005s both">
+<div class="card" data-severity="LOW" data-language="PHP" data-searchable="GHSA-f9jp-856v-8642 pmmp/PocketMine-MP pocketmine/pocketmine-mp UNCLASSIFIED PHP The code does not properly check if a player is connected before allowing them to interact with the game." style="animation:fadeIn .35s ease 7.25s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-f9jp-856v-8642" target="_blank" rel="noopener">GHSA-f9jp-856v-8642</a>
@@ -17059,7 +17118,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-f9jp-856v-8642" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-88gm-j2wx-58h6 withastro/astro @astrojs/cloudflare SSRF→INTERNAL_ACCESS JavaScript The application&#39;s image-binding-transform endpoint fetched remote images without explicitly controlling redirect behavior. This allowed an attacker to provide a URL that would redirect to an internal resource, effectively bypassing previous SSRF mitigations." style="animation:fadeIn .35s ease 7.25s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-88gm-j2wx-58h6 withastro/astro @astrojs/cloudflare SSRF→INTERNAL_ACCESS JavaScript The application&#39;s image-binding-transform endpoint fetched remote images without explicitly controlling redirect behavior. This allowed an attacker to provide a URL that would redirect to an internal resource, effectively bypassing previous SSRF mitigations." style="animation:fadeIn .35s ease 7.275s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-88gm-j2wx-58h6" target="_blank" rel="noopener">GHSA-88gm-j2wx-58h6</a>
@@ -17108,7 +17167,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-88gm-j2wx-58h6" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xr5h-phrj-8vxv withastro/astro astro MISSING_VERIFICATION→SIGNATURE JavaScript The encryption scheme for server island parameters (componentExport, props, slots) did not include authenticated additional data (AAD) specific to the component. This allowed an attacker to take encrypted parameters from one component and replay them in the context of another component, as the encryption system would not detect the context mismatch." style="animation:fadeIn .35s ease 7.275s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xr5h-phrj-8vxv withastro/astro astro MISSING_VERIFICATION→SIGNATURE JavaScript The encryption scheme for server island parameters (componentExport, props, slots) did not include authenticated additional data (AAD) specific to the component. This allowed an attacker to take encrypted parameters from one component and replay them in the context of another component, as the encryption system would not detect the context mismatch." style="animation:fadeIn .35s ease 7.300000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xr5h-phrj-8vxv" target="_blank" rel="noopener">GHSA-xr5h-phrj-8vxv</a>
@@ -17204,7 +17263,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-xr5h-phrj-8vxv" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-57r2-h2wj-g887 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The system was incorrectly recording awareness events from isolated cron jobs as &#39;trusted&#39; system events. This meant that events originating from potentially untrusted or less privileged contexts were being logged with the same trust level as internal, trusted system events, blurring the lines of event provenance and integrity." style="animation:fadeIn .35s ease 7.300000000000001s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-57r2-h2wj-g887 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The system was incorrectly recording awareness events from isolated cron jobs as &#39;trusted&#39; system events. This meant that events originating from potentially untrusted or less privileged contexts were being logged with the same trust level as internal, trusted system events, blurring the lines of event provenance and integrity." style="animation:fadeIn .35s ease 7.325s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-57r2-h2wj-g887" target="_blank" rel="noopener">GHSA-57r2-h2wj-g887</a>
@@ -17257,7 +17316,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-57r2-h2wj-g887" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-c4qg-j8jg-42q5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed direct media uploads via a URL without proper validation of the provided URL. This meant that an attacker could supply an arbitrary URL, which the server would then attempt to fetch, bypassing the existing SSRF protection mechanism intended for other fetch operations." style="animation:fadeIn .35s ease 7.325s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-c4qg-j8jg-42q5 openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application allowed direct media uploads via a URL without proper validation of the provided URL. This meant that an attacker could supply an arbitrary URL, which the server would then attempt to fetch, bypassing the existing SSRF protection mechanism intended for other fetch operations." style="animation:fadeIn .35s ease 7.3500000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-c4qg-j8jg-42q5" target="_blank" rel="noopener">GHSA-c4qg-j8jg-42q5</a>
@@ -17309,7 +17368,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-c4qg-j8jg-42q5" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-j4c5-89f5-f3pm openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application&#39;s SSRF policy for browser CDP (Chrome DevTools Protocol) profiles was not correctly applying strict-mode checks. Specifically, when creating a CDP profile, the hostnames derived from `cdpUrl` were unconditionally added to the allowed hostnames list, bypassing the intended SSRF policy checks that would normally restrict access to private networks or unapproved hosts." style="animation:fadeIn .35s ease 7.3500000000000005s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-j4c5-89f5-f3pm openclaw/openclaw openclaw SSRF→INTERNAL_ACCESS JavaScript The application&#39;s SSRF policy for browser CDP (Chrome DevTools Protocol) profiles was not correctly applying strict-mode checks. Specifically, when creating a CDP profile, the hostnames derived from `cdpUrl` were unconditionally added to the allowed hostnames list, bypassing the intended SSRF policy checks that would normally restrict access to private networks or unapproved hosts." style="animation:fadeIn .35s ease 7.375s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j4c5-89f5-f3pm" target="_blank" rel="noopener">GHSA-j4c5-89f5-f3pm</a>
@@ -17370,7 +17429,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-j4c5-89f5-f3pm" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-v8qf-fr4g-28p2 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application&#39;s assistant media route, specifically for retrieving media, did not properly enforce scope-based authorization when the request was made via a trusted-proxy. While other authentication methods were checked, the trusted-proxy path allowed access without verifying the necessary &#39;assistant.media.get&#39; scope." style="animation:fadeIn .35s ease 7.375s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-v8qf-fr4g-28p2 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application&#39;s assistant media route, specifically for retrieving media, did not properly enforce scope-based authorization when the request was made via a trusted-proxy. While other authentication methods were checked, the trusted-proxy path allowed access without verifying the necessary &#39;assistant.media.get&#39; scope." style="animation:fadeIn .35s ease 7.4s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-v8qf-fr4g-28p2" target="_blank" rel="noopener">GHSA-v8qf-fr4g-28p2</a>
@@ -17440,7 +17499,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-v8qf-fr4g-28p2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xrq9-jm7v-g9h7 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application did not properly restrict device pairing actions (listing, approving, rejecting) to the device that initiated the pairing request. An authenticated device could perform these actions on behalf of any other device, as long as it knew the request ID, without proper authorization checks." style="animation:fadeIn .35s ease 7.4s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-xrq9-jm7v-g9h7 openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The application did not properly restrict device pairing actions (listing, approving, rejecting) to the device that initiated the pairing request. An authenticated device could perform these actions on behalf of any other device, as long as it knew the request ID, without proper authorization checks." style="animation:fadeIn .35s ease 7.425000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xrq9-jm7v-g9h7" target="_blank" rel="noopener">GHSA-xrq9-jm7v-g9h7</a>
@@ -17513,7 +17572,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-xrq9-jm7v-g9h7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-j88v-2chj-qfwx jackc/pgx github.com/jackc/pgx UNSANITIZED_INPUT→SQL Go The vulnerability stemmed from the SQL lexer&#39;s failure to correctly parse PostgreSQL dollar-quoted string literals. When sanitizing SQL queries, the lexer would incorrectly identify placeholders (e.g., $1, $2) within these dollar-quoted strings, leading to premature substitution and potential injection if an attacker could control parts of the query." style="animation:fadeIn .35s ease 7.425000000000001s both">
+<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-j88v-2chj-qfwx jackc/pgx github.com/jackc/pgx UNSANITIZED_INPUT→SQL Go The vulnerability stemmed from the SQL lexer&#39;s failure to correctly parse PostgreSQL dollar-quoted string literals. When sanitizing SQL queries, the lexer would incorrectly identify placeholders (e.g., $1, $2) within these dollar-quoted strings, leading to premature substitution and potential injection if an attacker could control parts of the query." style="animation:fadeIn .35s ease 7.45s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-j88v-2chj-qfwx" target="_blank" rel="noopener">GHSA-j88v-2chj-qfwx</a>
@@ -17568,7 +17627,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-j88v-2chj-qfwx" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-xmgf-hq76-4vx2 rust-openssl/rust-openssl openssl BUFFER_OVERFLOW→HEAP RUST The vulnerability existed because the `openssl` crate&#39;s PEM password callback trampoline did not validate the length returned by the user-provided callback. If the callback returned a length greater than the actual buffer size, it could lead to an out-of-bounds read when OpenSSL attempted to use this oversized length to derive the decryption key." style="animation:fadeIn .35s ease 7.45s both">
+<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-xmgf-hq76-4vx2 rust-openssl/rust-openssl openssl BUFFER_OVERFLOW→HEAP RUST The vulnerability existed because the `openssl` crate&#39;s PEM password callback trampoline did not validate the length returned by the user-provided callback. If the callback returned a length greater than the actual buffer size, it could lead to an out-of-bounds read when OpenSSL attempted to use this oversized length to derive the decryption key." style="animation:fadeIn .35s ease 7.4750000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-xmgf-hq76-4vx2" target="_blank" rel="noopener">GHSA-xmgf-hq76-4vx2</a>
@@ -17619,7 +17678,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-xmgf-hq76-4vx2" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-7ccv-rp6m-rffr openbao/openbao github.com/openbao/openbao MISSING_VERIFICATION→SIGNATURE Go The vulnerability existed because OpenBao&#39;s certificate authentication renewal process only checked the Subject Key ID (SKID) and Authority Key ID (AKID) of the client certificate for identity verification during token renewal. It did not store or verify the full raw certificate, allowing an attacker to renew a token using a different certificate as long as it shared the same SKID and AKID as the original, valid certificate." style="animation:fadeIn .35s ease 7.4750000000000005s both">
+<div class="card" data-severity="LOW" data-language="Go" data-searchable="GHSA-7ccv-rp6m-rffr openbao/openbao github.com/openbao/openbao MISSING_VERIFICATION→SIGNATURE Go The vulnerability existed because OpenBao&#39;s certificate authentication renewal process only checked the Subject Key ID (SKID) and Authority Key ID (AKID) of the client certificate for identity verification during token renewal. It did not store or verify the full raw certificate, allowing an attacker to renew a token using a different certificate as long as it shared the same SKID and AKID as the original, valid certificate." style="animation:fadeIn .35s ease 7.5s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-7ccv-rp6m-rffr" target="_blank" rel="noopener">GHSA-7ccv-rp6m-rffr</a>
@@ -17695,7 +17754,7 @@ src/entity/object/ExperienceOrb.php
 <a href="https://github.com/advisories/GHSA-7ccv-rp6m-rffr" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gc9r-867r-j85f openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The function `isFeedbackInvokeAuthorized` did not check the sender&#39;s authorization before processing an invoke request." style="animation:fadeIn .35s ease 7.5s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gc9r-867r-j85f openclaw/openclaw openclaw MISSING_AUTHZ→RESOURCE JavaScript The function `isFeedbackInvokeAuthorized` did not check the sender&#39;s authorization before processing an invoke request." style="animation:fadeIn .35s ease 7.525s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-gc9r-867r-j85f" target="_blank" rel="noopener">GHSA-gc9r-867r-j85f</a>
@@ -17757,7 +17816,7 @@ Before:
 <a href="https://github.com/advisories/GHSA-gc9r-867r-j85f" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-r77c-2cmr-7p47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The patch adds a new field &#39;session&#39; to the delivery payload but does not address how this session context is handled or sanitized." style="animation:fadeIn .35s ease 7.525s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-r77c-2cmr-7p47 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The patch adds a new field &#39;session&#39; to the delivery payload but does not address how this session context is handled or sanitized." style="animation:fadeIn .35s ease 7.550000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-r77c-2cmr-7p47" target="_blank" rel="noopener">GHSA-r77c-2cmr-7p47</a>
@@ -17805,7 +17864,7 @@ After:
 <a href="https://github.com/advisories/GHSA-r77c-2cmr-7p47" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-3g92-f9ch-qjcm Plonky3/Plonky3 p3-symmetric WEAK_CRYPTO→HASH RUST The sponge construction used to get a hash function from a cryptographic permutation is not collision resistant for inputs of different lengths." style="animation:fadeIn .35s ease 7.550000000000001s both">
+<div class="card" data-severity="LOW" data-language="RUST" data-searchable="GHSA-3g92-f9ch-qjcm Plonky3/Plonky3 p3-symmetric WEAK_CRYPTO→HASH RUST The sponge construction used to get a hash function from a cryptographic permutation is not collision resistant for inputs of different lengths." style="animation:fadeIn .35s ease 7.575s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-3g92-f9ch-qjcm" target="_blank" rel="noopener">GHSA-3g92-f9ch-qjcm</a>
@@ -17851,7 +17910,7 @@ After:
 <a href="https://github.com/advisories/GHSA-3g92-f9ch-qjcm" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gj9q-8w99-mp8j openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The code did not properly handle file access checks between the existence check and the actual read operation." style="animation:fadeIn .35s ease 7.575s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-gj9q-8w99-mp8j openclaw/openclaw openclaw RACE_CONDITION→TOCTOU JavaScript The code did not properly handle file access checks between the existence check and the actual read operation." style="animation:fadeIn .35s ease 7.6000000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-gj9q-8w99-mp8j" target="_blank" rel="noopener">GHSA-gj9q-8w99-mp8j</a>
@@ -17902,7 +17961,7 @@ After:
 <a href="https://github.com/advisories/GHSA-gj9q-8w99-mp8j" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-fj52-5g4h-gmq8 pyload/pyload pyload-ng SESSION_FIXATION→HIJACK Python The code did not invalidate user sessions after permission changes, allowing attackers to hijack sessions." style="animation:fadeIn .35s ease 7.6000000000000005s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-fj52-5g4h-gmq8 pyload/pyload pyload-ng SESSION_FIXATION→HIJACK Python The code did not invalidate user sessions after permission changes, allowing attackers to hijack sessions." style="animation:fadeIn .35s ease 7.625s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fj52-5g4h-gmq8" target="_blank" rel="noopener">GHSA-fj52-5g4h-gmq8</a>
@@ -17949,7 +18008,7 @@ After:
 <a href="https://github.com/advisories/GHSA-fj52-5g4h-gmq8" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-pjjw-68hj-v9mw astral-sh/uv uv PATH_TRAVERSAL→FILE_DELETE Python The code directly uses user input to delete files without proper validation or sanitization." style="animation:fadeIn .35s ease 7.625s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-pjjw-68hj-v9mw astral-sh/uv uv PATH_TRAVERSAL→FILE_DELETE Python The code directly uses user input to delete files without proper validation or sanitization." style="animation:fadeIn .35s ease 7.65s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-pjjw-68hj-v9mw" target="_blank" rel="noopener">GHSA-pjjw-68hj-v9mw</a>
@@ -18001,7 +18060,7 @@ After:
 <a href="https://github.com/advisories/GHSA-pjjw-68hj-v9mw" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-x7mm-9vvv-64w8 unjs/unhead unhead UNCLASSIFIED JavaScript The `streamKey` parameter was being directly injected into an inline script without any validation or sanitization." style="animation:fadeIn .35s ease 7.65s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-x7mm-9vvv-64w8 unjs/unhead unhead UNCLASSIFIED JavaScript The `streamKey` parameter was being directly injected into an inline script without any validation or sanitization." style="animation:fadeIn .35s ease 7.675000000000001s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-x7mm-9vvv-64w8" target="_blank" rel="noopener">GHSA-x7mm-9vvv-64w8</a>
@@ -18047,7 +18106,7 @@ After:
 <a href="https://github.com/advisories/GHSA-x7mm-9vvv-64w8" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-r758-8hxw-4845 EmilStenstrom/justhtml justhtml UNSANITIZED_INPUT→XSS Python The parser did not properly sanitize HTML input, allowing for Cross-Site Scripting (XSS) attacks." style="animation:fadeIn .35s ease 7.675000000000001s both">
+<div class="card" data-severity="LOW" data-language="Python" data-searchable="GHSA-r758-8hxw-4845 EmilStenstrom/justhtml justhtml UNSANITIZED_INPUT→XSS Python The parser did not properly sanitize HTML input, allowing for Cross-Site Scripting (XSS) attacks." style="animation:fadeIn .35s ease 7.7s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-r758-8hxw-4845" target="_blank" rel="noopener">GHSA-r758-8hxw-4845</a>
@@ -18114,7 +18173,7 @@ class JustHTML:
 <a href="https://github.com/advisories/GHSA-r758-8hxw-4845" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-767m-xrhc-fxm7 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The `send` and `poll` handlers in `send.ts` did not check for proper authentication before allowing access to admin-class Telegram config and cron persistence." style="animation:fadeIn .35s ease 7.7s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-767m-xrhc-fxm7 openclaw/openclaw openclaw UNCLASSIFIED JavaScript The `send` and `poll` handlers in `send.ts` did not check for proper authentication before allowing access to admin-class Telegram config and cron persistence." style="animation:fadeIn .35s ease 7.7250000000000005s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-767m-xrhc-fxm7" target="_blank" rel="noopener">GHSA-767m-xrhc-fxm7</a>
@@ -18159,7 +18218,7 @@ After:
 <a href="https://github.com/advisories/GHSA-767m-xrhc-fxm7" target="_blank" rel="noopener">Advisory ↗</a>
 </div>
 </div>
-<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-fqrj-m88p-qf3v openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle or sanitize error messages that could reveal sensitive information." style="animation:fadeIn .35s ease 7.7250000000000005s both">
+<div class="card" data-severity="LOW" data-language="JavaScript" data-searchable="GHSA-fqrj-m88p-qf3v openclaw/openclaw openclaw UNCLASSIFIED JavaScript The code did not properly handle or sanitize error messages that could reveal sensitive information." style="animation:fadeIn .35s ease 7.75s both">
 <div class="card-header">
 <div class="card-meta">
 <a class="ghsa-id" href="https://github.com/advisories/GHSA-fqrj-m88p-qf3v" target="_blank" rel="noopener">GHSA-fqrj-m88p-qf3v</a>
