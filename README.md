@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-486-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-47-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-495-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -116,7 +116,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 34x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 35x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -312,7 +312,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 57x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 58x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -510,7 +510,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 57x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 58x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -581,7 +581,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 57x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 58x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -637,7 +637,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-6973-8887-87ff</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-22 · RUST<br>
-<code>nimiq-block</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 5x across ecosystem
+<code>nimiq-block</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 7x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from improper validation of `BitSet` indices representing validator slots. An attacker could craft a `BitSet` with out-of-range indices or indices that, when truncated to `u16`, would map to valid slots. This allowed them to bypass the quorum check for skip blocks and equivocation proofs by making it appear as if enough validators had signed, even if they hadn&#39;t.</p>
 <p><b>Impact</b> : An attacker could forge valid skip blocks or equivocation proofs without the required supermajority of validator signatures. This could lead to a denial of service, allowing them to halt or disrupt the blockchain&#39;s consensus mechanism.</p>
@@ -666,7 +666,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 34x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 35x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -755,7 +755,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 27x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 28x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -1212,7 +1212,7 @@ for member in zip_file.namelist():
 <h3>GHSA-vj3m-2g9h-vm4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 57x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 58x across ecosystem
 </p>
 <p><b>Root cause</b> : The system was vulnerable to multiple issues: Zip Slip due to improper validation of archive entry names during extraction, XSS due to insufficient sanitization of user-controlled attribute names in media objects and a weak XSS detection regex, and XXE due to parsing untrusted SVG files without disabling external entity loading.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (Zip Slip), inject malicious scripts (XSS), or read local files and potentially perform server-side requests (XXE). These could lead to remote code execution, data theft, or website defacement.</p>
@@ -1729,7 +1729,7 @@ After:
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 47 normalized pattern IDs
+             Map to closed taxonomy of 48 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1754,8 +1754,8 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>486</td></tr>
-<tr><td>Unique patterns</td><td>47</td></tr>
+<tr><td>Total advisories</td><td>495</td></tr>
+<tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-05-18</td></tr>
 </table>
