@@ -1,4 +1,4 @@
-# OSDC — Technical Documentation
+# OSDC - Technical Documentation
 
 OSDC (Open Source Daily Catch) is an automated patch intelligence system. It scrapes the GitHub Advisory Database, analyzes security fix diffs with a large language model, detects silent patches across high-value repositories using heuristic scoring and fingerprint matching, and publishes everything to a searchable GitHub Pages frontend.
 
