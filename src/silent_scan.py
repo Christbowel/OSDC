@@ -4,7 +4,7 @@ import sys
 import requests
 from datetime import datetime, timedelta, timezone
 from src.config import DATA_DIR, GITHUB_TOKEN
-from src.heuristics import score_commit
+from src.heuristics import score_commit, THRESHOLD
 from src.fingerprint import match_fingerprints
 
 
@@ -13,6 +13,7 @@ SILENT_RESULTS_PATH = DATA_DIR / "silent_results.jsonl"
 WATCHLIST_PATH = DATA_DIR / "watchlist.json"
 GITHUB_API = "https://api.github.com"
 REQUEST_DELAY = 0.8
+NORMALIZED_THRESHOLD = 20
 
 
 def load_watchlist() -> list[str]:
@@ -58,31 +59,44 @@ def append_result(result: dict):
         f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
 
-def github_get(endpoint: str, params: dict = None) -> dict | list | None:
+def github_get(endpoint: str, params: dict = None):
     headers = {"Accept": "application/vnd.github.v3+json"}
     if GITHUB_TOKEN:
         headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 
     url = f"{GITHUB_API}{endpoint}" if endpoint.startswith("/") else endpoint
 
-    try:
-        response = requests.get(url, headers=headers, params=params, timeout=30)
-        if response.status_code == 403:
+    for attempt in range(5):
+        try:
+            response = requests.get(url, headers=headers, params=params, timeout=30)
+        except requests.RequestException as exc:
+            print(f"    API error: {exc}")
+            if attempt == 4:
+                return None
+            time.sleep(2 ** attempt)
+            continue
+
+        if response.status_code == 200:
+            return response.json()
+        if response.status_code == 404:
+            return None
+        if response.status_code in (403, 429):
             remaining = response.headers.get("X-RateLimit-Remaining", "?")
             reset = response.headers.get("X-RateLimit-Reset", "0")
             if remaining == "0":
                 wait = max(int(reset) - int(time.time()), 10)
                 print(f"    Rate limited, waiting {wait}s...")
                 time.sleep(wait)
-                return github_get(endpoint, params)
+                continue
+            print(f"    API {response.status_code}: {response.text[:200]}")
             return None
-        if response.status_code == 404:
-            return None
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as exc:
-        print(f"    API error: {exc}")
+        if response.status_code >= 500:
+            time.sleep(2 ** attempt)
+            continue
+        print(f"    API HTTP {response.status_code}: {response.text[:200]}")
         return None
+
+    return None
 
 
 def run(hours: int = 24):
@@ -152,7 +166,7 @@ def run(hours: int = 24):
             if best_fp:
                 normalized = min(normalized + (fp_score * 30), 100)
 
-            if normalized < 20:
+            if normalized < NORMALIZED_THRESHOLD:
                 continue
 
             layer2_pass += 1
@@ -185,6 +199,7 @@ def run(hours: int = 24):
             }
 
             append_result(result)
+            seen_commits.add(sha)
             print(f"\n    SUSPECT: {sha[:8]} score={normalized:.1f} {top_file.get('file', '?')}", end="", flush=True)
 
             time.sleep(REQUEST_DELAY)
@@ -206,8 +221,8 @@ def run(hours: int = 24):
     print("\n=== Summary ===")
     print(f"Repos scanned: {len(watchlist) - skipped_repos}/{len(watchlist)}")
     print(f"Commits analyzed: {total_commits}")
-    print(f"Layer 1 pass (heuristics >= 8): {layer1_pass}")
-    print(f"Layer 2 pass (normalized >= 10): {layer2_pass}")
+    print(f"Layer 1 pass (heuristic score >= {THRESHOLD}): {layer1_pass}")
+    print(f"Layer 2 pass (normalized >= {NORMALIZED_THRESHOLD}): {layer2_pass}")
     print(f"New suspects: {total_suspects}")
     print(f"Total suspects in DB: {state['total_suspects']}")
 
