@@ -11,6 +11,7 @@
 :root{
 --bg:#07101e;--bg2:#0c1728;--bg3:#101f33;--text:#e4f0fb;--muted:#aecde8;--dim:#628aaf;
 --accent:#05d8f0;--accent2:#22d3ee;--critical:#f43f5e;--high:#fb923c;--moderate:#fbbf24;--low:#34d399;
+--purple:#a78bfa;
 --border:#19304a;--border2:#253f5c;
 --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
 }
@@ -80,8 +81,10 @@ nav{background:rgba(7,16,30,.92);border-bottom:1px solid var(--border);position:
 #spacer{position:relative}
 #window{position:absolute;left:0;right:0;top:0;padding:.5rem;will-change:transform}
 
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;padding:.75rem .9rem;transition:border-color .12s,background .12s;border-left-width:2px}
-.card:hover{border-color:var(--border2);background:var(--bg3)}
+.card-link{display:block;color:inherit;text-decoration:none}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;padding:.75rem .9rem;transition:border-color .12s,background .12s,transform .08s;border-left-width:2px;cursor:pointer}
+.card:hover{border-color:var(--accent);background:var(--bg3)}
+.card:active{transform:scale(.998)}
 .card.s-hi{border-left-color:var(--critical)}
 .card.s-md{border-left-color:var(--high)}
 .card.s-lo{border-left-color:var(--moderate)}
@@ -94,11 +97,16 @@ nav{background:rgba(7,16,30,.92);border-bottom:1px solid var(--border);position:
 .b-low{color:var(--low);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22)}
 .b-tag{color:var(--accent);background:rgba(5,216,240,.08);border:1px solid rgba(5,216,240,.2)}
 .b-neutral{color:var(--dim);background:var(--bg);border:1px solid var(--border)}
+.b-blast-crit{color:var(--critical);background:rgba(244,63,94,.14);border:1px solid rgba(244,63,94,.4);font-weight:800;letter-spacing:.04em}
+.b-blast-high{color:var(--high);background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.35);font-weight:800;letter-spacing:.04em}
+.b-blast-med{color:var(--moderate);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);font-weight:800;letter-spacing:.04em}
+.b-blast-low{color:var(--low);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);font-weight:800;letter-spacing:.04em}
 .repo{font-family:var(--mono);font-size:.7rem;color:var(--dim);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .repo:hover{color:var(--accent2)}
 .msg{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-top:.35rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
 .meta-row{display:flex;gap:.9rem;font-family:var(--mono);font-size:.65rem;color:var(--dim);margin-top:.35rem;flex-wrap:wrap}
 .meta-row a{color:var(--accent2)}
+.meta-row .reach-meta{color:var(--purple)}
 
 .empty{padding:3rem 1.5rem;text-align:center;color:var(--dim);font-family:var(--mono);font-size:.78rem}
 .loader{padding:3rem 1.5rem;text-align:center;color:var(--accent);font-family:var(--mono);font-size:.78rem}
@@ -143,6 +151,11 @@ footer{text-align:center;padding:1.5rem 1rem;color:var(--dim);font-family:var(--
 </div>
 </div>
 
+<div class="facet">
+<div class="facet-label">Blast radius <button class="facet-clear" data-clear="blast">clear</button></div>
+<div class="facet-items" id="facetBlast"></div>
+</div>
+
 <div class="facet" data-axis-show="advisories,threats">
 <div class="facet-label">Severity <button class="facet-clear" data-clear="severity">clear</button></div>
 <div class="facet-items" id="facetSeverity"></div>
@@ -175,6 +188,7 @@ footer{text-align:center;padding:1.5rem 1rem;color:var(--dim);font-family:var(--
 <option value="date_asc">Oldest</option>
 <option value="score_desc">Score ↓</option>
 <option value="score_asc">Score ↑</option>
+<option value="reach_desc">Reach ↓</option>
 </select>
 <button class="filter-btn" id="filterToggle">Filters</button>
 </div>
@@ -198,13 +212,14 @@ footer{text-align:center;padding:1.5rem 1rem;color:var(--dim);font-family:var(--
 (function(){
 const AXIS = document.body.dataset.axis;
 const DATA_URL = 'data/' + AXIS + '.json';
-const ROW_HEIGHT = AXIS === 'silent' ? 100 : 112;
+const ROW_HEIGHT = AXIS === 'silent' ? 104 : 116;
 const OVERSCAN = 6;
+const BLAST_TIERS = ['CRITICAL','HIGH','MEDIUM','LOW','UNKNOWN'];
 
 const state = {
   raw: [],
   filtered: [],
-  filters: {repo:null,severity:null,language:null,pattern:null,fingerprint:null,scoreMin:null,scoreMax:null,q:''},
+  filters: {repo:null,severity:null,language:null,pattern:null,fingerprint:null,blast:null,scoreMin:null,scoreMax:null,q:''},
   sort: 'default',
 };
 
@@ -214,27 +229,43 @@ const vp = $('viewport'), spacer = $('spacer'), win = $('window');
 function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
 function badge(label, kind){return '<span class="badge b-'+kind+'">'+escapeHtml(label)+'</span>';}
 function sevKind(s){return s==='CRITICAL'?'crit':s==='HIGH'?'high':(s==='MODERATE'||s==='MEDIUM')?'mod':'low';}
+function blastKind(t){return t==='CRITICAL'?'blast-crit':t==='HIGH'?'blast-high':t==='MEDIUM'?'blast-med':t==='LOW'?'blast-low':null;}
+function fmtNum(n){if(!n)return '0';if(n>=1e9)return (n/1e9).toFixed(1)+'B';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return ''+n;}
+
+function detailUrl(r){
+  const id = AXIS === 'silent' ? r.sha : r.id;
+  return 'detail.html?axis=' + encodeURIComponent(AXIS) + '&id=' + encodeURIComponent(id);
+}
 
 function renderCard(r){
   const score = r.score ?? r.cvss ?? 0;
   const cls = score >= 60 ? 's-hi' : score >= 30 ? 's-md' : 's-lo';
+  const blastTier = r.reach && r.reach.tier;
+  const blastBadge = (blastTier && blastTier !== 'UNKNOWN') ? badge('BLAST: '+blastTier, blastKind(blastTier)) : '';
+
   let line1 = '';
   if(AXIS === 'silent'){
-    line1 = '<a class="sha" href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">'+escapeHtml((r.sha||'').slice(0,8))+'</a>'
+    line1 = '<span class="sha">'+escapeHtml((r.sha||'').slice(0,8))+'</span>'
       + badge(Math.round(score), score>=60?'crit':score>=30?'high':'mod')
+      + blastBadge
       + (r.fp ? badge(r.fp,'tag') : '')
       + '<span class="repo" data-filter-repo="'+escapeHtml(r.repo)+'">'+escapeHtml(r.repo)+'</span>';
   } else {
-    line1 = '<a class="sha" href="'+escapeHtml(r.url||'#')+'" target="_blank" rel="noopener">'+escapeHtml(r.id)+'</a>'
+    line1 = '<span class="sha">'+escapeHtml(r.id)+'</span>'
       + badge(r.severity || '?', sevKind(r.severity))
+      + blastBadge
       + (r.cve ? badge(r.cve,'neutral') : '')
       + (r.language ? badge(r.language,'tag') : '')
       + '<span class="repo" data-filter-repo="'+escapeHtml(r.repo||'')+'">'+escapeHtml(r.repo||'unknown')+'</span>';
   }
+  let reachMeta = '';
+  if(r.reach && r.reach.dl_weekly){
+    reachMeta = '<span class="reach-meta">'+fmtNum(r.reach.dl_weekly)+'/wk</span>';
+  }
   const meta = AXIS === 'silent'
-    ? '<div class="meta-row"><span>'+escapeHtml((r.date||'').slice(0,10))+'</span><span>'+escapeHtml(r.author||'')+'</span>'+(r.top_file?'<span>'+escapeHtml(r.top_file)+'</span>':'')+'<a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">commit ↗</a></div>'
-    : '<div class="meta-row"><span>'+escapeHtml(r.date||'')+'</span>'+(r.pattern?'<span>'+escapeHtml(r.pattern)+'</span>':'')+(r.url?'<a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">commit ↗</a>':'')+(r.id&&r.id.startsWith('GHSA')?'<a href="https://github.com/advisories/'+escapeHtml(r.id)+'" target="_blank" rel="noopener">advisory ↗</a>':'')+'</div>';
-  return '<div class="card '+cls+'"><div class="card-row">'+line1+'</div><div class="msg">'+escapeHtml(r.msg||r.summary||'')+'</div>'+meta+'</div>';
+    ? '<div class="meta-row"><span>'+escapeHtml((r.date||'').slice(0,10))+'</span><span>'+escapeHtml(r.author||'')+'</span>'+(r.top_file?'<span>'+escapeHtml(r.top_file)+'</span>':'')+reachMeta+'</div>'
+    : '<div class="meta-row"><span>'+escapeHtml(r.date||'')+'</span>'+(r.pattern?'<span>'+escapeHtml(r.pattern)+'</span>':'')+reachMeta+'</div>';
+  return '<a class="card-link" href="'+detailUrl(r)+'"><div class="card '+cls+'"><div class="card-row">'+line1+'</div><div class="msg">'+escapeHtml(r.msg||r.summary||'')+'</div>'+meta+'</div></a>';
 }
 
 function applyFilters(){
@@ -246,6 +277,7 @@ function applyFilters(){
     if(f.language && r.language !== f.language) return false;
     if(f.pattern && r.pattern !== f.pattern) return false;
     if(f.fingerprint && r.fp !== f.fingerprint) return false;
+    if(f.blast && (r.reach && r.reach.tier) !== f.blast) return false;
     const s = r.score ?? r.cvss ?? 0;
     if(f.scoreMin !== null && s < f.scoreMin) return false;
     if(f.scoreMax !== null && s > f.scoreMax) return false;
@@ -264,6 +296,7 @@ function applySort(){
   else if(s === 'date_asc') state.filtered.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   else if(s === 'score_desc') state.filtered.sort((a,b)=>(b.score??b.cvss??0)-(a.score??a.cvss??0));
   else if(s === 'score_asc') state.filtered.sort((a,b)=>(a.score??a.cvss??0)-(b.score??b.cvss??0));
+  else if(s === 'reach_desc') state.filtered.sort((a,b)=>((b.reach?b.reach.dl_weekly:0)||0)-((a.reach?a.reach.dl_weekly:0)||0));
 }
 
 function draw(resetScroll){
@@ -298,8 +331,12 @@ function buildFacet(field){
     if(f.language && field !== 'language' && r.language !== f.language) continue;
     if(f.pattern && field !== 'pattern' && r.pattern !== f.pattern) continue;
     if(f.fingerprint && field !== 'fingerprint' && r.fp !== f.fingerprint) continue;
-    const v = r[field === 'fingerprint' ? 'fp' : field];
-    if(!v) continue;
+    if(f.blast && field !== 'blast' && (r.reach && r.reach.tier) !== f.blast) continue;
+    let v;
+    if(field === 'fingerprint') v = r.fp;
+    else if(field === 'blast') v = r.reach && r.reach.tier;
+    else v = r[field];
+    if(!v || v === 'UNKNOWN') continue;
     counts.set(v,(counts.get(v)||0)+1);
   }
   return [...counts.entries()].sort((a,b)=>b[1]-a[1]);
@@ -307,6 +344,7 @@ function buildFacet(field){
 
 function renderFacets(){
   renderFacet('repo','facetRepo', $('repoSearch').value.toLowerCase(), 200);
+  renderFacet('blast','facetBlast','',null,BLAST_TIERS);
   if(AXIS !== 'silent'){
     renderFacet('severity','facetSeverity','',null,['CRITICAL','HIGH','MODERATE','LOW']);
     renderFacet('language','facetLanguage','',40);
@@ -323,7 +361,7 @@ function renderFacet(field, elId, filter, limit, sortOrder){
   if(filter) items = items.filter(([v])=>v.toLowerCase().includes(filter));
   if(sortOrder) items.sort((a,b)=>{const ia=sortOrder.indexOf(a[0]),ib=sortOrder.indexOf(b[0]);return (ia<0?99:ia)-(ib<0?99:ib);});
   if(limit) items = items.slice(0,limit);
-  const active = state.filters[field === 'fingerprint' ? 'fingerprint' : field];
+  const active = state.filters[field];
   el.innerHTML = items.map(([v,c])=>
     '<button class="facet-item '+(v===active?'active':'')+'" data-facet="'+field+'" data-value="'+escapeHtml(v)+'"><span class="label">'+escapeHtml(v)+'</span><span class="count">'+c+'</span></button>'
   ).join('');
@@ -332,7 +370,7 @@ function renderFacet(field, elId, filter, limit, sortOrder){
 function renderChips(){
   const f = state.filters;
   const chips = [];
-  for(const k of ['repo','severity','language','pattern','fingerprint']){
+  for(const k of ['repo','severity','language','pattern','fingerprint','blast']){
     if(f[k]) chips.push({k,label:k+': '+f[k]});
   }
   if(f.scoreMin !== null || f.scoreMax !== null){
@@ -344,7 +382,7 @@ function renderChips(){
 
 function syncFromURL(){
   const p = new URLSearchParams(location.search);
-  for(const k of ['repo','severity','language','pattern','fingerprint']){
+  for(const k of ['repo','severity','language','pattern','fingerprint','blast']){
     if(p.has(k)) state.filters[k] = p.get(k);
   }
   if(p.has('smin')) state.filters.scoreMin = +p.get('smin');
@@ -356,7 +394,7 @@ function syncFromURL(){
 function syncToURL(){
   const p = new URLSearchParams();
   const f = state.filters;
-  for(const k of ['repo','severity','language','pattern','fingerprint']){
+  for(const k of ['repo','severity','language','pattern','fingerprint','blast']){
     if(f[k]) p.set(k, f[k]);
   }
   if(f.scoreMin !== null) p.set('smin', f.scoreMin);
@@ -375,11 +413,12 @@ function setFilter(k,v){
 
 document.addEventListener('click', e=>{
   const fi = e.target.closest('.facet-item');
-  if(fi){ setFilter(fi.dataset.facet, fi.dataset.value); return; }
+  if(fi){ e.preventDefault(); setFilter(fi.dataset.facet, fi.dataset.value); return; }
   const rp = e.target.closest('[data-filter-repo]');
-  if(rp){ setFilter('repo', rp.dataset.filterRepo); return; }
+  if(rp){ e.preventDefault(); setFilter('repo', rp.dataset.filterRepo); return; }
   const cx = e.target.closest('.chip-x');
   if(cx){
+    e.preventDefault();
     const k = cx.dataset.chip;
     if(k === 'score'){ state.filters.scoreMin=null; state.filters.scoreMax=null; $('scoreMin').value=''; $('scoreMax').value=''; }
     else if(k === 'q'){ state.filters.q=''; $('q').value=''; }
@@ -389,6 +428,7 @@ document.addEventListener('click', e=>{
   }
   const cl = e.target.closest('[data-clear]');
   if(cl){
+    e.preventDefault();
     const k = cl.dataset.clear;
     if(k === 'score'){ state.filters.scoreMin=null; state.filters.scoreMax=null; $('scoreMin').value=''; $('scoreMax').value=''; }
     else state.filters[k] = null;
@@ -420,7 +460,7 @@ fetch(DATA_URL)
   .then(r=>r.json())
   .then(data=>{
     state.raw = (data.records || []).map(r=>{
-      r._search = [r.id,r.sha,r.repo,r.msg,r.summary,r.cve,r.pattern,r.package,r.author,r.fp,r.top_file].filter(Boolean).join(' ').toLowerCase();
+      r._search = [r.id,r.sha,r.repo,r.msg,r.summary,r.cve,r.pattern,r.package,r.author,r.fp,r.top_file,(r.reach&&r.reach.pkg_name)].filter(Boolean).join(' ').toLowerCase();
       return r;
     });
     const loader = $('loader');
