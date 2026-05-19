@@ -2,6 +2,7 @@ import json
 import re
 from datetime import date
 from pathlib import Path
+from functools import lru_cache
 from jinja2 import Environment, FileSystemLoader
 from src.config import (
     TEMPLATES_DIR, PATCHES_DIR, DOCS_DIR, ROOT_DIR,
@@ -24,6 +25,7 @@ def init_renderer() -> Environment:
     )
 
 
+@lru_cache(maxsize=4096)
 def _clean_diff(raw: str) -> str:
     if not raw:
         return ""
@@ -38,8 +40,7 @@ def _clean_diff(raw: str) -> str:
             pass
     cleaned = re.sub(r'^```\w*\n?', '', cleaned)
     cleaned = re.sub(r'\n?```$', '', cleaned)
-    cleaned = cleaned.strip()
-    return cleaned
+    return cleaned.strip()
 
 
 def _clean_text(raw) -> str:
@@ -48,6 +49,27 @@ def _clean_text(raw) -> str:
     if isinstance(raw, (dict, list)):
         return json.dumps(raw)
     return str(raw).strip()
+
+
+def _write_json(name: str, records: list[dict]):
+    out_dir = DOCS_DIR / "data"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "generated_at": date.today().isoformat(),
+        "count": len(records),
+        "records": records,
+    }
+    (out_dir / f"{name}.json").write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+
+
+def _render_shell(axis: str, axis_title: str, axis_sub: str, out_filename: str):
+    env = init_renderer()
+    template = env.get_template("app.html.j2")
+    html = template.render(axis=axis, axis_title=axis_title, axis_sub=axis_sub)
+    (DOCS_DIR / out_filename).write_text(html, encoding="utf-8")
 
 
 def render_daily_patch(target_date: str, advisories: list[dict]):
@@ -99,30 +121,35 @@ def render_readme():
 
 def render_html_index():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    env = init_renderer()
-    template = env.get_template("index.html.j2")
-
-    all_advisories = get_all_advisories()
-
-    for adv in all_advisories:
-        adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
-        adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
-        adv["impact"] = _clean_text(adv.get("impact", ""))
-        adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
-
-    stats = get_stats()
-    content = template.render(advisories=all_advisories, stats=stats, today=date.today().isoformat())
-    (DOCS_DIR / "index.html").write_text(content, encoding="utf-8")
-    _generate_search_index(all_advisories)
+    advisories = get_all_advisories()
+    records = []
+    for a in advisories:
+        records.append({
+            "id": a["id"],
+            "url": a.get("commit_url", ""),
+            "repo": a.get("repo", ""),
+            "date": a.get("date", ""),
+            "severity": a.get("severity", ""),
+            "cvss": a.get("cvss_score", 0),
+            "language": a.get("language", ""),
+            "pattern": a.get("pattern_id", ""),
+            "cve": a.get("cve_id", ""),
+            "package": a.get("package_name", ""),
+            "summary": (a.get("root_cause") or a.get("fix_summary") or "")[:280],
+        })
+    _write_json("advisories", records)
+    _render_shell(
+        "advisories",
+        "Advisories",
+        "Publicly disclosed vulnerabilities with linked fix commits, analyzed by Gemini.",
+        "index.html",
+    )
 
 
 def render_silent_page():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    env = init_renderer()
-    template = env.get_template("silent.html.j2")
-
     results_path = DATA_DIR / "silent_results.jsonl"
-    suspects = []
+    records = []
     if results_path.exists():
         with open(results_path) as f:
             for line in f:
@@ -130,80 +157,55 @@ def render_silent_page():
                 if not line:
                     continue
                 try:
-                    suspects.append(json.loads(line))
+                    s = json.loads(line)
                 except json.JSONDecodeError:
                     continue
-
-    suspects.sort(key=lambda s: s.get("normalized_score", 0), reverse=True)
-
-    state_path = DATA_DIR / "silent_state.json"
-    stats = {"last_scan_at": "", "total_scanned": 0, "total_suspects": 0, "watchlist_count": 0}
-    if state_path.exists():
-        try:
-            with open(state_path) as f:
-                stats.update(json.load(f))
-        except json.JSONDecodeError:
-            pass
-
-    watchlist_path = DATA_DIR / "watchlist.json"
-    if watchlist_path.exists():
-        try:
-            with open(watchlist_path) as f:
-                wl = json.load(f)
-                stats["watchlist_count"] = len(wl.get("repos", []))
-        except json.JSONDecodeError:
-            stats["watchlist_count"] = 0
-
-    content = template.render(suspects=suspects, stats=stats, today=date.today().isoformat())
-    (DOCS_DIR / "silent.html").write_text(content, encoding="utf-8")
+                records.append({
+                    "sha": s.get("commit_sha", ""),
+                    "url": s.get("commit_url", ""),
+                    "repo": s.get("repo", ""),
+                    "date": s.get("date", ""),
+                    "author": s.get("author", ""),
+                    "score": s.get("normalized_score", 0),
+                    "msg": (s.get("message") or "")[:240],
+                    "fp": s.get("fingerprint_match"),
+                    "top_file": s.get("top_file", ""),
+                })
+    records.sort(key=lambda r: r["score"], reverse=True)
+    _write_json("silent", records)
+    _render_shell(
+        "silent",
+        "Silent Patches",
+        "Security fixes pushed to high-value repos without a public advisory.",
+        "silent.html",
+    )
 
 
 def render_threats_page():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    env = init_renderer()
-    template = env.get_template("threats.html.j2")
-
-    all_advisories = get_all_advisories()
-
-    no_cve = []
-    for adv in all_advisories:
-        cve_id = adv.get("cve_id", "")
-        if not cve_id:
-            adv["key_diff"] = _clean_diff(adv.get("key_diff", ""))
-            adv["root_cause"] = _clean_text(adv.get("root_cause", ""))
-            adv["impact"] = _clean_text(adv.get("impact", ""))
-            adv["fix_summary"] = _clean_text(adv.get("fix_summary", ""))
-            no_cve.append(adv)
-
-    no_cve.sort(key=lambda a: (SEVERITY_ORDER.get(a["severity"], 99), -a["cvss_score"]))
-
-    stats = get_stats()
-    stats["no_cve_count"] = len(no_cve)
-    stats["no_cve_critical"] = len([a for a in no_cve if a["severity"] == "CRITICAL"])
-    stats["no_cve_high"] = len([a for a in no_cve if a["severity"] == "HIGH"])
-
-    content = template.render(threats=no_cve, stats=stats, today=date.today().isoformat())
-    (DOCS_DIR / "threats.html").write_text(content, encoding="utf-8")
-
-
-def _generate_search_index(advisories: list[dict]):
-    index = []
-    for adv in advisories:
-        index.append({
-            "id": adv["id"],
-            "date": adv["date"],
-            "repo": adv["repo"],
-            "language": adv["language"],
-            "severity": adv["severity"],
-            "cvss": adv["cvss_score"],
-            "pattern": adv["pattern_id"],
-            "vuln_type": adv["vuln_type"],
-            "summary": adv.get("root_cause", "")[:200],
-            "package": adv.get("package_name", ""),
+    advisories = get_all_advisories()
+    records = []
+    for a in advisories:
+        if a.get("cve_id"):
+            continue
+        records.append({
+            "id": a["id"],
+            "url": a.get("commit_url", ""),
+            "repo": a.get("repo", ""),
+            "date": a.get("date", ""),
+            "severity": a.get("severity", ""),
+            "cvss": a.get("cvss_score", 0),
+            "language": a.get("language", ""),
+            "pattern": a.get("pattern_id", ""),
+            "package": a.get("package_name", ""),
+            "summary": (a.get("root_cause") or a.get("fix_summary") or "")[:280],
         })
-
-    (DOCS_DIR / "search-index.json").write_text(
-        json.dumps(index, ensure_ascii=False, indent=None), encoding="utf-8"
+    _write_json("threats", records)
+    _render_shell(
+        "threats",
+        "No-CVE Threats",
+        "GHSA advisories without an assigned CVE — silent disclosures.",
+        "threats.html",
     )
 
 
@@ -211,3 +213,5 @@ def render_all(target_date: str, analyzed_advisories: list[dict]):
     render_daily_patch(target_date, analyzed_advisories)
     render_readme()
     render_html_index()
+    render_silent_page()
+    render_threats_page()
