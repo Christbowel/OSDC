@@ -14,6 +14,8 @@ TAXONOMY_PATH = DATA_DIR / "taxonomy.json"
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5-coder:7b")
 
 GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 GEMINI_API_URL = (
@@ -87,6 +89,10 @@ query($since: DateTime!, $cursor: String) {
         score
       }
       publishedAt
+      identifiers {
+        type
+        value
+      }
       vulnerabilities(first: 5) {
         nodes {
           package {
