@@ -1,6 +1,4 @@
 import json
-from datetime import date
-from pathlib import Path
 from src.config import DOCS_DIR
 from src.db import (
     rebuild_from_jsonl, get_all_advisories, get_recent_dates,
@@ -48,13 +46,13 @@ def run():
     print("  Rendered README.md")
 
     render_html_index()
-    print("  Rendered docs/index.html + search-index.json")
+    print("  Rendered docs/index.html + docs/data/advisories.json")
 
     render_silent_page()
-    print("  Rendered docs/silent.html")
+    print("  Rendered docs/silent.html + docs/data/silent.json")
 
     render_threats_page()
-    print("  Rendered docs/threats.html")
+    print("  Rendered docs/threats.html + docs/data/threats.json")
 
     generate_badge(stats)
 
