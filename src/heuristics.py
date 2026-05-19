@@ -10,6 +10,7 @@ def _compiled(pattern: str, flags: int = 0) -> re.Pattern:
 def _search(pattern: str, text: str, flags: int = 0):
     return _compiled(pattern, flags).search(text)
 
+
 SECURITY_FILE_PATTERNS_HIGH = [
     (r"auth[._/]", 5),
     (r"login[._/]", 5),
@@ -160,7 +161,6 @@ ADD_PATTERNS = {
     r"\ballowlist\b": 4,
     r"\bdenylist\b": 4,
     r"\bblocklist\b": 4,
-    # PHP-specific
     r"\bhtmlentities\b": 5,
     r"\bfilter_var\b": 5,
     r"\bfilter_input\b": 5,
@@ -174,24 +174,20 @@ ADD_PATTERNS = {
     r"\bstrip_tags\b": 4,
     r"\bintval\b": 3,
     r"\bpreg_replace_callback\b": 5,
-    # Java-specific
     r"\bPreparedStatement\b": 6,
     r"\bParameterizedQuery\b": 6,
     r"\bMessageDigest\.getInstance\b": 4,
     r"\bSecureRandom\b": 5,
     r"\bFiles\.copy\b": 3,
     r"\bProcessBuilder\b": 4,
-    # Go-specific
     r"\bfilepath\.EvalSymlinks\b": 5,
     r"\bfilepath\.Abs\b": 4,
     r"\bstrconv\.Atoi\b": 3,
     r"\bcrypto/sha256\b": 4,
     r"\bstrings\.HasPrefix\b": 3,
-    # Rust-specific
     r"\bMaybeUninit\b": 5,
     r"\bcatch_unwind\b": 4,
     r"\bfrom_utf8_lossy\b": 3,
-    # Python-specific
     r"\bsecrets\.token\b": 5,
     r"\bsubprocess\.check_call\b": 4,
     r"\btempfile\.mkstemp\b": 4,
@@ -223,7 +219,6 @@ DEL_PATTERNS = {
     r"\btrust.?all\b": 5,
     r"\bno.?verify\b": 5,
     r"\binsecure\b": 4,
-    # PHP-specific
     r"\bextract\s*\(": 6,
     r"\bparse_str\s*\(": 6,
     r"\bunserialize\s*\(": 7,
@@ -236,23 +231,19 @@ DEL_PATTERNS = {
     r"\bshell_exec\s*\(": 7,
     r"\bpopen\s*\(": 6,
     r"\bproc_open\s*\(": 6,
-    # Java-specific
     r"\bRuntime\.getRuntime\(\)\.exec\b": 8,
     r"\bObjectInputStream\b": 7,
     r"\bXMLDecoder\b": 7,
     r"\bScriptEngine.*\.eval\b": 7,
     r"\bJNDI\.lookup\b": 8,
     r"\bMethod\.invoke\b": 5,
-    # Go-specific
     r"\bexec\.Command\b": 6,
     r"\bioutil\.ReadAll\b": 3,
     r"\bhttp\.ListenAndServe\b.*0\.0\.0\.0": 5,
-    # Rust-specific
     r"\bunsafe\s*\{": 5,
     r"\btransmute\b": 6,
     r"\buninitialized\b": 6,
     r"\b\.unwrap\(\)": 3,
-    # Python-specific
     r"\bos\.popen\b": 6,
     r"\bcommands\.getoutput\b": 6,
     r"\btempfile\.mktemp\b": 5,
@@ -260,13 +251,11 @@ DEL_PATTERNS = {
     r"\bcPickle\b": 6,
     r"\bimportlib\.import_module\b": 4,
     r"\blogging\.config\.dictConfig\b": 4,
-    # C/C++ specific
     r"\bstrcpy\s*\(": 7,
     r"\bgets\s*\(": 8,
     r"\bsprintf\s*\(": 6,
     r"\bstrcat\s*\(": 6,
     r"\bmalloc\s*\(": 3,
-    # JavaScript/Node additional
     r"\bFunction\s*\(": 7,
     r"\bsetTimeout\s*\(\s*['\"]": 6,
     r"\bsetInterval\s*\(\s*['\"]": 6,
@@ -293,32 +282,24 @@ REPLACEMENT_PAIRS = [
     (r"\bmath\.random\b", r"\bcrypto\.randomBytes\b", 6),
     (r"\bexec\b", r"\bsubprocess\.run\b", 6),
     (r"\bhttp://", r"\bhttps://", 3),
-    # PHP
     (r"\bunserialize\b", r"\bjson_decode\b", 7),
     (r"\bextract\b", r"\b\$_POST\[", 5),
     (r"\bpreg_replace\b.*/e", r"\bpreg_replace_callback\b", 8),
     (r"\bserialize\b", r"\bjson_encode\b", 5),
     (r"\bcreate_function\b", r"\bfunction\s*\(", 6),
-    # Java
     (r"\bRuntime.*exec\b", r"\bProcessBuilder\b", 7),
     (r"\bObjectInputStream\b", r"\bJSON\b", 7),
     (r"\bXMLDecoder\b", r"\bJSON\b", 7),
-    # C
     (r"\bstrcpy\b", r"\bstrncpy\b", 6),
     (r"\bsprintf\b", r"\bsnprintf\b", 6),
     (r"\bgets\b", r"\bfgets\b", 7),
-    # Python
     (r"\btempfile\.mktemp\b", r"\btempfile\.mkstemp\b", 6),
     (r"\bos\.popen\b", r"\bsubprocess\.run\b", 6),
-    # Rust
     (r"\bunsafe\b", r"\bsafe\b", 5),
     (r"\b\.unwrap\(\)", r"\b\.unwrap_or\b", 4),
-    # Go
     (r"\bexec\.Command\b", r"\bexec\.CommandContext\b", 5),
     (r"\bstrings\.Contains\b", r"\bstrings\.HasPrefix\b", 4),
-    # Node
     (r"\bcrypto\.createCipher\b", r"\bcrypto\.createCipheriv\b", 6),
-    # JS
     (r"\blocation\.href\s*=", r"\bsanitizeUrl\b", 6),
     (r"\bObject\.assign\b", r"\bstructuredClone\b", 5),
 ]
@@ -330,6 +311,46 @@ MAX_TOTAL_FILES = 50
 MAX_CHANGES_PER_FILE = 200
 
 
+def _build_mega_regex(patterns: dict[str, int]):
+    items = list(patterns.items())
+    parts = [f"(?P<g{i}>{p})" for i, (p, _) in enumerate(items)]
+    weights = [w for _, w in items]
+    mega = re.compile("|".join(parts), re.IGNORECASE)
+    return mega, weights
+
+
+_ADD_MEGA, _ADD_WEIGHTS = _build_mega_regex(ADD_PATTERNS)
+_DEL_MEGA, _DEL_WEIGHTS = _build_mega_regex(DEL_PATTERNS)
+_REPL_COMPILED = [
+    (_compiled(d, re.IGNORECASE), _compiled(a, re.IGNORECASE), d, a, w)
+    for d, a, w in REPLACEMENT_PAIRS
+]
+_SKIP_FILE_COMPILED = [_compiled(p) for p in SKIP_FILE_PATTERNS]
+_SKIP_MSG_COMPILED = [_compiled(p) for p in SKIP_MESSAGE_PATTERNS]
+_SEC_HIGH_COMPILED = [(_compiled(p), p, w) for p, w in SECURITY_FILE_PATTERNS_HIGH]
+_SEC_LOW_COMPILED = [(_compiled(p), p, w) for p, w in SECURITY_FILE_PATTERNS_LOW]
+
+
+def _scan_mega(mega: re.Pattern, weights: list[int], text: str, sign: str):
+    score = 0
+    signals = []
+    seen_tokens = set()
+    for m in mega.finditer(text):
+        token = m.group()
+        key = token.lower()
+        if key in seen_tokens:
+            continue
+        for name, val in m.groupdict().items():
+            if val is None:
+                continue
+            idx = int(name[1:])
+            score += weights[idx]
+            signals.append(f"{sign}{token}")
+            seen_tokens.add(key)
+            break
+    return score, signals
+
+
 def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
     total_score = 0
     breakdown = []
@@ -337,13 +358,13 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
 
     msg_lower = commit_message.lower()
 
-    for pattern in SKIP_MESSAGE_PATTERNS:
-        if _search(pattern, msg_lower):
+    for compiled in _SKIP_MSG_COMPILED:
+        if compiled.search(msg_lower):
             return {
                 "score": 0,
                 "normalized_score": 0,
                 "threshold_met": False,
-                "breakdown": [{"signal": "skip_message", "score": 0, "detail": pattern}],
+                "breakdown": [{"signal": "skip_message", "score": 0, "detail": compiled.pattern}],
                 "files": [],
             }
 
@@ -383,8 +404,8 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         path_lower = file_path.lower()
 
         skip = False
-        for pattern in SKIP_FILE_PATTERNS:
-            if _search(pattern, path_lower):
+        for compiled in _SKIP_FILE_COMPILED:
+            if compiled.search(path_lower):
                 skip = True
                 break
         if skip:
@@ -393,15 +414,15 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         file_score = 0
         file_breakdown = []
 
-        for pattern, weight in SECURITY_FILE_PATTERNS_HIGH:
-            if _search(pattern, path_lower):
+        for compiled, pattern, weight in _SEC_HIGH_COMPILED:
+            if compiled.search(path_lower):
                 file_score += weight
                 file_breakdown.append(f"sec_file:{pattern}")
                 break
 
         if file_score == 0:
-            for pattern, weight in SECURITY_FILE_PATTERNS_LOW:
-                if _search(pattern, path_lower):
+            for compiled, pattern, weight in _SEC_LOW_COMPILED:
+                if compiled.search(path_lower):
                     file_score += weight
                     file_breakdown.append(f"sec_file:{pattern}")
                     break
@@ -431,30 +452,16 @@ def score_commit(commit_message: str, files_changed: list[dict]) -> dict:
         added_text = "\n".join(added_lines)
         removed_text = "\n".join(removed_lines)
 
-        add_matched = set()
-        for pattern, weight in ADD_PATTERNS.items():
-            match = _search(pattern, added_text, re.IGNORECASE)
-            if match:
-                token = match.group()
-                if token.lower() not in add_matched:
-                    file_score += weight
-                    file_breakdown.append(f"+{token}")
-                    add_matched.add(token.lower())
+        add_score, add_signals = _scan_mega(_ADD_MEGA, _ADD_WEIGHTS, added_text, "+")
+        file_score += add_score
+        file_breakdown.extend(add_signals)
 
-        del_matched = set()
-        for pattern, weight in DEL_PATTERNS.items():
-            match = _search(pattern, removed_text, re.IGNORECASE)
-            if match:
-                token = match.group()
-                if token.lower() not in del_matched:
-                    file_score += weight
-                    file_breakdown.append(f"-{token}")
-                    del_matched.add(token.lower())
+        del_score, del_signals = _scan_mega(_DEL_MEGA, _DEL_WEIGHTS, removed_text, "-")
+        file_score += del_score
+        file_breakdown.extend(del_signals)
 
-        for del_pat, add_pat, weight in REPLACEMENT_PAIRS:
-            if _search(del_pat, removed_text, re.IGNORECASE) and _search(
-                add_pat, added_text, re.IGNORECASE
-            ):
+        for del_re, add_re, del_pat, add_pat, weight in _REPL_COMPILED:
+            if del_re.search(removed_text) and add_re.search(added_text):
                 file_score += weight
                 file_breakdown.append(f"swap:{del_pat}→{add_pat}")
 
