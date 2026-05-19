@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>OSDC — Intel Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#07101e;--bg2:#0c1728;--bg3:#101f33;--bg4:#162843;
+--text:#e4f0fb;--muted:#aecde8;--dim:#628aaf;
+--accent:#05d8f0;--accent2:#22d3ee;--accent-glow:rgba(5,216,240,.12);
+--critical:#f43f5e;--high:#fb923c;--moderate:#fbbf24;--low:#34d399;
+--purple:#a78bfa;--pink:#ec4899;
+--border:#19304a;--border2:#253f5c;
+--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55}
+a{color:var(--accent2);text-decoration:none}a:hover{color:var(--text)}
+
+nav{background:rgba(7,16,30,.92);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;gap:.5rem;height:52px}
+.nav-brand{font-family:var(--mono);font-weight:700;font-size:.85rem;color:var(--accent);padding-right:1rem;border-right:1px solid var(--border);white-space:nowrap}
+.nav-link{font-family:var(--mono);font-size:.72rem;color:var(--muted);padding:.55rem .85rem;border-radius:6px;white-space:nowrap}
+.nav-link:hover{color:var(--text)}
+.nav-spacer{flex:1}
+.gh-link{font-family:var(--mono);font-size:.68rem;color:var(--dim);padding:5px 12px;border:1px solid var(--border);border-radius:6px}
+
+.container{max-width:1280px;margin:0 auto;padding:1rem;display:flex;flex-direction:column;gap:1rem}
+
+.back-link{font-family:var(--mono);font-size:.72rem;color:var(--dim);align-self:flex-start;display:inline-flex;gap:.4rem;align-items:center;padding:.3rem .5rem;border-radius:5px;transition:color .15s,background .15s}
+.back-link:hover{color:var(--accent);background:var(--bg2)}
+
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.section-head{display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15)}
+.section-head .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)}
+.section-head .label{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;color:var(--dim);font-weight:600}
+.section-head .meta{margin-left:auto;font-family:var(--mono);font-size:.65rem;color:var(--dim)}
+.section-body{padding:1rem 1.1rem}
+
+.hero{padding:1rem 1.1rem}
+.hero-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:.65rem}
+.hero-id{font-family:var(--mono);font-weight:700;font-size:1.1rem;letter-spacing:-.01em;color:var(--accent2);word-break:break-all}
+.badge{font-family:var(--mono);font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap;letter-spacing:.04em}
+.b-crit{color:var(--critical);background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.3)}
+.b-high{color:var(--high);background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3)}
+.b-mod{color:var(--moderate);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25)}
+.b-low{color:var(--low);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25)}
+.b-tag{color:var(--accent);background:rgba(5,216,240,.08);border:1px solid rgba(5,216,240,.22)}
+.b-neutral{color:var(--dim);background:var(--bg);border:1px solid var(--border)}
+.b-status{color:var(--purple);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);letter-spacing:.06em}
+.b-blast-crit{color:var(--critical);background:rgba(244,63,94,.16);border:1px solid rgba(244,63,94,.45);font-weight:800;letter-spacing:.06em;text-shadow:0 0 8px rgba(244,63,94,.4)}
+.b-blast-high{color:var(--high);background:rgba(251,146,60,.14);border:1px solid rgba(251,146,60,.4);font-weight:800;letter-spacing:.06em}
+.b-blast-med{color:var(--moderate);background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.32);font-weight:800;letter-spacing:.06em}
+.b-blast-low{color:var(--low);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.28);font-weight:800;letter-spacing:.06em}
+
+.hero-title{font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--text);line-height:1.5;margin-bottom:.6rem;word-break:break-word}
+.hero-sub{font-family:var(--mono);font-size:.72rem;color:var(--dim);display:flex;flex-wrap:wrap;gap:.6rem 1.1rem;margin-bottom:.85rem}
+.hero-sub span strong{color:var(--muted);font-weight:500}
+.hero-sub .repo-link{color:var(--accent2);cursor:pointer}
+.hero-sub .repo-link:hover{color:var(--text)}
+.actions{display:flex;flex-wrap:wrap;gap:.4rem}
+.action-btn{font-family:var(--mono);font-size:.66rem;color:var(--muted);background:var(--bg3);border:1px solid var(--border);padding:6px 11px;border-radius:6px;cursor:pointer;transition:border-color .15s,color .15s,background .15s;display:inline-flex;align-items:center;gap:.35rem}
+.action-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--bg2)}
+.action-btn.copied{border-color:var(--low);color:var(--low)}
+
+.threat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.threat-card{padding:1rem 1.1rem;border-right:1px solid var(--border);min-width:0}
+.threat-card:last-child{border-right:none}
+@media(max-width:720px){.threat-grid{grid-template-columns:1fr}.threat-card{border-right:none;border-bottom:1px solid var(--border)}.threat-card:last-child{border-bottom:none}}
+.tc-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:.55rem}
+.tc-main{font-family:var(--mono);font-size:1.65rem;font-weight:700;letter-spacing:-.03em;line-height:1.1;color:var(--text);margin-bottom:.3rem}
+.tc-main.crit{color:var(--critical);text-shadow:0 0 18px rgba(244,63,94,.32)}
+.tc-main.high{color:var(--high)}
+.tc-main.med{color:var(--moderate)}
+.tc-main.low{color:var(--low)}
+.tc-main.accent{color:var(--accent);text-shadow:0 0 18px rgba(5,216,240,.3)}
+.tc-main.purple{color:var(--purple)}
+.tc-sub{font-family:var(--mono);font-size:.7rem;color:var(--muted);line-height:1.65}
+.tc-sub div{display:flex;justify-content:space-between;gap:1rem}
+.tc-sub .k{color:var(--dim)}
+.tc-sub .v{color:var(--muted)}
+
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.45rem 1.3rem;font-family:var(--mono);font-size:.78rem;margin-bottom:1.1rem}
+.kv .k{color:var(--dim);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;align-self:center}
+.kv .v{color:var(--text);word-break:break-word}
+.kv .v strong{color:var(--accent);font-weight:600}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin-bottom:1.1rem}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:.7rem .85rem}
+.stat .num{font-family:var(--mono);font-size:1.4rem;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:var(--text)}
+.stat .num.purple{color:var(--purple)}
+.stat .num.accent{color:var(--accent)}
+.stat .lbl{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-top:.3rem}
+
+.sparkline-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:.85rem 1rem;margin-bottom:1rem}
+.sparkline-title{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:.55rem;display:flex;justify-content:space-between;align-items:center}
+.sparkline-title .range{color:var(--accent);font-size:.65rem}
+.sparkline-svg{width:100%;height:64px;display:block}
+.sparkline-axis{font-family:var(--mono);font-size:.58rem;color:var(--dim);display:flex;justify-content:space-between;margin-top:.35rem}
+
+.factors{font-family:var(--mono);font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:.3rem}
+.factor{padding:.3rem .65rem;background:var(--bg);border-left:2px solid var(--accent);border-radius:0 4px 4px 0}
+
+.signal-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem}
+.sig{font-family:var(--mono);font-size:.66rem;padding:3px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--muted)}
+.sig.add{color:var(--low);border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.06)}
+.sig.del{color:var(--critical);border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.06)}
+.sig.swap{color:var(--high);border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06)}
+.sig.file{color:var(--accent);border-color:rgba(5,216,240,.3);background:rgba(5,216,240,.06)}
+.sig.surgical{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06)}
+
+.diff{background:#050d18;border:1px solid var(--border);border-radius:7px;padding:.45rem 0;font-family:var(--mono);font-size:.74rem;line-height:1.8;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:340px;overflow-y:auto;margin-bottom:.85rem}
+.diff .del{display:block;background:rgba(244,63,94,.16);color:#fca5a5;padding:1px 1rem;border-left:3px solid rgba(244,63,94,.7)}
+.diff .add{display:block;background:rgba(52,211,153,.14);color:#6ee7b7;padding:1px 1rem;border-left:3px solid rgba(52,211,153,.65)}
+.diff .ctx{display:block;color:var(--muted);padding:1px 1rem;border-left:3px solid transparent}
+
+.code-prose{font-family:var(--sans);font-size:.85rem;color:var(--muted);line-height:1.65;margin-bottom:.85rem}
+.code-prose strong{color:var(--text);font-weight:600}
+
+.ext-links{display:flex;flex-wrap:wrap;gap:.4rem}
+.ext-link{font-family:var(--mono);font-size:.68rem;color:var(--accent2);background:var(--bg3);border:1px solid var(--border);padding:6px 11px;border-radius:6px;display:inline-flex;align-items:center;gap:.3rem;transition:border-color .15s,color .15s}
+.ext-link:hover{border-color:var(--accent);color:var(--text)}
+
+.empty-zone{padding:1.4rem 1.1rem;font-family:var(--mono);font-size:.74rem;color:var(--dim);text-align:center}
+
+.loader-page{min-height:50vh;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.85rem;color:var(--accent)}
+.loader-page::after{content:'';display:inline-block;width:1ch;animation:dots 1.2s steps(4) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(8rem);background:var(--bg3);border:1px solid var(--low);color:var(--low);padding:.55rem 1.1rem;border-radius:8px;font-family:var(--mono);font-size:.75rem;transition:transform .25s;z-index:200}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+footer{text-align:center;padding:1.5rem 1rem;color:var(--dim);font-family:var(--mono);font-size:.66rem;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<span class="nav-brand">OSDC</span>
+<a class="nav-link" href="index.html">Advisories</a>
+<a class="nav-link" href="silent.html">Silent</a>
+<a class="nav-link" href="threats.html">No-CVE</a>
+<span class="nav-spacer"></span>
+<a class="gh-link" href="https://github.com/Christbowel/OSDC" target="_blank" rel="noopener">GitHub</a>
+</div>
+</nav>
+
+<div class="container" id="root">
+<div class="loader-page" id="loader">loading intel briefing</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>OSDC · intel briefing · <a href="https://github.com/Christbowel">Christbowel</a></footer>
+
+<script>
+(function(){
+const params = new URLSearchParams(location.search);
+const AXIS = params.get('axis') || 'silent';
+const TARGET_ID = params.get('id') || '';
+const root = document.getElementById('root');
+const toast = document.getElementById('toast');
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+function fmtNum(n){if(!n||n<0)return '0';if(n>=1e9)return (n/1e9).toFixed(2)+'B';if(n>=1e6)return (n/1e6).toFixed(2)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return ''+n;}
+function fmtFull(n){if(!n)return '0';return n.toLocaleString();}
+function sevKind(s){return s==='CRITICAL'?'crit':s==='HIGH'?'high':(s==='MODERATE'||s==='MEDIUM')?'mod':'low';}
+function blastKind(t){return t==='CRITICAL'?'crit':t==='HIGH'?'high':t==='MEDIUM'?'med':t==='LOW'?'low':null;}
+function blastClass(t){return t==='CRITICAL'?'b-blast-crit':t==='HIGH'?'b-blast-high':t==='MEDIUM'?'b-blast-med':t==='LOW'?'b-blast-low':'b-neutral';}
+
+function showToast(msg, kind){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 1800);
+}
+
+function copyText(text){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast('copied to clipboard'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); showToast('copied'); } catch(e){}
+    ta.remove();
+  }
+}
+
+function renderError(msg){
+  root.innerHTML = '<div class="section"><div class="section-body empty-zone">'+esc(msg)+'<br><br><a href="'+esc(AXIS)+'.html">← back to '+esc(AXIS)+'</a></div></div>';
+}
+
+function sparkline(values){
+  if(!values || values.length === 0) return '';
+  const w = 600, h = 56, padX = 4, padY = 6;
+  const max = Math.max(...values, 1);
+  const barW = (w - 2*padX) / values.length;
+  let bars = '';
+  values.forEach((v, i) => {
+    const bh = Math.max(((v / max) * (h - 2*padY)), 2);
+    const x = padX + i * barW;
+    const y = h - padY - bh;
+    bars += '<rect x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+(barW - 1).toFixed(2)+'" height="'+bh.toFixed(2)+'" fill="url(#g)" rx="1"/>';
+  });
+  return '<svg class="sparkline-svg" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'
+    + '<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#05d8f0" stop-opacity="0.95"/><stop offset="100%" stop-color="#05d8f0" stop-opacity="0.35"/></linearGradient></defs>'
+    + bars + '</svg>';
+}
+
+function highlightDiff(text){
+  if(!text) return '';
+  return esc(text).split('\n').map(line => {
+    if(line.startsWith('+') && !line.startsWith('+++')) return '<span class="add">'+line+'</span>';
+    if(line.startsWith('-') && !line.startsWith('---')) return '<span class="del">'+line+'</span>';
+    return '<span class="ctx">'+(line || ' ')+'</span>';
+  }).join('');
+}
+
+function classifySignal(s){
+  if(s.startsWith('sec_file:')) return 'file';
+  if(s.startsWith('+')) return 'add';
+  if(s.startsWith('-')) return 'del';
+  if(s.startsWith('swap:')) return 'swap';
+  if(s === 'surgical' || s === 'moderate' || s === 'large_penalty') return 'surgical';
+  return '';
+}
+
+function renderSignals(signals){
+  if(!signals || !signals.length) return '<div class="empty-zone" style="padding:.5rem 0;text-align:left">no signals recorded</div>';
+  return '<div class="signal-chips">'+signals.map(s=>'<span class="sig '+classifySignal(s)+'">'+esc(s)+'</span>').join('')+'</div>';
+}
+
+function renderHero(rec, reach){
+  const isSilent = AXIS === 'silent';
+  const id = isSilent ? (rec.sha || TARGET_ID) : (rec.id || TARGET_ID);
+  const idShort = isSilent ? id.slice(0,12) : id;
+  const score = rec.score ?? rec.cvss ?? 0;
+  const blast = reach && reach.blast_radius;
+  const sev = !isSilent ? rec.severity : null;
+
+  const badges = [];
+  badges.push('<span class="badge b-status">'+(isSilent?'SUSPECT':'ANALYZED')+'</span>');
+  if(sev) badges.push('<span class="badge b-'+sevKind(sev)+'">'+esc(sev)+'</span>');
+  badges.push('<span class="badge b-tag">score: '+Math.round(score)+'</span>');
+  if(rec.cve) badges.push('<span class="badge b-neutral">'+esc(rec.cve)+'</span>');
+  if(rec.pattern) badges.push('<span class="badge b-tag">'+esc(rec.pattern)+'</span>');
+  if(rec.fp) badges.push('<span class="badge b-tag">FP: '+esc(rec.fp)+'</span>');
+  if(blast && blast.tier && blast.tier !== 'UNKNOWN') badges.push('<span class="badge '+blastClass(blast.tier)+'">BLAST: '+esc(blast.tier)+'</span>');
+  if(rec.language) badges.push('<span class="badge b-neutral">'+esc(rec.language)+'</span>');
+
+  const title = esc(rec.msg || rec.summary || rec.fix_summary || 'no message');
+  const date = (rec.date || '').slice(0,10);
+  const repo = rec.repo || 'unknown';
+  const author = rec.author || '';
+  const commitUrl = rec.url || '';
+
+  const subBits = [];
+  subBits.push('<span><strong>repo:</strong> <a class="repo-link" href="'+esc(AXIS)+'.html?repo='+encodeURIComponent(repo)+'">'+esc(repo)+'</a></span>');
+  if(date) subBits.push('<span><strong>date:</strong> '+esc(date)+'</span>');
+  if(author) subBits.push('<span><strong>author:</strong> '+esc(author)+'</span>');
+  if(rec.top_file) subBits.push('<span><strong>file:</strong> '+esc(rec.top_file)+'</span>');
+  if(reach && reach.package && reach.package.name) subBits.push('<span><strong>pkg:</strong> '+esc(reach.package.name)+' ('+esc(reach.package.ecosystem)+')</span>');
+
+  const actions = [];
+  actions.push('<button class="action-btn" data-copy="'+esc(id)+'">⎘ copy id</button>');
+  if(commitUrl) actions.push('<a class="action-btn" href="'+esc(commitUrl)+'" target="_blank" rel="noopener">↗ commit</a>');
+  actions.push('<button class="action-btn" data-share>⤴ share</button>');
+  if(repo !== 'unknown') actions.push('<a class="action-btn" href="https://github.com/'+esc(repo)+'" target="_blank" rel="noopener">↗ repo</a>');
+
+  return ''
+    + '<div class="hero">'
+    + '<div class="hero-row">'
+    +   '<span class="hero-id">'+esc(idShort)+'</span>'
+    +   badges.join('')
+    + '</div>'
+    + '<div class="hero-title">'+title+'</div>'
+    + '<div class="hero-sub">'+subBits.join('')+'</div>'
+    + '<div class="actions">'+actions.join('')+'</div>'
+    + '</div>';
+}
+
+function renderThreatAssessment(rec, reach){
+  const isSilent = AXIS === 'silent';
+  const score = rec.score ?? rec.cvss ?? 0;
+  const sigs = rec.top_file_signals || [];
+  const blast = (reach && reach.blast_radius) || {tier:'UNKNOWN', score:0, factors:[]};
+  const dl = (reach && reach.downloads) || {};
+  const dp = (reach && reach.dependents) || {};
+
+  const blastNum = blast.tier !== 'UNKNOWN' ? blast.tier : '—';
+  const blastClass2 = blastKind(blast.tier);
+
+  const blastSub = blast.tier !== 'UNKNOWN'
+    ? '<div><span class="k">dl/wk</span><span class="v">'+fmtNum(dl.weekly)+'</span></div>'
+      + '<div><span class="k">direct</span><span class="v">'+fmtNum(dp.direct)+'</span></div>'
+      + '<div><span class="k">transit.</span><span class="v">'+fmtNum(dp.indirect)+'</span></div>'
+      + '<div><span class="k">score</span><span class="v">'+blast.score+'/100</span></div>'
+    : '<div><span class="k">status</span><span class="v">no pkg map</span></div><div><span class="k">action</span><span class="v">manual review</span></div>';
+
+  const detectionLabel = isSilent ? 'OSDC SCORE' : 'CVSS';
+  const detectionMain = isSilent ? Math.round(score) : score.toFixed(1);
+  const detectionKind = isSilent
+    ? (score>=60?'crit':score>=30?'high':score>=15?'med':'low')
+    : (score>=9?'crit':score>=7?'high':score>=4?'med':'low');
+  const fileCount = isSilent ? '1 primary' : '';
+  const sigCount = sigs.length;
+  const detectionSub = isSilent
+    ? '<div><span class="k">signals</span><span class="v">'+sigCount+'</span></div>'
+      + '<div><span class="k">file</span><span class="v">'+fileCount+'</span></div>'
+      + (rec.fp ? '<div><span class="k">fp</span><span class="v">'+esc(rec.fp)+'</span></div>' : '')
+    : '<div><span class="k">severity</span><span class="v">'+esc(rec.severity||'?')+'</span></div>'
+      + '<div><span class="k">pattern</span><span class="v">'+esc(rec.pattern||'—')+'</span></div>';
+
+  const provDate = (rec.date||'').slice(0,10) || '—';
+  const provAuthor = rec.author || rec.package || '—';
+  const provBranch = isSilent ? 'main (suspect)' : 'upstream fix';
+  const provenanceSub = '<div><span class="k">date</span><span class="v">'+esc(provDate)+'</span></div>'
+    + '<div><span class="k">via</span><span class="v">'+esc(provAuthor.slice(0,24))+'</span></div>'
+    + '<div><span class="k">stream</span><span class="v">'+esc(provBranch)+'</span></div>';
+
+  return ''
+    + '<div class="section">'
+    + '<div class="section-head"><span class="dot"></span><span class="label">Threat Assessment</span></div>'
+    + '<div class="threat-grid">'
+    +   '<div class="threat-card">'
+    +     '<div class="tc-label">Blast Radius</div>'
+    +     '<div class="tc-main '+(blastClass2||'')+'">'+esc(blastNum)+'</div>'
+    +     '<div class="tc-sub">'+blastSub+'</div>'
+    +   '</div>'
+    +   '<div class="threat-card">'
+    +     '<div class="tc-label">'+detectionLabel+'</div>'
+    +     '<div class="tc-main '+detectionKind+'">'+detectionMain+'</div>'
+    +     '<div class="tc-sub">'+detectionSub+'</div>'
+    +   '</div>'
+    +   '<div class="threat-card">'
+    +     '<div class="tc-label">Provenance</div>'
+    +     '<div class="tc-main accent" style="font-size:1rem">'+esc(provBranch)+'</div>'
+    +     '<div class="tc-sub">'+provenanceSub+'</div>'
+    +   '</div>'
+    + '</div>'
+    + '</div>';
+}
+
+function renderReachZone(reach){
+  if(!reach){
+    return ''
+      + '<div class="section">'
+      + '<div class="section-head"><span class="dot" style="background:var(--dim);box-shadow:none"></span><span class="label">Reach &amp; Impact</span><span class="meta">enrichment pending</span></div>'
+      + '<div class="section-body empty-zone">Run <code style="color:var(--accent)">python -m src.enrich_reach</code> to populate reach intel for this record.</div>'
+      + '</div>';
+  }
+  const pkg = reach.package || {};
+  const dl = reach.downloads || {};
+  const dp = reach.dependents || {};
+  const br = reach.blast_radius || {};
+
+  if(!pkg.name){
+    return ''
+      + '<div class="section">'
+      + '<div class="section-head"><span class="dot" style="background:var(--dim);box-shadow:none"></span><span class="label">Reach &amp; Impact</span><span class="meta">no package mapping</span></div>'
+      + '<div class="section-body empty-zone">No package could be inferred from this repository.<br>Reach analysis requires a published package on npm / PyPI / Maven / Go / Cargo / NuGet.</div>'
+      + '</div>';
+  }
+
+  const kvHtml = ''
+    + '<div class="k">package</div><div class="v"><strong>'+esc(pkg.name)+'</strong> @ '+esc(pkg.version||'—')+' <span style="color:var(--dim)">('+esc(pkg.ecosystem)+')</span></div>'
+    + '<div class="k">discovery</div><div class="v">'+esc(pkg.source||'unknown')+'</div>'
+    + (pkg.version_count ? '<div class="k">versions</div><div class="v">'+pkg.version_count+' published</div>' : '');
+
+  const stats = ''
+    + '<div class="stat"><div class="num">'+fmtNum(dp.direct)+'</div><div class="lbl">direct dependents</div></div>'
+    + '<div class="stat"><div class="num purple">'+fmtNum(dp.indirect)+'</div><div class="lbl">transitive</div></div>'
+    + '<div class="stat"><div class="num accent">'+fmtNum(dl.weekly)+'</div><div class="lbl">downloads / week</div></div>'
+    + '<div class="stat"><div class="num">'+fmtNum(dl.monthly)+'</div><div class="lbl">downloads / month</div></div>';
+
+  const tl = dl.timeline_12w || [];
+  const labels = dl.timeline_labels || [];
+  let timeline = '';
+  if(tl.length){
+    timeline = ''
+      + '<div class="sparkline-wrap">'
+      + '<div class="sparkline-title"><span>12-week download timeline</span><span class="range">'+fmtNum(Math.min(...tl))+' – '+fmtNum(Math.max(...tl))+'</span></div>'
+      + sparkline(tl)
+      + '<div class="sparkline-axis"><span>'+esc(labels[0]||'')+'</span><span>'+esc(labels[labels.length-1]||'')+'</span></div>'
+      + '</div>';
+  }
+
+  let factors = '';
+  if(br.factors && br.factors.length){
+    factors = '<div class="tc-label">factors</div><div class="factors">'+br.factors.map(f=>'<div class="factor">'+esc(f)+'</div>').join('')+'</div>';
+  }
+
+  return ''
+    + '<div class="section">'
+    + '<div class="section-head"><span class="dot"></span><span class="label">Reach &amp; Impact</span><span class="meta">'+esc((dl.source||'deps.dev'))+' · enriched '+esc((reach.enriched_at||'').slice(0,10))+'</span></div>'
+    + '<div class="section-body">'
+    + '<div class="kv">'+kvHtml+'</div>'
+    + '<div class="stats-grid">'+stats+'</div>'
+    + timeline
+    + factors
+    + '</div>'
+    + '</div>';
+}
+
+function renderCodeZone(rec){
+  const isSilent = AXIS === 'silent';
+  let body = '';
+  if(isSilent){
+    if(rec.top_file){
+      body += '<div class="kv"><div class="k">primary file</div><div class="v"><strong>'+esc(rec.top_file)+'</strong></div>';
+      if(rec.top_file_score) body += '<div class="k">file score</div><div class="v">'+esc(rec.top_file_score)+'</div>';
+      if(rec.files_changed) body += '<div class="k">files changed</div><div class="v">'+esc(rec.files_changed)+'</div>';
+      body += '</div>';
+    }
+    body += '<div class="tc-label" style="margin-top:.4rem">Detection signals</div>';
+    body += renderSignals(rec.top_file_signals);
+
+    const has_diff = (rec.removed_sample && rec.removed_sample.trim()) || (rec.added_sample && rec.added_sample.trim());
+    if(has_diff){
+      body += '<div class="tc-label" style="margin-top:.4rem">Diff sample</div>';
+      let diffText = '';
+      if(rec.removed_sample) diffText += rec.removed_sample.split('\n').map(l=>l.startsWith('-')?l:'-'+l).join('\n')+'\n';
+      if(rec.added_sample) diffText += rec.added_sample.split('\n').map(l=>l.startsWith('+')?l:'+'+l).join('\n');
+      body += '<div class="diff">'+highlightDiff(diffText)+'</div>';
+      if(rec.url) body += '<div style="font-family:var(--mono);font-size:.7rem;color:var(--dim)">View full diff on <a href="'+esc(rec.url)+'.diff" target="_blank" rel="noopener">GitHub ↗</a></div>';
+    }
+
+    if(rec.fp){
+      body += '<div class="tc-label" style="margin-top:.95rem">Fingerprint match</div>';
+      body += '<div class="code-prose">Pattern: <strong>'+esc(rec.fp)+'</strong>';
+      if(rec.fingerprint_score) body += ' · similarity: <strong>'+(rec.fingerprint_score*100).toFixed(0)+'%</strong>';
+      body += '</div>';
+      if(rec.fingerprint_matched_tokens && rec.fingerprint_matched_tokens.length){
+        body += '<div class="signal-chips">'+rec.fingerprint_matched_tokens.map(t=>'<span class="sig">'+esc(t)+'</span>').join('')+'</div>';
+      }
+    }
+  } else {
+    body += '<div class="kv">';
+    if(rec.cve) body += '<div class="k">cve</div><div class="v"><strong>'+esc(rec.cve)+'</strong></div>';
+    if(rec.pattern) body += '<div class="k">pattern</div><div class="v">'+esc(rec.pattern)+'</div>';
+    if(rec.language) body += '<div class="k">language</div><div class="v">'+esc(rec.language)+'</div>';
+    if(rec.package) body += '<div class="k">package</div><div class="v">'+esc(rec.package)+'</div>';
+    body += '</div>';
+    if(rec.summary){
+      body += '<div class="tc-label">Summary</div><div class="code-prose">'+esc(rec.summary)+'</div>';
+    }
+    if(rec.url) body += '<div style="font-family:var(--mono);font-size:.7rem;color:var(--dim);margin-top:.5rem">View full diff on <a href="'+esc(rec.url)+'.diff" target="_blank" rel="noopener">GitHub ↗</a></div>';
+  }
+
+  return ''
+    + '<div class="section">'
+    + '<div class="section-head"><span class="dot"></span><span class="label">Code Intelligence</span></div>'
+    + '<div class="section-body">'+body+'</div>'
+    + '</div>';
+}
+
+function renderExternalLinks(rec){
+  const isSilent = AXIS === 'silent';
+  const id = isSilent ? rec.sha : rec.id;
+  const repo = rec.repo || '';
+  const pkg = rec.package || '';
+
+  const links = [];
+  if(!isSilent && id && id.startsWith('GHSA')) links.push({h:'https://github.com/advisories/'+encodeURIComponent(id),l:'GitHub Advisory'});
+  if(rec.cve) links.push({h:'https://nvd.nist.gov/vuln/detail/'+encodeURIComponent(rec.cve),l:'NVD'});
+  if(rec.cve) links.push({h:'https://www.cve.org/CVERecord?id='+encodeURIComponent(rec.cve),l:'MITRE CVE'});
+  if(rec.cve) links.push({h:'https://osv.dev/vulnerability/'+encodeURIComponent(rec.cve),l:'OSV.dev'});
+  if(pkg && rec.language){
+    const eco = (rec.language||'').toLowerCase();
+    if(eco === 'javascript' || eco === 'typescript') links.push({h:'https://www.npmjs.com/package/'+encodeURIComponent(pkg),l:'npm registry'});
+    if(eco === 'python') links.push({h:'https://pypi.org/project/'+encodeURIComponent(pkg),l:'PyPI'});
+    if(eco === 'rust') links.push({h:'https://crates.io/crates/'+encodeURIComponent(pkg),l:'crates.io'});
+    if(eco === 'go') links.push({h:'https://pkg.go.dev/'+pkg,l:'pkg.go.dev'});
+  }
+  if(repo) links.push({h:'https://snyk.io/vuln/search?type=any&q='+encodeURIComponent(repo),l:'Snyk search'});
+  if(repo) links.push({h:'https://google.com/search?q='+encodeURIComponent((rec.cve||id||'')+' '+repo+' exploit'),l:'Search exploits'});
+
+  if(!links.length) return '';
+  return ''
+    + '<div class="section">'
+    + '<div class="section-head"><span class="dot"></span><span class="label">External References</span></div>'
+    + '<div class="section-body"><div class="ext-links">'
+    + links.map(x=>'<a class="ext-link" href="'+esc(x.h)+'" target="_blank" rel="noopener">'+esc(x.l)+' ↗</a>').join('')
+    + '</div></div></div>';
+}
+
+function attachActions(){
+  root.addEventListener('click', e=>{
+    const cp = e.target.closest('[data-copy]');
+    if(cp){ copyText(cp.dataset.copy); cp.classList.add('copied'); setTimeout(()=>cp.classList.remove('copied'), 1400); return; }
+    const sh = e.target.closest('[data-share]');
+    if(sh){ copyText(location.href); return; }
+  });
+}
+
+Promise.all([
+  fetch('data/' + AXIS + '.json').then(r=>r.json()).catch(()=>null),
+  fetch('data/enrichments/reach/' + encodeURIComponent(TARGET_ID) + '.json').then(r=>r.ok?r.json():null).catch(()=>null),
+]).then(([axisData, reach])=>{
+  if(!axisData || !axisData.records){ renderError('failed to load axis data'); return; }
+  const isSilent = AXIS === 'silent';
+  const rec = axisData.records.find(r => (isSilent ? r.sha : r.id) === TARGET_ID);
+  if(!rec){ renderError('record not found: '+TARGET_ID); return; }
+
+  const html = ''
+    + '<a class="back-link" href="'+AXIS+'.html'+(rec.repo?'?repo='+encodeURIComponent(rec.repo):'')+'">← back to '+AXIS+(rec.repo?' / '+esc(rec.repo):'')+'</a>'
+    + '<div class="section">'+renderHero(rec, reach)+'</div>'
+    + renderThreatAssessment(rec, reach)
+    + renderReachZone(reach)
+    + renderCodeZone(rec)
+    + renderExternalLinks(rec);
+
+  root.innerHTML = html;
+  attachActions();
+  document.title = 'OSDC — ' + (isSilent ? (rec.sha||'').slice(0,8) : rec.id);
+}).catch(e=>{
+  renderError('error: '+e.message);
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{"id":"GHSA-r73h-97w8-m54h","axis":"advisories","repo":"elixir-ecto/postgrex","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-19T22:44:54.400956+00:00"}
