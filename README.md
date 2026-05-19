@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-495-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-502-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -49,7 +49,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -92,7 +92,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -309,6 +309,35 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-x7m9-mwc2-g6w2</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-05-18 · PHP<br>
+<code>verbb/formie</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 2x across ecosystem
+</p>
+<p><b>Root cause</b> : The application was parsing the &#39;defaultValue&#39; of a hidden field as a Twig template even when the value was directly provided by the user. This allowed an attacker to inject malicious Twig template code into the &#39;defaultValue&#39; which would then be executed by the server.</p>
+<p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the server by injecting arbitrary Twig template code, leading to full system compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/fields/formfields/Hidden.php
++++ b/src/fields/formfields/Hidden.php
+@@ -111,11 +111,9 @@ public function serializeValue(mixed $value, ?ElementInterface $element = null):
+ 
+             // Check if there&#39;s no value been added on the front-end, and use the default value
+             if ($value === &#39;&#39;) {
+-                $value = $this-&gt;defaultValue;
++                $value = Variables::getParsedValue($this-&gt;defaultValue, $element);
+             }
+ 
+-            $value = Variables::getParsedValue($value, $element);
+-
+             // Immediately update the value for the element, so integrations use the up-to-date value
+             if ($element) {</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the logic to ensure that the &#39;defaultValue&#39; is only parsed as a Twig template if the front-end value is empty. If a value is provided from the front-end, it is no longer passed through the template parser, preventing injection.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-x7m9-mwc2-g6w2">Advisory</a> · <a href="https://github.com/verbb/formie/commit/f690d5623163ce2a95da305238d6367575486ee3">Commit</a>
+</p>
+<hr>
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
@@ -349,7 +378,7 @@
 <h3>GHSA-vmw2-qwm8-x84c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · C#<br>
-<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 10x across ecosystem
+<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly interpolated the &#39;regConfig&#39; parameter into a SQL query without proper validation or sanitization. This allowed an attacker to inject arbitrary SQL commands by manipulating the &#39;regConfig&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the PostgreSQL database, potentially leading to data exfiltration, modification, or deletion, and even remote code execution depending on database privileges.</p>
@@ -593,7 +622,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -614,7 +643,7 @@ After:
 <h3>GHSA-v529-vhwc-wfc5</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 10x across ecosystem
+<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
@@ -730,7 +759,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-fv26-4939-62fh</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
 <p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
@@ -778,7 +807,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -869,7 +898,7 @@ After:
 <h3>GHSA-xj4f-8jjg-vx4q</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-05-04 · Java<br>
-<code>org.openmrs.api:openmrs-api</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 1x across ecosystem
+<code>org.openmrs.api:openmrs-api</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 2x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used Apache Velocity for evaluating user-supplied criteria in `ConceptReferenceRangeUtility.java`. The `evaluateCriteria` method directly passed unsanitized user input into `velocityEngine.evaluate()`, allowing an attacker to inject Velocity Template Language (VTL) directives. Since Velocity templates can execute arbitrary Java code, this led to Remote Code Execution (RCE).</p>
 <p><b>Impact</b> : An authenticated attacker with privileges to create or modify ConceptReferenceRange objects could store malicious Velocity templates. When these templates were evaluated, the attacker could achieve arbitrary code execution on the server, leading to full system compromise.</p>
@@ -956,7 +985,7 @@ After:
 <h3>GHSA-rcmw-7mc7-3rj7</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
-<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
 <p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
@@ -1175,7 +1204,7 @@ for member in zip_file.namelist():
 <h3>GHSA-2g9v-7mr5-fgjg</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · Go<br>
-<code>github.com/l3montree-dev/devguard</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>github.com/l3montree-dev/devguard</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed an unauthenticated user to assert an arbitrary identity and gain administrative privileges by simply setting the `X-Admin-Token` HTTP header. This header was checked before any other authentication mechanisms, effectively bypassing all security controls.</p>
 <p><b>Impact</b> : An attacker could gain full administrative access to the application without any prior authentication, leading to complete compromise of the system and data.</p>
@@ -1273,7 +1302,7 @@ After: profile.EmailVerified.IsVerified()</pre>
 <h3>GHSA-xh72-v6v9-mwhc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-17 · JavaScript<br>
-<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>openclaw</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the presence of an encryptKey before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by sending a request without an encryptKey, allowing unauthorized access to webhook and card-action endpoints.</p>
@@ -1347,7 +1376,7 @@ After:
 <h3>GHSA-2679-6mx9-h9xc</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
@@ -1470,7 +1499,7 @@ After:
 <h3>GHSA-xwqr-rcqg-22mr</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-05-06 · PHP<br>
-<code>flightphp/core</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 10x across ecosystem
+<code>flightphp/core</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The SimplePdo class in FlightPHP did not validate table and column names provided by user input before interpolating them directly into SQL queries. This allowed an attacker to inject arbitrary SQL code by manipulating these identifiers.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the database, leading to data exfiltration, modification, or deletion, and potentially full compromise of the database.</p>
@@ -1543,7 +1572,7 @@ After:
 <h3>GHSA-xhw7-j96h-c3g5</h3>
 <p>
 <code>HIGH 8.8</code> · 2026-05-05 · C#<br>
-<code>YAFNET.Core</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 22x across ecosystem
+<code>YAFNET.Core</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The `PageSecurityCheckAttribute` was removed from the `ForumPage` base class, which meant that the security checks previously performed by this attribute were no longer automatically applied to pages inheriting from `ForumPage`. The logic for checking admin page access was moved into an `OnPageHandlerExecutionAsync` override, but the critical check for `BoardContext.Current.IsAdmin` was not sufficient on its own to prevent unauthorized access to specific admin functionalities like `/Admin/RunSql` without proper `AdminPageUserAccess` verification.</p>
 <p><b>Impact</b> : An attacker could bypass authorization checks for admin pages, specifically gaining access to the `/Admin/RunSql` endpoint. This allowed for blind SQL execution, potentially leading to data exfiltration, modification, or other severe database compromises.</p>
@@ -1686,39 +1715,6 @@ After:
 <a href="https://github.com/advisories/GHSA-xhw7-j96h-c3g5">Advisory</a> · <a href="https://github.com/YAFNET/YAFNET/commit/27f7e671f93698f7e014d5d0fb88320248b8aa20">Commit</a>
 </p>
 <hr>
-<h3>GHSA-q4ph-8x8g-95f8</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-04 · PHP<br>
-<code>azuracast/azuracast</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 29x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from an incomplete migration from `cleanUpString` to `toRawString` for handling user-supplied input, specifically the remote relay password. The `cleanUpString` function was removed, but the password field was not consistently passed through the more robust `toRawString` function, allowing special characters to be injected directly into the Liquidsoap configuration.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary Liquidsoap code into the configuration, potentially leading to remote code execution or other malicious actions on the server where Liquidsoap is running.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/backend/src/Radio/Backend/Liquidsoap/ConfigWriter.php
-+++ b/backend/src/Radio/Backend/Liquidsoap/ConfigWriter.php
-@@ -1205,14 +1205,12 @@ private function getOutputString(
-             $outputParams[] = &#39;user = &#39; . self::toRawString($source-&gt;username);
-         }
- 
--        $password = self::cleanUpString($source-&gt;password);
--        $adapterType = $source-&gt;adapterType;
--        if (FrontendAdapters::Shoutcast === $adapterType) {
--            $password .= &#39;:#&#39; . $id;
--        }
--        $outputParams[] = &#39;password = &#34;&#39; . $password . &#39;&#34;&#39;;
-+        $password = $source-&gt;password;
-+        $adapterType = $source-&gt;adapterType;
-+        if (FrontendAdapters::Shoutcast === $adapterType) {
-+            $password .= &#39;:#&#39; . $id;
-+        }
-+        $outputParams[] = &#39;password = &#39; . self::toRawString($password);</pre>
-</details>
-<p><b>Fix</b> : The patch removes the `cleanUpString` function and ensures that the remote relay password, along with other sensitive parameters, is consistently processed by the `toRawString` function. This function properly escapes special characters, preventing code injection into the Liquidsoap configuration.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-q4ph-8x8g-95f8">Advisory</a> · <a href="https://github.com/AzuraCast/AzuraCast/commit/d6b8422fc2c36269df9d1adec89dfbba58828915">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1754,10 +1750,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>495</td></tr>
+<tr><td>Total advisories</td><td>502</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-05-18</td></tr>
+<tr><td>Last updated</td><td>2026-05-19</td></tr>
 </table>
 </details>
 <hr>
