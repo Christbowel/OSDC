@@ -28,5 +28,1151 @@
     "ecosystem": null,
     "source": "not_found",
     "resolved_at": "2026-05-19T22:44:58.129597+00:00"
+  },
+  "rkyv/rkyv": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:16.133443+00:00"
+  },
+  "absinthe-graphql/absinthe": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:30.532313+00:00"
+  },
+  "solana-foundation/anchor": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:36.649727+00:00"
+  },
+  "yiisoft/yii2": {
+    "name": "yii2",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:28:45.352511+00:00"
+  },
+  "mantisbt/mantisbt": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:47.482556+00:00"
+  },
+  "grokability/snipe-it": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:52.482520+00:00"
+  },
+  "phpseclib/phpseclib": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:28:55.796344+00:00"
+  },
+  "phoenixframework/phoenix": {
+    "name": "phoenix",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:29:02.109858+00:00"
+  },
+  "elixir-webrtc/ex_webrtc": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:04.570658+00:00"
+  },
+  "Danaozhong/rust-zserio": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:08.965680+00:00"
+  },
+  "mtrudel/bandit": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:10.466580+00:00"
+  },
+  "flightphp/core": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:11.340117+00:00"
+  },
+  "LemmyNet/lemmy": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:12.994449+00:00"
+  },
+  "craftcms/cms": {
+    "name": "craftcms",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:29:14.020607+00:00"
+  },
+  "getgrav/grav-plugin-api": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:17.190557+00:00"
+  },
+  "getgrav/grav-plugin-login": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:24.037350+00:00"
+  },
+  "getgrav/grav": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:24.861622+00:00"
+  },
+  "WWBN/AVideo": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:28.083843+00:00"
+  },
+  "elixir-plug/plug_cowboy": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:32.983778+00:00"
+  },
+  "phpvms/phpvms": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:33.827688+00:00"
+  },
+  "AzuraCast/AzuraCast": {
+    "name": "azuracast",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:29:34.608721+00:00"
+  },
+  "webonyx/graphql-php": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:38.987265+00:00"
+  },
+  "mckenziearts/livewire-markdown-editor": {
+    "name": "@laravelcm/markdown-editor",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:29:39.878117+00:00"
+  },
+  "ruby/net-imap": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:45.287140+00:00"
+  },
+  "Icinga/ipl-web": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:29:55.789824+00:00"
+  },
+  "ci4-cms-erp/ci4ms": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:30:00.487378+00:00"
+  },
+  "Eugeny/russh": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:30:17.951011+00:00"
+  },
+  "becheran/grid": {
+    "name": "grid",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-19T23:30:18.801303+00:00"
+  },
+  "TYPO3/typo3": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:30:22.162506+00:00"
+  },
+  "OpenC3/cosmos": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:30:23.020992+00:00"
+  },
+  "flarum/framework": {
+    "name": "flarum-monorepo",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:30:29.932941+00:00"
+  },
+  "rust-openssl/rust-openssl": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:30:32.591062+00:00"
+  },
+  "Plonky3/Plonky3": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:31:36.746054+00:00"
+  },
+  "pmmp/PocketMine-MP": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:31:42.448448+00:00"
+  },
+  "decidim/decidim": {
+    "name": "a-decidim-app",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:31:45.936806+00:00"
+  },
+  "craftcms/commerce": {
+    "name": "@craftcms/commerce",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:31:55.529002+00:00"
+  },
+  "rhukster/dom-sanitizer": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:32:35.969890+00:00"
+  },
+  "sgbett/bsv-ruby-sdk": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:32:48.123535+00:00"
+  },
+  "containers/aardvark-dns": {
+    "name": "aardvark-dns",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-19T23:33:21.376158+00:00"
+  },
+  "davidfstr/rdiscount": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:33:54.916929+00:00"
+  },
+  "fastify/fastify": {
+    "name": "fastify",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:01.828040+00:00"
+  },
+  "aio-libs/aiohttp": {
+    "name": "aiohttp",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:34:03.000285+00:00"
+  },
+  "laravel/framework": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:05.607907+00:00"
+  },
+  "symfony/symfony": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:06.424584+00:00"
+  },
+  "quarkusio/quarkus": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:07.314814+00:00"
+  },
+  "vercel/next.js": {
+    "name": "nextjs-project",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:07.492379+00:00"
+  },
+  "facebook/react": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:09.865666+00:00"
+  },
+  "curl/curl": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:10.802078+00:00"
+  },
+  "openssl/openssl": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:11.752616+00:00"
+  },
+  "google/boringssl": {
+    "name": "boringssl.googlesource.com/boringssl.git",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:12.668770+00:00"
+  },
+  "keycloak/keycloak": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:15.761995+00:00"
+  },
+  "ory/hydra": {
+    "name": "@oryd/hydra",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:15.897919+00:00"
+  },
+  "casdoor/casdoor": {
+    "name": "github.com/casdoor/casdoor",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:17.631910+00:00"
+  },
+  "logto-io/logto": {
+    "name": "@logto/root",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:20.192655+00:00"
+  },
+  "php/php-src": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:25.312692+00:00"
+  },
+  "openjdk/jdk": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:26.154476+00:00"
+  },
+  "rust-lang/rust": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:27.029256+00:00"
+  },
+  "dotnet/runtime": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:27.893384+00:00"
+  },
+  "freebsd/freebsd-src": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:28.803853+00:00"
+  },
+  "openbsd/src": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:29.613165+00:00"
+  },
+  "redis/redis": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:30.503314+00:00"
+  },
+  "mongodb/mongo": {
+    "name": "mongodb",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:30.666956+00:00"
+  },
+  "cockroachdb/cockroach": {
+    "name": "github.com/cockroachdb/cockroach",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:37.419984+00:00"
+  },
+  "containers/podman": {
+    "name": "go.podman.io/podman/v6",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:41.398202+00:00"
+  },
+  "hashicorp/consul": {
+    "name": "github.com/hashicorp/consul",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:42.955596+00:00"
+  },
+  "envoyproxy/envoy": {
+    "name": "github.com/envoyproxy/envoy",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:34:44.805060+00:00"
+  },
+  "haproxy/haproxy": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:47.658161+00:00"
+  },
+  "grafana/grafana": {
+    "name": "grafana",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:47.827500+00:00"
+  },
+  "elastic/elasticsearch": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:34:52.087942+00:00"
+  },
+  "apache/airflow": {
+    "name": "apache-airflow",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:34:52.419305+00:00"
+  },
+  "go-gitea/gitea": {
+    "name": "gitea",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:34:54.470997+00:00"
+  },
+  "gravitational/teleport": {
+    "name": "teleport-ui",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:34:56.358957+00:00"
+  },
+  "falcosecurity/falco": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:00.580254+00:00"
+  },
+  "drupal/drupal": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:01.349620+00:00"
+  },
+  "payloadcms/payload": {
+    "name": "payload-monorepo",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:35:01.550309+00:00"
+  },
+  "aws/aws-sdk-js-v3": {
+    "name": "aws-sdk-js-v3",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:35:02.644762+00:00"
+  },
+  "Azure/azure-sdk-for-python": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:04.347047+00:00"
+  },
+  "googleapis/google-cloud-python": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:05.200182+00:00"
+  },
+  "lobehub/lobe-chat": {
+    "name": "@lobehub/lobehub",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:35:05.458893+00:00"
+  },
+  "huggingface/transformers": {
+    "name": "transformers",
+    "ecosystem": "pypi",
+    "source": "setup.py",
+    "resolved_at": "2026-05-19T23:35:09.290370+00:00"
+  },
+  "ollama/ollama": {
+    "name": "github.com/ollama/ollama",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:35:13.710734+00:00"
+  },
+  "ggerganov/llama.cpp": {
+    "name": "llama-cpp-scripts",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:35:14.963682+00:00"
+  },
+  "apache/cassandra": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:16.674582+00:00"
+  },
+  "apache/pulsar": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:17.613447+00:00"
+  },
+  "gradio-app/gradio": {
+    "name": "gradio-ui",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:35:17.780704+00:00"
+  },
+  "timescale/timescaledb": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:20.011875+00:00"
+  },
+  "astral-sh/ruff": {
+    "name": "ruff",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:35:20.337406+00:00"
+  },
+  "pnpm/pnpm": {
+    "name": "monorepo-root",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:35:22.262676+00:00"
+  },
+  "rust-lang/cargo": {
+    "name": "cargo",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-19T23:35:23.928903+00:00"
+  },
+  "grpc/grpc": {
+    "name": "grpcio",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:35:34.762760+00:00"
+  },
+  "rabbitmq/rabbitmq-server": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:36.611691+00:00"
+  },
+  "netdata/netdata": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:35:37.569624+00:00"
+  },
+  "trufflesecurity/trufflehog": {
+    "name": "github.com/trufflesecurity/trufflehog/v3",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:35:38.425664+00:00"
+  },
+  "marimo-team/marimo": {
+    "name": "marimo",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:35:39.480053+00:00"
+  },
+  "NVIDIA/OpenShell": {
+    "name": "openshell",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:35:40.905099+00:00"
+  },
+  "strapi/strapi": {
+    "name": "strapi",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:36:55.644167+00:00"
+  },
+  "psf/requests": {
+    "name": "requests",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:36:56.837284+00:00"
+  },
+  "spring-projects/spring-security": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:36:58.523879+00:00"
+  },
+  "tokio-rs/axum": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:36:59.369563+00:00"
+  },
+  "wolfSSL/wolfssl": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:01.651790+00:00"
+  },
+  "golang/go": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:02.537170+00:00"
+  },
+  "pyca/cryptography": {
+    "name": "cryptography",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:37:02.822693+00:00"
+  },
+  "postgres/postgres": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:12.231202+00:00"
+  },
+  "containerd/containerd": {
+    "name": "github.com/containerd/containerd/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:37:13.187102+00:00"
+  },
+  "apache/kafka": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:20.024999+00:00"
+  },
+  "wazuh/wazuh": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:27.530876+00:00"
+  },
+  "directus/directus": {
+    "name": "directus-monorepo",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:37:27.679110+00:00"
+  },
+  "Azure/azure-cli": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:30.524746+00:00"
+  },
+  "FasterXML/jackson-databind": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:31.318263+00:00"
+  },
+  "langchain-ai/langchain": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:34.561740+00:00"
+  },
+  "npm/cli": {
+    "name": "npm",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:37:35.589492+00:00"
+  },
+  "django/django": {
+    "name": "Django",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:37:36.629330+00:00"
+  },
+  "denoland/deno": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:37:39.832150+00:00"
+  },
+  "pallets/werkzeug": {
+    "name": "Werkzeug",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:37:42.482026+00:00"
+  },
+  "typeorm/typeorm": {
+    "name": "typeorm",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:37:52.672885+00:00"
+  },
+  "harttle/liquidjs": {
+    "name": "liquidjs",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:37:57.820537+00:00"
+  },
+  "openvpn/openvpn": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:38:04.219856+00:00"
+  },
+  "axios/axios": {
+    "name": "axios",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:38:04.362653+00:00"
+  },
+  "hanami/hanami": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:38:07.651672+00:00"
+  },
+  "nuxt/nuxt": {
+    "name": "nuxt-framework",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:38:07.797759+00:00"
+  },
+  "angular/angular": {
+    "name": "angular-srcs",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:38:09.257935+00:00"
+  },
+  "authelia/authelia": {
+    "name": "github.com/authelia/authelia/v4",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:38:13.044928+00:00"
+  },
+  "openiddict/openiddict-core": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:38:17.674778+00:00"
+  },
+  "hashicorp/vault": {
+    "name": "github.com/hashicorp/vault",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:38:23.389587+00:00"
+  },
+  "jenkinsci/jenkins": {
+    "name": "jenkins-ui",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:38:27.978001+00:00"
+  },
+  "aquasecurity/trivy": {
+    "name": "github.com/aquasecurity/trivy",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:38:35.482001+00:00"
+  },
+  "protocolbuffers/protobuf": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:38:38.825684+00:00"
+  },
+  "open-telemetry/opentelemetry-python": {
+    "name": "opentelemetry-python",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:38:39.890809+00:00"
+  },
+  "ory/kratos": {
+    "name": "github.com/ory/kratos",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:38:47.989261+00:00"
+  },
+  "nodejs/node": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:38:50.445658+00:00"
+  },
+  "nats-io/nats-server": {
+    "name": "github.com/nats-io/nats-server/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:39:18.275273+00:00"
+  },
+  "python/cpython": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:39:31.483861+00:00"
+  },
+  "apache/spark": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:39:46.961195+00:00"
+  },
+  "semgrep/semgrep": {
+    "name": "semgrep_pre_commit_package",
+    "ecosystem": "pypi",
+    "source": "setup.py",
+    "resolved_at": "2026-05-19T23:39:53.863844+00:00"
+  },
+  "unjs/unhead": {
+    "name": "unhead-monorepo",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:39:59.095971+00:00"
+  },
+  "anchore/syft": {
+    "name": "github.com/anchore/syft",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:40:08.351951+00:00"
+  },
+  "spring-projects/spring-framework": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:40:11.006718+00:00"
+  },
+  "spring-projects/spring-boot": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:40:11.900314+00:00"
+  },
+  "eclipse-vertx/vert.x": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:40:12.795373+00:00"
+  },
+  "sveltejs/kit": {
+    "name": "kit-monorepo",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:40:12.960412+00:00"
+  },
+  "apache/flink": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:40:29.982167+00:00"
+  },
+  "cert-manager/cert-manager": {
+    "name": "github.com/cert-manager/cert-manager",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:40:44.545029+00:00"
+  },
+  "open-telemetry/opentelemetry-go": {
+    "name": "go.opentelemetry.io/otel",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:40:46.055378+00:00"
+  },
+  "sigstore/cosign": {
+    "name": "github.com/sigstore/cosign/v3",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:40:47.780108+00:00"
+  },
+  "remix-run/remix": {
+    "name": "remix-the-web",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:40:53.436751+00:00"
+  },
+  "diesel-rs/diesel": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:40:59.900161+00:00"
+  },
+  "drone/drone": {
+    "name": "github.com/harness/gitness",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:41:07.751994+00:00"
+  },
+  "langchain-ai/langsmith-sdk": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:41:19.644339+00:00"
+  },
+  "zauberzeug/nicegui": {
+    "name": "nicegui",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:41:19.961485+00:00"
+  },
+  "letsencrypt/boulder": {
+    "name": "github.com/letsencrypt/boulder",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:41:21.718286+00:00"
+  },
+  "caddyserver/caddy": {
+    "name": "github.com/caddyserver/caddy/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:41:25.749408+00:00"
+  },
+  "apache/maven": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:41:35.291519+00:00"
+  },
+  "briansmith/ring": {
+    "name": "ring",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-19T23:41:50.779609+00:00"
+  },
+  "ruby/ruby": {
+    "name": "ruby",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-19T23:41:59.097260+00:00"
+  },
+  "kubernetes/kubernetes": {
+    "name": "k8s.io/kubernetes",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:42:01.480547+00:00"
+  },
+  "apache/httpd": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:42:06.827576+00:00"
+  },
+  "etcd-io/etcd": {
+    "name": "go.etcd.io/etcd/v3",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:42:25.975047+00:00"
+  },
+  "astral-sh/uv": {
+    "name": "uv",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:42:27.967008+00:00"
+  },
+  "meteor/meteor": {
+    "name": "meteor",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:42:29.833357+00:00"
+  },
+  "prisma/prisma": {
+    "name": "dev-env",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:42:49.569199+00:00"
+  },
+  "eclipse/jetty.project": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:43:06.149288+00:00"
+  },
+  "xwiki/xwiki-platform": {
+    "name": "@xwiki/platform",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:43:15.102619+00:00"
+  },
+  "CycloneDX/cyclonedx-cli": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:43:17.308823+00:00"
+  },
+  "hashicorp/terraform": {
+    "name": "github.com/hashicorp/terraform",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:43:33.272763+00:00"
+  },
+  "google/osv-scanner": {
+    "name": "github.com/google/osv-scanner/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:43:47.627213+00:00"
+  },
+  "vendurehq/vendure": {
+    "name": "vendure",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:43:53.596051+00:00"
+  },
+  "torvalds/linux": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:44:00.546680+00:00"
+  },
+  "woodpecker-ci/woodpecker": {
+    "name": "go.woodpecker-ci.org/woodpecker/v3",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:44:10.002082+00:00"
+  },
+  "anchore/grype": {
+    "name": "github.com/anchore/grype",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:44:13.241870+00:00"
+  },
+  "apache/struts": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:44:47.005583+00:00"
+  },
+  "apache/tomcat": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:44:47.836485+00:00"
+  },
+  "python-poetry/poetry": {
+    "name": "poetry",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:44:49.819830+00:00"
+  },
+  "jedisct1/libsodium": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:44:53.342713+00:00"
+  },
+  "apache/thrift": {
+    "name": "thrift",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:45:10.652337+00:00"
+  },
+  "open-telemetry/opentelemetry-js": {
+    "name": "opentelemetry",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:45:57.046993+00:00"
+  },
+  "rails/rails": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:46:05.885620+00:00"
+  },
+  "WordPress/WordPress": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:46:38.092177+00:00"
+  },
+  "argoproj/argo-cd": {
+    "name": "github.com/argoproj/argo-cd/v3",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:47:08.782954+00:00"
+  },
+  "nlohmann/json": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:47:25.369111+00:00"
+  },
+  "composer/composer": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:47:33.643645+00:00"
+  },
+  "gradle/gradle": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:47:34.513078+00:00"
+  },
+  "labstack/echo": {
+    "name": "github.com/labstack/echo/v5",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:48:53.774841+00:00"
+  },
+  "bettercap/bettercap": {
+    "name": "github.com/bettercap/bettercap/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:49:24.343452+00:00"
+  },
+  "nestjs/nest": {
+    "name": "@nestjs/core",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T23:49:27.752665+00:00"
+  },
+  "mitmproxy/mitmproxy": {
+    "name": "mitmproxy",
+    "ecosystem": "pypi",
+    "source": "pyproject.toml",
+    "resolved_at": "2026-05-19T23:50:11.004355+00:00"
+  },
+  "nginx/nginx": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:50:37.631754+00:00"
+  },
+  "cakephp/cakephp": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T23:51:01.104679+00:00"
+  },
+  "moby/moby": {
+    "name": "github.com/moby/moby/v2",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:51:08.003393+00:00"
+  },
+  "prometheus/prometheus": {
+    "name": "github.com/prometheus/prometheus",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:51:29.567685+00:00"
+  },
+  "rook/rook": {
+    "name": "github.com/rook/rook",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:51:52.794462+00:00"
+  },
+  "gogs/gogs": {
+    "name": "gogs.io/gogs",
+    "ecosystem": "go",
+    "source": "go.mod",
+    "resolved_at": "2026-05-19T23:52:58.378845+00:00"
   }
 }
