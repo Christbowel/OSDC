@@ -1,0 +1,32 @@
+name: Force Sync Branch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  force-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Récupère tout l'historique
+
+      - name: Force pull and align
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "Christbowel"
+          git config user.email "96427513+Christbowel@users.noreply.github.com"
+          
+          # On force la synchronisation avec le serveur
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+          
+          echo "$(date)" > .github/sync_trigger.txt
+          git add .github/sync_trigger.txt
+          git commit -m "chore: force sync repository baseline"
+          git push origin main
