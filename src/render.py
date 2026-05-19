@@ -1,5 +1,6 @@
 import json
 import re
+import shutil
 from datetime import date
 from pathlib import Path
 from functools import lru_cache
@@ -15,6 +16,9 @@ from src.db import (
 
 
 SEVERITY_ORDER = {"CRITICAL": 0, "HIGH": 1, "MODERATE": 2, "MEDIUM": 2, "LOW": 3}
+
+ENRICH_REACH_DIR = DATA_DIR / "enrichments" / "reach"
+DOCS_ENRICH_DIR = DOCS_DIR / "data" / "enrichments"
 
 
 def init_renderer() -> Environment:
@@ -51,6 +55,41 @@ def _clean_text(raw) -> str:
     return str(raw).strip()
 
 
+def _load_reach_index() -> dict:
+    index = {}
+    if not ENRICH_REACH_DIR.exists():
+        return index
+    for p in ENRICH_REACH_DIR.iterdir():
+        if not p.suffix == ".json":
+            continue
+        try:
+            data = json.loads(p.read_text())
+            rid = data.get("id")
+            if rid:
+                index[rid] = data
+        except json.JSONDecodeError:
+            continue
+    return index
+
+
+def _summarize_reach(reach: dict) -> dict:
+    if not reach:
+        return {}
+    br = reach.get("blast_radius") or {}
+    dl = reach.get("downloads") or {}
+    dp = reach.get("dependents") or {}
+    pkg = reach.get("package") or {}
+    return {
+        "tier": br.get("tier", "UNKNOWN"),
+        "score": br.get("score", 0),
+        "dl_weekly": dl.get("weekly", 0),
+        "dep_direct": dp.get("direct", 0),
+        "dep_indirect": dp.get("indirect", 0),
+        "pkg_name": pkg.get("name"),
+        "pkg_eco": pkg.get("ecosystem"),
+    }
+
+
 def _write_json(name: str, records: list[dict]):
     out_dir = DOCS_DIR / "data"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -65,11 +104,24 @@ def _write_json(name: str, records: list[dict]):
     )
 
 
-def _render_shell(axis: str, axis_title: str, axis_sub: str, out_filename: str):
+def _render_shell(template_name: str, out_filename: str, **context):
     env = init_renderer()
-    template = env.get_template("app.html.j2")
-    html = template.render(axis=axis, axis_title=axis_title, axis_sub=axis_sub)
+    template = env.get_template(template_name)
+    html = template.render(**context)
     (DOCS_DIR / out_filename).write_text(html, encoding="utf-8")
+
+
+def _copy_enrichments_to_docs():
+    src = DATA_DIR / "enrichments"
+    if not src.exists():
+        return
+    DOCS_ENRICH_DIR.mkdir(parents=True, exist_ok=True)
+    reach_src = src / "reach"
+    if reach_src.exists():
+        reach_dst = DOCS_ENRICH_DIR / "reach"
+        if reach_dst.exists():
+            shutil.rmtree(reach_dst)
+        shutil.copytree(reach_src, reach_dst)
 
 
 def render_daily_patch(target_date: str, advisories: list[dict]):
@@ -122,9 +174,11 @@ def render_readme():
 def render_html_index():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     advisories = get_all_advisories()
+    reach_index = _load_reach_index()
+
     records = []
     for a in advisories:
-        records.append({
+        rec = {
             "id": a["id"],
             "url": a.get("commit_url", ""),
             "repo": a.get("repo", ""),
@@ -136,20 +190,26 @@ def render_html_index():
             "cve": a.get("cve_id", ""),
             "package": a.get("package_name", ""),
             "summary": (a.get("root_cause") or a.get("fix_summary") or "")[:280],
-        })
+        }
+        if a["id"] in reach_index:
+            rec["reach"] = _summarize_reach(reach_index[a["id"]])
+        records.append(rec)
     _write_json("advisories", records)
     _render_shell(
-        "advisories",
-        "Advisories",
-        "Publicly disclosed vulnerabilities with linked fix commits, analyzed by Gemini.",
+        "app.html.j2",
         "index.html",
+        axis="advisories",
+        axis_title="Advisories",
+        axis_sub="Publicly disclosed vulnerabilities with linked fix commits, analyzed by Gemini.",
     )
 
 
 def render_silent_page():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     results_path = DATA_DIR / "silent_results.jsonl"
+    reach_index = _load_reach_index()
     records = []
+
     if results_path.exists():
         with open(results_path) as f:
             for line in f:
@@ -160,7 +220,7 @@ def render_silent_page():
                     s = json.loads(line)
                 except json.JSONDecodeError:
                     continue
-                records.append({
+                rec = {
                     "sha": s.get("commit_sha", ""),
                     "url": s.get("commit_url", ""),
                     "repo": s.get("repo", ""),
@@ -170,25 +230,32 @@ def render_silent_page():
                     "msg": (s.get("message") or "")[:240],
                     "fp": s.get("fingerprint_match"),
                     "top_file": s.get("top_file", ""),
-                })
+                }
+                if s.get("commit_sha") in reach_index:
+                    rec["reach"] = _summarize_reach(reach_index[s["commit_sha"]])
+                records.append(rec)
+
     records.sort(key=lambda r: r["score"], reverse=True)
     _write_json("silent", records)
     _render_shell(
-        "silent",
-        "Silent Patches",
-        "Security fixes pushed to high-value repos without a public advisory.",
+        "app.html.j2",
         "silent.html",
+        axis="silent",
+        axis_title="Silent Patches",
+        axis_sub="Security fixes pushed to high-value repos without a public advisory.",
     )
 
 
 def render_threats_page():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     advisories = get_all_advisories()
+    reach_index = _load_reach_index()
     records = []
+
     for a in advisories:
         if a.get("cve_id"):
             continue
-        records.append({
+        rec = {
             "id": a["id"],
             "url": a.get("commit_url", ""),
             "repo": a.get("repo", ""),
@@ -199,19 +266,31 @@ def render_threats_page():
             "pattern": a.get("pattern_id", ""),
             "package": a.get("package_name", ""),
             "summary": (a.get("root_cause") or a.get("fix_summary") or "")[:280],
-        })
+        }
+        if a["id"] in reach_index:
+            rec["reach"] = _summarize_reach(reach_index[a["id"]])
+        records.append(rec)
+
     _write_json("threats", records)
     _render_shell(
-        "threats",
-        "No-CVE Threats",
-        "GHSA advisories without an assigned CVE — silent disclosures.",
+        "app.html.j2",
         "threats.html",
+        axis="threats",
+        axis_title="No-CVE Threats",
+        axis_sub="GHSA advisories without an assigned CVE — silent disclosures.",
     )
+
+
+def render_detail_shell():
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    _render_shell("detail.html.j2", "detail.html")
 
 
 def render_all(target_date: str, analyzed_advisories: list[dict]):
     render_daily_patch(target_date, analyzed_advisories)
     render_readme()
+    _copy_enrichments_to_docs()
     render_html_index()
     render_silent_page()
     render_threats_page()
+    render_detail_shell()
