@@ -7,6 +7,7 @@ from src.db import (
 from src.render import (
     render_readme, render_html_index, render_daily_patch,
     render_silent_page, render_threats_page,
+    render_detail_shell, _copy_enrichments_to_docs,
 )
 
 
@@ -45,6 +46,9 @@ def run():
     render_readme()
     print("  Rendered README.md")
 
+    _copy_enrichments_to_docs()
+    print("  Copied enrichments to docs/data/enrichments/")
+
     render_html_index()
     print("  Rendered docs/index.html + docs/data/advisories.json")
 
@@ -53,6 +57,9 @@ def run():
 
     render_threats_page()
     print("  Rendered docs/threats.html + docs/data/threats.json")
+
+    render_detail_shell()
+    print("  Rendered docs/detail.html (intel briefing shell)")
 
     generate_badge(stats)
 
