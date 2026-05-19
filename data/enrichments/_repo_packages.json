@@ -1,0 +1,32 @@
+{
+  "verbb/formie": {
+    "name": "formie-cp",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T22:44:38.132884+00:00"
+  },
+  "jwt/ruby-jwt": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T22:44:45.489597+00:00"
+  },
+  "shopperlabs/shopper": {
+    "name": "laravel-shopper",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-19T22:44:48.964849+00:00"
+  },
+  "elixir-ecto/postgrex": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T22:44:54.400936+00:00"
+  },
+  "nimiq/core-rs-albatross": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-19T22:44:58.129597+00:00"
+  }
+}
