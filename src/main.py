@@ -9,7 +9,7 @@ from src.fetch import fetch_advisories, fetch_commit_diff
 from src.diff_filter import filter_diff
 from src.analyze import analyze_advisory
 from src.db import (
-    rebuild_from_jsonl, advisory_exists, insert_analysis,
+    rebuild_from_jsonl, existing_ids, insert_analysis,
     insert_pending, export_to_jsonl, get_stats,
 )
 
@@ -74,9 +74,8 @@ def run():
     advisories = fetch_advisories(last_run)
     print(f"Found {len(advisories)} advisories with patch commits")
 
-    new_advisories = [
-        a for a in advisories if not advisory_exists(a["ghsa_id"])
-    ]
+    seen = existing_ids([a["ghsa_id"] for a in advisories])
+    new_advisories = [a for a in advisories if a["ghsa_id"] not in seen]
     print(f"New (not yet processed): {len(new_advisories)}")
 
     calls_remaining = MAX_DAILY_CALLS - advisory_count
