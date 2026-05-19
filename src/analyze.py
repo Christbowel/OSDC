@@ -1,9 +1,11 @@
 import json
+import re
 import time
 import requests
 from typing import Optional
 from src.config import (
     GEMINI_API_KEY, GEMINI_API_URL,
+    OLLAMA_HOST, OLLAMA_MODEL,
     LLM_SYSTEM_PROMPT, LLM_USER_PROMPT_TEMPLATE,
     TAXONOMY_PATH, RETRY_ATTEMPTS, RETRY_BACKOFF,
 )
@@ -40,22 +42,27 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
     )
 
     raw_response = _call_gemini(user_prompt)
+    source = "gemini"
     if not raw_response:
-        print("    DEBUG: _call_gemini returned None")
-        return None
+        raw_response = _call_ollama(user_prompt)
+        source = "ollama" if raw_response else "none"
+
+    if not raw_response:
+        print(f"    DEBUG: no LLM response from any provider")
+        return _stub_unclassified(advisory)
 
     parsed = _parse_llm_response(raw_response)
     if not parsed:
-        print(f"    DEBUG: parse failed, raw response: {raw_response[:300]}")
-        return None
-        
+        print(f"    DEBUG: parse failed ({source}), raw: {raw_response[:300]}")
+        return _stub_unclassified(advisory)
+
     if parsed.get("pattern_id") not in taxonomy_ids:
         parsed["pattern_id"] = "UNCLASSIFIED"
 
     return {
         "ghsa_id": advisory["ghsa_id"],
         "date": advisory["published_at"][:10],
-        "cve_id": "",
+        "cve_id": advisory.get("cve_id", ""),
         "repo": advisory["repo"],
         "language": _ecosystem_to_language(advisory["ecosystem"]),
         "severity": advisory["severity"],
@@ -72,7 +79,31 @@ def analyze_advisory(advisory: dict, filtered_diff: str) -> Optional[dict]:
     }
 
 
+def _stub_unclassified(advisory: dict) -> dict:
+    return {
+        "ghsa_id": advisory["ghsa_id"],
+        "date": advisory["published_at"][:10],
+        "cve_id": advisory.get("cve_id", ""),
+        "repo": advisory["repo"],
+        "language": _ecosystem_to_language(advisory["ecosystem"]),
+        "severity": advisory["severity"],
+        "cvss_score": advisory["cvss_score"],
+        "package_name": advisory["package_name"],
+        "pattern_id": "UNCLASSIFIED",
+        "vuln_type": "",
+        "root_cause": "",
+        "impact": "",
+        "fix_summary": "",
+        "key_diff": "",
+        "confidence": "LOW",
+        "commit_url": advisory["commit_url"],
+    }
+
+
 def _call_gemini(user_prompt: str) -> Optional[str]:
+    if not GEMINI_API_KEY:
+        return None
+
     url = f"{GEMINI_API_URL}?key={GEMINI_API_KEY}"
     payload = {
         "system_instruction": {
@@ -125,16 +156,58 @@ def _call_gemini(user_prompt: str) -> Optional[str]:
 
     return None
 
+
+def _call_ollama(user_prompt: str) -> Optional[str]:
+    if not OLLAMA_HOST:
+        return None
+
+    host = OLLAMA_HOST.rstrip("/")
+    payload = {
+        "model": OLLAMA_MODEL,
+        "prompt": f"{LLM_SYSTEM_PROMPT}\n\n{user_prompt}",
+        "stream": False,
+        "format": "json",
+        "options": {"temperature": 0.2, "num_predict": 4096},
+    }
+
+    try:
+        response = requests.post(f"{host}/api/generate", json=payload, timeout=180)
+        if response.status_code != 200:
+            print(f"    Ollama HTTP {response.status_code}: {response.text[:200]}")
+            return None
+        data = response.json()
+        return data.get("response", "")
+    except requests.RequestException as exc:
+        print(f"    Ollama error: {exc}")
+        return None
+
+
 def _parse_llm_response(raw: str) -> Optional[dict]:
+    if not raw:
+        return None
+
     cleaned = raw.strip()
-    if cleaned.startswith("```"):
-        lines = cleaned.splitlines()
-        cleaned = "\n".join(lines[1:-1])
 
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        return None
+        pass
+
+    fence_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", cleaned, re.DOTALL)
+    if fence_match:
+        try:
+            return json.loads(fence_match.group(1))
+        except json.JSONDecodeError:
+            pass
+
+    brace_match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+    if brace_match:
+        try:
+            return json.loads(brace_match.group(0))
+        except json.JSONDecodeError:
+            return None
+
+    return None
 
 
 def _ecosystem_to_language(ecosystem: str) -> str:
