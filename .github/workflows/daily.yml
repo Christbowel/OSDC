@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: osdc-write
+  cancel-in-progress: false
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -39,13 +43,15 @@ jobs:
       - name: Commit data
         if: always()
         run: |
+          set -e
           git config user.name "Christbowel"
           git config user.email "96427513+Christbowel@users.noreply.github.com"
           git add data/ patches/
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            COMMIT_MSG=$(python -c "
+            exit 0
+          fi
+          COMMIT_MSG=$(python -c "
           import json
           from pathlib import Path
           log_path = Path('data/run_log.json')
@@ -59,6 +65,14 @@ jobs:
           else:
               print('fix: partial run — saving progress')
           " 2>/dev/null || echo "fix: partial run — saving progress")
-            git commit -m "$COMMIT_MSG"
-            git push
-          fi
+          git commit -m "$COMMIT_MSG"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              echo "push ok on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying in $((i*5))s..."
+            sleep $((i*5))
+          done
+          echo "push failed after 5 retries"
+          exit 1
