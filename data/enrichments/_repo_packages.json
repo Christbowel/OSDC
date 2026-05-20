@@ -1186,5 +1186,17 @@
     "ecosystem": "cargo",
     "source": "Cargo.toml",
     "resolved_at": "2026-05-20T10:35:21.067963+00:00"
+  },
+  "shivammathur/setup-php": {
+    "name": "setup-php",
+    "ecosystem": "npm",
+    "source": "package.json",
+    "resolved_at": "2026-05-20T17:15:53.782951+00:00"
+  },
+  "elixir-plug/plug": {
+    "name": null,
+    "ecosystem": null,
+    "source": "not_found",
+    "resolved_at": "2026-05-20T17:15:57.159452+00:00"
   }
 }
