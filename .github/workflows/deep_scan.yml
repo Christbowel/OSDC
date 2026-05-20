@@ -1,0 +1,93 @@
+name: OSDC Deep Scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Repo to scan (owner/name) — e.g. denoland/deno'
+        required: true
+      since:
+        description: 'Scan commits since (YYYY-MM-DD) — blank = beginning'
+        required: false
+        default: ''
+      until:
+        description: 'Scan commits until (YYYY-MM-DD) — blank = now'
+        required: false
+        default: ''
+      max:
+        description: 'Max commits to scan (default 5000)'
+        required: false
+        default: '5000'
+      merge:
+        description: 'Merge suspects into silent_results.jsonl (visible on /silent.html)'
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  deepscan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Echo parameters
+        run: |
+          echo "::group::Deep Scan Parameters"
+          echo "  repo:  ${{ github.event.inputs.repo }}"
+          echo "  since: ${{ github.event.inputs.since || '(beginning)' }}"
+          echo "  until: ${{ github.event.inputs.until || '(now)' }}"
+          echo "  max:   ${{ github.event.inputs.max }}"
+          echo "  merge: ${{ github.event.inputs.merge }}"
+          echo "::endgroup::"
+
+      - name: Run deep scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONUNBUFFERED: "1"
+        run: |
+          ARGS="${{ github.event.inputs.repo }}"
+          if [ -n "${{ github.event.inputs.since }}" ]; then
+            ARGS="$ARGS --since ${{ github.event.inputs.since }}"
+          fi
+          if [ -n "${{ github.event.inputs.until }}" ]; then
+            ARGS="$ARGS --until ${{ github.event.inputs.until }}"
+          fi
+          if [ -n "${{ github.event.inputs.max }}" ]; then
+            ARGS="$ARGS --max ${{ github.event.inputs.max }}"
+          fi
+          if [ "${{ github.event.inputs.merge }}" = "true" ]; then
+            ARGS="$ARGS --merge"
+          fi
+          echo "Running: python -m src.deep_scan $ARGS"
+          python -m src.deep_scan $ARGS
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "Christbowel"
+          git config user.email "96427513+Christbowel@users.noreply.github.com"
+          git add data/deep_scans/ data/silent_results.jsonl
+          if git diff --staged --quiet; then
+            echo "No new suspects found"
+          else
+            REPO_SAFE=$(echo "${{ github.event.inputs.repo }}" | tr '/' '_')
+            COUNT=$(wc -l < "data/deep_scans/${REPO_SAFE}.jsonl" 2>/dev/null || echo "?")
+            git commit -m "feat: deep scan ${{ github.event.inputs.repo }} (${COUNT} total suspects)"
+            git push
+          fi
