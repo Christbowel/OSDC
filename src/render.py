@@ -116,12 +116,13 @@ def _copy_enrichments_to_docs():
     if not src.exists():
         return
     DOCS_ENRICH_DIR.mkdir(parents=True, exist_ok=True)
-    reach_src = src / "reach"
-    if reach_src.exists():
-        reach_dst = DOCS_ENRICH_DIR / "reach"
-        if reach_dst.exists():
-            shutil.rmtree(reach_dst)
-        shutil.copytree(reach_src, reach_dst)
+    for sub in ("reach", "diff"):
+        sub_src = src / sub
+        if sub_src.exists():
+            sub_dst = DOCS_ENRICH_DIR / sub
+            if sub_dst.exists():
+                shutil.rmtree(sub_dst)
+            shutil.copytree(sub_src, sub_dst)
 
 
 def render_daily_patch(target_date: str, advisories: list[dict]):
@@ -189,6 +190,13 @@ def render_html_index():
             "pattern": a.get("pattern_id", ""),
             "cve": a.get("cve_id", ""),
             "package": a.get("package_name", ""),
+            "cwe": a.get("cwe_id", ""),
+            "vuln_type": a.get("vuln_type", ""),
+            "confidence": a.get("confidence", ""),
+            "root_cause": _clean_text(a.get("root_cause", "")),
+            "impact": _clean_text(a.get("impact", "")),
+            "fix_summary": _clean_text(a.get("fix_summary", "")),
+            "key_diff": _clean_diff(a.get("key_diff", "")),
             "summary": (a.get("root_cause") or a.get("fix_summary") or "")[:280],
         }
         if a["id"] in reach_index:
@@ -227,9 +235,15 @@ def render_silent_page():
                     "date": s.get("date", ""),
                     "author": s.get("author", ""),
                     "score": s.get("normalized_score", 0),
+                    "heuristic_score": s.get("heuristic_score", 0),
                     "msg": (s.get("message") or "")[:240],
                     "fp": s.get("fingerprint_match"),
+                    "fp_score": s.get("fingerprint_score", 0),
+                    "fp_tokens": s.get("fingerprint_matched_tokens") or [],
                     "top_file": s.get("top_file", ""),
+                    "top_file_score": s.get("top_file_score", 0),
+                    "signals": s.get("top_file_signals") or [],
+                    "files_changed": s.get("files_changed", 0),
                 }
                 if s.get("commit_sha") in reach_index:
                     rec["reach"] = _summarize_reach(reach_index[s["commit_sha"]])
