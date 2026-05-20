@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: osdc-write
+  cancel-in-progress: false
+
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -36,12 +40,22 @@ jobs:
 
       - name: Commit outputs
         run: |
+          set -e
           git config user.name "Christbowel"
           git config user.email "96427513+Christbowel@users.noreply.github.com"
           git add README.md docs/
           if git diff --staged --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "docs: update README and GitHub Pages"
-            git push
+            exit 0
           fi
+          git commit -m "docs: update README and GitHub Pages"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              echo "push ok on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying in $((i*5))s..."
+            sleep $((i*5))
+          done
+          echo "push failed after 5 retries"
+          exit 1
