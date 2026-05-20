@@ -1174,5 +1174,17 @@
     "ecosystem": "go",
     "source": "go.mod",
     "resolved_at": "2026-05-19T23:52:58.378845+00:00"
+  },
+  "hyperium/hyper": {
+    "name": "hyper",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-20T10:35:13.592405+00:00"
+  },
+  "tikv/tikv": {
+    "name": "tikv",
+    "ecosystem": "cargo",
+    "source": "Cargo.toml",
+    "resolved_at": "2026-05-20T10:35:21.067963+00:00"
   }
 }
