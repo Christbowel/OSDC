@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       limit:
-        description: 'Max new enrichments per run (blank = no limit)'
+        description: 'Max new enrichments per worker per run (blank = no limit)'
         required: false
         default: ''
 
@@ -16,7 +16,7 @@ permissions:
 jobs:
   enrich:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout
@@ -43,6 +43,17 @@ jobs:
             python -m src.enrich_reach
           fi
 
+      - name: Run diff enrichment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONUNBUFFERED: "1"
+        run: |
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            python -m src.enrich_diff "${{ github.event.inputs.limit }}"
+          else
+            python -m src.enrich_diff
+          fi
+
       - name: Commit enrichments
         run: |
           git config user.name "Christbowel"
@@ -51,7 +62,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new enrichments"
           else
-            COUNT=$(git diff --staged --name-only | grep -c "data/enrichments/reach/" || echo 0)
-            git commit -m "feat: reach enrichment +${COUNT} records"
+            REACH=$(git diff --staged --name-only | grep -c "data/enrichments/reach/" || true)
+            DIFF=$(git diff --staged --name-only | grep -c "data/enrichments/diff/" || true)
+            git commit -m "feat: enrichment +${REACH} reach +${DIFF} diff"
             git push
           fi
