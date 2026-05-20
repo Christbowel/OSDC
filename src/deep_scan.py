@@ -101,7 +101,7 @@ def fetch_all_commits(repo: str, since: str = None, until: str = None, per_page:
     return all_commits
 
 
-def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int = 5000):
+def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int = 5000, merge_to_silent: bool = False):
     now = datetime.now(timezone.utc)
     safe_repo = repo.replace("/", "_")
 
@@ -196,6 +196,7 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
             "heuristic_normalized": heuristic_result["normalized_score"],
             "fingerprint_match": best_fp["pattern_name"] if best_fp else None,
             "fingerprint_score": round(fp_score, 4),
+            "fingerprint_matched_tokens": (best_fp["matched_add_tokens"][:5] if best_fp else []),
             "top_file": top_file.get("file", ""),
             "top_file_score": top_file.get("score", 0),
             "top_file_signals": top_file.get("signals", []),
@@ -228,6 +229,29 @@ def deep_scan(repo: str, since: str = None, until: str = None, max_commits: int 
         top = sorted(suspects, key=lambda s: s["normalized_score"], reverse=True)[:10]
         for s in top:
             print(f"  score={s['normalized_score']:5.1f}  {s['commit_sha'][:8]}  {s['message'][:60]}")
+
+        if merge_to_silent:
+            silent_path = DATA_DIR / "silent_results.jsonl"
+            existing = set()
+            if silent_path.exists():
+                with open(silent_path, "r") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            existing.add(json.loads(line).get("commit_sha", ""))
+                        except json.JSONDecodeError:
+                            continue
+            merged = 0
+            with open(silent_path, "a") as f:
+                for s in suspects:
+                    if s["commit_sha"] in existing:
+                        continue
+                    f.write(json.dumps(s, ensure_ascii=False) + "\n")
+                    existing.add(s["commit_sha"])
+                    merged += 1
+            print(f"\nMerged into silent_results.jsonl: {merged} new records")
             if s["top_file_signals"]:
                 print(f"           signals: {', '.join(s['top_file_signals'][:5])}")
 
@@ -242,12 +266,14 @@ if __name__ == "__main__":
         print("  python -m src.deep_scan owner/repo --since 2025-01-01")
         print("  python -m src.deep_scan owner/repo --since 2024-01-01 --until 2025-01-01")
         print("  python -m src.deep_scan owner/repo --max 1000")
+        print("  python -m src.deep_scan owner/repo --merge")
         sys.exit(1)
 
     repo = sys.argv[1]
     since = None
     until = None
     max_commits = 5000
+    merge_to_silent = False
 
     args = sys.argv[2:]
     i = 0
@@ -265,7 +291,10 @@ if __name__ == "__main__":
         elif args[i] == "--max" and i + 1 < len(args):
             max_commits = int(args[i + 1])
             i += 2
+        elif args[i] == "--merge":
+            merge_to_silent = True
+            i += 1
         else:
             i += 1
 
-    deep_scan(repo, since=since, until=until, max_commits=max_commits)
+    deep_scan(repo, since=since, until=until, max_commits=max_commits, merge_to_silent=merge_to_silent)
