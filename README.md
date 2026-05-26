@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-519-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-520-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -784,7 +784,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 29x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -1054,6 +1054,55 @@ for member in zip_file.namelist():
 <p><b>Fix</b> : The patch ensures that newly created databases inherit the server&#39;s security configuration. It also refines the logic for retrieving database group configurations, specifically for wildcard (&#39;*&#39;) entries, to correctly merge or return specific database groups, preventing unintended authorization bypasses.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
+</p>
+<hr>
+<h3>GHSA-xq3r-2qv5-vqqm</h3>
+<p>
+<code>CRITICAL 0.0</code> · 2026-05-26 · Java<br>
+<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 30x across ecosystem
+</p>
+<p><b>Root cause</b> : The application used `Paths.get(fullPath).normalize()` to prevent path traversal. However, it did not correctly handle leading slashes in the `resourcePath` parameter. When a resource path started with one or more leading slashes (e.g., &#34;//../&#34;), `Paths.get().normalize()` would treat it differently than intended, allowing an attacker to bypass the `startsWith(&#34;../&#34;)` check and access resources outside the intended directory.</p>
+<p><b>Impact</b> : An attacker could use specially crafted `resources` parameters in `ssx` and `jsx` endpoints to read arbitrary files on the server&#39;s file system, potentially leading to information disclosure or further compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/xwiki-commons-core/xwiki-commons-classloader/xwiki-commons-classloader-api/src/main/java/org/xwiki/classloader/internal/ClassLoaderUtils.java
++++ b/xwiki-commons-core/xwiki-commons-classloader/xwiki-commons-classloader-api/src/main/java/org/xwiki/classloader/internal/ClassLoaderUtils.java
+@@ -47,20 +47,30 @@ private static String resolveResourceName(String prefixPath, String resourcePath
+             fullPath = resourcePath;
+ 
+             // Prevent access to resources from other directories
+-            // TODO: find or implement something closed to Servlet ClassLoader behavior to be as accurate as possible
+-            // and be able to reuse the normalized result
+-            Path normalizedResource = Paths.get(fullPath).normalize();
++            // On Tomcat, all leading / have no effect, contrary to Paths#normalize()
++            int index = 0;
++            while (index &lt; fullPath.length() &amp;&amp; fullPath.charAt(index) == &#39;/&#39;) {
++                ++index;
++            }
++            String normalizedPath = fullPath.substring(index);
++
++            Path normalizedResource = Paths.get(normalizedPath).normalize();
+             if (normalizedResource.startsWith(&#34;../&#34;)) {
+                 throw new IllegalArgumentException(String.format(
+                     &#34;The provided resource name [%s] is trying to navigate out of the mandatory root location&#34;,
+-                    resourcePath));
++                    fullPath));
+             }
+         } else {
+             fullPath = prefixPath + resourcePath;
+ 
+             // Prevent access to resources from other directories
+             // TODO: find or implement something closed to Servlet ClassLoader behavior to be as accurate as possible
+-            // and be able to reuse the normalized result
++            // and be able to reuse the normalized result. Not so easy since the various applications servers can use
++            // different logics.
+             Path normalizedResource = Paths.get(fullPath).normalize();
+             if (!normalizedResource.startsWith(prefixPath)) {
+                 throw new IllegalArgumentException(String.format(</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the `resolveResourceName` method to explicitly remove all leading slashes from the `resourcePath` before normalization. This ensures that `Paths.get().normalize()` behaves consistently and the subsequent `startsWith(&#34;../&#34;)` check correctly identifies and prevents path traversal attempts.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-xq3r-2qv5-vqqm">Advisory</a> · <a href="https://github.com/xwiki/xwiki-commons/commit/a979cafd89f6a9c9c0b9ab19744d672df64429bf">Commit</a>
 </p>
 <hr>
 <h3>GHSA-m77w-p5jj-xmhg</h3>
@@ -1569,152 +1618,6 @@ After:
 <a href="https://github.com/advisories/GHSA-r945-h4vm-h736">Advisory</a> · <a href="https://github.com/getgrav/grav-plugin-api/commit/26f529c7d438c73343e82311fb095caeaf1a6116">Commit</a>
 </p>
 <hr>
-<h3>GHSA-xhw7-j96h-c3g5</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-05 · C#<br>
-<code>YAFNET.Core</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 23x across ecosystem
-</p>
-<p><b>Root cause</b> : The `PageSecurityCheckAttribute` was removed from the `ForumPage` base class, which meant that the security checks previously performed by this attribute were no longer automatically applied to pages inheriting from `ForumPage`. The logic for checking admin page access was moved into an `OnPageHandlerExecutionAsync` override, but the critical check for `BoardContext.Current.IsAdmin` was not sufficient on its own to prevent unauthorized access to specific admin functionalities like `/Admin/RunSql` without proper `AdminPageUserAccess` verification.</p>
-<p><b>Impact</b> : An attacker could bypass authorization checks for admin pages, specifically gaining access to the `/Admin/RunSql` endpoint. This allowed for blind SQL execution, potentially leading to data exfiltration, modification, or other severe database compromises.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/yafsrc/YAFNET.Core/BasePages/ForumPage.cs
-+++ b/yafsrc/YAFNET.Core/BasePages/ForumPage.cs
-@@ -22,20 +22,25 @@
-  * under the License.
-  */
- 
-+using YAF.Core.Model;
-+
- namespace YAF.Core.BasePages;
- 
-+using System.Threading.Tasks;
-+
- using Microsoft.AspNetCore.Mvc.RazorPages;
- using Microsoft.AspNetCore.Mvc.Rendering;
- 
- using YAF.Core.Filters;
- using YAF.Core.Handlers;
- using YAF.Types.Attributes;
-+using YAF.Types.Models;
- 
- /// &lt;summary&gt;
- /// The class that all YAF forum pages are derived from.
- /// &lt;/summary&gt;
- [EnableRateLimiting(&#34;fixed&#34;)]
--[PageSecurityCheck]
-+//[PageSecurityCheck]
- [UserSuspendCheck]
- public abstract class ForumPage : PageModel,
-                                   IHaveServiceLocator,
-@@ -47,6 +52,105 @@ public abstract class ForumPage : PageModel,
-     /// &lt;/summary&gt;
-     private readonly UnicodeEncoder unicodeEncoder;
- 
-+    /// &lt;summary&gt;
-+    /// Called asynchronously before the handler method is invoked, after model binding is complete.
-+    /// &lt;/summary&gt;
-+    /// &lt;param name=&#34;context&#34;&gt;The &lt;see cref=&#34;T:Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext&#34; /&gt;.&lt;/param&gt;
-+    /// &lt;param name=&#34;next&#34;&gt;The &lt;see cref=&#34;T:Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutionDelegate&#34; /&gt;. Invoked to execute the next page filter or the handler method itself.&lt;/param&gt;
-+    public async override Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
-+    {
-+        // no security features for login/logout pages
-+        if (BoardContext.Current.CurrentForumPage.IsAccountPage)
-+        {
-+            await next.Invoke();
-+        }
-+
-+        // check if login is required
-+        if (BoardContext.Current.BoardSettings.RequireLogin &amp;&amp; BoardContext.Current.IsGuest &amp;&amp;
-+            BoardContext.Current.CurrentForumPage.IsProtected)
-+        {
-+            // redirect to login page if login is required
-+            var result = this.Get&lt;IPermissions&gt;().HandleRequest(ViewPermissions.RegisteredUsers);
-+
-+            if (result != null)
-+            {
-+                context.Result = result;
-+                return;
-+            }
-+        }
-+
-+        // check if it&#39;s a &#34;registered user only page&#34; and check permissions.
-+        if (BoardContext.Current.CurrentForumPage.IsRegisteredPage &amp;&amp;
-+            BoardContext.Current.CurrentForumPage.AspNetUser == null)
-+        {
-+            var result = this.Get&lt;IPermissions&gt;().HandleRequest(ViewPermissions.RegisteredUsers);
-+
-+            if (result != null)
-+            {
-+                context.Result = result;
-+
-+                return;
-+            }
-+        }
-+
-+        // Handle admin pages
-+        if (BoardContext.Current.CurrentForumPage.IsAdminPage)
-+        {
-+            if (!BoardContext.Current.IsAdmin)
-+            {
-+                context.Result = this.Get&lt;ILinkBuilder&gt;().AccessDenied();
-+                return;
-+            }
-+
-+            // Load the page access list.
-+            var hasAccess = this.GetRepository&lt;AdminPageUserAccess&gt;().HasAccess(
-+                BoardContext.Current.PageUserID,
-+                BoardContext.Current.CurrentForumPage.PageName.ToString());
-+
-+            // Check access rights to the page.
-+            if (!BoardContext.Current.PageUser.UserFlags.IsHostAdmin &amp;&amp;
-+                (!BoardContext.Current.CurrentForumPage.PageName.ToString().IsSet() || !hasAccess))
-+            {
-+                context.Result = this.Get&lt;ILinkBuilder&gt;()
-+                    .RedirectInfoPage(InfoMessage.HostAdminPermissionsAreRequired);
-+
-+                return;
-+            }
-+        }
-+
-+        // handle security features...
-+        if (BoardContext.Current.CurrentForumPage.PageName == ForumPages.Account_Register &amp;&amp;
-+            BoardContext.Current.BoardSettings.DisableRegistrations)
-+        {
-+            context.Result = this.Get&lt;ILinkBuilder&gt;().AccessDenied();
-+
-+            return;
-+        }
-+
-+        // check access permissions for specific pages...
-+        var resultPermission = BoardContext.Current.CurrentForumPage.PageName switch
-+        {
-+            ForumPages.ActiveUsers =&gt; this.Get&lt;IPermissions&gt;()
-+                .HandleRequest((ViewPermissions)BoardContext.Current.BoardSettings.ActiveUsersViewPermissions),
-+            ForumPages.Members =&gt; this.Get&lt;IPermissions&gt;()
-+                .HandleRequest((ViewPermissions)BoardContext.Current.BoardSettings.MembersListViewPermissions),
-+            ForumPages.UserProfile or ForumPages.Albums or ForumPages.Album =&gt; this.Get&lt;IPermissions&gt;()
-+                .HandleRequest((ViewPermissions)BoardContext.Current.BoardSettings.ProfileViewPermissions),
-+            ForumPages.Search =&gt; this.Get&lt;IPermissions&gt;()
-+                .HandleRequest((ViewPermissions)BoardContext.Current.BoardSettings.SearchPermissions),
-+            _ =&gt; null
-+        };
-+
-+        if (resultPermission != null)
-+        {
-+            context.Result = resultPermission;
-+
-+            return;
-+        }
-+
-+        await next.Invoke();
-+    }</pre>
-</details>
-<p><b>Fix</b> : The `PageSecurityCheckAttribute` was removed, and its logic was integrated directly into the `OnPageHandlerExecutionAsync` method of the `ForumPage` base class. This ensures that all necessary security checks, including `RequireLogin`, `IsRegisteredPage`, and `IsAdminPage` validations, are performed consistently before page handlers are executed. Specifically, the admin page access logic now correctly verifies both `BoardContext.Current.IsAdmin` and `AdminPageUserAccess` for non-host administrators.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-xhw7-j96h-c3g5">Advisory</a> · <a href="https://github.com/YAFNET/YAFNET/commit/27f7e671f93698f7e014d5d0fb88320248b8aa20">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1750,7 +1653,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>519</td></tr>
+<tr><td>Total advisories</td><td>520</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-05-26</td></tr>
