@@ -1,1 +1,1 @@
-{"id":"GHSA-q8x4-x7mp-5vg2","axis":"advisories","repo":"elixir-plug/plug_cowboy","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-19T23:29:32.983797+00:00"}
+{"id":"GHSA-q8x4-x7mp-5vg2","axis":"advisories","repo":"elixir-plug/plug_cowboy","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:49.617932+00:00"}

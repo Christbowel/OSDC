@@ -1,1 +1,1 @@
-{"id":"GHSA-qf4g-9fqq-mmm7","axis":"advisories","repo":"absinthe-graphql/absinthe","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-19T23:28:30.532334+00:00"}
+{"id":"GHSA-qf4g-9fqq-mmm7","axis":"advisories","repo":"absinthe-graphql/absinthe","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:05:48.057244+00:00"}
