@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-527-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-532-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -145,7 +145,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 21x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -176,7 +176,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 4x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 5x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -341,7 +341,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 66x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 67x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -539,7 +539,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 66x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 67x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -610,7 +610,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 66x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 67x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -864,7 +864,7 @@ After:
 <h3>GHSA-w48r-jppp-rcfw</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 21x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from multiple issues. Firstly, the `unZip` function did not validate archive entry names, allowing &#39;Zip Slip&#39; attacks where malicious ZIP files could write files outside the intended directory using path traversal sequences (e.g., `../`). Secondly, the `attribute` function in `MediaObjectTrait` allowed arbitrary attribute names, which could be exploited for XSS by injecting event handlers (e.g., `onerror`) or other dangerous attributes. Lastly, the `detectXss` function&#39;s regex for `on_events` was bypassable, and the SVG parsing in `VectorImageMedium` was vulnerable to XXE attacks due to not stripping DOCTYPE/ENTITY declarations and lacking `LIBXML_NONET`.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution by uploading a crafted plugin ZIP file that writes PHP files to arbitrary locations. They could also inject malicious JavaScript via XSS in image attributes or potentially perform server-side request forgery (SSRF) or information disclosure via XXE in SVG files.</p>
@@ -1014,7 +1014,7 @@ After:
 <h3>GHSA-m5gr-86j6-99jp</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 21x across ecosystem
+<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -1321,7 +1321,7 @@ for member in zip_file.namelist():
 <h3>GHSA-vj3m-2g9h-vm4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 66x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 67x across ecosystem
 </p>
 <p><b>Root cause</b> : The system was vulnerable to multiple issues: Zip Slip due to improper validation of archive entry names during extraction, XSS due to insufficient sanitization of user-controlled attribute names in media objects and a weak XSS detection regex, and XXE due to parsing untrusted SVG files without disabling external entity loading.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (Zip Slip), inject malicious scripts (XSS), or read local files and potentially perform server-side requests (XXE). These could lead to remote code execution, data theft, or website defacement.</p>
@@ -1481,7 +1481,7 @@ After:
 <h3>GHSA-2cqq-rpvq-g5qj</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-07 · Java<br>
-<code>org.openidentityplatform.openam:openam</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 5x across ecosystem
+<code>org.openidentityplatform.openam:openam</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 6x across ecosystem
 </p>
 <p><b>Root cause</b> : The code uses `ObjectInputStream` to deserialize data without proper validation or sanitization, allowing an attacker to execute arbitrary code.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to execute arbitrary code on the server, potentially leading to full control of the system.</p>
@@ -1499,6 +1499,29 @@ After:
 <p><b>Fix</b> : The patch adds a check for the class name during deserialization to prevent untrusted objects from being deserialized.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
+</p>
+<hr>
+<h3>GHSA-h4ph-crvj-9h92</h3>
+<p>
+<code>HIGH 8.8</code> · 2026-05-27 · PHP<br>
+<code>pimcore/admin-ui-classic-bundle</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 6x across ecosystem
+</p>
+<p><b>Root cause</b> : The application was using `unserialize()` on user-controlled or attacker-influenced data read from a configuration file without restricting the allowed classes. This allowed an attacker to inject arbitrary PHP objects into the application&#39;s scope.</p>
+<p><b>Impact</b> : An attacker could achieve remote code execution (RCE) by crafting a malicious serialized object that, when deserialized, would trigger dangerous magic methods or object instantiation leading to arbitrary code execution.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-	                $dashboards = Serialize::unserialize(file_get_contents($this-&gt;getConfigFile()));
+-	                if (!empty($dashboards)) {
+-	                    $this-&gt;dashboards = $dashboards;
++	                $dashboardFile = file_get_contents($this-&gt;getConfigFile());
++	                if ($dashboardFile !== false) {
++	                    $dashboards = unserialize($dashboardFile, [&#39;allowed_classes&#39; =&gt; false]);
++	                    if (is_array($dashboards) &amp;&amp; !empty($dashboards)) {
++	                        $this-&gt;dashboards = $dashboards;</pre>
+</details>
+<p><b>Fix</b> : The patch adds a check to ensure the file content is not false before attempting to unserialize it. More importantly, it restricts the `unserialize()` function to only allow arrays by setting `allowed_classes` to `false`, preventing the instantiation of arbitrary objects.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-h4ph-crvj-9h92">Advisory</a> · <a href="https://github.com/pimcore/admin-ui-classic-bundle/commit/80e57a23d9e19574eddfe9b08e8f26785b2b0d90">Commit</a>
 </p>
 <hr>
 <h3>GHSA-482j-2pq6-q5w4</h3>
@@ -1576,39 +1599,6 @@ After:
 <a href="https://github.com/advisories/GHSA-q4p8-8j9m-8hxj">Advisory</a> · <a href="https://github.com/electerm/electerm/commit/24ce7103e264cffe6eb5476c0506a2379e6f8333">Commit</a>
 </p>
 <hr>
-<h3>GHSA-xwqr-rcqg-22mr</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-06 · PHP<br>
-<code>flightphp/core</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 11x across ecosystem
-</p>
-<p><b>Root cause</b> : The SimplePdo class in FlightPHP did not validate table and column names provided by user input before interpolating them directly into SQL queries. This allowed an attacker to inject arbitrary SQL code by manipulating these identifiers.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the database, leading to data exfiltration, modification, or deletion, and potentially full compromise of the database.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/flight/database/SimplePdo.php
-+++ b/flight/database/SimplePdo.php
-@@ -55,6 +55,17 @@ public function __construct(
-         }
-     }
- 
-+    protected function requireSafeIdentifier(string $identifier): void
-+    {
-+        if (!preg_match(&#39;/^[A-Za-z_][A-Za-z0-9_]*$/&#39;, $identifier)) {
-+            throw new PDOException(&#34;Unsafe SQL identifier: &#39;$identifier&#39;&#34;);
-+        }
-+    }
-+
-     public function insert(string $table, array $data): string
-     {
-+        $this-&gt;requireSafeIdentifier($table);
-+
-         $isBulk = isset($data[0]) &amp;&amp; is_array($data[0]);</pre>
-</details>
-<p><b>Fix</b> : A new `requireSafeIdentifier` method was added to the SimplePdo class to validate table and column names using a regular expression. This method is now called before any table or column name is used in `insert`, `update`, or `delete` SQL queries, preventing malicious input from being injected.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-xwqr-rcqg-22mr">Advisory</a> · <a href="https://github.com/flightphp/core/commit/b8dd23aaa828cb289fa3c84e75b2a3717cab50b0">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1644,7 +1634,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>527</td></tr>
+<tr><td>Total advisories</td><td>532</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-05-27</td></tr>
