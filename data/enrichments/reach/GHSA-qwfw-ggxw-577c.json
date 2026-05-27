@@ -1,1 +1,1 @@
-{"id":"GHSA-qwfw-ggxw-577c","axis":"advisories","repo":"elixir-webrtc/ex_webrtc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-19T23:29:04.570678+00:00"}
+{"id":"GHSA-qwfw-ggxw-577c","axis":"advisories","repo":"elixir-webrtc/ex_webrtc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:24.181419+00:00"}
