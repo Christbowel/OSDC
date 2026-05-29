@@ -1,1 +1,1 @@
-{"id":"GHSA-vghx-352f-93jm","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-22T10:34:07.593010+00:00"}
+{"id":"GHSA-vghx-352f-93jm","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-29T10:57:09.638569+00:00"}
