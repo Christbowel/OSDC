@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-563-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-584-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -12,10 +12,91 @@
 </p>
 </div>
 <hr>
+<h3>GHSA-76w7-j9cq-rx2j</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-76w7-j9cq-rx2j">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/a462655009669c3124ee39498121651597529ea8">Commit</a>
+</p>
+<hr>
+<h3>GHSA-m4wx-m65x-ghrr</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-m4wx-m65x-ghrr">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/01a7552add345d5a6862623884e6b79a85bf0568">Commit</a>
+</p>
+<hr>
+<h3>GHSA-rp36-8xq3-r6c4</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -69,6 +87,7 @@ const DANGEROUS_BUILTINS = new Set([
+ 	&#39;vm&#39;,
+ 	&#39;repl&#39;,
+ 	&#39;inspector&#39;,
++	&#39;process&#39;,
+ 	// Host-process abort DoS: `trace_events.createTracing({categories: [...]})`
+ 	// asserts `args[0]-&gt;IsArray()` in C++; the array crosses the bridge as a
+ 	// Proxy, which fails the assertion and aborts the entire host process.
+@@ -83,8 +102,21 @@ const DANGEROUS_BUILTINS = new Set([
+ 	&#39;wasi&#39;
+ ]);
+ 
++// SECURITY (GHSA-rp36-8xq3-r6c4): Family-prefix denylist check. `inspector` and
++// `inspector/promises` must share fate; same for any future subpath under a
++// dangerous family. Also strips the `node:` URL-style prefix so
++// `node:process` and `node:inspector/promises` cannot bypass via spelling.
++function isDangerousBuiltin(key) {
++	if (typeof key !== &#39;string&#39;) return false;
++	if (key.startsWith(&#39;node:&#39;)) key = key.slice(5);
++	if (DANGEROUS_BUILTINS.has(key)) return true;
++	const slash = key.indexOf(&#39;/&#39;);
++	if (slash &gt; 0 &amp;&amp; DANGEROUS_BUILTINS.has(key.slice(0, slash))) return true;
++	return false;
++}
++
+ const BUILTIN_MODULES = (nmod.builtinModules || Object.getOwnPropertyNames(process.binding(&#39;natives&#39;)))
+-	.filter(s=&gt;!s.startsWith(&#39;internal/&#39;) &amp;&amp; !DANGEROUS_BUILTINS.has(s));
++	.filter(s=&gt;!s.startsWith(&#39;internal/&#39;) &amp;&amp; !isDangerousBuiltin(s));</pre>
+</details>
+<p><b>Fix</b> : The patch expands the denylist of dangerous built-in modules to include &#39;process&#39; and implements a family-based matching function, `isDangerousBuiltin`, to block subpaths like &#39;inspector/promises&#39;. It also strips the &#39;node:&#39; prefix from module names to prevent bypasses via alternative spellings, ensuring that these critical modules are never accessible from within the sandbox.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-rp36-8xq3-r6c4">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/a1ed47a98d1cc36cb48c0d566d55889688e0b59b">Commit</a>
+</p>
+<hr>
+<h3>GHSA-v6mx-mf47-r5wg</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-v6mx-mf47-r5wg">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/27c525f4615e2b983f122e2bed327d810126f5c8">Commit</a>
+</p>
+<hr>
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 2x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 3x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -309,6 +390,44 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-6j2x-vhqr-qr7q</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-05-29 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 3x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly JavaScript Promise Integration (JSPI) Promises. These Promises, when created within the sandbox, had their prototype chain directly linked to the host realm&#39;s `Promise.prototype`, bypassing the sandbox&#39;s proxy mechanisms and overrides. This allowed an attacker to manipulate the `constructor` property of a JSPI Promise, leading to the creation of host-realm Promise resolution/rejection functions that executed attacker-controlled code in the host context.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary code in the host environment, effectively escaping the vm2 sandbox and gaining full control over the system running the sandboxed code.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/setup-sandbox.js
++++ b/lib/setup-sandbox.js
+@@ -473,6 +473,57 @@ if (typeof WebAssembly !== &#39;undefined&#39; &amp;&amp; WebAssembly.JSTag !== undefined) {
+ 	localReflectDeleteProperty(WebAssembly, &#39;JSTag&#39;);
+ }
+ 
++if (typeof WebAssembly !== &#39;undefined&#39;) {
++	// SECURITY (GHSA-6j2x-vhqr-qr7q): WebAssembly.promising returns Promises with
++	// host-realm Promise.prototype in their [[Prototype]] chain. No sandbox-side
++	// override and no bridge proxy can intercept method dispatch on such objects.
++	if (typeof WebAssembly.promising !== &#39;undefined&#39;) {
++		localReflectDeleteProperty(WebAssembly, &#39;promising&#39;);
++	}
++	// SECURITY (GHSA-6j2x-vhqr-qr7q): WebAssembly.Suspending is required to satisfy
++	// the suspending-import slot in any JSPI module. Removing it alone closes the
++	// instantiation half of the chain; removing `.promising` closes the export half.
++	if (typeof WebAssembly.Suspending !== &#39;undefined&#39;) {
++		localReflectDeleteProperty(WebAssembly, &#39;Suspending&#39;);
++	}
++}
+ 
+ if (
+ 	!localReflectDefineProperty(global, &#39;VMError&#39;, {</pre>
+</details>
+<p><b>Fix</b> : The patch removes `WebAssembly.promising` and `WebAssembly.Suspending` from the sandbox environment. By deleting these properties, the sandbox prevents the creation of JSPI Promises that exhibit the problematic cross-realm prototype behavior, thereby eliminating the attack vector.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-6j2x-vhqr-qr7q">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/6915fa4d9bcebd47b9a4f39a1adc1aa94ef6ffc6">Commit</a>
+</p>
+<hr>
 <h3>GHSA-x7m9-mwc2-g6w2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-18 · PHP<br>
@@ -341,7 +460,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 79x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -378,7 +497,7 @@
 <h3>GHSA-vmw2-qwm8-x84c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · C#<br>
-<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 13x across ecosystem
+<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly interpolated the &#39;regConfig&#39; parameter into a SQL query without proper validation or sanitization. This allowed an attacker to inject arbitrary SQL commands by manipulating the &#39;regConfig&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the PostgreSQL database, potentially leading to data exfiltration, modification, or deletion, and even remote code execution depending on database privileges.</p>
@@ -446,7 +565,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 38x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 41x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -539,7 +658,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 79x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -610,7 +729,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 79x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -643,7 +762,7 @@ After:
 <h3>GHSA-v529-vhwc-wfc5</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 13x across ecosystem
+<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
@@ -1225,7 +1344,7 @@ for member in zip_file.namelist():
 <h3>GHSA-j4rh-7jcr-qm69</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-06 · Python<br>
-<code>misp-modules</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 49x across ecosystem
+<code>misp-modules</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 50x across ecosystem
 </p>
 <p><b>Root cause</b> : The application had multiple vulnerabilities. The `html_to_markdown` module allowed fetching URLs without proper validation, leading to Server-Side Request Forgery (SSRF). The `home` blueprint in the website lacked CSRF protection and used `ast.literal_eval` instead of `json.loads` for parsing query parameters, which could lead to arbitrary code execution. Additionally, the `qrcode` module made requests with `verify=False`, disabling SSL certificate verification.</p>
 <p><b>Impact</b> : An attacker could perform SSRF attacks to access internal network resources, execute arbitrary code via `ast.literal_eval` in the `home` blueprint, and potentially bypass SSL certificate validation in the `qrcode` module, leading to man-in-the-middle attacks. The missing CSRF protection could allow an attacker to trick a logged-in user into performing unintended actions.</p>
@@ -1321,7 +1440,7 @@ for member in zip_file.namelist():
 <h3>GHSA-vj3m-2g9h-vm4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 79x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>UNCLASSIFIED</code> · 88x across ecosystem
 </p>
 <p><b>Root cause</b> : The system was vulnerable to multiple issues: Zip Slip due to improper validation of archive entry names during extraction, XSS due to insufficient sanitization of user-controlled attribute names in media objects and a weak XSS detection regex, and XXE due to parsing untrusted SVG files without disabling external entity loading.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (Zip Slip), inject malicious scripts (XSS), or read local files and potentially perform server-side requests (XXE). These could lead to remote code execution, data theft, or website defacement.</p>
@@ -1429,7 +1548,7 @@ After:
 <h3>GHSA-3p68-rc4w-qgx5</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-04-09 · JavaScript<br>
-<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 49x across ecosystem
+<code>axios</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 50x across ecosystem
 </p>
 <p><b>Root cause</b> : The code does not properly validate or sanitize the hostname in the `no_proxy` environment variable, allowing attackers to bypass proxy settings and potentially access internal services.</p>
 <p><b>Impact</b> : An attacker could use this vulnerability to perform SSRF attacks, accessing internal network resources without proper authorization.</p>
@@ -1451,152 +1570,6 @@ After:
 <p><b>Fix</b> : The patch introduces a function to normalize and parse the `no_proxy` entries, ensuring that only valid hostnames are considered for bypassing proxy settings.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-3p68-rc4w-qgx5">Advisory</a> · <a href="https://github.com/axios/axios/commit/fb3befb6daac6cad26b2e54094d0f2d9e47f24df">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2679-6mx9-h9xc</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-04-08 · Python<br>
-<code>marimo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 26x across ecosystem
-</p>
-<p><b>Root cause</b> : The WebSocket endpoint was not properly authenticated before processing requests.</p>
-<p><b>Impact</b> : An attacker could bypass authentication and execute arbitrary code on the server.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-    await websocket.close(
-        code=1008, reason=&#34;Terminal only available in edit mode&#34;
-    )
-After:
-    if app_state.enable_auth and not validate_auth(websocket):
-        await websocket.close(
-            WebSocketCodes.UNAUTHORIZED, &#34;MARIMO_UNAUTHORIZED&#34;
-        )
-        return</pre>
-</details>
-<p><b>Fix</b> : Added a validation step to check for proper authentication before allowing WebSocket connections.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2679-6mx9-h9xc">Advisory</a> · <a href="https://github.com/marimo-team/marimo/commit/c24d4806398f30be6b12acd6c60d1d7c68cfd12a">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2cqq-rpvq-g5qj</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-04-07 · Java<br>
-<code>org.openidentityplatform.openam:openam</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The code uses `ObjectInputStream` to deserialize data without proper validation or sanitization, allowing an attacker to execute arbitrary code.</p>
-<p><b>Impact</b> : An attacker could exploit this vulnerability to execute arbitrary code on the server, potentially leading to full control of the system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-- ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-After:
-+ if (data.startsWith(&#34;com.sun.identity&#34;)) {
-+     ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-+ } else {
-+     throw new SecurityException(&#34;Invalid class name in deserialized data&#34;);
-+ }</pre>
-</details>
-<p><b>Fix</b> : The patch adds a check for the class name during deserialization to prevent untrusted objects from being deserialized.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2cqq-rpvq-g5qj">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/014007c63cacc834cc795a89fac0e611aebc4a32">Commit</a>
-</p>
-<hr>
-<h3>GHSA-h4ph-crvj-9h92</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-27 · PHP<br>
-<code>pimcore/admin-ui-classic-bundle</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The application was using `unserialize()` on user-controlled or attacker-influenced data read from a configuration file without restricting the allowed classes. This allowed an attacker to inject arbitrary PHP objects into the application&#39;s scope.</p>
-<p><b>Impact</b> : An attacker could achieve remote code execution (RCE) by crafting a malicious serialized object that, when deserialized, would trigger dangerous magic methods or object instantiation leading to arbitrary code execution.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-	                $dashboards = Serialize::unserialize(file_get_contents($this-&gt;getConfigFile()));
--	                if (!empty($dashboards)) {
--	                    $this-&gt;dashboards = $dashboards;
-+	                $dashboardFile = file_get_contents($this-&gt;getConfigFile());
-+	                if ($dashboardFile !== false) {
-+	                    $dashboards = unserialize($dashboardFile, [&#39;allowed_classes&#39; =&gt; false]);
-+	                    if (is_array($dashboards) &amp;&amp; !empty($dashboards)) {
-+	                        $this-&gt;dashboards = $dashboards;</pre>
-</details>
-<p><b>Fix</b> : The patch adds a check to ensure the file content is not false before attempting to unserialize it. More importantly, it restricts the `unserialize()` function to only allow arrays by setting `allowed_classes` to `false`, preventing the instantiation of arbitrary objects.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-h4ph-crvj-9h92">Advisory</a> · <a href="https://github.com/pimcore/admin-ui-classic-bundle/commit/80e57a23d9e19574eddfe9b08e8f26785b2b0d90">Commit</a>
-</p>
-<hr>
-<h3>GHSA-482j-2pq6-q5w4</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-14 · Python<br>
-<code>open-webui</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 11x across ecosystem
-</p>
-<p><b>Root cause</b> : The application failed to properly enforce the `ENABLE_CODE_EXECUTION` configuration setting. Although the setting was intended to disable code execution, the `/code/execute` endpoint did not check this flag, allowing direct access to the code execution functionality regardless of the configuration.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary code on the server, even when the administrator had explicitly disabled this feature, leading to remote code execution and full system compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/backend/open_webui/routers/utils.py
-+++ b/backend/open_webui/routers/utils.py
-@@ -42,6 +42,12 @@ async def format_code(form_data: CodeForm, user=Depends(get_admin_user)):
- 
- @router.post(&#39;/code/execute&#39;)
- async def execute_code(request: Request, form_data: CodeForm, user=Depends(get_verified_user)):
-+    if not request.app.state.config.ENABLE_CODE_EXECUTION:
-+        raise HTTPException(
-+            status_code=403,
-+            detail=&#39;Code execution is disabled&#39;,
-+        )
-+
-     if request.app.state.config.CODE_EXECUTION_ENGINE == &#39;jupyter&#39;:
-         output = await execute_code_jupyter(
-             request.app.state.config.CODE_EXECUTION_JUPYTER_URL,</pre>
-</details>
-<p><b>Fix</b> : The patch adds a check at the beginning of the `/code/execute` endpoint to verify the `ENABLE_CODE_EXECUTION` configuration. If the feature is disabled, it now raises an HTTP 403 Forbidden error, preventing unauthorized code execution.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-482j-2pq6-q5w4">Advisory</a> · <a href="https://github.com/open-webui/open-webui/commit/6d736d3c598dbe49488675ed42845e00b62dfcba">Commit</a>
-</p>
-<hr>
-<h3>GHSA-q4p8-8j9m-8hxj</h3>
-<p>
-<code>HIGH 8.8</code> · 2026-05-08 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 30x across ecosystem
-</p>
-<p><b>Root cause</b> : The application was using `child_process.exec` to open files, constructing the command string by directly concatenating user-controlled input (`localFilePath`). This allowed an attacker to inject arbitrary shell commands by crafting a malicious filename, which would then be executed by the underlying operating system.</p>
-<p><b>Impact</b> : An attacker could achieve arbitrary code execution on the victim&#39;s machine by tricking them into opening a specially crafted file path (e.g., from a malicious SSH server). This could lead to full system compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/app/lib/fs.js
-+++ b/src/app/lib/fs.js
-@@ -109,16 +149,19 @@ const touch = (localFilePath) =&gt; {
-  * @param {string} localFolderPath absolute path
-  */
- const openFile = (localFilePath) =&gt; {
--  let cmd
-   if (isWin) {
--    cmd = `Invoke-Item &#39;${localFilePath}&#39;`
--    return runWinCmd(cmd)
-+    return spawnDetachedCommand(&#39;powershell.exe&#39;, [
-+      &#39;-NoProfile&#39;,
-+      &#39;-NonInteractive&#39;,
-+      &#39;-Command&#39;,
-+      &#39;Invoke-Item -LiteralPath $args[0]&#39;,
-+      &#39;--&#39;,
-+      localFilePath
-+    ], {
-+      windowsHide: true
-+    })
-   }
--  cmd = (isMac
--    ? &#39;open&#39;
--    : &#39;xdg-open&#39;) +
--    ` &#34;${localFilePath}&#34;`
--  return run(cmd)
-+  return spawnDetachedCommand(isMac ? &#39;open&#39; : &#39;xdg-open&#39;, [localFilePath])
- }
- 
- /**</pre>
-</details>
-<p><b>Fix</b> : The patch replaces the use of `child_process.exec` with `child_process.spawn` for opening files. It introduces a new `spawnDetachedCommand` function that passes the `localFilePath` as an argument to the command, preventing shell injection by ensuring the filename is treated as a literal argument rather than part of the command string.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-q4p8-8j9m-8hxj">Advisory</a> · <a href="https://github.com/electerm/electerm/commit/24ce7103e264cffe6eb5476c0506a2379e6f8333">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1634,10 +1607,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>563</td></tr>
+<tr><td>Total advisories</td><td>584</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-05-29</td></tr>
+<tr><td>Last updated</td><td>2026-05-30</td></tr>
 </table>
 </details>
 <hr>
