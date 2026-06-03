@@ -1,1 +1,1 @@
-{"id":"GHSA-r945-h4vm-h736","axis":"advisories","repo":"getgrav/grav-plugin-api","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:42.180031+00:00"}
+{"id":"GHSA-r945-h4vm-h736","axis":"advisories","repo":"getgrav/grav-plugin-api","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:22:59.325138+00:00"}

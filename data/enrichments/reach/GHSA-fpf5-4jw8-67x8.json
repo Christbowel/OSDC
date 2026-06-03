@@ -1,1 +1,1 @@
-{"id":"GHSA-fpf5-4jw8-67x8","axis":"advisories","repo":"Danaozhong/rust-zserio","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:27.950151+00:00"}
+{"id":"GHSA-fpf5-4jw8-67x8","axis":"advisories","repo":"Danaozhong/rust-zserio","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:22:45.691035+00:00"}

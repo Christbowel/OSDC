@@ -1,1 +1,1 @@
-{"id":"GHSA-vxrr-w42w-w76g","axis":"advisories","repo":"flightphp/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:29.333723+00:00"}
+{"id":"GHSA-vxrr-w42w-w76g","axis":"advisories","repo":"flightphp/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:22:47.027935+00:00"}

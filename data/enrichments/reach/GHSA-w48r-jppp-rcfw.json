@@ -1,1 +1,1 @@
-{"id":"GHSA-w48r-jppp-rcfw","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:06:40.176008+00:00"}
+{"id":"GHSA-w48r-jppp-rcfw","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:22:58.615864+00:00"}

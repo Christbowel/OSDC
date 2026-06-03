@@ -1,1 +1,1 @@
-{"id":"GHSA-429q-fhh4-r6hj","axis":"advisories","repo":"solana-foundation/anchor","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:05:53.649066+00:00"}
+{"id":"GHSA-429q-fhh4-r6hj","axis":"advisories","repo":"solana-foundation/anchor","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:22:17.416712+00:00"}
