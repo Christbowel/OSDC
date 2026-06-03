@@ -1610,7 +1610,7 @@ After:
 <tr><td>Total advisories</td><td>586</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-02</td></tr>
+<tr><td>Last updated</td><td>2026-06-03</td></tr>
 </table>
 </details>
 <hr>
