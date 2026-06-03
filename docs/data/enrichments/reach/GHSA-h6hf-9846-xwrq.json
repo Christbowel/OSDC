@@ -1,1 +1,1 @@
-{"id":"GHSA-h6hf-9846-xwrq","axis":"advisories","repo":"LemmyNet/lemmy","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-27T11:07:35.396843+00:00"}
+{"id":"GHSA-h6hf-9846-xwrq","axis":"advisories","repo":"LemmyNet/lemmy","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:23:45.556902+00:00"}

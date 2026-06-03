@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-586-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-587-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -540,7 +540,7 @@
 <h3>GHSA-8x35-hph8-37hq</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 31x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
@@ -592,7 +592,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 31x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -1306,7 +1306,7 @@ for member in zip_file.namelist():
 <h3>GHSA-mpm8-cx2p-626q</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-08 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 31x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed certain critical connection parameters, such as &#39;type&#39; and &#39;host&#39;, to be overridden by user-supplied JSON options within a quick-connect URL. This meant an attacker could craft a malicious URL to execute arbitrary commands or connect to arbitrary hosts/protocols by manipulating these parameters.</p>
 <p><b>Impact</b> : An attacker could craft a malicious link or command-line argument that, when opened by a victim, would execute arbitrary code on the victim&#39;s machine or force the application to connect to an attacker-controlled server using a protocol of their choice.</p>
@@ -1607,7 +1607,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>586</td></tr>
+<tr><td>Total advisories</td><td>587</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-06-03</td></tr>
