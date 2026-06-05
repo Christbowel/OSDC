@@ -1,1 +1,1 @@
-{"id":"GHSA-4j5m-wc25-pvh7","axis":"advisories","repo":"msiemens/onenote.rs","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-29T10:57:10.748908+00:00"}
+{"id":"GHSA-4j5m-wc25-pvh7","axis":"advisories","repo":"msiemens/onenote.rs","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-05T10:59:08.871165+00:00"}
