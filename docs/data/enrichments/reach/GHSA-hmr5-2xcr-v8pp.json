@@ -1,1 +1,1 @@
-{"id":"GHSA-hmr5-2xcr-v8pp","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-05-28T11:06:26.081251+00:00"}
+{"id":"GHSA-hmr5-2xcr-v8pp","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-05T10:59:07.363512+00:00"}
