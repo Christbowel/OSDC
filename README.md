@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-626-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-628-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +27,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +39,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -84,7 +84,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -523,7 +523,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -721,7 +721,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -792,7 +792,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -1050,6 +1050,18 @@ After:
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
 </p>
 <hr>
+<h3>GHSA-mqq6-462x-jxmm</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-mqq6-462x-jxmm">Advisory</a> · <a href="https://github.com/dhax/go-base/commit/cc82b9740fa6b08e0fad409cd4b418e240dd0e00">Commit</a>
+</p>
+<hr>
 <h3>GHSA-fwj3-42wh-8673</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-05-07 · Go<br>
@@ -1278,7 +1290,7 @@ for member in zip_file.namelist():
 <h3>GHSA-55hg-8qxv-qj4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-09 · Erlang<br>
-<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 101x across ecosystem
+<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1480,7 +1492,7 @@ for member in zip_file.namelist():
 <h3>GHSA-j4rh-7jcr-qm69</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-06 · Python<br>
-<code>misp-modules</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 50x across ecosystem
+<code>misp-modules</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 51x across ecosystem
 </p>
 <p><b>Root cause</b> : The application had multiple vulnerabilities. The `html_to_markdown` module allowed fetching URLs without proper validation, leading to Server-Side Request Forgery (SSRF). The `home` blueprint in the website lacked CSRF protection and used `ast.literal_eval` instead of `json.loads` for parsing query parameters, which could lead to arbitrary code execution. Additionally, the `qrcode` module made requests with `verify=False`, disabling SSL certificate verification.</p>
 <p><b>Impact</b> : An attacker could perform SSRF attacks to access internal network resources, execute arbitrary code via `ast.literal_eval` in the `home` blueprint, and potentially bypass SSL certificate validation in the `qrcode` module, leading to man-in-the-middle attacks. The missing CSRF protection could allow an attacker to trick a logged-in user into performing unintended actions.</p>
@@ -1536,43 +1548,6 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-j4rh-7jcr-qm69">Advisory</a> · <a href="https://github.com/MISP/misp-modules/commit/52cda9caa003cafe87e14ae3721db5e16f6f111a">Commit</a>
 </p>
 <hr>
-<h3>GHSA-2g9v-7mr5-fgjg</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-05-05 · Go<br>
-<code>github.com/l3montree-dev/devguard</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 27x across ecosystem
-</p>
-<p><b>Root cause</b> : The application allowed an unauthenticated user to assert an arbitrary identity and gain administrative privileges by simply setting the `X-Admin-Token` HTTP header. This header was checked before any other authentication mechanisms, effectively bypassing all security controls.</p>
-<p><b>Impact</b> : An attacker could gain full administrative access to the application without any prior authentication, leading to complete compromise of the system and data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/middlewares/session_middleware.go
-+++ b/middlewares/session_middleware.go
-@@ -61,8 +61,6 @@ func SessionMiddleware(oryAPIClient shared.PublicClient, verifier shared.Verifie
- 			var scopes string
- 			var err error
- 
--			adminTokenHeader := ctx.Request().Header.Get(&#34;X-Admin-Token&#34;)
--
- 			if oryKratosSessionCookie != nil {
- 				userID, err = cookieAuth(ctx.Request().Context(), oryAPIClient, oryKratosSessionCookie.String())
- 				if err != nil {
-@@ -77,10 +75,6 @@ func SessionMiddleware(oryAPIClient shared.PublicClient, verifier shared.Verifie
- 				scopesArray := strings.Fields(scopes)
- 				ctx.Set(&#34;session&#34;, accesscontrol.NewSession(userID, scopesArray))
- 				return next(ctx)
--			} else if adminTokenHeader != &#34;&#34; {
--				slog.Warn(&#34;admin token header is set, using it to create session&#34;)
--				ctx.Set(&#34;session&#34;, accesscontrol.NewSession(adminTokenHeader, []string{}))
--				return next(ctx)
- 			} else {
- 				userID, scopes, err = verifier.VerifyRequestSignature(ctx.Request().Context(), ctx.Request())
- 				if err != nil {</pre>
-</details>
-<p><b>Fix</b> : The patch removes all code paths that checked for and processed the `X-Admin-Token` header. This eliminates the ability for unauthenticated users to assert administrative identities via this header, enforcing proper authentication flows.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2g9v-7mr5-fgjg">Advisory</a> · <a href="https://github.com/l3montree-dev/devguard/commit/6f38310bf93b2a63df3055038f4da82b1f4e6d9a">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1608,7 +1583,7 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>626</td></tr>
+<tr><td>Total advisories</td><td>628</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-06-10</td></tr>
