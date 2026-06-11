@@ -1,1 +1,1 @@
-{"id":"GHSA-rf5q-vwxw-gmrf","axis":"advisories","repo":"mtrudel/bandit","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:21:29.154254+00:00"}
+{"id":"GHSA-rf5q-vwxw-gmrf","axis":"advisories","repo":"mtrudel/bandit","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T11:56:46.430506+00:00"}

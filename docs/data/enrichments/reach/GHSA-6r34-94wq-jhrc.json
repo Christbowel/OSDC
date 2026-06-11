@@ -1,1 +1,1 @@
-{"id":"GHSA-6r34-94wq-jhrc","axis":"advisories","repo":"davidfstr/rdiscount","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:27:37.120929+00:00"}
+{"id":"GHSA-6r34-94wq-jhrc","axis":"advisories","repo":"davidfstr/rdiscount","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T12:02:26.455036+00:00"}
