@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-628-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-633-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +27,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +39,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -84,7 +84,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -523,7 +523,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -721,7 +721,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -792,7 +792,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -1053,7 +1053,7 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1287,10 +1287,22 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
 </p>
 <hr>
+<h3>GHSA-qvv5-jq5g-4cgg</h3>
+<p>
+<code>CRITICAL 0.0</code> · 2026-06-10 · JavaScript<br>
+<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-qvv5-jq5g-4cgg">Advisory</a> · <a href="https://github.com/WhiskeySockets/Baileys/commit/3beb08eecfcb4e65722e674034bd84fb11a9de35">Commit</a>
+</p>
+<hr>
 <h3>GHSA-55hg-8qxv-qj4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-09 · Erlang<br>
-<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 102x across ecosystem
+<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 106x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1489,65 +1501,6 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-mpm8-cx2p-626q">Advisory</a> · <a href="https://github.com/electerm/electerm/commit/8a6a17951e96d715f5a231532bbd8303fe208700">Commit</a>
 </p>
 <hr>
-<h3>GHSA-j4rh-7jcr-qm69</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-05-06 · Python<br>
-<code>misp-modules</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 51x across ecosystem
-</p>
-<p><b>Root cause</b> : The application had multiple vulnerabilities. The `html_to_markdown` module allowed fetching URLs without proper validation, leading to Server-Side Request Forgery (SSRF). The `home` blueprint in the website lacked CSRF protection and used `ast.literal_eval` instead of `json.loads` for parsing query parameters, which could lead to arbitrary code execution. Additionally, the `qrcode` module made requests with `verify=False`, disabling SSL certificate verification.</p>
-<p><b>Impact</b> : An attacker could perform SSRF attacks to access internal network resources, execute arbitrary code via `ast.literal_eval` in the `home` blueprint, and potentially bypass SSL certificate validation in the `qrcode` module, leading to man-in-the-middle attacks. The missing CSRF protection could allow an attacker to trick a logged-in user into performing unintended actions.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/misp_modules/modules/expansion/html_to_markdown.py
-+++ b/misp_modules/modules/expansion/html_to_markdown.py
-@@ -24,11 +27,44 @@
- }
- 
- 
-+
-+BLOCKED_RANGES = [
-+    ipaddress.ip_network(&#34;127.0.0.0/8&#34;),
-+    ipaddress.ip_network(&#34;10.0.0.0/8&#34;),
-+    ipaddress.ip_network(&#34;172.16.0.0/12&#34;),
-+    ipaddress.ip_network(&#34;192.168.0.0/16&#34;),
-+    ipaddress.ip_network(&#34;169.254.0.0/16&#34;),
-+    ipaddress.ip_network(&#34;::1/128&#34;),
-+]
-+
-+def _is_ip_blocked(ip_str: str) -&gt; bool:
-+    ip = ipaddress.ip_address(ip_str)
-+    return any(ip in net for net in BLOCKED_RANGES)
-+
-+
-+def _hostname_resolves_to_blocked_ip(hostname: str) -&gt; bool:
-+    try:
-+        resolved = socket.getaddrinfo(hostname, None)
-+        return any(_is_ip_blocked(info[4][0]) for info in resolved)
-+    except socket.gaierror:
-+        return True
-+
-+
-+def is_safe_url(url: str) -&gt; bool:
-+    parsed = urlparse(url)
-+    if parsed.scheme not in (&#34;http&#34;, &#34;https&#34;):
-+        return False
-+    try:
-+        return not _is_ip_blocked(parsed.hostname)
-+    except ValueError:
-+        return not _hostname_resolves_to_blocked_ip(parsed.hostname)
-+
- def fetchHTML(url):
--    r = requests.get(url)
-+    if not is_safe_url(url):
-+        raise ValueError(f&#34;Blocked URL: {url}&#34;)
-+    r = requests.get(url, timeout=10)
-     return r.text</pre>
-</details>
-<p><b>Fix</b> : The patch introduces URL validation to prevent SSRF by blocking requests to private IP ranges and non-HTTP/HTTPS schemes. It removes the CSRF exemption for the `home` blueprint and replaces `ast.literal_eval` with `json.loads` to safely parse query parameters. The `qrcode` module&#39;s `verify=False` flag was also removed, enforcing SSL certificate verification.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-j4rh-7jcr-qm69">Advisory</a> · <a href="https://github.com/MISP/misp-modules/commit/52cda9caa003cafe87e14ae3721db5e16f6f111a">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1583,10 +1536,10 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>628</td></tr>
+<tr><td>Total advisories</td><td>633</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-10</td></tr>
+<tr><td>Last updated</td><td>2026-06-11</td></tr>
 </table>
 </details>
 <hr>
