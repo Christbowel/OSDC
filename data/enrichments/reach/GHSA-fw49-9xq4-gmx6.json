@@ -1,1 +1,1 @@
-{"id":"GHSA-fw49-9xq4-gmx6","axis":"advisories","repo":"ci4-cms-erp/ci4ms","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-03T12:23:29.377143+00:00"}
+{"id":"GHSA-fw49-9xq4-gmx6","axis":"advisories","repo":"ci4-cms-erp/ci4ms","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T11:58:39.059977+00:00"}
