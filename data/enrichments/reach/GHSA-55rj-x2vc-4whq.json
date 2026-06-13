@@ -1,1 +1,1 @@
-{"id":"GHSA-55rj-x2vc-4whq","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-06T09:35:13.572474+00:00"}
+{"id":"GHSA-55rj-x2vc-4whq","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-13T10:13:14.066421+00:00"}
