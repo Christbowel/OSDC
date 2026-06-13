@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-643-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-666-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +27,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +39,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -84,7 +84,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -197,7 +197,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 43x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -226,7 +226,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 23x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 24x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -456,7 +456,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -548,7 +548,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -611,7 +611,7 @@
 <h3>GHSA-xg82-2hrv-hf64</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-08 · PHP<br>
-<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 44x across ecosystem
+<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users with &#39;view&#39; permissions on an object to upload files associated with that object. This is a weaker permission than &#39;update&#39;, which should be required for file uploads, leading to an authorization bypass for file modification.</p>
 <p><b>Impact</b> : An attacker with only &#39;view&#39; permissions on an object could upload arbitrary files, potentially leading to remote code execution if the uploaded file is a malicious script (e.g., PHP file) and the server is configured to execute it.</p>
@@ -653,7 +653,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 44x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 46x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -746,7 +746,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -817,7 +817,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -850,7 +850,7 @@ After:
 <h3>GHSA-8whc-2wmv-ww35</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-06-04 · PHP<br>
-<code>WWBN/AVideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 43x across ecosystem
+<code>WWBN/AVideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to XSS because it directly used user-supplied input from &#39;webSocketSelfURI&#39; and &#39;page_title&#39; parameters in the client-side DOM without proper sanitization or validation. An attacker could inject malicious JavaScript through these parameters.</p>
 <p><b>Impact</b> : An unauthenticated attacker could inject arbitrary JavaScript code into other users&#39; browsers, leading to session hijacking, defacement, data theft, or redirection to malicious sites.</p>
@@ -939,7 +939,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 43x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -1028,7 +1028,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 36x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 37x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -1078,7 +1078,7 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1120,7 +1120,7 @@ After:
 <h3>GHSA-w48r-jppp-rcfw</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 23x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 24x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from multiple issues. Firstly, the `unZip` function did not validate archive entry names, allowing &#39;Zip Slip&#39; attacks where malicious ZIP files could write files outside the intended directory using path traversal sequences (e.g., `../`). Secondly, the `attribute` function in `MediaObjectTrait` allowed arbitrary attribute names, which could be exploited for XSS by injecting event handlers (e.g., `onerror`) or other dangerous attributes. Lastly, the `detectXss` function&#39;s regex for `on_events` was bypassable, and the SVG parsing in `VectorImageMedium` was vulnerable to XXE attacks due to not stripping DOCTYPE/ENTITY declarations and lacking `LIBXML_NONET`.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution by uploading a crafted plugin ZIP file that writes PHP files to arbitrary locations. They could also inject malicious JavaScript via XSS in image attributes or potentially perform server-side request forgery (SSRF) or information disclosure via XXE in SVG files.</p>
@@ -1270,7 +1270,7 @@ After:
 <h3>GHSA-m5gr-86j6-99jp</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 23x across ecosystem
+<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 24x across ecosystem
 </p>
 <p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -1290,7 +1290,7 @@ for member in zip_file.namelist():
 <h3>GHSA-fxc7-fm93-6q77</h3>
 <p>
 <code>CRITICAL 9.0</code> · 2026-05-05 · Java<br>
-<code>com.arcadedb:arcadedb-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 44x across ecosystem
+<code>com.arcadedb:arcadedb-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The ArcadeDB server did not properly enforce security configurations for newly created databases and had a flawed logic for merging database-specific and wildcard security group configurations. This allowed users to create databases without proper security settings and bypass intended authorization rules by exploiting how group permissions were retrieved.</p>
 <p><b>Impact</b> : An attacker could create new databases that are unsecured by default, gaining unauthorized access to them. They could also potentially bypass authorization checks on existing databases by manipulating schema properties or exploiting the flawed group configuration merge logic, leading to data access or modification across databases.</p>
@@ -1315,7 +1315,7 @@ for member in zip_file.namelist():
 <h3>GHSA-qvv5-jq5g-4cgg</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-10 · JavaScript<br>
-<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1327,7 +1327,7 @@ for member in zip_file.namelist():
 <h3>GHSA-55hg-8qxv-qj4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-09 · Erlang<br>
-<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 109x across ecosystem
+<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1363,7 +1363,7 @@ for member in zip_file.namelist():
 <h3>GHSA-qrvh-r3f2-9h4r</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-26 · Java<br>
-<code>org.xwiki.platform:xwiki-platform-rest-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 44x across ecosystem
+<code>org.xwiki.platform:xwiki-platform-rest-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The REST endpoint for importing XAR (XWiki Archive) files into a wiki did not perform any authorization checks. This allowed any unauthenticated or unauthorized user to upload and import a malicious XAR file.</p>
 <p><b>Impact</b> : An attacker could import arbitrary XAR files, potentially leading to remote code execution, privilege escalation, or complete compromise of the XWiki instance.</p>
@@ -1394,7 +1394,7 @@ for member in zip_file.namelist():
 <h3>GHSA-xq3r-2qv5-vqqm</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-26 · Java<br>
-<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 36x across ecosystem
+<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 37x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used `Paths.get(fullPath).normalize()` to prevent path traversal. However, it did not correctly handle leading slashes in the `resourcePath` parameter. When a resource path started with one or more leading slashes (e.g., &#34;//../&#34;), `Paths.get().normalize()` would treat it differently than intended, allowing an attacker to bypass the `startsWith(&#34;../&#34;)` check and access resources outside the intended directory.</p>
 <p><b>Impact</b> : An attacker could use specially crafted `resources` parameters in `ssx` and `jsx` endpoints to read arbitrary files on the server&#39;s file system, potentially leading to information disclosure or further compromise.</p>
@@ -1523,10 +1523,10 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>643</td></tr>
+<tr><td>Total advisories</td><td>666</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-12</td></tr>
+<tr><td>Last updated</td><td>2026-06-13</td></tr>
 </table>
 </details>
 <hr>
