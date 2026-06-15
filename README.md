@@ -1526,7 +1526,7 @@ for member in zip_file.namelist():
 <tr><td>Total advisories</td><td>666</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-14</td></tr>
+<tr><td>Last updated</td><td>2026-06-15</td></tr>
 </table>
 </details>
 <hr>
