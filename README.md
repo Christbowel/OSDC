@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-707-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-720-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +27,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +39,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -84,7 +84,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -197,7 +197,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 51x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -456,7 +456,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -548,7 +548,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -746,7 +746,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -817,7 +817,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -850,7 +850,7 @@ After:
 <h3>GHSA-8whc-2wmv-ww35</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-06-04 · PHP<br>
-<code>WWBN/AVideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 51x across ecosystem
+<code>WWBN/AVideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to XSS because it directly used user-supplied input from &#39;webSocketSelfURI&#39; and &#39;page_title&#39; parameters in the client-side DOM without proper sanitization or validation. An attacker could inject malicious JavaScript through these parameters.</p>
 <p><b>Impact</b> : An unauthenticated attacker could inject arbitrary JavaScript code into other users&#39; browsers, leading to session hijacking, defacement, data theft, or redirection to malicious sites.</p>
@@ -939,7 +939,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-8wrq-fv5f-pfp2</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 51x across ecosystem
+<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 52x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
@@ -1028,7 +1028,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 37x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -1078,7 +1078,7 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1312,10 +1312,42 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
 </p>
 <hr>
+<h3>GHSA-fcw5-x6j4-ccmp</h3>
+<p>
+<code>CRITICAL 0.0</code> · 2026-06-18 · Python<br>
+<code>jupyter-server</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 52x across ecosystem
+</p>
+<p><b>Root cause</b> : The Jupyter Server&#39;s `NbconvertFileHandler` and `NbconvertPostHandler` did not include a &#39;sandbox&#39; directive in their Content-Security-Policy (CSP) headers when serving HTML content generated by nbconvert. This allowed malicious JavaScript embedded in a notebook to execute within the same origin as the Jupyter server.</p>
+<p><b>Impact</b> : An attacker could embed malicious JavaScript in a notebook, which, when viewed via nbconvert, would execute with the same privileges as the Jupyter server. This could lead to session hijacking, data exfiltration, or further compromise of the user&#39;s environment.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/jupyter_server/nbconvert/handlers.py
++++ b/jupyter_server/nbconvert/handlers.py
+@@ -92,6 +92,14 @@ class NbconvertFileHandler(JupyterHandler):
+     auth_resource = AUTH_RESOURCE
+     SUPPORTED_METHODS = (&#34;GET&#34;,)
+ 
++    @property
++    def content_security_policy(self):
++        # In case we&#39;re serving HTML, confine any Javascript to a unique
++        # origin so it can&#39;t interact with the Jupyter server.
++        if self.settings.get(&#34;nbconvert_csp_sandbox&#34;, True):
++            return super().content_security_policy + &#34;; sandbox allow-scripts&#34;
++        return super().content_security_policy
++
+     @web.authenticated
+     @authorized
+     async def get(self, format, path):</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new configuration option `nbconvert_csp_sandbox` which defaults to `True`. When enabled, the `NbconvertFileHandler` and `NbconvertPostHandler` now add a `sandbox allow-scripts` directive to their Content-Security-Policy headers, isolating the nbconvert-served content to a unique origin.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fcw5-x6j4-ccmp">Advisory</a> · <a href="https://github.com/jupyter-server/jupyter_server/commit/6cbee8d65e71abac851c4492fea987ad080580bd">Commit</a>
+</p>
+<hr>
 <h3>GHSA-qvv5-jq5g-4cgg</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-10 · JavaScript<br>
-<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1327,7 +1359,7 @@ for member in zip_file.namelist():
 <h3>GHSA-55hg-8qxv-qj4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-09 · Erlang<br>
-<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 121x across ecosystem
+<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1394,7 +1426,7 @@ for member in zip_file.namelist():
 <h3>GHSA-xq3r-2qv5-vqqm</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-05-26 · Java<br>
-<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 37x across ecosystem
+<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used `Paths.get(fullPath).normalize()` to prevent path traversal. However, it did not correctly handle leading slashes in the `resourcePath` parameter. When a resource path started with one or more leading slashes (e.g., &#34;//../&#34;), `Paths.get().normalize()` would treat it differently than intended, allowing an attacker to bypass the `startsWith(&#34;../&#34;)` check and access resources outside the intended directory.</p>
 <p><b>Impact</b> : An attacker could use specially crafted `resources` parameters in `ssx` and `jsx` endpoints to read arbitrary files on the server&#39;s file system, potentially leading to information disclosure or further compromise.</p>
@@ -1440,54 +1472,6 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-xq3r-2qv5-vqqm">Advisory</a> · <a href="https://github.com/xwiki/xwiki-commons/commit/a979cafd89f6a9c9c0b9ab19744d672df64429bf">Commit</a>
 </p>
 <hr>
-<h3>GHSA-m77w-p5jj-xmhg</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-05-12 · JavaScript<br>
-<code>openclaude</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 20x across ecosystem
-</p>
-<p><b>Root cause</b> : The `dangerouslyDisableSandbox` parameter in the BashTool was exposed to the AI model. Although the prompt attempted to guide the model on when to use it, the model could directly set this parameter in its tool calls, bypassing the intended user approval flow and security restrictions.</p>
-<p><b>Impact</b> : An attacker, via a malicious AI model, could execute arbitrary commands outside the sandbox environment, leading to potential remote code execution, data exfiltration, or system compromise on the host running the OpenClaude application.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/tools/BashTool/BashTool.tsx
-+++ b/src/tools/BashTool/BashTool.tsx
-@@ -240,21 +240,28 @@ For commands that are harder to parse at a glance (piped commands, obscure flags
-   run_in_background: semanticBoolean(z.boolean().optional()).describe(`Set to true to run this command in the background. Use Read to read the output later.`), 
-   dangerouslyDisableSandbox: semanticBoolean(z.boolean().optional()).describe(&#39;Set this to true to dangerously override sandbox mode and run commands without sandboxing.&#39;),
-+  _dangerouslyDisableSandboxApproved: z.boolean().optional().describe(&#39;Internal: user-approved sandbox override&#39;),
-   _simulatedSedEdit: z.object({
-     filePath: z.string(),
-     newContent: z.string()
-   }).optional().describe(&#39;Internal: pre-computed sed edit result from preview&#39;)
- }));
- 
--// Always omit _simulatedSedEdit from the model-facing schema. It is an internal-only
--// field set by SedEditPermissionRequest after the user approves a sed edit preview.
--// Exposing it in the schema would let the model bypass permission checks and the
--// sandbox by pairing an innocuous command with an arbitrary file write.
-+// Always omit internal-only fields from the model-facing schema.
-+// _simulatedSedEdit is set by SedEditPermissionRequest after the user approves a
-+// sed edit preview; exposing it would let the model bypass permission checks and
-+// the sandbox by pairing an innocuous command with an arbitrary file write.
-+// dangerouslyDisableSandbox is also omitted because sandbox escape must be tied
-+// to trusted user/internal provenance, not model-controlled tool input.
- // Also conditionally remove run_in_background when background tasks are disabled.
- const inputSchema = lazySchema(() =&gt; isBackgroundTasksDisabled ? fullInputSchema().omit({
-   run_in_background: true,
-+  dangerouslyDisableSandbox: true,
-+  _dangerouslyDisableSandboxApproved: true,
-   _simulatedSedEdit: true
- }) : fullInputSchema().omit({
-+  dangerouslyDisableSandbox: true,
-+  _dangerouslyDisableSandboxApproved: true,
-   _simulatedSedEdit: true
- }));</pre>
-</details>
-<p><b>Fix</b> : The patch removes `dangerouslyDisableSandbox` from the model-facing schema of the BashTool and PowerShellTool. It introduces an internal-only `_dangerouslyDisableSandboxApproved` flag, which must be true for the sandbox to be disabled. This ensures that sandbox disabling can only be triggered by trusted internal logic, not directly by the AI model&#39;s input.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-m77w-p5jj-xmhg">Advisory</a> · <a href="https://github.com/Gitlawb/openclaude/commit/aab489055c53dd64369414116fe93226d2656273">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1523,7 +1507,7 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>707</td></tr>
+<tr><td>Total advisories</td><td>720</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-06-18</td></tr>
