@@ -1,1 +1,1 @@
-{"id":"GHSA-8c75-8mhr-p7r9","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T11:59:05.712899+00:00"}
+{"id":"GHSA-8c75-8mhr-p7r9","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:53:04.246054+00:00"}
