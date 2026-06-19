@@ -1,1 +1,1 @@
-{"id":"GHSA-gwfr-jfjf-92vv","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T11:58:17.083868+00:00"}
+{"id":"GHSA-gwfr-jfjf-92vv","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:52:09.108817+00:00"}

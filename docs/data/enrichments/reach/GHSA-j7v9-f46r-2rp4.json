@@ -1,1 +1,1 @@
-{"id":"GHSA-j7v9-f46r-2rp4","axis":"advisories","repo":"mantisbt/mantisbt","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-11T11:57:44.099352+00:00"}
+{"id":"GHSA-j7v9-f46r-2rp4","axis":"advisories","repo":"mantisbt/mantisbt","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:51:32.730360+00:00"}
