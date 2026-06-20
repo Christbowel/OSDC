@@ -1,1 +1,1 @@
-{"id":"GHSA-q93m-25xv-94hh","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-13T10:12:52.931968+00:00"}
+{"id":"GHSA-q93m-25xv-94hh","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-20T10:19:15.753753+00:00"}
