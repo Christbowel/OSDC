@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-755-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-760-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-48-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +27,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +39,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -84,7 +84,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -130,7 +130,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -173,7 +173,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -314,6 +314,56 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-5pm9-r2m8-rcmj</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
+<p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/themes/default/views/components/easymde-editor.blade.php
++++ b/themes/default/views/components/easymde-editor.blade.php
+@@ -8,7 +8,7 @@
+             element: document.getElementById(&#39;editor&#39;),
+             spellChecker: false,
+             previewImagesInEditor: true,
+-            uploadImage: true,
++            uploadImage: false,
+             autoDownloadFontAwesome: false,
+             status: [{
+                 className: &#39;upload-image&#39;,
+@@ -45,11 +45,6 @@ className: &#39;upload-image&#39;,
+                     name: &#39;ordered-list&#39;,
+                     action: EasyMDE.toggleOrderedList,
+                 }, &#39;|&#39;,
+-                {
+-                    name: &#39;upload-image&#39;,
+-                    action: EasyMDE.drawUploadedImage,
+-                    title: &#39;Upload Image&#39;,
+-                }, &#39;|&#39;,
+                 {
+                     name: &#39;undo&#39;,
+                     action: EasyMDE.undo,
+@@ -59,13 +54,6 @@ className: &#39;upload-image&#39;,
+                 },
+ 
+             ],
+-            imageUploadFunction: async (file, onSuccess, onError) =&gt; {
+-                @this.upload(&#39;attachments&#39;, file, (url) =&gt; {
+-                    @this.completeUpload(url).then((url) =&gt; {
+-                        onSuccess(url);
+-                    });
+-                });
+-            },
+         });</pre>
+</details>
+<p><b>Fix</b> : The patch removes the file upload functionality from the EasyMDE editor in ticket forms by disabling the `uploadImage` option and removing the associated `imageUploadFunction`. It also removes the `WithFileUploads` trait and related attachment handling logic from the Livewire components, effectively preventing any file uploads through these interfaces.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-5pm9-r2m8-rcmj">Advisory</a> · <a href="https://github.com/Paymenter/Paymenter/commit/87c3db42282ada1e3cda54b9a01f846926c0669b">Commit</a>
+</p>
+<hr>
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
@@ -334,7 +384,7 @@
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 20x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -456,7 +506,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -548,7 +598,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -653,7 +703,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 55x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 56x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -746,7 +796,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -817,7 +867,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -829,7 +879,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -968,7 +1018,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-pxm6-mhxr-q4mj</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 20x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The Grav user registration process lacked server-side validation for critical privilege-related fields like &#39;groups&#39; and &#39;access&#39;. This allowed an attacker to include these fields in their registration form submission, and the application would honor these values, effectively granting them elevated privileges.</p>
 <p><b>Impact</b> : An attacker could register a new user account and assign themselves administrative or other high-privilege roles, leading to full control over the Grav instance.</p>
@@ -1003,7 +1053,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-fv26-4939-62fh</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
 <p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
@@ -1051,7 +1101,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -1078,7 +1128,7 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1224,7 +1274,7 @@ After:
 <h3>GHSA-f6qq-3m3h-4g42</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Go<br>
-<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 20x across ecosystem
+<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the Patreon OAuth2 provider incorrectly generated the local user ID. Instead of using the unique ID provided by Patreon (uinfoJSON.Data.ID), it used an uninitialized or default value from userInfo.ID, which was likely constant or empty across all users. This resulted in all authenticated Patreon users being assigned the same local user ID.</p>
 <p><b>Impact</b> : An attacker could impersonate any other Patreon-authenticated user by simply logging in with their own Patreon account. This allows for cross-user impersonation and unauthorized access to other users&#39; data or actions within the application.</p>
@@ -1241,7 +1291,7 @@ After:
 <h3>GHSA-rcmw-7mc7-3rj7</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
-<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 29x across ecosystem
+<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
 <p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
@@ -1347,7 +1397,7 @@ for member in zip_file.namelist():
 <h3>GHSA-qvv5-jq5g-4cgg</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-10 · JavaScript<br>
-<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>@whiskeysockets/baileys</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1359,7 +1409,7 @@ for member in zip_file.namelist():
 <h3>GHSA-55hg-8qxv-qj4p</h3>
 <p>
 <code>CRITICAL 0.0</code> · 2026-06-09 · Erlang<br>
-<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 139x across ecosystem
+<code>phoenix_storybook</code> · Pattern: <code>UNCLASSIFIED</code> · 141x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1423,55 +1473,6 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-qrvh-r3f2-9h4r">Advisory</a> · <a href="https://github.com/xwiki/xwiki-platform/commit/4b7b95b79256374d487e9ece1dc48f527966990f">Commit</a>
 </p>
 <hr>
-<h3>GHSA-xq3r-2qv5-vqqm</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-05-26 · Java<br>
-<code>org.xwiki.commons:xwiki-commons-classloader-api</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 40x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used `Paths.get(fullPath).normalize()` to prevent path traversal. However, it did not correctly handle leading slashes in the `resourcePath` parameter. When a resource path started with one or more leading slashes (e.g., &#34;//../&#34;), `Paths.get().normalize()` would treat it differently than intended, allowing an attacker to bypass the `startsWith(&#34;../&#34;)` check and access resources outside the intended directory.</p>
-<p><b>Impact</b> : An attacker could use specially crafted `resources` parameters in `ssx` and `jsx` endpoints to read arbitrary files on the server&#39;s file system, potentially leading to information disclosure or further compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/xwiki-commons-core/xwiki-commons-classloader/xwiki-commons-classloader-api/src/main/java/org/xwiki/classloader/internal/ClassLoaderUtils.java
-+++ b/xwiki-commons-core/xwiki-commons-classloader/xwiki-commons-classloader-api/src/main/java/org/xwiki/classloader/internal/ClassLoaderUtils.java
-@@ -47,20 +47,30 @@ private static String resolveResourceName(String prefixPath, String resourcePath
-             fullPath = resourcePath;
- 
-             // Prevent access to resources from other directories
--            // TODO: find or implement something closed to Servlet ClassLoader behavior to be as accurate as possible
--            // and be able to reuse the normalized result
--            Path normalizedResource = Paths.get(fullPath).normalize();
-+            // On Tomcat, all leading / have no effect, contrary to Paths#normalize()
-+            int index = 0;
-+            while (index &lt; fullPath.length() &amp;&amp; fullPath.charAt(index) == &#39;/&#39;) {
-+                ++index;
-+            }
-+            String normalizedPath = fullPath.substring(index);
-+
-+            Path normalizedResource = Paths.get(normalizedPath).normalize();
-             if (normalizedResource.startsWith(&#34;../&#34;)) {
-                 throw new IllegalArgumentException(String.format(
-                     &#34;The provided resource name [%s] is trying to navigate out of the mandatory root location&#34;,
--                    resourcePath));
-+                    fullPath));
-             }
-         } else {
-             fullPath = prefixPath + resourcePath;
- 
-             // Prevent access to resources from other directories
-             // TODO: find or implement something closed to Servlet ClassLoader behavior to be as accurate as possible
--            // and be able to reuse the normalized result
-+            // and be able to reuse the normalized result. Not so easy since the various applications servers can use
-+            // different logics.
-             Path normalizedResource = Paths.get(fullPath).normalize();
-             if (!normalizedResource.startsWith(prefixPath)) {
-                 throw new IllegalArgumentException(String.format(</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the `resolveResourceName` method to explicitly remove all leading slashes from the `resourcePath` before normalization. This ensures that `Paths.get().normalize()` behaves consistently and the subsequent `startsWith(&#34;../&#34;)` check correctly identifies and prevents path traversal attempts.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-xq3r-2qv5-vqqm">Advisory</a> · <a href="https://github.com/xwiki/xwiki-commons/commit/a979cafd89f6a9c9c0b9ab19744d672df64429bf">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1507,7 +1508,7 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>755</td></tr>
+<tr><td>Total advisories</td><td>760</td></tr>
 <tr><td>Unique patterns</td><td>48</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-06-22</td></tr>
