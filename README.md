@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-807-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-810-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -727,7 +727,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 58x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 59x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -1149,10 +1149,80 @@ After:
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
 </p>
 <hr>
+<h3>GHSA-2933-q333-qg83</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-06-25 · JavaScript<br>
+<code>i18next-fs-backend</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The application&#39;s utility functions `getLastOfPath`, `setPath`, and `pushPath` did not properly sanitize user-controlled input used as object keys. This allowed an attacker to inject special keys like `__proto__`, `constructor`, or `prototype` into the object path, leading to modification of `Object.prototype`.</p>
+<p><b>Impact</b> : An attacker could modify the properties of `Object.prototype`, which could lead to denial of service, remote code execution, or other severe impacts depending on the application&#39;s usage of JavaScript objects and their properties.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/utils.js
++++ b/lib/utils.js
+@@ -91,25 +91,30 @@ function getLastOfPath (object, path, Empty) {
+     if (!object) return {}
+ 
+     const key = cleanKey(stack.shift())
++    if (UNSAFE_KEYS.indexOf(key) &gt; -1) return {}
+     if (!object[key] &amp;&amp; Empty) object[key] = new Empty()
+     object = object[key]
+   }
+ 
+   if (!object) return {}
+-  return {
+-    obj: object,
+-    k: cleanKey(stack.shift())
+-  }
++  const k = cleanKey(stack.shift())
++  if (UNSAFE_KEYS.indexOf(k) &gt; -1) return {}
++  return { obj: object, k }
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a check for &#39;UNSAFE_KEYS&#39; (e.g., `__proto__`, `constructor`, `prototype`) within the `getLastOfPath` function. If an unsafe key is detected, the function now returns an empty object or `undefined`, preventing the traversal into or modification of `Object.prototype`.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2933-q333-qg83">Advisory</a> · <a href="https://github.com/i18next/i18next-fs-backend/commit/3ab0448087da6935a40117f904b7457281f963f4">Commit</a>
+</p>
+<hr>
+<h3>GHSA-f49m-vf83-692w</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-06-25 · JavaScript<br>
+<code>i18next-http-middleware</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 12x across ecosystem
+</p>
+<p><b>Root cause</b> : The `missingKeyHandler` in `i18next-http-middleware` did not adequately sanitize incoming keys from user requests. While it had a denylist for literal unsafe keys like `__proto__`, it failed to account for keys containing dotted segments (e.g., `__proto__.polluted`). When these keys were processed by backends that split them using a `keySeparator` (like `i18next-fs-backend`), the individual segments could then be used in an unguarded `setPath` operation, leading to prototype pollution.</p>
+<p><b>Impact</b> : An attacker could manipulate object prototypes, potentially leading to denial of service, remote code execution in certain contexts, or other unexpected application behavior by injecting properties into `Object.prototype`.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/index.js
++++ b/lib/index.js
+@@ -311,12 +311,15 @@ export function missingKeyHandler (i18next, options = {}) {
+     }
+ 
+     const body = options.getBody(req)
++    const keySeparator = i18next.options &amp;&amp; i18next.options.keySeparator
+ 
+-    // iterate only over own, non-prototype-polluting keys
++    // iterate only over own, non-prototype-polluting keys. The check also
++    // rejects dotted variants like `__proto__.polluted` whose segments under
++    // the configured keySeparator land on an unsafe key — see utils.js.
+     const saveMissingKeys = src =&gt; {
+       if (!src || typeof src !== &#39;object&#39;) return
+       for (const m of Object.keys(src)) {
+-        if (utils.UNSAFE_KEYS.indexOf(m) &gt; -1) continue
++        if (utils.hasUnsafeKeySegment(m, keySeparator)) continue
+         i18next.services.backendConnector.saveMissing([lng], ns, m, src[m])
+       }
+     }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new utility function `hasUnsafeKeySegment` that checks if any segment of a given key (when split by the configured `keySeparator`) matches an unsafe key. This function is then used in `missingKeyHandler` to reject any incoming keys that contain prototype-polluting segments, thus preventing the vulnerability.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-f49m-vf83-692w">Advisory</a> · <a href="https://github.com/i18next/i18next-http-middleware/commit/7c6d26f137d3e940b8d229ca148bca38845faf49">Commit</a>
+</p>
+<hr>
 <h3>GHSA-9m6g-wc8r-q59c</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-22 · JavaScript<br>
-<code>scim-patch</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 10x across ecosystem
+<code>scim-patch</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 12x across ecosystem
 </p>
 <p><b>Root cause</b> : The `scimPatch` function did not properly filter keys in patch paths, allowing an attacker to use special keys like `__proto__`, `constructor`, or `prototype`. This enabled the modification of `Object.prototype`, affecting all objects in the application.</p>
 <p><b>Impact</b> : An attacker could inject or modify properties on `Object.prototype`, potentially leading to denial of service, remote code execution, or other arbitrary code execution scenarios depending on how the polluted properties are later used by the application.</p>
@@ -1423,50 +1493,6 @@ for member in zip_file.namelist():
 <a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
 </p>
 <hr>
-<h3>GHSA-89mr-xqfv-758m</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-89mr-xqfv-758m">Advisory</a> · <a href="https://github.com/gogs/gogs/commit/04cb8afbb01d855454e59977a1cdbf522ea1db31">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fcw5-x6j4-ccmp</h3>
-<p>
-<code>CRITICAL 0.0</code> · 2026-06-18 · Python<br>
-<code>jupyter-server</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 61x across ecosystem
-</p>
-<p><b>Root cause</b> : The Jupyter Server&#39;s `NbconvertFileHandler` and `NbconvertPostHandler` did not include a &#39;sandbox&#39; directive in their Content-Security-Policy (CSP) headers when serving HTML content generated by nbconvert. This allowed malicious JavaScript embedded in a notebook to execute within the same origin as the Jupyter server.</p>
-<p><b>Impact</b> : An attacker could embed malicious JavaScript in a notebook, which, when viewed via nbconvert, would execute with the same privileges as the Jupyter server. This could lead to session hijacking, data exfiltration, or further compromise of the user&#39;s environment.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/jupyter_server/nbconvert/handlers.py
-+++ b/jupyter_server/nbconvert/handlers.py
-@@ -92,6 +92,14 @@ class NbconvertFileHandler(JupyterHandler):
-     auth_resource = AUTH_RESOURCE
-     SUPPORTED_METHODS = (&#34;GET&#34;,)
- 
-+    @property
-+    def content_security_policy(self):
-+        # In case we&#39;re serving HTML, confine any Javascript to a unique
-+        # origin so it can&#39;t interact with the Jupyter server.
-+        if self.settings.get(&#34;nbconvert_csp_sandbox&#34;, True):
-+            return super().content_security_policy + &#34;; sandbox allow-scripts&#34;
-+        return super().content_security_policy
-+
-     @web.authenticated
-     @authorized
-     async def get(self, format, path):</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new configuration option `nbconvert_csp_sandbox` which defaults to `True`. When enabled, the `NbconvertFileHandler` and `NbconvertPostHandler` now add a `sandbox allow-scripts` directive to their Content-Security-Policy headers, isolating the nbconvert-served content to a unique origin.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fcw5-x6j4-ccmp">Advisory</a> · <a href="https://github.com/jupyter-server/jupyter_server/commit/6cbee8d65e71abac851c4492fea987ad080580bd">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1502,10 +1528,10 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>807</td></tr>
+<tr><td>Total advisories</td><td>810</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-25</td></tr>
+<tr><td>Last updated</td><td>2026-06-26</td></tr>
 </table>
 </details>
 <hr>
