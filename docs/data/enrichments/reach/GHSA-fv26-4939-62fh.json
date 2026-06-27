@@ -1,1 +1,1 @@
-{"id":"GHSA-fv26-4939-62fh","axis":"advisories","repo":"phpvms/phpvms","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:52:09.109926+00:00"}
+{"id":"GHSA-fv26-4939-62fh","axis":"advisories","repo":"phpvms/phpvms","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:40:57.622047+00:00"}

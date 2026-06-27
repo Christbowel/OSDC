@@ -1,1 +1,1 @@
-{"id":"GHSA-mm82-c99c-h2cf","axis":"advisories","repo":"symfony/ux","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-20T10:19:03.006265+00:00"}
+{"id":"GHSA-mm82-c99c-h2cf","axis":"advisories","repo":"symfony/ux","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T10:19:43.838441+00:00"}

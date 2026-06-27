@@ -1,1 +1,1 @@
-{"id":"GHSA-468c-vq7p-gh64","axis":"advisories","repo":"elixir-plug/plug","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:50:30.948642+00:00"}
+{"id":"GHSA-468c-vq7p-gh64","axis":"advisories","repo":"elixir-plug/plug","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:39:20.335739+00:00"}
