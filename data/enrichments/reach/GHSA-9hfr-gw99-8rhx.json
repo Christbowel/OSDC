@@ -1,1 +1,1 @@
-{"id":"GHSA-9hfr-gw99-8rhx","axis":"advisories","repo":"sgbett/bsv-ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:55:25.185001+00:00"}
+{"id":"GHSA-9hfr-gw99-8rhx","axis":"advisories","repo":"sgbett/bsv-ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:44:08.982766+00:00"}

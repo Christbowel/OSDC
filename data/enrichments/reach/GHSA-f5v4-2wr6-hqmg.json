@@ -1,1 +1,1 @@
-{"id":"GHSA-f5v4-2wr6-hqmg","axis":"advisories","repo":"Eugeny/russh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:52:52.145646+00:00"}
+{"id":"GHSA-f5v4-2wr6-hqmg","axis":"advisories","repo":"Eugeny/russh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:41:40.295777+00:00"}
