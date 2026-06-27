@@ -1,1 +1,1 @@
-{"id":"GHSA-qrch-52m5-vv85","axis":"advisories","repo":"flightphp/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-19T11:51:49.324694+00:00"}
+{"id":"GHSA-qrch-52m5-vv85","axis":"advisories","repo":"flightphp/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:40:37.469291+00:00"}
