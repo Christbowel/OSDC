@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-810-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-844-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -12,10 +12,68 @@
 </p>
 </div>
 <hr>
+<h3>GHSA-73cv-556c-w3g6</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 16x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/mcp_pinot/pinot_client.py
++++ b/mcp_pinot/pinot_client.py
+@@ -46,6 +49,289 @@ class PinotEndpoints:
+     TABLE_CONFIG = &#34;tableConfigs/{}&#34;
+ 
+ 
++_READ_QUERY_START_KEYWORDS = {&#34;SELECT&#34;, &#34;WITH&#34;}
++_PROHIBITED_READ_QUERY_KEYWORDS = {
++    &#34;ALTER&#34;,
++    &#34;CALL&#34;,
++    &#34;COPY&#34;,
++    &#34;CREATE&#34;,
++    &#34;DELETE&#34;,
++    &#34;DESCRIBE&#34;,
++    &#34;DROP&#34;,
++    &#34;EXEC&#34;,
++    &#34;EXECUTE&#34;,
++    &#34;EXPLAIN&#34;,
++    &#34;EXPORT&#34;,
++    &#34;GRANT&#34;,
++    &#34;IMPORT&#34;,
++    &#34;INSERT&#34;,
++    &#34;INTO&#34;,
++    &#34;LOAD&#34;,
++    &#34;MERGE&#34;,
++    &#34;REFRESH&#34;,
++    &#34;REPLACE&#34;,
++    &#34;RESET&#34;,
++    &#34;REVOKE&#34;,
++    &#34;SET&#34;,
++    &#34;SHOW&#34;,
++    &#34;TRUNCATE&#34;,
++    &#34;UPDATE&#34;,
++    &#34;UPSERT&#34;,
++    &#34;USE&#34;,
++}
++
++
++def _strip_sql_comments(query: str) -&gt; str:
++    &#34;&#34;&#34;Remove SQL comments while preserving quoted strings and identifiers.&#34;&#34;&#34;
++    result: list[str] = []
++    quote: str | None = None
++    i = 0</pre>
+</details>
+<p><b>Fix</b> : The patch introduces extensive SQL parsing and validation logic. It defines a set of allowed starting keywords for read queries and a comprehensive list of prohibited keywords for write/administrative operations. It also includes functions to strip comments and split statements, ensuring that only safe read queries are processed.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-73cv-556c-w3g6">Advisory</a> · <a href="https://github.com/startreedata/mcp-pinot/commit/1c7d3f9cd384854bf72c127d230bdb32299475ad">Commit</a>
+</p>
+<hr>
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -27,7 +85,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -39,7 +97,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -51,7 +109,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -96,7 +154,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -142,7 +200,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -185,7 +243,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -269,7 +327,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 8x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -326,10 +384,22 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-9v98-6g37-x9g6</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-9v98-6g37-x9g6">Advisory</a> · <a href="https://github.com/deepstreamIO/deepstream.io/commit/54b8e2958a98df444b5b5d9a66e22872afd84e44">Commit</a>
+</p>
+<hr>
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -341,7 +411,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -391,7 +461,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 42x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -530,7 +600,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -622,7 +692,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -659,7 +729,7 @@
 <h3>GHSA-vmw2-qwm8-x84c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · C#<br>
-<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 15x across ecosystem
+<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly interpolated the &#39;regConfig&#39; parameter into a SQL query without proper validation or sanitization. This allowed an attacker to inject arbitrary SQL commands by manipulating the &#39;regConfig&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the PostgreSQL database, potentially leading to data exfiltration, modification, or deletion, and even remote code execution depending on database privileges.</p>
@@ -702,7 +772,7 @@
 <h3>GHSA-8x35-hph8-37hq</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 42x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
@@ -727,7 +797,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 59x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 64x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -754,7 +824,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 42x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -820,7 +890,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -891,7 +961,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -903,7 +973,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -961,7 +1031,7 @@ After:
 <h3>GHSA-v529-vhwc-wfc5</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 15x across ecosystem
+<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
@@ -1077,7 +1147,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-fv26-4939-62fh</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
 <p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
@@ -1102,7 +1172,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-j98m-w3xp-9f56</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 40x across ecosystem
+<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 41x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
 <p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
@@ -1125,7 +1195,7 @@ After:
 <h3>GHSA-65w6-pf7x-5g85</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
+<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
 <p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
@@ -1147,6 +1217,45 @@ After:
 <p><b>Fix</b> : The patch adds access control by passing `overrideAccess: false` and `req` to Payload&#39;s local API, ensuring that collection-level access rules are enforced.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
+</p>
+<hr>
+<h3>GHSA-jv46-xfwm-36j7</h3>
+<p>
+<code>CRITICAL 9.1</code> · 2026-06-26 · Erlang<br>
+<code>relyra</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 26x across ecosystem
+</p>
+<p><b>Root cause</b> : The Relyra SAML library failed to cryptographically verify the SignatureValue element in SAML responses. While it performed checks like algorithm allowlisting and certificate trust, it did not actually perform the cryptographic signature validation against the signed content, allowing an attacker to forge SAML responses.</p>
+<p><b>Impact</b> : An attacker could bypass authentication by crafting a malicious SAML response with a valid-looking but unverified signature, gaining unauthorized access to resources or impersonating legitimate users.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/relyra/security/signature.ex
++++ b/lib/relyra/security/signature.ex
+@@ -165,14 +167,24 @@ defmodule Relyra.Security.Signature do
+          Error.new(:missing_signature, &#34;No signed node candidates were verified&#34;, details)}
+ 
+       [candidate] -&gt;
+-        {:ok,
+-         %SignedNode{
+-           xml_id: Map.get(candidate, :xml_id),
+-           xpath: Map.get(candidate, :xpath),
+-           signed_xml: Map.get(candidate, :signed_xml, &#34;&#34;),
+-           signature_method: signature_method,
+-           digest_method: digest_method
+-         }}
++        with :ok &lt;- cryptographically_verify(candidate, signature_method, cert_chain, details) do
++          {:ok,
++           %SignedNode{
++             xml_id: Map.get(candidate, :xml_id),
++             xpath: Map.get(candidate, :xpath),
++             signed_xml: Map.get(candidate, :signed_xml, &#34;&#34;),
++             signature_method: signature_method,
++             digest_method: digest_method
++           }}
++        end</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `cryptographically_verify` function that performs the actual cryptographic signature and digest validation. This function is called before building the `SignedNode`, ensuring that the SAML response&#39;s signature is properly verified against the provided certificate chain and canonicalized XML content.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-jv46-xfwm-36j7">Advisory</a> · <a href="https://github.com/szTheory/relyra/commit/2e456897af3158c175bb490ce7fc51d6241c8922">Commit</a>
 </p>
 <hr>
 <h3>GHSA-2933-q333-qg83</h3>
@@ -1259,7 +1368,7 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 165x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 180x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1419,80 +1528,6 @@ After:
 <a href="https://github.com/advisories/GHSA-f6qq-3m3h-4g42">Advisory</a> · <a href="https://github.com/go-pkgz/auth/commit/c0b15ee72a8401da83c01781c16636c521f42698">Commit</a>
 </p>
 <hr>
-<h3>GHSA-rcmw-7mc7-3rj7</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-04-30 · Python<br>
-<code>sentry</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 31x across ecosystem
-</p>
-<p><b>Root cause</b> : During the SAML SSO setup process, Sentry was using the email provided by the Identity Provider (IdP) to link the SAML identity to a Sentry user. This allowed a malicious IdP or an attacker controlling the IdP&#39;s response to assert an arbitrary email address, potentially linking the SAML identity to an existing Sentry user who was not the administrator performing the setup.</p>
-<p><b>Impact</b> : An attacker could link their SAML identity to an arbitrary Sentry user&#39;s account, effectively taking over that user&#39;s account within the organization. This could lead to unauthorized access to sensitive data and actions.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/sentry/auth/helper.py
-+++ b/src/sentry/auth/helper.py
-@@ -1017,7 +1017,11 @@ def _finish_setup_pipeline(self, identity: Mapping[str, Any]) -&gt; HttpResponseRed
-             organization_id=self.organization.id, provider=self.provider.key, config=config
-         )
- 
--        self.auth_handler(identity).handle_attach_identity(om)
-+        # The setup flow should always link the identity to the admin who is
-+        # performing setup, so override the email to ensure resolve_email_to_user
-+        # returns the authenticated user rather than whoever the IdP asserted.
-+        setup_identity = {**identity, &#34;email&#34;: request.user.email}
-+        self.auth_handler(setup_identity).handle_attach_identity(om)
- 
-         auth.mark_sso_complete(request, self.organization.id)</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that during the SAML SSO setup flow, the identity is always linked to the email of the administrator who is currently logged in and performing the setup. It explicitly overrides the email from the IdP&#39;s response with the authenticated user&#39;s email before attaching the identity.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-rcmw-7mc7-3rj7">Advisory</a> · <a href="https://github.com/getsentry/sentry/commit/0c67558ae7fe08738912d4c5233b53ead048da3b">Commit</a>
-</p>
-<hr>
-<h3>GHSA-m5gr-86j6-99jp</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-04-10 · Python<br>
-<code>gramps-webapi</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 26x across ecosystem
-</p>
-<p><b>Root cause</b> : The application extracted files from a user-provided zip archive without validating the paths of the entries within the archive. This allowed an attacker to craft a zip file containing entries with malicious paths (e.g., `../../../../etc/passwd`) that, when extracted, would write files outside the intended temporary directory.</p>
-<p><b>Impact</b> : An attacker could write arbitrary files to arbitrary locations on the server&#39;s filesystem, potentially leading to remote code execution, data corruption, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">temp_dir_real = os.path.realpath(temp_dir)
-for member in zip_file.namelist():
-    member_path = os.path.realpath(os.path.join(temp_dir_real, member))
-    if not member_path.startswith(temp_dir_real + os.sep):
-        raise ValueError(f&#34;Zip Slip path traversal detected: {member}&#34;)</pre>
-</details>
-<p><b>Fix</b> : The patch adds a validation step before extraction. It iterates through each member of the zip file, constructs its intended extraction path, and checks if the real path of the member remains within the designated temporary directory. If a path traversal attempt is detected, an error is raised.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-m5gr-86j6-99jp">Advisory</a> · <a href="https://github.com/gramps-project/gramps-web-api/commit/3ed4342711e3ec849552df09b1fe2fbf2ca5c29a">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fxc7-fm93-6q77</h3>
-<p>
-<code>CRITICAL 9.0</code> · 2026-05-05 · Java<br>
-<code>com.arcadedb:arcadedb-server</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 59x across ecosystem
-</p>
-<p><b>Root cause</b> : The ArcadeDB server did not properly enforce security configurations for newly created databases and had a flawed logic for merging database-specific and wildcard security group configurations. This allowed users to create databases without proper security settings and bypass intended authorization rules by exploiting how group permissions were retrieved.</p>
-<p><b>Impact</b> : An attacker could create new databases that are unsecured by default, gaining unauthorized access to them. They could also potentially bypass authorization checks on existing databases by manipulating schema properties or exploiting the flawed group configuration merge logic, leading to data access or modification across databases.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/server/src/main/java/com/arcadedb/server/ArcadeDBServer.java
-+++ b/server/src/main/java/com/arcadedb/server/ArcadeDBServer.java
-@@ -474,6 +474,8 @@ public ServerDatabase createDatabase(final String databaseName, final ComponentF
-           configuration.getValueAsString(GlobalConfiguration.SERVER_DATABASE_DIRECTORY) + File.separator
-               + databaseName).setAutoTransaction(true);
- 
-+      factory.setSecurity(getSecurity());
-+
-       if (factory.exists())
-         throw new IllegalArgumentException(&#34;Database &#39;&#34; + databaseName + &#34;&#39; already exists&#34;);</pre>
-</details>
-<p><b>Fix</b> : The patch ensures that newly created databases inherit the server&#39;s security configuration. It also refines the logic for retrieving database group configurations, specifically for wildcard (&#39;*&#39;) entries, to correctly merge or return specific database groups, preventing unintended authorization bypasses.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fxc7-fm93-6q77">Advisory</a> · <a href="https://github.com/ArcadeData/arcadedb/commit/04110c06315da55604ac107f71fe7182f3a3deb8">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1528,10 +1563,10 @@ for member in zip_file.namelist():
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>810</td></tr>
+<tr><td>Total advisories</td><td>844</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-26</td></tr>
+<tr><td>Last updated</td><td>2026-06-27</td></tr>
 </table>
 </details>
 <hr>
