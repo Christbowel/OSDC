@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-844-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-845-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -1380,7 +1380,7 @@ After:
 <h3>GHSA-fwj3-42wh-8673</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-05-07 · Go<br>
-<code>github.com/gtsteffaniak/filebrowser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_DELETE</code> · 5x across ecosystem
+<code>github.com/gtsteffaniak/filebrowser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_DELETE</code> · 6x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not properly sanitize user-supplied paths in the DELETE API for public shares. An attacker could provide a path containing &#39;..&#39; sequences, which would allow them to traverse outside the intended directory and delete arbitrary files on the server.</p>
 <p><b>Impact</b> : An unauthenticated attacker could delete any file on the server that the FileBrowser process has write permissions to, potentially leading to denial of service or data loss.</p>
@@ -1563,7 +1563,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>844</td></tr>
+<tr><td>Total advisories</td><td>845</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-06-27</td></tr>
