@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-847-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-867-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -73,7 +73,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -85,7 +85,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -97,7 +97,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -109,7 +109,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -154,7 +154,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -384,10 +384,68 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-gx55-f84r-v3r7</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-gx55-f84r-v3r7">Advisory</a> · <a href="https://github.com/fission/fission/commit/e484df8460bb4e8026e24210120602aa7f181f64">Commit</a>
+</p>
+<hr>
+<h3>GHSA-m63v-2g9w-2w6v</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 25x across ecosystem
+</p>
+<p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
+<p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/pkg/apis/core/v1/validation.go
++++ b/pkg/apis/core/v1/validation.go
+ 	errs = errors.Join(errs, ValidatePodSpecSafety(&#34;Environment.spec.runtime.podspec&#34;, e.Spec.Runtime.PodSpec))
+ 	errs = errors.Join(errs, ValidatePodSpecSafety(&#34;Environment.spec.builder.podspec&#34;, e.Spec.Builder.PodSpec))
++	errs = errors.Join(errs, ValidateContainerSafety(&#34;Environment.spec.runtime.container&#34;, e.Spec.Runtime.Container))
++	errs = errors.Join(errs, ValidateContainerSafety(&#34;Environment.spec.builder.container&#34;, e.Spec.Builder.Container))
+ 	return errs</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `ValidateContainerSafety` function to explicitly check the security context of individual containers, specifically applying it to the previously unchecked `Runtime.Container` and `Builder.Container` fields in the Environment CRD. Additionally, a sanitization step is added during container merging to strip dangerous security context settings, providing a defense-in-depth measure even if admission webhooks are bypassed.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-m63v-2g9w-2w6v">Advisory</a> · <a href="https://github.com/fission/fission/commit/695d3e97e3a20463ab7c8c081843e69e65e952e5">Commit</a>
+</p>
+<hr>
+<h3>GHSA-v455-mv2v-5g92</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-v455-mv2v-5g92">Advisory</a> · <a href="https://github.com/fission/fission/commit/e484df8460bb4e8026e24210120602aa7f181f64">Commit</a>
+</p>
+<hr>
+<h3>GHSA-wmgg-3p4h-48x7</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-wmgg-3p4h-48x7">Advisory</a> · <a href="https://github.com/fission/fission/commit/8fa799417c77ce8a0189d9858bfe11ece29b84a6">Commit</a>
+</p>
+<hr>
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -399,7 +457,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -411,7 +469,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -478,7 +536,7 @@
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 23x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -600,7 +658,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -692,7 +750,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -755,7 +813,7 @@
 <h3>GHSA-xg82-2hrv-hf64</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-08 · PHP<br>
-<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 59x across ecosystem
+<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 60x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users with &#39;view&#39; permissions on an object to upload files associated with that object. This is a weaker permission than &#39;update&#39;, which should be required for file uploads, leading to an authorization bypass for file modification.</p>
 <p><b>Impact</b> : An attacker with only &#39;view&#39; permissions on an object could upload arbitrary files, potentially leading to remote code execution if the uploaded file is a malicious script (e.g., PHP file) and the server is configured to execute it.</p>
@@ -890,7 +948,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -916,7 +974,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-hm2w-vr2p-hq7w</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
-<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 20x across ecosystem
+<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.</p>
 <p><b>Impact</b> : An attacker could craft a malicious compressed UEFI firmware image that, when processed by the decompressor, would trigger a heap out-of-bounds write. This could lead to denial of service (crash), arbitrary code execution, or other memory corruption issues, compromising the integrity and security of the system&#39;s firmware.</p>
@@ -961,7 +1019,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -1112,7 +1170,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-pxm6-mhxr-q4mj</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 23x across ecosystem
+<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The Grav user registration process lacked server-side validation for critical privilege-related fields like &#39;groups&#39; and &#39;access&#39;. This allowed an attacker to include these fields in their registration form submission, and the application would honor these values, effectively granting them elevated privileges.</p>
 <p><b>Impact</b> : An attacker could register a new user account and assign themselves administrative or other high-privilege roles, leading to full control over the Grav instance.</p>
@@ -1222,7 +1280,7 @@ After:
 <h3>GHSA-jv46-xfwm-36j7</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-26 · Erlang<br>
-<code>relyra</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 26x across ecosystem
+<code>relyra</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 27x across ecosystem
 </p>
 <p><b>Root cause</b> : The Relyra SAML library failed to cryptographically verify the SignatureValue element in SAML responses. While it performed checks like algorithm allowlisting and certificate trust, it did not actually perform the cryptographic signature validation against the signed content, allowing an attacker to forge SAML responses.</p>
 <p><b>Impact</b> : An attacker could bypass authentication by crafting a malicious SAML response with a valid-looking but unverified signature, gaining unauthorized access to resources or impersonating legitimate users.</p>
@@ -1368,164 +1426,13 @@ After:
 <h3>GHSA-mqq6-462x-jxmm</h3>
 <p>
 <code>CRITICAL 9.1</code> · 2026-06-10 · Go<br>
-<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 181x across ecosystem
+<code>github.com/dhax/go-base</code> · Pattern: <code>UNCLASSIFIED</code> · 192x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
 <p><b>Fix</b> : </p>
 <p>
 <a href="https://github.com/advisories/GHSA-mqq6-462x-jxmm">Advisory</a> · <a href="https://github.com/dhax/go-base/commit/cc82b9740fa6b08e0fad409cd4b418e240dd0e00">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fwj3-42wh-8673</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-05-07 · Go<br>
-<code>github.com/gtsteffaniak/filebrowser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_DELETE</code> · 6x across ecosystem
-</p>
-<p><b>Root cause</b> : The application did not properly sanitize user-supplied paths in the DELETE API for public shares. An attacker could provide a path containing &#39;..&#39; sequences, which would allow them to traverse outside the intended directory and delete arbitrary files on the server.</p>
-<p><b>Impact</b> : An unauthenticated attacker could delete any file on the server that the FileBrowser process has write permissions to, potentially leading to denial of service or data loss.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/backend/http/middleware.go
-+++ b/backend/http/middleware.go
-@@ -53,7 +53,11 @@ type handleFunc func(w http.ResponseWriter, r *http.Request, data *requestContex
- func withHashFileHelper(fn handleFunc) handleFunc {
- 	return withOrWithoutUserHelper(func(w http.ResponseWriter, r *http.Request, data *requestContext) (int, error) {
- 		hash := r.URL.Query().Get(&#34;hash&#34;)
--		path := r.URL.Query().Get(&#34;path&#34;)
-+		inputPath := r.URL.Query().Get(&#34;path&#34;)
-+		path, err := utils.SanitizeUserPath(inputPath)
-+		if err != nil &amp;&amp; inputPath != &#34;&#34; {
-+			return http.StatusBadRequest, err
-+		}
- 
- 		// Get the file link by hash
- 		link, err := store.Share.GetByHash(hash)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `utils.SanitizeUserPath` function to validate and sanitize user-provided paths, specifically in the `withHashFileHelper` and `resourceBulkDeleteHandler` functions. This prevents path traversal sequences like &#39;..&#39; from being interpreted by the file system.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fwj3-42wh-8673">Advisory</a> · <a href="https://github.com/gtsteffaniak/filebrowser/commit/112740bdd41de7d5eb01e13ba49d406bfc463f69">Commit</a>
-</p>
-<hr>
-<h3>GHSA-w48r-jppp-rcfw</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 26x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from multiple issues. Firstly, the `unZip` function did not validate archive entry names, allowing &#39;Zip Slip&#39; attacks where malicious ZIP files could write files outside the intended directory using path traversal sequences (e.g., `../`). Secondly, the `attribute` function in `MediaObjectTrait` allowed arbitrary attribute names, which could be exploited for XSS by injecting event handlers (e.g., `onerror`) or other dangerous attributes. Lastly, the `detectXss` function&#39;s regex for `on_events` was bypassable, and the SVG parsing in `VectorImageMedium` was vulnerable to XXE attacks due to not stripping DOCTYPE/ENTITY declarations and lacking `LIBXML_NONET`.</p>
-<p><b>Impact</b> : An attacker could achieve remote code execution by uploading a crafted plugin ZIP file that writes PHP files to arbitrary locations. They could also inject malicious JavaScript via XSS in image attributes or potentially perform server-side request forgery (SSRF) or information disclosure via XXE in SVG files.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/system/src/Grav/Common/GPM/Installer.php
-+++ b/system/src/Grav/Common/GPM/Installer.php
-@@ -179,6 +179,24 @@ public static function unZip($zip_file, $destination)
-         $archive = $zip-&gt;open($zip_file);
- 
-         if ($archive === true) {
-+            $numFiles = $zip-&gt;numFiles;
-+            for ($i = 0; $i &lt; $numFiles; $i++) {
-+                $entryName = (string) $zip-&gt;getNameIndex($i);
-+                if (!self::isSafeArchiveEntry($entryName)) {
-+                    self::$error = self::ZIP_EXTRACT_ERROR;
-+                    $zip-&gt;close();
-+                    return false;
-+                }
-+            }
-+
-             Folder::create($destination);
- 
-             $unzip = $zip-&gt;extractTo($destination);</pre>
-</details>
-<p><b>Fix</b> : The patch introduces `isSafeArchiveEntry` to validate ZIP entry names, preventing path traversal. It also adds `isSafeAttributeName` to restrict allowed HTML attribute names, mitigating XSS. The `detectXss` regex for `on_events` was improved to be more robust. Finally, the SVG parsing now strips DOCTYPE/ENTITY declarations and uses `LIBXML_NONET` to prevent XXE vulnerabilities.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-w48r-jppp-rcfw">Advisory</a> · <a href="https://github.com/getgrav/grav/commit/5a12f9be8314682c8713e569e330f11805d0a663">Commit</a>
-</p>
-<hr>
-<h3>GHSA-xj4f-8jjg-vx4q</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-05-04 · Java<br>
-<code>org.openmrs.api:openmrs-api</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 3x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used Apache Velocity for evaluating user-supplied criteria in `ConceptReferenceRangeUtility.java`. The `evaluateCriteria` method directly passed unsanitized user input into `velocityEngine.evaluate()`, allowing an attacker to inject Velocity Template Language (VTL) directives. Since Velocity templates can execute arbitrary Java code, this led to Remote Code Execution (RCE).</p>
-<p><b>Impact</b> : An authenticated attacker with privileges to create or modify ConceptReferenceRange objects could store malicious Velocity templates. When these templates were evaluated, the attacker could achieve arbitrary code execution on the server, leading to full system compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/api/src/main/java/org/openmrs/util/ConceptReferenceRangeUtility.java
-+++ b/api/src/main/java/org/openmrs/util/ConceptReferenceRangeUtility.java
-@@ -96,387 +128,383 @@ public boolean evaluateCriteria(String criteria, ConceptReferenceRangeContext co
- 			throw new IllegalArgumentException(&#34;Failed to evaluate criteria with reason: criteria is empty&#34;);
- 		}
- 
--		VelocityContext velocityContext = new VelocityContext();
--		velocityContext.put(&#34;fn&#34;, this);
--		velocityContext.put(&#34;patient&#34;, HibernateUtil.getRealObjectFromProxy(context.getPerson()));
--		velocityContext.put(&#34;context&#34;, context);
--
--		velocityContext.put(&#34;obs&#34;, context.getObs());
--		velocityContext.put(&#34;encounter&#34;, context.getEncounter());
--		velocityContext.put(&#34;date&#34;, context.getDate());
--
--		VelocityEngine velocityEngine = new VelocityEngine();
--		try {
--			Properties props = new Properties();
--			props.put(&#34;runtime.log.logsystem.log4j.category&#34;, &#34;velocity&#34;);
--			props.put(&#34;runtime.log.logsystem.log4j.logger&#34;, &#34;velocity&#34;);
--			velocityEngine.init(props);
--		} catch (Exception e) {
--			throw new APIException(&#34;Failed to create the velocity engine: &#34; + e.getMessage(), e);
--		}
--
--		StringWriter writer = new StringWriter();
--		String wrappedCriteria = &#34;#set( $criteria = &#34; + criteria + &#34; )$criteria&#34;;
-+		Map&lt;String, Object&gt; root = new HashMap&lt;&gt;();
-+		root.put(&#34;$fn&#34;, functions);
-+		root.put(&#34;$patient&#34;, HibernateUtil.getRealObjectFromProxy(context.getPerson()));
-+		root.put(&#34;$context&#34;, context);
-+		root.put(&#34;$obs&#34;, context.getObs());
-+		root.put(&#34;$encounter&#34;, context.getEncounter());
-+		root.put(&#34;$date&#34;, context.getDate());
- 
- 		try {
--			velocityEngine.evaluate(velocityContext, writer, ConceptReferenceRangeUtility.class.getName(), wrappedCriteria);
--			return Boolean.parseBoolean(writer.toString());
--		} catch (ParseErrorException e) {
--			throw new APIException(&#34;An error occurred while evaluating criteria. Invalid criteria: &#34; + criteria, e);
-+			Expression expression = EXPRESSION_CACHE.get(criteria, PARSER::parseExpression);
-+			Boolean result = expression.getValue(EVAL_CONTEXT, root, Boolean.class);
-+			return result != null &amp;&amp; result;
-+		} catch (SpelEvaluationException e) {
-+			SpelMessage msg = e.getMessageCode();
-+			if (msg == SpelMessage.METHOD_CALL_ON_NULL_OBJECT_NOT_ALLOWED
-+			        || msg == SpelMessage.PROPERTY_OR_FIELD_NOT_READABLE_ON_NULL) {
-+				return false;
-+			}
-+			throw new APIException(&#34;An error occurred while evaluating criteria: &#34; + criteria, e);
- 		} catch (Exception e) {
--			throw new APIException(&#34;An error occurred while evaluating criteria: &#34;, e);
-+			throw new APIException(&#34;An error occurred while evaluating criteria: &#34; + criteria, e);
- 		}
- 	}</pre>
-</details>
-<p><b>Fix</b> : The patch replaces the vulnerable Apache Velocity template engine with Spring Expression Language (SpEL). It also introduces a `CriteriaFunctions` class to explicitly define available functions, preventing direct access to arbitrary Java methods. Additionally, a cache for parsed expressions is implemented to improve performance.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-xj4f-8jjg-vx4q">Advisory</a> · <a href="https://github.com/openmrs/openmrs-core/commit/8d1c193">Commit</a>
-</p>
-<hr>
-<h3>GHSA-f6qq-3m3h-4g42</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-04-30 · Go<br>
-<code>github.com/go-pkgz/auth/v2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 23x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the Patreon OAuth2 provider incorrectly generated the local user ID. Instead of using the unique ID provided by Patreon (uinfoJSON.Data.ID), it used an uninitialized or default value from userInfo.ID, which was likely constant or empty across all users. This resulted in all authenticated Patreon users being assigned the same local user ID.</p>
-<p><b>Impact</b> : An attacker could impersonate any other Patreon-authenticated user by simply logging in with their own Patreon account. This allows for cross-user impersonation and unauthorized access to other users&#39; data or actions within the application.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-				userInfo.ID = &#34;patreon_&#34; + token.HashID(sha1.New(), userInfo.ID)
-+				userInfo.ID = &#34;patreon_&#34; + token.HashID(sha1.New(), uinfoJSON.Data.ID)</pre>
-</details>
-<p><b>Fix</b> : The patch corrects the user ID generation logic for the Patreon OAuth2 provider. It changes the source of the ID used for hashing from the potentially uninitialized `userInfo.ID` to the unique and correct `uinfoJSON.Data.ID` obtained from the Patreon user information JSON response. This ensures each Patreon user gets a unique local ID.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-f6qq-3m3h-4g42">Advisory</a> · <a href="https://github.com/go-pkgz/auth/commit/c0b15ee72a8401da83c01781c16636c521f42698">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1563,10 +1470,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>847</td></tr>
+<tr><td>Total advisories</td><td>867</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-06-30</td></tr>
+<tr><td>Last updated</td><td>2026-07-01</td></tr>
 </table>
 </details>
 <hr>
