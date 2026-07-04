@@ -1,1 +1,1 @@
-{"id":"GHSA-ghm9-cr32-g9qj","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:41:52.503397+00:00"}
+{"id":"GHSA-ghm9-cr32-g9qj","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:42:26.441425+00:00"}
