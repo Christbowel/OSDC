@@ -1,1 +1,1 @@
-{"id":"GHSA-hppc-g8h3-xhp3","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-06-27T09:41:53.198860+00:00"}
+{"id":"GHSA-hppc-g8h3-xhp3","axis":"advisories","repo":"rust-openssl/rust-openssl","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:42:27.161613+00:00"}
