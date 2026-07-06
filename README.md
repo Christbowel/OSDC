@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-935-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-936-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -974,7 +974,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-hm2w-vr2p-hq7w</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
-<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 28x across ecosystem
+<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.</p>
 <p><b>Impact</b> : An attacker could craft a malicious compressed UEFI firmware image that, when processed by the decompressor, would trigger a heap out-of-bounds write. This could lead to denial of service (crash), arbitrary code execution, or other memory corruption issues, compromising the integrity and security of the system&#39;s firmware.</p>
@@ -1470,7 +1470,7 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>935</td></tr>
+<tr><td>Total advisories</td><td>936</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
 <tr><td>Last updated</td><td>2026-07-06</td></tr>
