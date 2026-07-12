@@ -1,1 +1,1 @@
-{"id":"GHSA-chm7-4vch-h8vr","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T10:20:35.275586+00:00"}
+{"id":"GHSA-chm7-4vch-h8vr","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:29:16.723480+00:00"}

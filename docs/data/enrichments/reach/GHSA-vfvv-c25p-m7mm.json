@@ -1,1 +1,1 @@
-{"id":"GHSA-vfvv-c25p-m7mm","axis":"advisories","repo":"rkyv/rkyv","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:40:18.167930+00:00"}
+{"id":"GHSA-vfvv-c25p-m7mm","axis":"advisories","repo":"rkyv/rkyv","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:31:38.387916+00:00"}
