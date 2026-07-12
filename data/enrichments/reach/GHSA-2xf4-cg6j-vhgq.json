@@ -1,1 +1,1 @@
-{"id":"GHSA-2xf4-cg6j-vhgq","axis":"advisories","repo":"symfony/polyfill","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:39:32.319574+00:00"}
+{"id":"GHSA-2xf4-cg6j-vhgq","axis":"advisories","repo":"symfony/polyfill","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:30:43.114520+00:00"}

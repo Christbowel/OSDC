@@ -1,1 +1,1 @@
-{"id":"GHSA-j8gj-9rm5-4xhx","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:39:40.249283+00:00"}
+{"id":"GHSA-j8gj-9rm5-4xhx","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:30:52.700473+00:00"}

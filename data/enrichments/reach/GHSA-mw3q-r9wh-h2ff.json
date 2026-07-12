@@ -1,1 +1,1 @@
-{"id":"GHSA-mw3q-r9wh-h2ff","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-04T09:39:48.913803+00:00"}
+{"id":"GHSA-mw3q-r9wh-h2ff","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:31:02.761556+00:00"}
