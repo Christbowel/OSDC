@@ -1,1 +1,1 @@
-{"id":"GHSA-38cx-cq6f-5755","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-09T10:39:49.859288+00:00"}
+{"id":"GHSA-38cx-cq6f-5755","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-17T09:29:24.596256+00:00"}
