@@ -1,1 +1,1 @@
-{"id":"GHSA-8jgf-23q5-x7xx","axis":"advisories","repo":"ex-aws/ex_aws_sns","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:28:13.525741+00:00"}
+{"id":"GHSA-8jgf-23q5-x7xx","axis":"advisories","repo":"ex-aws/ex_aws_sns","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-19T09:28:34.798085+00:00"}
