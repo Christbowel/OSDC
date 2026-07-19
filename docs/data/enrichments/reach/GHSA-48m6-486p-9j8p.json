@@ -1,1 +1,1 @@
-{"id":"GHSA-48m6-486p-9j8p","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:35:35.014679+00:00"}
+{"id":"GHSA-48m6-486p-9j8p","axis":"advisories","repo":"nimiq/core-rs-albatross","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-19T09:36:16.056327+00:00"}

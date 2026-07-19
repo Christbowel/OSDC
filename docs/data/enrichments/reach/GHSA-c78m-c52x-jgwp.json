@@ -1,1 +1,1 @@
-{"id":"GHSA-c78m-c52x-jgwp","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:29:16.722987+00:00"}
+{"id":"GHSA-c78m-c52x-jgwp","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-19T09:29:35.934316+00:00"}

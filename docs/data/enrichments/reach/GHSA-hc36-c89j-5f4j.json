@@ -1,1 +1,1 @@
-{"id":"GHSA-hc36-c89j-5f4j","axis":"advisories","repo":"sgbett/bsv-ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:36:12.502496+00:00"}
+{"id":"GHSA-hc36-c89j-5f4j","axis":"advisories","repo":"sgbett/bsv-ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-19T09:36:52.583178+00:00"}
