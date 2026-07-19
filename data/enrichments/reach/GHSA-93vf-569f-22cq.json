@@ -1,1 +1,1 @@
-{"id":"GHSA-93vf-569f-22cq","axis":"advisories","repo":"rhukster/dom-sanitizer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-12T09:35:59.395585+00:00"}
+{"id":"GHSA-93vf-569f-22cq","axis":"advisories","repo":"rhukster/dom-sanitizer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-19T09:36:40.064143+00:00"}
