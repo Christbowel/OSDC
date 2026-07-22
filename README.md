@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1100-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1130-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -85,7 +85,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -97,7 +97,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -109,7 +109,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -121,7 +121,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -166,7 +166,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -212,7 +212,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -255,7 +255,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -308,7 +308,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 32x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -399,7 +399,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -433,7 +433,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -445,7 +445,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -457,7 +457,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -469,7 +469,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -481,7 +481,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -667,6 +667,31 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-f75j-4cw6-rmx4</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-07-21 · Go<br>
+<code>code.gitea.io/gitea</code> · Pattern: <code>RACE_CONDITION→DOUBLE_SPEND</code> · 2x across ecosystem
+</p>
+<p><b>Root cause</b> : The Gitea Docker image, when configured with `REVERSE_PROXY_TRUSTED_PROXIES = *`, allowed any source IP to impersonate any user via the `X-WEBAUTH-USER` header. Additionally, the TOTP (Time-based One-Time Password) validation logic was susceptible to replay attacks because it did not atomically consume the passcode after successful validation, allowing the same passcode to be used multiple times within its validity window.</p>
+<p><b>Impact</b> : An attacker could bypass two-factor authentication by replaying a valid TOTP passcode. In the context of the Docker image misconfiguration, this could be combined with user impersonation to gain unauthorized access to user accounts.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/models/auth/twofactor.go
++++ b/models/auth/twofactor.go
+-func (t *TwoFactor) ValidateTOTP(passcode string) (bool, error) {
++func (t *TwoFactor) ValidateAndConsumeTOTP(ctx context.Context, passcode string) (bool, error) {
+ 	return totp.Validate(passcode, secretStr), nil
+ }
++	// Conditional update: only a row whose stored passcode differs from this one is updated, so a
++	// replay (or a concurrent duplicate) matches zero rows and is rejected. The row lock taken by
++	// the UPDATE serializes racing requests, closing the read-validate-write TOCTOU window.
++	t.LastUsedPasscode = passcode</pre>
+</details>
+<p><b>Fix</b> : The patch introduces `ValidateAndConsumeTOTP` which atomically validates and consumes a TOTP passcode by updating a `last_used_passcode` field in the database. This prevents replay attacks by ensuring a passcode can only be used once. The web and API authentication flows are updated to use this new atomic validation function.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-f75j-4cw6-rmx4">Advisory</a> · <a href="https://github.com/go-gitea/gitea/commit/99f8b3d9a1d32f4c39828e07971455a18191e0b9">Commit</a>
+</p>
+<hr>
 <h3>GHSA-px5m-h76g-p7p8</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-09 · PHP<br>
@@ -703,7 +728,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -795,7 +820,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -858,7 +883,7 @@
 <h3>GHSA-xg82-2hrv-hf64</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-08 · PHP<br>
-<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 70x across ecosystem
+<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 71x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users with &#39;view&#39; permissions on an object to upload files associated with that object. This is a weaker permission than &#39;update&#39;, which should be required for file uploads, leading to an authorization bypass for file modification.</p>
 <p><b>Impact</b> : An attacker with only &#39;view&#39; permissions on an object could upload arbitrary files, potentially leading to remote code execution if the uploaded file is a malicious script (e.g., PHP file) and the server is configured to execute it.</p>
@@ -900,7 +925,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 88x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -993,7 +1018,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -1064,7 +1089,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -1076,7 +1101,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -1094,10 +1119,62 @@ After:
 <a href="https://github.com/advisories/GHSA-jmrh-xmgh-x9j4">Advisory</a> · <a href="https://github.com/dgtlmoon/changedetection.io/commit/31a760c2147e3e73a403baf6d7de34dc50429c85">Commit</a>
 </p>
 <hr>
+<h3>GHSA-hg5r-vq93-9fv6</h3>
+<p>
+<code>CRITICAL 9.6</code> · 2026-07-21 · Go<br>
+<code>code.gitea.io/gitea</code> · Pattern: <code>WEAK_CRYPTO→HASH</code> · 3x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from an ambiguity in how HMAC signatures were generated for Gitea Actions artifacts. The previous implementation concatenated string and integer values directly into the HMAC function without length-prefixing or clear delimiters. This allowed an attacker to craft inputs where different combinations of values (e.g., artifactName and taskID) could produce the same HMAC signature, leading to a collision.</p>
+<p><b>Impact</b> : An attacker could exploit this ambiguity to read artifacts from other repositories (cross-repository artifact read) or manipulate the upload state of artifacts in other tasks (cross-task upload-state write), bypassing intended access controls.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/routers/api/actions/artifactsv4.go
++++ b/routers/api/actions/artifactsv4.go
+@@ -161,13 +161,7 @@ func ArtifactsV4Routes(prefix string) *web.Router {
+ }
+ 
+ func (r *artifactV4Routes) buildSignature(endpoint, expires, artifactName string, taskID, artifactID int64) []byte {
+-	mac := hmac.New(sha256.New, setting.GetGeneralTokenSigningSecret())
+-	mac.Write([]byte(endpoint))
+-	mac.Write([]byte(expires))
+-	mac.Write([]byte(artifactName))
+-	_, _ = fmt.Fprint(mac, taskID)
+-	_, _ = fmt.Fprint(mac, artifactID)
+-	return mac.Sum(nil)
++	return actions.BuildSignature(&#34;v4&#34;, endpoint, expires, artifactName, strconv.FormatInt(taskID, 10), strconv.FormatInt(artifactID, 10))
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `BuildSignature` helper function that explicitly length-prefixes all input values before feeding them into the HMAC algorithm. It also adds a &#39;tag&#39; parameter to distinguish signatures for different purposes. This ensures that each component of the signed data is unambiguously separated, preventing collision attacks.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-hg5r-vq93-9fv6">Advisory</a> · <a href="https://github.com/go-gitea/gitea/commit/1c2d5e9b03f71dd12d450b2af9a79f2557b50226">Commit</a>
+</p>
+<hr>
+<h3>GHSA-pf56-329r-95rw</h3>
+<p>
+<code>CRITICAL 9.6</code> · 2026-07-21 · JavaScript<br>
+<code>@sigstore/oci</code> · Pattern: <code>CREDENTIAL_LEAK→LOG_EXPOSURE</code> · 6x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from an overly broad credential matching logic. The system used `key.includes(registry)` to find credentials, which meant that credentials for a registry like `myregistry.com` could be inadvertently sent to an attacker-controlled registry like `evilmyregistry.com` because the latter&#39;s name included the former.</p>
+<p><b>Impact</b> : An attacker could craft a malicious registry name that is a substring of a legitimate registry for which the user has credentials. When the user attempts to interact with the attacker&#39;s registry, their legitimate credentials for the intended registry would be leaked to the attacker.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-	    Object.keys(dockerConfig.auths || {}).find((key) =&gt;
+-	      key.includes(registry)
+-	    ) || registry;
++	  const target = canonicalizeRegistry(registry);
++	  const credKey = Object.keys(dockerConfig.auths || {}).find(
++	    (key) =&gt; canonicalizeRegistry(key) === target
++	  );</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `canonicalizeRegistry` function to normalize registry hostnames, including handling Docker Hub aliases. It then changes the credential lookup to use an exact match (`canonicalizeRegistry(key) === target`) instead of a substring match, ensuring credentials are only sent to the exact intended registry.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-pf56-329r-95rw">Advisory</a> · <a href="https://github.com/sigstore/sigstore-js/commit/85c58380758b97ce1b74ef470e55cc21f9d3aa89">Commit</a>
+</p>
+<hr>
 <h3>GHSA-mhc6-2gfq-xx62</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-07-01 · Go<br>
-<code>github.com/rancher/rancher</code> · Pattern: <code>UNCLASSIFIED</code> · 275x across ecosystem
+<code>github.com/rancher/rancher</code> · Pattern: <code>UNCLASSIFIED</code> · 293x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1224,6 +1301,35 @@ result = @@conn.exec_params(query, query_params)</pre>
 <a href="https://github.com/advisories/GHSA-8wrq-fv5f-pfp2">Advisory</a> · <a href="https://github.com/parisneo/lollms/commit/9767b882dbc893c388a286856beeaead69b8292a">Commit</a>
 </p>
 <hr>
+<h3>GHSA-p63j-vcc4-9vmv</h3>
+<p>
+<code>CRITICAL 9.4</code> · 2026-07-21 · JavaScript<br>
+<code>@vitest/browser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 33x across ecosystem
+</p>
+<p><b>Root cause</b> : The Vitest browser mode allowed certain commands (like screenshotMatcher and file system operations) to bypass file access permission gates. Specifically, the `assertFileAccess` and `assertWrite` checks were not consistently applied or were missing in critical code paths, allowing an attacker to read from or write to arbitrary files outside the intended project root.</p>
+<p><b>Impact</b> : An attacker could read or write arbitrary files on the server running Vitest, potentially leading to remote code execution, sensitive data disclosure, or denial of service.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/packages/browser/src/node/commands/screenshotMatcher/index.ts
++++ b/packages/browser/src/node/commands/screenshotMatcher/index.ts
+@@ -555,8 +560,10 @@ async function takeScreenshotData({
+ }
+ 
+ /** Writes encoded images to disk, creating parent directories as needed. */
+-async function writeScreenshot(path: string, image: TypedArray) {
++async function writeScreenshot(path: string, image: TypedArray, project: TestProject) {
+   try {
++    assertBrowserApiWrite(project, path)
++    assertBrowserFileAccess(project, path)
+     await mkdir(dirname(path), { recursive: true })
+     await writeFile(path, image)
+   }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces new utility functions `assertBrowserApiWrite` and `assertBrowserFileAccess` to centralize and enforce file access and write permissions. These checks are now consistently applied to all relevant browser commands, including screenshot matching and direct file system operations, ensuring that file paths are confined to the project root and write operations respect configuration settings.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-p63j-vcc4-9vmv">Advisory</a> · <a href="https://github.com/vitest-dev/vitest/commit/33f96a145ef09ca6a43b4e555eb273e64a87be23">Commit</a>
+</p>
+<hr>
 <h3>GHSA-pxm6-mhxr-q4mj</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-05 · PHP<br>
@@ -1262,7 +1368,7 @@ result = @@conn.exec_params(query, query_params)</pre>
 <h3>GHSA-fv26-4939-62fh</h3>
 <p>
 <code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
+<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
 <p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
@@ -1282,134 +1388,6 @@ result = @@conn.exec_params(query, query_params)</pre>
 <p><b>Fix</b> : The patch completely removes the vulnerable /importer functionality by deleting all associated view files. This eliminates the unauthorized access point and prevents the database wipe from being triggered by unauthenticated users.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-fv26-4939-62fh">Advisory</a> · <a href="https://github.com/phpvms/phpvms/commit/f59ba8e0e8fc25c60c3faf14e526cfd49df3f7dc">Commit</a>
-</p>
-<hr>
-<h3>GHSA-j98m-w3xp-9f56</h3>
-<p>
-<code>CRITICAL 9.4</code> · 2026-04-14 · Python<br>
-<code>excel-mcp-server</code> · Pattern: <code>PATH_TRAVERSAL→FILE_READ</code> · 45x across ecosystem
-</p>
-<p><b>Root cause</b> : The code did not properly sanitize the input filename, allowing attackers to traverse directories and access files outside of the intended directory.</p>
-<p><b>Impact</b> : An attacker could read or write arbitrary files on the server, potentially leading to data theft, unauthorized modifications, or other malicious activities.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-    return os.path.join(EXCEL_FILES_PATH, filename)
-
-After:
-    base = os.path.realpath(EXCEL_FILES_PATH)
-    candidate = os.path.realpath(os.path.join(base, filename))
-    if not _resolved_path_is_within(base, candidate):
-        raise ValueError(f&#34;Invalid filename: {filename}, path escapes EXCEL_FILES_PATH&#34;)</pre>
-</details>
-<p><b>Fix</b> : The patch introduced a function `_resolved_path_is_within` to ensure that the resolved path is within the allowed directory. It also added checks to validate the filename and prevent absolute paths when not in SSE mode.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-j98m-w3xp-9f56">Advisory</a> · <a href="https://github.com/haris-musa/excel-mcp-server/commit/f51340ecd5778952405044b203d3a2d4c8a46833">Commit</a>
-</p>
-<hr>
-<h3>GHSA-65w6-pf7x-5g85</h3>
-<p>
-<code>CRITICAL 9.4</code> · 2026-04-08 · JavaScript<br>
-<code>@delmaredigital/payload-puck</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
-</p>
-<p><b>Root cause</b> : The endpoints were missing proper authorization checks, allowing unauthenticated access to CRUD operations on Puck-registered collections.</p>
-<p><b>Impact</b> : An attacker could perform any CRUD operation on the collections without authentication, potentially leading to data leakage or manipulation.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
--      const body = await req.json?.()
--      const { _locale } = body || {}
--      const locale = resolveLocale(req, _locale)
-
-After:
-+      const locale = resolveLocale(req)
-+
-+      const result = await req.payload.find({
-+        collection: collection as CollectionSlug,
-+        req,
-+        overrideAccess: false,</pre>
-</details>
-<p><b>Fix</b> : The patch adds access control by passing `overrideAccess: false` and `req` to Payload&#39;s local API, ensuring that collection-level access rules are enforced.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-65w6-pf7x-5g85">Advisory</a> · <a href="https://github.com/delmaredigital/payload-puck/commit/9148201c6bbfa140d44546438027a2f8a70f79a4">Commit</a>
-</p>
-<hr>
-<h3>GHSA-6x6h-qqr7-855w</h3>
-<p>
-<code>CRITICAL 9.3</code> · 2026-07-20 · Python<br>
-<code>lightrag-hku</code> · Pattern: <code>CORS_MISCONFIGURATION→ORIGIN</code> · 7x across ecosystem
-</p>
-<p><b>Root cause</b> : The application&#39;s CORS middleware was configured to allow both wildcard origins (&#39;*&#39;) and credentialed requests (allow_credentials=True) simultaneously. This combination is explicitly disallowed by the Fetch specification and can lead to a security bypass in some browser implementations, allowing an attacker to make credentialed cross-origin requests from any origin.</p>
-<p><b>Impact</b> : An attacker could potentially make credentialed cross-origin requests to the LightRAG API from any malicious website, bypassing the intended same-origin policy for credentialed requests. This could lead to unauthorized access or actions if the API relies on credentials (e.g., Authorization headers) for sensitive operations.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/lightrag/api/lightrag_server.py
-+++ b/lightrag/api/lightrag_server.py
-@@ -1376,8 +1376,9 @@ def get_cors_origins():
-     # Add CORS middleware
-+    cors_origins = get_cors_origins()
-+    allow_credentials = cors_origins != [&#34;*&#34;]
-     app.add_middleware(
-         CORSMiddleware,
--        allow_origins=get_cors_origins(),
--        allow_credentials=True,
-+        allow_origins=cors_origins,
-+        allow_credentials=allow_credentials,
-         allow_methods=[&#34;*&#34;],</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the CORS middleware configuration to dynamically set &#39;allow_credentials&#39; based on the &#39;allow_origins&#39; list. If the allowed origins include the wildcard (&#39;*&#39;), &#39;allow_credentials&#39; is set to &#39;False&#39;. If specific origins are listed, &#39;allow_credentials&#39; remains &#39;True&#39;. This ensures compliance with the Fetch spec and prevents the insecure combination.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6x6h-qqr7-855w">Advisory</a> · <a href="https://github.com/HKUDS/LightRAG/commit/09567a4c983f580050db63569dd477122c058c3d">Commit</a>
-</p>
-<hr>
-<h3>GHSA-6x7x-gcmf-7r8x</h3>
-<p>
-<code>CRITICAL 9.1</code> · 2026-07-09 · PHP<br>
-<code>yeswiki/yeswiki</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 42x across ecosystem
-</p>
-<p><b>Root cause</b> : The `EraseSpamedCommentsAction` in YesWiki allowed unauthenticated users to trigger the `{{erasespamedcomments}}` action. This action processed a `suppr[]` POST array, intended for deleting spam comments. However, it did not validate if the pages specified in `suppr[]` were actual comments, allowing an attacker to supply arbitrary page names for deletion.</p>
-<p><b>Impact</b> : An unauthenticated attacker could delete any page on the YesWiki instance, leading to significant data loss and denial of service for the website.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/actions/EraseSpamedCommentsAction.php
-+++ b/actions/EraseSpamedCommentsAction.php
-@@ -26,6 +26,14 @@ class EraseSpamedCommentsAction extends YesWikiAction
-     public function run()
-     {
-         $wiki = &amp;$this-&gt;wiki;
-+
-+        if (!$wiki-&gt;UserIsAdmin()) {
-+            return $this-&gt;render(&#39;@templates/alert-message.twig&#39;, [
-+                &#39;type&#39; =&gt; &#39;danger&#39;,
-+                &#39;message&#39; =&gt; get_class($this) . &#39; : &#39; . _t(&#39;BAZ_NEED_ADMIN_RIGHTS&#39;),
-+            ]);
-+        }
-+
-         ob_start();
-         echo &#34;\n&lt;!-- == Action erasespamedcomments v 0.7 ============================= --&gt;\n&#34;;
- 
-@@ -75,10 +83,13 @@ public function run()
-             // Pour chaque page sélectionnée
-             if (!empty($_POST[&#39;suppr&#39;])) {
-                 foreach ($_POST[&#39;suppr&#39;] as $page) {
--                    // Effacement de la page en utilisant la méthode adéquate
--                    // (si DeleteOrphanedPage ne convient pas, soit on créé
--                    // une autre, soit on la modifie
--                    echo &#39;Effacement de : &#39; . $page . &#34;&lt;br /&gt;\n&#34;;
-+                    // Only delete pages that are actual comments to prevent
-+                    // arbitrary page deletion via a crafted suppr[] payload.
-+                    $pageData = $wiki-&gt;LoadPage($page);
-+                    if (empty($pageData) || empty($pageData[&#39;comment_on&#39;])) {
-+                        continue;
-+                    }
-+                    echo &#39;Effacement de : &#39; . htmlspecialchars($page) . &#34;&lt;br /&gt;\n&#34;;
-                     if ($wiki-&gt;services-&gt;get(PageController::class)-&gt;delete($page)) {
-                         $deletedPages .= $page . &#39;, &#39;;
-                     }</pre>
-</details>
-<p><b>Fix</b> : The patch introduces an administrator check at the beginning of the `run()` method to restrict access to the action. Additionally, it adds a validation step within the deletion loop to ensure that only pages identified as comments are actually deleted, preventing arbitrary page deletion via a crafted payload.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6x7x-gcmf-7r8x">Advisory</a> · <a href="https://github.com/YesWiki/yeswiki/commit/ed5b548a705c8091ba0282aaaba73ddda976abef">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1447,10 +1425,10 @@ After:
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1100</td></tr>
+<tr><td>Total advisories</td><td>1130</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-07-21</td></tr>
+<tr><td>Last updated</td><td>2026-07-22</td></tr>
 </table>
 </details>
 <hr>
