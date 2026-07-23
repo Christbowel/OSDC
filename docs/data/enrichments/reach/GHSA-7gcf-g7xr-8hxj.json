@@ -1,1 +1,1 @@
-{"id":"GHSA-7gcf-g7xr-8hxj","axis":"advisories","repo":"jonasbb/serde_with","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-16T09:35:41.275776+00:00"}
+{"id":"GHSA-7gcf-g7xr-8hxj","axis":"advisories","repo":"jonasbb/serde_with","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-23T10:01:27.889121+00:00"}
