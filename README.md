@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1189-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1219-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -12,10 +12,155 @@
 </p>
 </div>
 <hr>
+<h3>GHSA-f25v-x6vr-962g</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 45x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
+<p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/pheditor.php
++++ b/pheditor.php
+@@ -152,7 +152,9 @@
+ 
+ if (empty(PASSWORD) === false &amp;&amp; (isset($_SESSION[&#39;pheditor_admin&#39;], $_SESSION[&#39;pheditor_password&#39;]) === false || $_SESSION[&#39;pheditor_admin&#39;] !== true || $_SESSION[&#39;pheditor_password&#39;] != PASSWORD)) {
+     if (isset($_POST[&#39;pheditor_password&#39;]) &amp;&amp; empty($_POST[&#39;pheditor_password&#39;]) === false) {
+-        if (PASSWORD == hash(&#39;sha512&#39;, &#39;admin&#39;)) {
++        $submitted_hash = hash(&#39;sha512&#39;, $_POST[&#39;pheditor_password&#39;]);
++
++        if (PASSWORD == hash(&#39;sha512&#39;, &#39;admin&#39;) &amp;&amp; $submitted_hash === PASSWORD) {
+             if (isset($_POST[&#39;pheditor_new_password&#39;]) &amp;&amp; isset($_POST[&#39;pheditor_confirm_password&#39;])) {
+                 if ($_POST[&#39;pheditor_new_password&#39;] === &#39;admin&#39;) {
+                     $error = &#39;Password cannot be admin&#39;;</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a check to ensure that when the hardcoded &#39;admin&#39; password triggers a forced password change, the submitted password hash also matches the actual stored password. This prevents an attacker from simply submitting &#39;admin&#39; as the current password without knowing the real password, thereby enforcing proper authentication during the password change process.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-f25v-x6vr-962g">Advisory</a> · <a href="https://github.com/pheditor/pheditor/commit/0978bcda644832b67357340e2f271e32d86fdf86">Commit</a>
+</p>
+<hr>
+<h3>GHSA-w28w-gp39-m4p6</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-07-24 · JavaScript<br>
+<code>@prompty/core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 5x across ecosystem
+</p>
+<p><b>Root cause</b> : The Nunjucks templating engine was used to render user-controlled templates and inputs without sufficient sanitization or sandboxing. This allowed attackers to access and invoke dangerous properties and methods (like `__proto__`, `constructor`, `prototype`) through template expressions, leading to arbitrary code execution.</p>
+<p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting malicious template code, potentially compromising the entire system.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/runtime/typescript/packages/core/src/renderers/nunjucks.ts
++++ b/runtime/typescript/packages/core/src/renderers/nunjucks.ts
+@@ -13,11 +13,91 @@ import type { Prompty } from &#34;../model/agent/prompty.js&#34;;
+ import type { Renderer } from &#34;../core/interfaces.js&#34;;
+ import { prepareRenderInputs } from &#34;./common.js&#34;;
+ 
++type NunjucksRuntime = {
++  memberLookup: (object: unknown, property: unknown) =&gt; unknown;
++  callWrap: (callable: unknown, name: string, context: unknown, args: unknown[]) =&gt; unknown;
++};
++
++const UNSAFE_PROPERTIES = new Set([&#34;__proto__&#34;, &#34;constructor&#34;, &#34;prototype&#34;]);
++
+ const env = new nunjucks.Environment(null, {
+   autoescape: false,
+   throwOnUndefined: false,
+ });
+ 
++function safeMemberLookup(object: unknown, property: unknown): unknown {
++  if (typeof property === &#34;string&#34; &amp;&amp; UNSAFE_PROPERTIES.has(property)) {
++    throw new Error(`Unsafe template member access: ${property}`);
++  }
++
++  if (
++    (typeof property !== &#34;string&#34; &amp;&amp; typeof property !== &#34;number&#34;) ||
++    object === null ||
++    typeof object !== &#34;object&#34;
++  ) {
++    return undefined;
++  }
++
++  const descriptor = Object.getOwnPropertyDescriptor(object, property);
++  return descriptor !== undefined &amp;&amp; &#34;value&#34; in descriptor ? descriptor.value : undefined;
++}
++
++function safeCallWrap(_callable: unknown, name: string, _context: unknown, _args: unknown[]): never {
++  throw new Error(`Template function calls are not allowed: ${name}`);
++}
++
++function sanitizeValue(value: unknown, seen = new WeakMap&lt;object, unknown&gt;()): unknown {
++  if (value === null || typeof value === &#34;string&#34; || typeof value === &#34;number&#34; || typeof value === &#34;boolean&#34;) {
++    return value;
++  }
++
++  if (typeof value !== &#34;object&#34;) {
++    return undefined;
++  }
++
++  const existing = seen.get(value);
++  if (existing !== undefined) {
++    return existing;
++  }
++
++  if (Array.isArray(value)) {
++    const result: unknown[] = [];
++    seen.set(value, result);
++    for (const item of value) {
++      result.push(sanitizeValue(item, seen));
++    }
++    return result;
++  }
++
++  const result = Object.create(null) as Record&lt;string, unknown&gt;;
++  seen.set(value, result);
++  for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
++    if (!UNSAFE_PROPERTIES.has(key) &amp;&amp; &#34;value&#34; in descriptor) {
++      result[key] = sanitizeValue(descriptor.value, seen);
++    }
++  }
++  return result;
++}
++
++function sanitizeInputs(inputs: Record&lt;string, unknown&gt;): Record&lt;string, unknown&gt; {
++  return sanitizeValue(inputs) as Record&lt;string, unknown&gt;;
++}
++
++function renderSafely(template: string, inputs: Record&lt;string, unknown&gt;): string {
++  const runtime = nunjucks.runtime as unknown as NunjucksRuntime;
++  const memberLookup = runtime.memberLookup;
++  const callWrap = runtime.callWrap;
++  runtime.memberLookup = safeMemberLookup;
++  runtime.callWrap = safeCallWrap;
++
++  try {
++    return env.renderString(template, inputs);
++  } finally {
++    runtime.memberLookup = memberLookup;
++    runtime.callWrap = callWrap;
++  }
++}
++
+ export class NunjucksRenderer implements Renderer {
+   async render(
+     agent: Prompty,
+     template: string,
+     inputs: Record&lt;string, unknown&gt;,
+   ): Promise&lt;string&gt; {
+     const [modified] = prepareRenderInputs(agent, inputs);
+-    return env.renderString(template, modified);
++    return renderSafely(template, sanitizeInputs(modified));
+   }
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces `safeMemberLookup` and `safeCallWrap` functions to restrict access to unsafe properties and prevent function calls within templates. It also includes `sanitizeValue` and `sanitizeInputs` to recursively clean input data by creating a new object with only safe properties, effectively sandboxing the template rendering environment.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-w28w-gp39-m4p6">Advisory</a> · <a href="https://github.com/microsoft/prompty/commit/047756f4c8caf91c5868eeb42520c938393277b0">Commit</a>
+</p>
+<hr>
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -85,7 +230,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -97,7 +242,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -109,7 +254,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -121,7 +266,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -166,7 +311,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -212,7 +357,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 44x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -238,7 +383,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 19x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 21x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -255,7 +400,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 44x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -396,10 +541,84 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-rjg6-39jm-rgg4</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-07-24 · JavaScript<br>
+<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 73x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from the SCIM provider&#39;s update functionality not properly validating email uniqueness during user updates (PUT/PATCH operations). An attacker could change a user&#39;s email to one already registered by another user, leading to a collision. Additionally, the system did not properly handle user deactivation via the &#39;active&#39; SCIM attribute, failing to revoke sessions or enforce the deactivation consistently.</p>
+<p><b>Impact</b> : An attacker could take over another user&#39;s account by reassigning their email address. They could also maintain access to a deactivated account if their sessions were not properly revoked, or bypass deactivation entirely if the &#39;admin&#39; plugin was not present.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/packages/scim/src/routes.ts
++++ b/packages/scim/src/routes.ts
+@@ -850,19 +932,37 @@ export const updateSCIMUser = (authMiddleware: AuthMiddleware) =&gt;
+ 				});
+ 			}
+ 
++			const email = getUserPrimaryEmail(
++				body.userName,
++				body.emails,
++			).toLowerCase();
++			const name = getUserFullName(email, body.name);
++			const emailChanged = email !== user.email;
++
++			if (emailChanged) {
++				await assertSCIMEmailAvailable(ctx, email, userId);
++			}
++
++			const userUpdate: Record&lt;string, unknown&gt; = {
++				email,
++				name,
++				updatedAt: new Date(),
++			};
++			if (emailChanged) {
++				// A reassigned email is unverified until the new address is confirmed.
++				userUpdate.emailVerified = false;
++			}
++			if (body.active !== undefined) {
++				userUpdate.banned = body.active === false;
++			}
++			const deactivating = resolveSCIMActiveDeactivation(ctx, userUpdate);
++
+ 			const [updatedUser, updatedAccount] =
+ 				await ctx.context.adapter.transaction&lt;[User | null, Account | null]&gt;(
+ 					async () =&gt; {
+-						const email = getUserPrimaryEmail(body.userName, body.emails);
+-						const name = getUserFullName(email, body.name);
+-
+ 						const updatedUser = await ctx.context.internalAdapter.updateUser(
+ 							userId,
+-							{
+-								email,
+-								name,
+-								updatedAt: new Date(),
+-							},
++							userUpdate,
+ 						);
+ 
+ 						const updatedAccount =
+@@ -875,6 +975,10 @@ export const updateSCIMUser = (authMiddleware: AuthMiddleware) =&gt;
+ 					},
+ 				);
+ 
++			if (deactivating) {
++				await ctx.context.internalAdapter.deleteUserSessions(userId);
++			}
++
+ 			const userResource = createUserResource(
+ 				ctx.context.baseURL,
+ 				updatedUser!,</pre>
+</details>
+<p><b>Fix</b> : The patch introduces `assertSCIMEmailAvailable` to enforce email uniqueness during user updates. It also adds `resolveSCIMActiveDeactivation` to correctly map SCIM `active` status to the internal `banned` field, revoke user sessions upon deactivation, and ensure the admin plugin is present for deactivation. The `deleteSCIMUser` function was also updated to only delete the global user if no other accounts are linked.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-rjg6-39jm-rgg4">Advisory</a> · <a href="https://github.com/better-auth/better-auth/commit/7c126dcd1aad24468ec37e876545c1d083d8acca">Commit</a>
+</p>
+<hr>
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -411,7 +630,7 @@
 <h3>GHSA-m63v-2g9w-2w6v</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 30x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 31x across ecosystem
 </p>
 <p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
 <p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
@@ -433,7 +652,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -445,7 +664,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -457,7 +676,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -469,7 +688,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -481,7 +700,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -531,7 +750,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 51x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -548,7 +767,7 @@
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 30x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 31x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -667,6 +886,75 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-7gfh-x38p-prh3</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-07-24 · JavaScript<br>
+<code>velocityjs</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 16x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from insufficient prototype chain protection in the Velocity.js template engine. An attacker could craft a template that, when evaluated, would traverse the prototype chain using keys like &#39;constructor&#39; and &#39;prototype&#39; to access and manipulate sensitive JavaScript built-in objects, specifically the Function constructor. This allowed for arbitrary code execution.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary remote code execution within the context of the application running the Velocity.js template engine, leading to full system compromise or data exfiltration.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/compile/references.ts
++++ b/src/compile/references.ts
+@@ -31,12 +32,12 @@ export class References extends Compile {
+     const isSilent = this.silence || ast.leader === &#39;$!&#39;;
+     const isFunction = ast.args !== undefined;
+     const context = this.context;
+-    let ret = context[ast.id];
++    let ret = this.isBlockedPathKey(context, ast.id) ? undefined : context[ast.id];
+     const local = this.getLocal(ast);
+ 
+     const text = getRefText(ast);
+ 
+-    if (text in context) {
++    if (hasOwnProperty(context, text)) {
+       return ast.prue &amp;&amp; escape ? convert(context[text]) : context[text];
+     }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new `prototype-guard.ts` module with functions to explicitly block access to dangerous prototype chain keys like `__proto__`, `constructor`, and `prototype` when they are not own properties or when accessed on a function&#39;s prototype. These new guard functions are integrated into the `set.ts` and `references.ts` compilation logic to prevent malicious prototype chain traversal during template evaluation.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-7gfh-x38p-prh3">Advisory</a> · <a href="https://github.com/shepherdwind/velocity.js/commit/f8e47a6c4607249b9c967d3a1ced959b4dd64dba">Commit</a>
+</p>
+<hr>
+<h3>GHSA-wg5r-wc3x-39vc</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-07-24 · Java<br>
+<code>org.openidentityplatform.openam:openam-core</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 15x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed unauthenticated attackers to control the class name passed to `Class.forName` and subsequently `newInstance()` without proper validation. Additionally, a separate deserialization vulnerability existed where an encrypted but attacker-controlled serialized Java object (Subject) could be deserialized without a class allowlist, leading to gadget-chain execution.</p>
+<p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the server by specifying a malicious class name or by crafting a malicious serialized object, leading to full compromise of the system.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/openam-core/src/main/java/com/sun/identity/authentication/share/AuthXMLUtils.java
++++ b/openam-core/src/main/java/com/sun/identity/authentication/share/AuthXMLUtils.java
+@@ -1609,7 +1611,19 @@ static DSAMECallbackInterface createCustomCallback(
+             
+             if (callback == null) {
+                 if ((className != null) &amp;&amp; (className.length() != 0)) {
+-                    Class xmlClass = Class.forName(className);
++                    Class xmlClass = Class.forName(className, false,
++                        AuthXMLUtils.class.getClassLoader());
++                    if (!DSAMECallbackInterface.class.isAssignableFrom(xmlClass)) {
++                        debug.error(&#34;createCustomCallback : class &#34; + className
++                            + &#34; is not a DSAMECallbackInterface implementation&#34;);
++                        return null;
++                    }
+                     callback = (DSAMECallbackInterface) xmlClass.newInstance();
+                 }
+             }
+@@ -1784,6 +1836,7 @@ public static Subject getDeSerializedSubject(String subjectSerialized)
+             //convert byte to object using streams
+             byteIn = new ByteArrayInputStream(byteDecrypted);
+             objInStream  = new ObjectInputStream(byteIn);
++            objInStream.setObjectInputFilter(SUBJECT_DESERIALISATION_FILTER);
+             tempObject = objInStream.readObject();</pre>
+</details>
+<p><b>Fix</b> : The patch modifies `Class.forName` to prevent static initializers from running and adds a check to ensure the loaded class implements `DSAMECallbackInterface` before instantiation. It also introduces an `ObjectInputFilter` for `Subject` deserialization, allowing only a predefined set of safe classes (primitives, `Principal` implementations, and specific JDK/security classes) to prevent arbitrary object deserialization.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-wg5r-wc3x-39vc">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenAM/commit/edcf968cad91a78b932dba4ad559ef94cbf35f5a">Commit</a>
+</p>
+<hr>
 <h3>GHSA-f75j-4cw6-rmx4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-21 · Go<br>
@@ -695,7 +983,7 @@
 <h3>GHSA-px5m-h76g-p7p8</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-09 · PHP<br>
-<code>yeswiki/yeswiki</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 51x across ecosystem
+<code>yeswiki/yeswiki</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used `eval()` on user-supplied input for a formula calculator. While there was a regular expression to validate the formula, it was insufficient to prevent malicious code injection, allowing an attacker to execute arbitrary PHP code.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server, leading to complete compromise of the application and underlying system, as well as denial of service.</p>
@@ -728,7 +1016,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -791,7 +1079,7 @@
 <h3>GHSA-x7m9-mwc2-g6w2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-18 · PHP<br>
-<code>verbb/formie</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 4x across ecosystem
+<code>verbb/formie</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 5x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was parsing the &#39;defaultValue&#39; of a hidden field as a Twig template even when the value was directly provided by the user. This allowed an attacker to inject malicious Twig template code into the &#39;defaultValue&#39; which would then be executed by the server.</p>
 <p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the server by injecting arbitrary Twig template code, leading to full system compromise.</p>
@@ -820,7 +1108,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -883,7 +1171,7 @@
 <h3>GHSA-xg82-2hrv-hf64</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-08 · PHP<br>
-<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 71x across ecosystem
+<code>snipe/snipe-it</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 73x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users with &#39;view&#39; permissions on an object to upload files associated with that object. This is a weaker permission than &#39;update&#39;, which should be required for file uploads, leading to an authorization bypass for file modification.</p>
 <p><b>Impact</b> : An attacker with only &#39;view&#39; permissions on an object could upload arbitrary files, potentially leading to remote code execution if the uploaded file is a malicious script (e.g., PHP file) and the server is configured to execute it.</p>
@@ -900,7 +1188,7 @@
 <h3>GHSA-8x35-hph8-37hq</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 51x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
@@ -925,7 +1213,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 102x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 103x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -952,7 +1240,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 51x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 54x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -1018,7 +1306,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -1089,7 +1377,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-cw73-5f7h-m4gv</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
 <p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
@@ -1101,7 +1389,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-jmrh-xmgh-x9j4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-06 · Python<br>
-<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 44x across ecosystem
+<code>changedetection.io</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 45x across ecosystem
 </p>
 <p><b>Root cause</b> : The `login_optionally_required` decorator was moved above the route decorators, allowing unauthenticated access to routes that should be protected.</p>
 <p><b>Impact</b> : An attacker could bypass authentication and perform actions they are not authorized to do, such as downloading backups or removing backup files.</p>
@@ -1117,6 +1405,35 @@ After:
 <p><b>Fix</b> : Moved the `login_optionally_required` decorator below all route decorators to ensure proper authentication checks.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-jmrh-xmgh-x9j4">Advisory</a> · <a href="https://github.com/dgtlmoon/changedetection.io/commit/31a760c2147e3e73a403baf6d7de34dc50429c85">Commit</a>
+</p>
+<hr>
+<h3>GHSA-p279-2cqp-84jg</h3>
+<p>
+<code>CRITICAL 9.6</code> · 2026-07-24 · Java<br>
+<code>org.openidentityplatform.opendj:opendj-server-legacy</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 31x across ecosystem
+</p>
+<p><b>Root cause</b> : The OpenDJ SASL PLAIN mechanism handler did not properly enforce access control checks for authorization identities (authzId). Specifically, it failed to call the `checkProxyAccess` method, which verifies if the authenticated user has the necessary &#39;proxy&#39; access rights to assume a different authorization identity. This omission allowed an authenticated user to bypass the intended ACI scope checks.</p>
+<p><b>Impact</b> : An attacker could authenticate as a legitimate user and then assume the identity of another user, including privileged accounts, without proper authorization. This leads to privilege escalation, allowing the attacker to perform actions with the assumed user&#39;s permissions.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/opendj-server-legacy/src/main/java/org/opends/server/extensions/PlainSASLMechanismHandler.java
++++ b/opendj-server-legacy/src/main/java/org/opends/server/extensions/PlainSASLMechanismHandler.java
+@@ -330,6 +331,11 @@ public void processSASLBind(BindOperation bindOperation)
+               return;
+             }
+           }
++
++          if (! checkProxyAccess(bindOperation, userEntry, authZEntry))
++          {
++            return;
++          }
+         }
+       }
+       else</pre>
+</details>
+<p><b>Fix</b> : The patch introduces calls to a new `checkProxyAccess` method within the `processSASLBind` function of the `PlainSASLMechanismHandler`. This method delegates to `SASLContext.hasProxyAccess` to ensure that the authenticated user has the &#39;proxy&#39; access control right for the target authorization identity, thus enforcing the ACI scope check.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-p279-2cqp-84jg">Advisory</a> · <a href="https://github.com/OpenIdentityPlatform/OpenDJ/commit/5c326850f1ab945cfca7ac9c5aaf77d1052c6bed">Commit</a>
 </p>
 <hr>
 <h3>GHSA-hg5r-vq93-9fv6</h3>
@@ -1174,7 +1491,7 @@ After:
 <h3>GHSA-mhc6-2gfq-xx62</h3>
 <p>
 <code>CRITICAL 9.6</code> · 2026-07-01 · Go<br>
-<code>github.com/rancher/rancher</code> · Pattern: <code>UNCLASSIFIED</code> · 313x across ecosystem
+<code>github.com/rancher/rancher</code> · Pattern: <code>UNCLASSIFIED</code> · 325x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1220,176 +1537,6 @@ After:
 <a href="https://github.com/advisories/GHSA-8whc-2wmv-ww35">Advisory</a> · <a href="https://github.com/WWBN/AVideo/commit/8be71e53ccbe9b84b30870db386fb4d2b11e1c16">Commit</a>
 </p>
 <hr>
-<h3>GHSA-v529-vhwc-wfc5</h3>
-<p>
-<code>CRITICAL 9.6</code> · 2026-04-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 21x across ecosystem
-</p>
-<p><b>Root cause</b> : The application directly embedded user-controlled input (start_time, end_time, col_name) into SQL queries without proper sanitization or parameterization. This allowed an attacker to inject arbitrary SQL code by crafting malicious input values.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the QuestDB time-series database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution in some database configurations.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-query += &#34;WHERE T0.PACKET_TIMESECONDS &lt; &#39;#{start_time}&#39; LIMIT -1&#34;
-result = @@conn.exec(query)
-
-After:
-query += &#34;WHERE T0.PACKET_TIMESECONDS &lt; $1 LIMIT -1&#34;
-query_params &lt;&lt; start_time
-result = @@conn.exec_params(query, query_params)</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the `tsdb_lookup` and `create_table` methods in both Ruby and Python implementations to use parameterized queries. Instead of directly interpolating user input into the SQL string, placeholders ($1, $2 or %s) are used, and the values are passed as separate parameters to the database driver&#39;s `exec_params` or `execute` method.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-v529-vhwc-wfc5">Advisory</a> · <a href="https://github.com/OpenC3/cosmos/commit/9ba60c09c8836a37a2e4ea67ab35fe403e041415">Commit</a>
-</p>
-<hr>
-<h3>GHSA-6973-8887-87ff</h3>
-<p>
-<code>CRITICAL 9.6</code> · 2026-04-22 · RUST<br>
-<code>nimiq-block</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 12x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from improper validation of `BitSet` indices representing validator slots. An attacker could craft a `BitSet` with out-of-range indices or indices that, when truncated to `u16`, would map to valid slots. This allowed them to bypass the quorum check for skip blocks and equivocation proofs by making it appear as if enough validators had signed, even if they hadn&#39;t.</p>
-<p><b>Impact</b> : An attacker could forge valid skip blocks or equivocation proofs without the required supermajority of validator signatures. This could lead to a denial of service, allowing them to halt or disrupt the blockchain&#39;s consensus mechanism.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/primitives/block/src/multisig.rs
-+++ b/primitives/block/src/multisig.rs
-@@ -37,3 +37,14 @@ impl MultiSignature {
-         }
-     }
- }
-+
-+pub(crate) fn checked_signer_slots(signers: &amp;BitSet) -&gt; Option&lt;Vec&lt;u16&gt;&gt; {
-+    let mut slots = Vec::with_capacity(signers.len());
-+    for slot in signers.iter() {
-+        if slot &gt;= Policy::SLOTS as usize || slot &gt; u16::MAX as usize {
-+            return None;
-+        }
-+        slots.push(slot</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new `checked_signer_slots` function that rigorously validates `BitSet` indices. It ensures that all signer slots are within the allowed range (`Policy::SLOTS`) and do not exceed `u16::MAX` before processing them. This prevents out-of-range or truncated indices from being used to bypass quorum checks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6973-8887-87ff">Advisory</a> · <a href="https://github.com/nimiq/core-rs-albatross/commit/d02059053181ed8ddad6b59a0adfd661ef5cd823">Commit</a>
-</p>
-<hr>
-<h3>GHSA-8wrq-fv5f-pfp2</h3>
-<p>
-<code>CRITICAL 9.6</code> · 2026-04-10 · Python<br>
-<code>lollms</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 73x across ecosystem
-</p>
-<p><b>Root cause</b> : The application did not properly sanitize user-supplied content before storing it in the database and later rendering it. This allowed attackers to inject malicious scripts into posts, comments, and direct messages.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary client-side scripts, leading to session hijacking, defacement, redirection to malicious sites, or other client-side attacks against users viewing the compromised content.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/backend/routers/social/__init__.py
-+++ b/backend/routers/social/__init__.py
-@@ -149,9 +176,12 @@ def create_post(
-     moderation_enabled = settings.get(&#34;ai_bot_moderation_enabled&#34;, False)
-     initial_status = &#34;pending&#34; if moderation_enabled else &#34;validated&#34;
- 
-+    # Sanitize content to prevent Stored XSS
-+    clean_content = sanitize_content(post_data.content)
-+
-     new_post = DBPost(
-         author_id=current_user.id,
--        content=post_data.content,
-+        content=clean_content,
-         visibility=post_data.visibility,</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `sanitize_content` function using the `bleach` library to clean user input. This function is applied to all user-generated content (posts, comments, direct messages, and group conversation names) before it is stored in the database, stripping or escaping disallowed HTML tags and attributes.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-8wrq-fv5f-pfp2">Advisory</a> · <a href="https://github.com/parisneo/lollms/commit/9767b882dbc893c388a286856beeaead69b8292a">Commit</a>
-</p>
-<hr>
-<h3>GHSA-p63j-vcc4-9vmv</h3>
-<p>
-<code>CRITICAL 9.4</code> · 2026-07-21 · JavaScript<br>
-<code>@vitest/browser</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 34x across ecosystem
-</p>
-<p><b>Root cause</b> : The Vitest browser mode allowed certain commands (like screenshotMatcher and file system operations) to bypass file access permission gates. Specifically, the `assertFileAccess` and `assertWrite` checks were not consistently applied or were missing in critical code paths, allowing an attacker to read from or write to arbitrary files outside the intended project root.</p>
-<p><b>Impact</b> : An attacker could read or write arbitrary files on the server running Vitest, potentially leading to remote code execution, sensitive data disclosure, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/packages/browser/src/node/commands/screenshotMatcher/index.ts
-+++ b/packages/browser/src/node/commands/screenshotMatcher/index.ts
-@@ -555,8 +560,10 @@ async function takeScreenshotData({
- }
- 
- /** Writes encoded images to disk, creating parent directories as needed. */
--async function writeScreenshot(path: string, image: TypedArray) {
-+async function writeScreenshot(path: string, image: TypedArray, project: TestProject) {
-   try {
-+    assertBrowserApiWrite(project, path)
-+    assertBrowserFileAccess(project, path)
-     await mkdir(dirname(path), { recursive: true })
-     await writeFile(path, image)
-   }</pre>
-</details>
-<p><b>Fix</b> : The patch introduces new utility functions `assertBrowserApiWrite` and `assertBrowserFileAccess` to centralize and enforce file access and write permissions. These checks are now consistently applied to all relevant browser commands, including screenshot matching and direct file system operations, ensuring that file paths are confined to the project root and write operations respect configuration settings.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-p63j-vcc4-9vmv">Advisory</a> · <a href="https://github.com/vitest-dev/vitest/commit/33f96a145ef09ca6a43b4e555eb273e64a87be23">Commit</a>
-</p>
-<hr>
-<h3>GHSA-pxm6-mhxr-q4mj</h3>
-<p>
-<code>CRITICAL 9.4</code> · 2026-05-05 · PHP<br>
-<code>getgrav/grav</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 30x across ecosystem
-</p>
-<p><b>Root cause</b> : The Grav user registration process lacked server-side validation for critical privilege-related fields like &#39;groups&#39; and &#39;access&#39;. This allowed an attacker to include these fields in their registration form submission, and the application would honor these values, effectively granting them elevated privileges.</p>
-<p><b>Impact</b> : An attacker could register a new user account and assign themselves administrative or other high-privilege roles, leading to full control over the Grav instance.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/login.php
-+++ b/login.php
-@@ -1040,6 +1047,17 @@ private function processUserRegistration(FormInterface $form, Event $event): voi
-                 }
-             }
- 
-+            if (in_array($field, $privilegeFields, true)) {
-+                if ($form_data-&gt;get($field) !== null) {
-+                    $this-&gt;grav[&#39;log&#39;]-&gt;warning(sprintf(
-+                        &#39;Login registration: ignored client-supplied &#34;%s&#34; from form submission (username=%s)&#39;,
-+                        $field,
-+                        is_string($username) ? $username : &#39;&lt;invalid&gt;&#39;
-+                    ));
-+                }
-+                continue;
-+            }
-+
-             if (!isset($data[$field]) &amp;&amp; $form_data-&gt;get($field)) {
-                 $data[$field] = $form_data-&gt;get($field);
-             }</pre>
-</details>
-<p><b>Fix</b> : The patch explicitly identifies &#39;groups&#39; and &#39;access&#39; as privilege fields and prevents them from being sourced directly from public registration form input. Any client-supplied values for these fields are now ignored, and a warning is logged.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-pxm6-mhxr-q4mj">Advisory</a> · <a href="https://github.com/getgrav/grav-plugin-login/commit/3d419a0dabd70aed1fd49afcd5919004a4141da1">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fv26-4939-62fh</h3>
-<p>
-<code>CRITICAL 9.4</code> · 2026-05-04 · PHP<br>
-<code>nabeel/phpvms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 44x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the /importer endpoint, which is responsible for importing data and can wipe the existing database, lacked proper authorization checks. This allowed any unauthenticated user to access and trigger the database wipe functionality.</p>
-<p><b>Impact</b> : An attacker could completely wipe the entire database of the phpVMS installation, leading to a denial of service and significant data loss for the application owner.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- resources/views/system/importer/app.blade.php
-+++ /dev/null
-@@ -1,90 +0,0 @@
--&lt;!DOCTYPE html&gt;
--&lt;html lang=&#34;en&#34;&gt;
-
---- resources/views/system/importer/step1-configure.blade.php
-+++ /dev/null
-@@ -1,132 +0,0 @@
--@extends(&#39;system.importer.app&#39;)</pre>
-</details>
-<p><b>Fix</b> : The patch completely removes the vulnerable /importer functionality by deleting all associated view files. This eliminates the unauthorized access point and prevents the database wipe from being triggered by unauthenticated users.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fv26-4939-62fh">Advisory</a> · <a href="https://github.com/phpvms/phpvms/commit/f59ba8e0e8fc25c60c3faf14e526cfd49df3f7dc">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1425,10 +1572,10 @@ result = @@conn.exec_params(query, query_params)</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1189</td></tr>
+<tr><td>Total advisories</td><td>1219</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-07-24</td></tr>
+<tr><td>Last updated</td><td>2026-07-25</td></tr>
 </table>
 </details>
 <hr>
