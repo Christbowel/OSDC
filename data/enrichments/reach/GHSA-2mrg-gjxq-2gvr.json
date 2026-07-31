@@ -1,1 +1,1 @@
-{"id":"GHSA-2mrg-gjxq-2gvr","axis":"advisories","repo":"PHPOffice/PhpSpreadsheet","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-24T09:57:17.319840+00:00"}
+{"id":"GHSA-2mrg-gjxq-2gvr","axis":"advisories","repo":"PHPOffice/PhpSpreadsheet","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-31T10:07:23.908790+00:00"}
