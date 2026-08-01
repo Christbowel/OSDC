@@ -1,1 +1,1 @@
-{"id":"GHSA-mjqx-c6f6-7rc2","axis":"advisories","repo":"elixir-mint/mint","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-25T09:19:22.501504+00:00"}
+{"id":"GHSA-mjqx-c6f6-7rc2","axis":"advisories","repo":"elixir-mint/mint","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-01T09:33:50.284206+00:00"}
