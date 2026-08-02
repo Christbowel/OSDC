@@ -1,1 +1,1 @@
-{"id":"GHSA-jvf5-rxvv-3mcg","axis":"advisories","repo":"TYPO3/html-sanitizer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-26T09:36:05.196770+00:00"}
+{"id":"GHSA-jvf5-rxvv-3mcg","axis":"advisories","repo":"TYPO3/html-sanitizer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-02T09:36:31.979661+00:00"}
