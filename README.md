@@ -1573,7 +1573,7 @@ Count = Block.AckBlock + 1;</pre>
 <tr><td>Total advisories</td><td>1341</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-08-01</td></tr>
+<tr><td>Last updated</td><td>2026-08-02</td></tr>
 </table>
 </details>
 <hr>
