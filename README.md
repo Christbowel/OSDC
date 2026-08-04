@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1344-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1370-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -50,7 +50,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 91x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 93x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -230,7 +230,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -242,7 +242,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 22x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -300,7 +300,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -312,7 +312,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -324,7 +324,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -336,7 +336,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -381,7 +381,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -453,7 +453,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 23x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 24x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -494,7 +494,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 77x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 78x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -554,7 +554,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 12x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -614,7 +614,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -626,7 +626,7 @@
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 59x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 61x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -749,7 +749,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -783,7 +783,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -795,7 +795,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -807,7 +807,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -819,7 +819,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -831,7 +831,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -881,7 +881,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 59x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 61x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1017,10 +1017,31 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-v8fg-2rw7-q452</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-08-03 · JavaScript<br>
+<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 23x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied string values intended for Oracle&#39;s TO_TIMESTAMP_TZ and TO_DATE functions. When a string started with these function names, Sequelize would return the value directly without proper escaping or validation, allowing an attacker to inject arbitrary SQL after the function call.</p>
+<p><b>Impact</b> : An attacker could inject malicious SQL queries, potentially leading to unauthorized data access, modification, or deletion, and in some cases, remote code execution depending on the database configuration and privileges.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-    if (val.startsWith(&#39;TO_TIMESTAMP&#39;) || val.startsWith(&#39;TO_DATE&#39;)) {
++    if (val.startsWith(&#39;TO_TIMESTAMP_TZ&#39;) || val.startsWith(&#39;TO_DATE&#39;)) {
++      const splitVal = val.split(/\(|\)/);
++      if (splitVal.length !== 3 || splitVal[2] !== &#39;&#39;) {
++        throw new Error(&#39;Invalid SQL function call.&#39;);
++      }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces strict validation for strings starting with &#39;TO_TIMESTAMP_TZ&#39; or &#39;TO_DATE&#39; when the dialect is Oracle. It now parses the function name, parameters, and format string, ensuring they conform to expected patterns and formats using Moment.js for date validation. Any deviation from the expected structure or format now results in an error.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-v8fg-2rw7-q452">Advisory</a> · <a href="https://github.com/sequelize/sequelize/commit/5deadd2410ae9136a21fb652db206d27bb715f26">Commit</a>
+</p>
+<hr>
 <h3>GHSA-6wcc-39rp-hh9p</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-28 · JavaScript<br>
-<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 22x across ecosystem
+<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `escapeValue` function, which is responsible for sanitizing string inputs before they are used in SQL queries, did not properly escape backslash characters. While it correctly handled single quotes by doubling them, an attacker could use backslashes to bypass this escaping mechanism and inject arbitrary SQL.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary SQL commands into queries, potentially leading to unauthorized data access, modification, or deletion, and even remote code execution on the underlying database server.</p>
@@ -1132,7 +1153,7 @@
 <h3>GHSA-px5m-h76g-p7p8</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-09 · PHP<br>
-<code>yeswiki/yeswiki</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 59x across ecosystem
+<code>yeswiki/yeswiki</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 61x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used `eval()` on user-supplied input for a formula calculator. While there was a regular expression to validate the formula, it was insufficient to prevent malicious code injection, allowing an attacker to execute arbitrary PHP code.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server, leading to complete compromise of the application and underlying system, as well as denial of service.</p>
@@ -1165,7 +1186,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -1257,7 +1278,7 @@
 <h3>GHSA-248r-7h7q-cr24</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly sanitize values returned from async generator functions, specifically when an async generator&#39;s `yield*` delegates to an inner async iterator and a thenable&#39;s `.then` callback throws synchronously. V8&#39;s internal PromiseResolveThenableJob would capture this exception and deliver it to sandbox code as an iterator result, bypassing existing sanitization mechanisms for exceptions and promise rejections.</p>
 <p><b>Impact</b> : An attacker could escape the vm2 sandbox, allowing them to execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -1294,7 +1315,7 @@
 <h3>GHSA-vmw2-qwm8-x84c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · C#<br>
-<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 22x across ecosystem
+<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 23x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly interpolated the &#39;regConfig&#39; parameter into a SQL query without proper validation or sanitization. This allowed an attacker to inject arbitrary SQL commands by manipulating the &#39;regConfig&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the PostgreSQL database, potentially leading to data exfiltration, modification, or deletion, and even remote code execution depending on database privileges.</p>
@@ -1337,7 +1358,7 @@
 <h3>GHSA-8x35-hph8-37hq</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · JavaScript<br>
-<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 59x across ecosystem
+<code>electerm</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 61x across ecosystem
 </p>
 <p><b>Root cause</b> : The original `runLinux` function used `exec` from `shelljs` to execute shell commands, constructing parts of the command string directly from unsanitized version information (`ver`) and folder names (`folderName`). An attacker could manipulate these inputs to inject arbitrary shell commands.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the system where the `electerm` package is being installed, potentially leading to full system compromise.</p>
@@ -1362,7 +1383,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 110x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 113x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -1389,7 +1410,7 @@
 <h3>GHSA-9qhq-v63v-fv3j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-17 · Python<br>
-<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 59x across ecosystem
+<code>praisonai</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 61x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not validate the executable part of the command input.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server if they could control the `--mcp` argument.</p>
@@ -1455,7 +1476,7 @@ After:
 <h3>GHSA-gvvw-8j96-8g5r</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.OpenSSL</code> · Pattern: <code>UNCLASSIFIED</code> · 394x across ecosystem
 </p>
 <p><b>Root cause</b> : The code did not properly validate the count value before using it, allowing an attacker to potentially elevate privileges.</p>
 <p><b>Impact</b> : An attacker could exploit this vulnerability to perform actions that require higher privileges than intended.</p>
@@ -1481,7 +1502,7 @@ Count = Block.AckBlock + 1;</pre>
 <h3>GHSA-hm2w-vr2p-hq7w</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-16 · Python<br>
-<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 32x across ecosystem
+<code>uefi-firmware</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed in the `MakeTable` function within the Tiano decompressor. Specifically, the `Table` array, which is used to store Huffman code mappings, could be written to beyond its allocated bounds if the calculated `Index` or `NextCode` values exceeded the expected `TableSize` (or `MaxTableLength`). This was due to insufficient bounds checking on the `Index` variable before writing to `Table[Index]`, particularly when `Len` was less than or equal to `TableBits`.</p>
 <p><b>Impact</b> : An attacker could craft a malicious compressed UEFI firmware image that, when processed by the decompressor, would trigger a heap out-of-bounds write. This could lead to denial of service (crash), arbitrary code execution, or other memory corruption issues, compromising the integrity and security of the system&#39;s firmware.</p>
@@ -1523,18 +1544,6 @@ Count = Block.AckBlock + 1;</pre>
 <a href="https://github.com/advisories/GHSA-hm2w-vr2p-hq7w">Advisory</a> · <a href="https://github.com/theopolis/uefi-firmware-parser/commit/bf3dfaa8a05675bae6ea0cbfa082ddcebfcde23e">Commit</a>
 </p>
 <hr>
-<h3>GHSA-cw73-5f7h-m4gv</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-04-15 · Python<br>
-<code>upsonic</code> · Pattern: <code>UNCLASSIFIED</code> · 385x across ecosystem
-</p>
-<p><b>Root cause</b> : The code snippet provided does not contain any obvious security vulnerabilities.</p>
-<p><b>Impact</b> : No impact can be determined from the given code snippet.</p>
-<p><b>Fix</b> : No fix is applicable as there are no known issues in the provided code.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-cw73-5f7h-m4gv">Advisory</a> · <a href="https://github.com/Upsonic/Upsonic/commit/855053fce0662227d9246268ff4a0844b481a305">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1570,10 +1579,10 @@ Count = Block.AckBlock + 1;</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1344</td></tr>
+<tr><td>Total advisories</td><td>1370</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>0</td></tr>
-<tr><td>Last updated</td><td>2026-08-03</td></tr>
+<tr><td>Last updated</td><td>2026-08-04</td></tr>
 </table>
 </details>
 <hr>
