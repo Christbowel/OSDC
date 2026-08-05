@@ -1,1 +1,1 @@
-{"id":"GHSA-8559-gwj3-q37r","axis":"advisories","repo":"EasyCorp/EasyAdminBundle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-07-29T10:11:41.556190+00:00"}
+{"id":"GHSA-8559-gwj3-q37r","axis":"advisories","repo":"EasyCorp/EasyAdminBundle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-05T10:13:04.240911+00:00"}
