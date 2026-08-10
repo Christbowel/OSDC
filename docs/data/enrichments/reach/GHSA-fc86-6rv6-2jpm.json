@@ -1,1 +1,1 @@
-{"id":"GHSA-fc86-6rv6-2jpm","axis":"advisories","repo":"webonyx/graphql-php","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-02T09:40:02.164190+00:00"}
+{"id":"GHSA-fc86-6rv6-2jpm","axis":"advisories","repo":"webonyx/graphql-php","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-10T09:02:53.287693+00:00"}

@@ -1,1 +1,1 @@
-{"id":"GHSA-f5gc-qxf8-mh9g","axis":"advisories","repo":"pontedilana/php-weasyprint","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-02T09:35:06.249573+00:00"}
+{"id":"GHSA-f5gc-qxf8-mh9g","axis":"advisories","repo":"pontedilana/php-weasyprint","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-10T08:58:30.544310+00:00"}
