@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1479-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1480-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -944,7 +944,7 @@
 <h3>GHSA-fqvv-jvhr-g5jc</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-05-05 · Python<br>
-<code>firefighter-incident</code> · Pattern: <code>SSRF→CLOUD_METADATA</code> · 1x across ecosystem
+<code>firefighter-incident</code> · Pattern: <code>SSRF→CLOUD_METADATA</code> · 2x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s `jira_bot` endpoint allowed unauthenticated users to provide arbitrary URLs for attachments. These URLs were then fetched by the server without proper validation, enabling an attacker to direct the server to make requests to internal network resources or cloud metadata endpoints.</p>
 <p><b>Impact</b> : An attacker could perform Server-Side Request Forgery (SSRF) attacks, leading to the theft of IAM credentials or access to other sensitive internal services and data.</p>
@@ -1562,10 +1562,10 @@ Count = Block.AckBlock + 1;</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1479</td></tr>
+<tr><td>Total advisories</td><td>1480</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>24</td></tr>
-<tr><td>Last updated</td><td>2026-08-11</td></tr>
+<tr><td>Last updated</td><td>2026-08-12</td></tr>
 </table>
 </details>
 <hr>
