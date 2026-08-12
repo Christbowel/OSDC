@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1480-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1483-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -242,7 +242,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 24x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -494,7 +494,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 84x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 86x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -1048,7 +1048,7 @@
 <h3>GHSA-v8fg-2rw7-q452</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-03 · JavaScript<br>
-<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 24x across ecosystem
+<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied string values intended for Oracle&#39;s TO_TIMESTAMP_TZ and TO_DATE functions. When a string started with these function names, Sequelize would return the value directly without proper escaping or validation, allowing an attacker to inject arbitrary SQL after the function call.</p>
 <p><b>Impact</b> : An attacker could inject malicious SQL queries, potentially leading to unauthorized data access, modification, or deletion, and in some cases, remote code execution depending on the database configuration and privileges.</p>
@@ -1069,7 +1069,7 @@
 <h3>GHSA-6wcc-39rp-hh9p</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-28 · JavaScript<br>
-<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 24x across ecosystem
+<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `escapeValue` function, which is responsible for sanitizing string inputs before they are used in SQL queries, did not properly escape backslash characters. While it correctly handled single quotes by doubling them, an attacker could use backslashes to bypass this escaping mechanism and inject arbitrary SQL.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary SQL commands into queries, potentially leading to unauthorized data access, modification, or deletion, and even remote code execution on the underlying database server.</p>
@@ -1343,7 +1343,7 @@
 <h3>GHSA-vmw2-qwm8-x84c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-05-14 · C#<br>
-<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 24x across ecosystem
+<code>Marten</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly interpolated the &#39;regConfig&#39; parameter into a SQL query without proper validation or sanitization. This allowed an attacker to inject arbitrary SQL commands by manipulating the &#39;regConfig&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands on the PostgreSQL database, potentially leading to data exfiltration, modification, or deletion, and even remote code execution depending on database privileges.</p>
@@ -1562,7 +1562,7 @@ Count = Block.AckBlock + 1;</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1480</td></tr>
+<tr><td>Total advisories</td><td>1483</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>24</td></tr>
 <tr><td>Last updated</td><td>2026-08-12</td></tr>
