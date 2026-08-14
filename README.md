@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1495-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1498-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-49-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -1087,7 +1087,7 @@
 <h3>GHSA-7gfh-x38p-prh3</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-24 · JavaScript<br>
-<code>velocityjs</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 21x across ecosystem
+<code>velocityjs</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient prototype chain protection in the Velocity.js template engine. An attacker could craft a template that, when evaluated, would traverse the prototype chain using keys like &#39;constructor&#39; and &#39;prototype&#39; to access and manipulate sensitive JavaScript built-in objects, specifically the Function constructor. This allowed for arbitrary code execution.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary remote code execution within the context of the application running the Velocity.js template engine, leading to full system compromise or data exfiltration.</p>
@@ -1411,7 +1411,7 @@
 <h3>GHSA-xhj4-g6w8-2xjw</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-04-24 · Go<br>
-<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 121x across ecosystem
+<code>github.com/woven-planet/go-zserio</code> · Pattern: <code>DOS→RESOURCE_EXHAUSTION</code> · 122x across ecosystem
 </p>
 <p><b>Root cause</b> : The application did not limit the size of arrays, byte buffers, or strings when deserializing data from a zserio bitstream. An attacker could provide a crafted input with an extremely large declared size, causing the application to attempt to allocate an unbounded amount of memory.</p>
 <p><b>Impact</b> : An attacker could trigger a denial of service by causing the application to exhaust available memory, leading to crashes or system instability.</p>
@@ -1562,10 +1562,10 @@ Count = Block.AckBlock + 1;</pre>
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1495</td></tr>
+<tr><td>Total advisories</td><td>1498</td></tr>
 <tr><td>Unique patterns</td><td>49</td></tr>
 <tr><td>Pending</td><td>24</td></tr>
-<tr><td>Last updated</td><td>2026-08-13</td></tr>
+<tr><td>Last updated</td><td>2026-08-14</td></tr>
 </table>
 </details>
 <hr>
