@@ -1,1 +1,1 @@
-{"id":"GHSA-5p9g-j988-pcwv","axis":"advisories","repo":"modelcontextprotocol/ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-08T08:07:54.683451+00:00"}
+{"id":"GHSA-5p9g-j988-pcwv","axis":"advisories","repo":"modelcontextprotocol/ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-16T07:55:24.965315+00:00"}

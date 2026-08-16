@@ -1,1 +1,1 @@
-{"id":"GHSA-xr9x-r78c-5hrm","axis":"advisories","repo":"rails/rails","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-08T08:07:56.788919+00:00"}
+{"id":"GHSA-xr9x-r78c-5hrm","axis":"advisories","repo":"rails/rails","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-16T07:55:27.241135+00:00"}
