@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-08-18T14:29:23.341381+00:00",
+  "run_at": "2026-08-19T06:32:23.585111+00:00",
   "run_number": 1,
   "fetched": 0,
   "new": 0,
@@ -7,6 +7,6 @@
   "new_patterns": 0,
   "errors": 0,
   "pending": 24,
-  "total_advisories": 1532,
+  "total_advisories": 1562,
   "total_patterns": 49
 }
