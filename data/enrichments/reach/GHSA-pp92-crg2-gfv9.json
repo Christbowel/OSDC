@@ -1,1 +1,1 @@
-{"id":"GHSA-pp92-crg2-gfv9","axis":"advisories","repo":"ruby-oauth/oauth2","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-13T08:52:25.260606+00:00"}
+{"id":"GHSA-pp92-crg2-gfv9","axis":"advisories","repo":"ruby-oauth/oauth2","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-21T08:07:52.675749+00:00"}
