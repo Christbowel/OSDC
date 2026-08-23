@@ -1,1 +1,1 @@
-{"id":"GHSA-98pp-vccm-qm25","axis":"advisories","repo":"redaxo/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-16T08:10:25.069461+00:00"}
+{"id":"GHSA-98pp-vccm-qm25","axis":"advisories","repo":"redaxo/core","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T08:12:36.787346+00:00"}
