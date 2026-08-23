@@ -1,1 +1,1 @@
-{"id":"GHSA-mx5j-mp4f-g8jg","axis":"advisories","repo":"savonrb/savon","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-16T08:10:21.210907+00:00"}
+{"id":"GHSA-mx5j-mp4f-g8jg","axis":"advisories","repo":"savonrb/savon","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T08:12:31.716563+00:00"}

@@ -1,1 +1,1 @@
-{"id":"GHSA-28jh-g32x-v9v4","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-16T08:11:31.341519+00:00"}
+{"id":"GHSA-28jh-g32x-v9v4","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T08:13:51.603329+00:00"}
