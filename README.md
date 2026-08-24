@@ -1564,7 +1564,7 @@
 <tr><td>Total advisories</td><td>1619</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>24</td></tr>
-<tr><td>Last updated</td><td>2026-08-23</td></tr>
+<tr><td>Last updated</td><td>2026-08-24</td></tr>
 </table>
 </details>
 <hr>
