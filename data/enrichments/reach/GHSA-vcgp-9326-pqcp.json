@@ -1,1 +1,1 @@
-{"id":"GHSA-vcgp-9326-pqcp","axis":"advisories","repo":"ruby/net-imap","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-18T08:09:38.665671+00:00"}
+{"id":"GHSA-vcgp-9326-pqcp","axis":"advisories","repo":"ruby/net-imap","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-25T08:14:43.192429+00:00"}
