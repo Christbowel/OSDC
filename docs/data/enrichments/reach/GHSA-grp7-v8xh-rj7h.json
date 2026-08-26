@@ -1,0 +1,1 @@
+{"id":"GHSA-grp7-v8xh-rj7h","axis":"advisories","repo":"elixir-grpc/grpc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-26T08:09:34.598476+00:00"}
