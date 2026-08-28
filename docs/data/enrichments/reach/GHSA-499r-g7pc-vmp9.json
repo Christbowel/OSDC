@@ -1,1 +1,1 @@
-{"id":"GHSA-499r-g7pc-vmp9","axis":"advisories","repo":"composer/composer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-20T08:06:57.898266+00:00"}
+{"id":"GHSA-499r-g7pc-vmp9","axis":"advisories","repo":"composer/composer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-27T18:24:29.433011+00:00"}
