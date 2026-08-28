@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1709-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1729-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -82,7 +82,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -297,7 +297,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -309,7 +309,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 28x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -367,7 +367,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -379,7 +379,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -391,7 +391,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -403,7 +403,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -448,7 +448,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -678,6 +678,76 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-9x44-4gxf-8c25</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-08-28 · PHP<br>
+<code>pimcore/pimcore</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 29x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied field names for DataObject class definitions. These field names were directly incorporated into generated PHP class files (as properties, getters/setters, and constants) and used verbatim in SQL ALTER TABLE DDL statements without proper sanitization or quoting. This allowed an attacker to inject arbitrary PHP code or SQL commands by crafting a malicious field name.</p>
+<p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting PHP code into the generated class files, or execute arbitrary SQL commands, leading to full system compromise, data manipulation, or data exfiltration.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/models/DataObject/ClassDefinition/Data.php
++++ b/models/DataObject/ClassDefinition/Data.php
+@@ -166,6 +167,14 @@ public function getPermissions(): array|string|null
+      */
+     public function setName(string $name): static
+     {
++        if ($name !== &#39;&#39; &amp;&amp; !preg_match(&#39;/^[a-zA-Z_][a-zA-Z0-9_]{0,62}$/&#39;, $name)) {
++            throw new InvalidArgumentException(sprintf(&#39;Invalid field name &#34;%s&#34;&#39;, $name));
++        }
++
+         $this-&gt;name = $name;
+ 
+         return $this;
+--- a/models/DataObject/ClassDefinition/Helper/Dao.php
++++ b/models/DataObject/ClassDefinition/Helper/Dao.php
+@@ -39,31 +39,31 @@ protected function addIndexToField(DataObject
+                     // multicolumn field
+                     foreach ($columnType as $fkey =&gt; $fvalue) {
+                         $indexName = $field-&gt;getName().&#39;__&#39;.$fkey;
+-                        $columnName = &#39;`&#39; . $indexName . &#39;`&#39;;
++                        $columnName = $this-&gt;db-&gt;quoteIdentifier($indexName);
+                         if ($unique) {
+                             if ($isLocalized) {
+-                                $columnName .= &#39;,`language`&#39;;
++                                $columnName .= &#39;,&#39; . $this-&gt;db-&gt;quoteIdentifier(&#39;language&#39;);
+                             } elseif ($isFieldcollection) {
+-                                $columnName .= &#39;,`fieldname`&#39;;
++                                $columnName .= &#39;,&#39; . $this-&gt;db-&gt;quoteIdentifier(&#39;fieldname&#39;);
+                             }
+                         }
+                         if ($this-&gt;indexDoesNotExist($table, $prefix, $indexName)) {
+-                            $this-&gt;db-&gt;executeQuery(&#39;ALTER TABLE `&#39; . $table . &#39;` ADD &#39; . $uniqueStr . &#39;INDEX `&#39; . $prefix . $indexName . &#39;` (&#39; . $columnName . &#39;);&#39;);
++                            $this-&gt;db-&gt;executeQuery(&#39;ALTER TABLE &#39; . $this-&gt;db-&gt;quoteIdentifier($table) . &#39; ADD &#39; . $uniqueStr . &#39;INDEX &#39; . $this-&gt;db-&gt;quoteIdentifier($prefix . $indexName) . &#39; (&#39; . $columnName . &#39;);&#39;);
+                         }
+                     }
+                 } else {
+                     // single -column field
+                     $indexName = $field-&gt;getName();
+-                    $columnName = &#39;`&#39; . $indexName . &#39;`&#39;;
++                    $columnName = $this-&gt;db-&gt;quoteIdentifier($indexName);
+                     if ($unique) {
+                         if ($isLocalized) {
+-                            $columnName .= &#39;,`language`&#39;;
++                            $columnName .= &#39;,&#39; . $this-&gt;db-&gt;quoteIdentifier(&#39;language&#39;);
+                         } elseif ($isFieldcollection) {
+-                            $columnName .= &#39;,`fieldname`&#39;;
++                            $columnName .= &#39;,&#39; . $this-&gt;db-&gt;quoteIdentifier(&#39;fieldname&#39;);
+                         }
+                     }
+                     if ($this-&gt;indexDoesNotExist($table, $prefix, $indexName)) {
+-                        $this-&gt;db-&gt;executeQuery(&#39;ALTER TABLE `&#39; . $table . &#39;` ADD &#39; . $uniqueStr . &#39;INDEX `&#39; . $prefix . $indexName . &#39;` (&#39; . $columnName . &#39;);&#39;);
++                        $this-&gt;db-&gt;executeQuery(&#39;ALTER TABLE &#39; . $this-&gt;db-&gt;quoteIdentifier($table) . &#39; ADD &#39; . $uniqueStr . &#39;INDEX &#39; . $this-&gt;db-&gt;quoteIdentifier($prefix . $indexName) . &#39; (&#39; . $columnName . &#39;);&#39;);
+                     }
+                 }
+             } else {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a regular expression validation for DataObject field names to ensure they adhere to a strict alphanumeric and underscore format, preventing injection of special characters. Additionally, all SQL identifiers (table names, column names, index names) in ALTER TABLE statements are now properly quoted using `db-&gt;quoteIdentifier()` to prevent SQL injection.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-9x44-4gxf-8c25">Advisory</a> · <a href="https://github.com/pimcore/pimcore/commit/a4f8c3cfee58b7d5fe4873d67782eff58dae9b9d">Commit</a>
+</p>
+<hr>
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
@@ -705,7 +775,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -840,7 +910,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -874,7 +944,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -886,7 +956,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -898,7 +968,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -910,7 +980,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -922,7 +992,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1438,7 +1508,7 @@
 <h3>GHSA-mqjf-5f49-2fjh</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-21 · Java<br>
-<code>org.geotools.jdbc:gt-jdbc-postgis</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 28x across ecosystem
+<code>org.geotools.jdbc:gt-jdbc-postgis</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from the `jsonArrayContains` filter function in GeoTools, which directly embedded user-controlled values into a SQL query without proper escaping. Specifically, when constructing an equality comparison for JSON values, string literals were enclosed in double quotes but not sanitized, allowing an attacker to inject arbitrary SQL.</p>
 <p><b>Impact</b> : An unauthenticated attacker could execute arbitrary SQL commands against the PostGIS database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution depending on the database configuration and privileges.</p>
@@ -1489,7 +1559,7 @@
 <h3>GHSA-mmj4-63m4-r6h5</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-07 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the file validation rules `is_image` and `mime_in` in CodeIgniter only checked the detected MIME type or the file&#39;s actual content type, but did not adequately validate the client-provided file extension against the actual content or expected image types. This allowed an attacker to upload malicious files with a misleading extension (e.g., a PHP script disguised as an image) if the server relied solely on these rules.</p>
 <p><b>Impact</b> : An attacker could bypass file upload restrictions, potentially uploading malicious scripts (e.g., PHP web shells) to the server. If these files were then accessible and executable, it could lead to Remote Code Execution (RCE) on the server, allowing the attacker to take full control.</p>
@@ -1517,7 +1587,7 @@
 <h3>GHSA-v8fg-2rw7-q452</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-03 · JavaScript<br>
-<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 28x across ecosystem
+<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied string values intended for Oracle&#39;s TO_TIMESTAMP_TZ and TO_DATE functions. When a string started with these function names, Sequelize would return the value directly without proper escaping or validation, allowing an attacker to inject arbitrary SQL after the function call.</p>
 <p><b>Impact</b> : An attacker could inject malicious SQL queries, potentially leading to unauthorized data access, modification, or deletion, and in some cases, remote code execution depending on the database configuration and privileges.</p>
@@ -1538,7 +1608,7 @@
 <h3>GHSA-6wcc-39rp-hh9p</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-07-28 · JavaScript<br>
-<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 28x across ecosystem
+<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `escapeValue` function, which is responsible for sanitizing string inputs before they are used in SQL queries, did not properly escape backslash characters. While it correctly handled single quotes by doubling them, an attacker could use backslashes to bypass this escaping mechanism and inject arbitrary SQL.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary SQL commands into queries, potentially leading to unauthorized data access, modification, or deletion, and even remote code execution on the underlying database server.</p>
@@ -1683,7 +1753,7 @@
 <h3>GHSA-2gr4-ppc7-7mhx</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-06-11 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 488x across ecosystem
+<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 505x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `ext_in` validation rule only checked the guessed file extension, which could be manipulated by an attacker. The `guessExtension()` method might return an empty string or an incorrect extension if the file&#39;s MIME type or content was malformed, allowing a malicious file with a dangerous extension (e.g., .php) to bypass the intended extension whitelist.</p>
 <p><b>Impact</b> : An attacker could upload files with disallowed extensions, potentially leading to remote code execution if the server is configured to execute scripts based on their extension, or other forms of system compromise.</p>
@@ -1703,44 +1773,6 @@
 <p><b>Fix</b> : The patch enhances the `ext_in` validation rule by explicitly checking both the client-provided file extension (`getClientExtension()`) and comparing it with the guessed extension (`guessExtension()`). It ensures that the client extension is not empty and is part of the allowed list, and that the guessed extension matches the client extension, preventing bypasses through manipulated file types.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2gr4-ppc7-7mhx">Advisory</a> · <a href="https://github.com/codeigniter4/CodeIgniter4/commit/29299349e7d232e9532767c7cefaed30957309be">Commit</a>
-</p>
-<hr>
-<h3>GHSA-6j2x-vhqr-qr7q</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 5x across ecosystem
-</p>
-<p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly JavaScript Promise Integration (JSPI) Promises. These Promises, when created within the sandbox, had their prototype chain directly linked to the host realm&#39;s `Promise.prototype`, bypassing the sandbox&#39;s proxy mechanisms and overrides. This allowed an attacker to manipulate the `constructor` property of a JSPI Promise, leading to the creation of host-realm Promise resolution/rejection functions that executed attacker-controlled code in the host context.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary code in the host environment, effectively escaping the vm2 sandbox and gaining full control over the system running the sandboxed code.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/lib/setup-sandbox.js
-+++ b/lib/setup-sandbox.js
-@@ -473,6 +473,57 @@ if (typeof WebAssembly !== &#39;undefined&#39; &amp;&amp; WebAssembly.JSTag !== undefined) {
- 	localReflectDeleteProperty(WebAssembly, &#39;JSTag&#39;);
- }
- 
-+if (typeof WebAssembly !== &#39;undefined&#39;) {
-+	// SECURITY (GHSA-6j2x-vhqr-qr7q): WebAssembly.promising returns Promises with
-+	// host-realm Promise.prototype in their [[Prototype]] chain. No sandbox-side
-+	// override and no bridge proxy can intercept method dispatch on such objects.
-+	if (typeof WebAssembly.promising !== &#39;undefined&#39;) {
-+		localReflectDeleteProperty(WebAssembly, &#39;promising&#39;);
-+	}
-+	// SECURITY (GHSA-6j2x-vhqr-qr7q): WebAssembly.Suspending is required to satisfy
-+	// the suspending-import slot in any JSPI module. Removing it alone closes the
-+	// instantiation half of the chain; removing `.promising` closes the export half.
-+	if (typeof WebAssembly.Suspending !== &#39;undefined&#39;) {
-+		localReflectDeleteProperty(WebAssembly, &#39;Suspending&#39;);
-+	}
-+}
- 
- if (
- 	!localReflectDefineProperty(global, &#39;VMError&#39;, {</pre>
-</details>
-<p><b>Fix</b> : The patch removes `WebAssembly.promising` and `WebAssembly.Suspending` from the sandbox environment. By deleting these properties, the sandbox prevents the creation of JSPI Promises that exhibit the problematic cross-realm prototype behavior, thereby eliminating the attack vector.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6j2x-vhqr-qr7q">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/6915fa4d9bcebd47b9a4f39a1adc1aa94ef6ffc6">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1778,7 +1810,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1709</td></tr>
+<tr><td>Total advisories</td><td>1729</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>24</td></tr>
 <tr><td>Last updated</td><td>2026-08-28</td></tr>
