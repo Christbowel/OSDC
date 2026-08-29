@@ -1,1 +1,1 @@
-{"id":"GHSA-2q4p-g7hv-5rgv","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-22T07:56:46.065506+00:00"}
+{"id":"GHSA-2q4p-g7hv-5rgv","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-29T13:20:30.981704+00:00"}
