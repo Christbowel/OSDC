@@ -1,1 +1,1 @@
-{"id":"GHSA-rc52-c4hv-w89p","axis":"advisories","repo":"Sylius/MolliePlugin","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T08:12:42.768890+00:00"}
+{"id":"GHSA-rc52-c4hv-w89p","axis":"advisories","repo":"Sylius/MolliePlugin","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-30T13:11:40.693214+00:00"}

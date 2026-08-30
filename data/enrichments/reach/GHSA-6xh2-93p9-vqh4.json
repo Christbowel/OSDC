@@ -1,1 +1,1 @@
-{"id":"GHSA-6xh2-93p9-vqh4","axis":"advisories","repo":"oban-bg/oban_web","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T07:59:14.668704+00:00"}
+{"id":"GHSA-6xh2-93p9-vqh4","axis":"advisories","repo":"oban-bg/oban_web","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-30T13:14:58.076554+00:00"}
