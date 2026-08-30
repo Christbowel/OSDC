@@ -1,1 +1,1 @@
-{"id":"GHSA-4mrv-5p47-p938","axis":"advisories","repo":"msgpack/msgpack-ruby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T07:57:39.868856+00:00"}
+{"id":"GHSA-4mrv-5p47-p938","axis":"advisories","repo":"msgpack/msgpack-ruby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-30T13:12:09.995339+00:00"}

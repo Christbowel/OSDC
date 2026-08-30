@@ -1,1 +1,1 @@
-{"id":"GHSA-h74c-q9j7-mpcm","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-23T08:13:51.604109+00:00"}
+{"id":"GHSA-h74c-q9j7-mpcm","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-30T13:13:21.710161+00:00"}
