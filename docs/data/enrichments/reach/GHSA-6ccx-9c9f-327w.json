@@ -1,1 +1,1 @@
-{"id":"GHSA-6ccx-9c9f-327w","axis":"advisories","repo":"elixir-grpc/grpc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-26T08:09:31.980854+00:00"}
+{"id":"GHSA-6ccx-9c9f-327w","axis":"advisories","repo":"elixir-grpc/grpc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-02T12:15:45.222347+00:00"}
