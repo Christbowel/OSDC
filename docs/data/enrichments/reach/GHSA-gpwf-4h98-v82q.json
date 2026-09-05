@@ -1,1 +1,1 @@
-{"id":"GHSA-gpwf-4h98-v82q","axis":"advisories","repo":"DataDog/dd-trace-rs","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-28T19:33:25.328968+00:00"}
+{"id":"GHSA-gpwf-4h98-v82q","axis":"advisories","repo":"DataDog/dd-trace-rs","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-05T11:22:15.339821+00:00"}
