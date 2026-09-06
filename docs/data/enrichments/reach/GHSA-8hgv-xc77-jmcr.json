@@ -1,1 +1,1 @@
-{"id":"GHSA-8hgv-xc77-jmcr","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-29T13:20:09.958731+00:00"}
+{"id":"GHSA-8hgv-xc77-jmcr","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-06T11:44:04.215761+00:00"}
