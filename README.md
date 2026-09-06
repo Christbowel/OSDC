@@ -1933,7 +1933,7 @@
 <tr><td>Total advisories</td><td>1873</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-05</td></tr>
+<tr><td>Last updated</td><td>2026-09-06</td></tr>
 </table>
 </details>
 <hr>
