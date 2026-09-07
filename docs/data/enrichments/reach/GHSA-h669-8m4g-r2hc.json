@@ -1,1 +1,1 @@
-{"id":"GHSA-h669-8m4g-r2hc","axis":"advisories","repo":"modelcontextprotocol/ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-08-30T13:12:05.438248+00:00"}
+{"id":"GHSA-h669-8m4g-r2hc","axis":"advisories","repo":"modelcontextprotocol/ruby-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-07T13:39:16.657097+00:00"}
