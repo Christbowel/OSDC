@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1886-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1911-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -12,10 +12,36 @@
 </p>
 </div>
 <hr>
+<h3>GHSA-jrc7-96c5-q579</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 108x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
+<p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/util/dom.ts
++++ b/src/util/dom.ts
+@@ -131,7 +131,7 @@ export class DOM {
+ 	 * @param elem - The element
+ 	 */
+     private static removeAttributes(elem: Element) {
+-        for (const {name, value} of elem.attributes) {
++        for (const {name, value} of Array.from(elem.attributes)) {
+             if (!DOM.isPossiblyDangerous(name, value)) continue;
+             elem.removeAttribute(name);
+         }</pre>
+</details>
+<p><b>Fix</b> : The patch fixes the vulnerability by converting the live `NamedNodeMap` returned by `elem.attributes` into a static array using `Array.from()`. This ensures that all attributes are processed and sanitized, even when attributes are removed during the iteration, preventing the sanitizer bypass.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-jrc7-96c5-q579">Advisory</a> · <a href="https://github.com/maplibre/maplibre-gl-js/commit/1da69f3cd913a39fa948708e01478663bf48bc27">Commit</a>
+</p>
+<hr>
 <h3>GHSA-fph3-ghq9-vw66</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly concatenated user-supplied input into SQL queries and regular expressions without proper sanitization or parameterization. Specifically, the `fullTextSearchAssetContent` function, when `method` was set to 2 (SQL) or 3 (Regexp), allowed unauthenticated users to inject arbitrary SQL or regular expression syntax.</p>
 <p><b>Impact</b> : An unauthenticated attacker could execute arbitrary SQL commands on the underlying database, leading to data exfiltration, modification, or deletion. Additionally, they could perform REGEXP injection, potentially causing denial of service or information disclosure through crafted regular expressions.</p>
@@ -51,7 +77,7 @@
 <h3>GHSA-q2vg-7qgx-x5fc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application constructed SQL queries by directly concatenating user-controlled input (mentionKeywords and keyword) into the FTS MATCH clause without proper escaping. This allowed an attacker to inject arbitrary SQL into the query by crafting malicious input containing double quotes, breaking out of the intended string literal.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands within the database, potentially leading to data exfiltration, modification, or deletion, and could bypass intended access controls.</p>
@@ -71,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -83,7 +109,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -150,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -162,7 +188,7 @@
 <h3>GHSA-2956-977x-2w3r</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-30 · Python<br>
-<code>flyto-core</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 56x across ecosystem
+<code>flyto-core</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 57x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed an attacker to control both the target file path and its base directory when writing files. The existing path traversal check was ineffective because it validated the output path against a caller-supplied output directory, which an attacker could manipulate to bypass the check and write files outside the intended sandbox.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to any location on the file system where the application has write permissions, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -365,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -377,7 +403,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -435,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -447,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -459,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -471,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -516,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -629,7 +655,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 107x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 108x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -658,7 +684,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 56x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 57x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -746,10 +772,35 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-xp7j-h7jc-4w8p</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
+</p>
+<p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/db_lib/CmdGitClient.go
++++ b/db_lib/CmdGitClient.go
+@@ -115,6 +115,7 @@ func (c CmdGitClient) Clone(r GitRepository) error {
+ 		&#34;--recursive&#34;,
+ 		&#34;--branch&#34;,
+ 		r.Repository.GitBranch,
++		&#34;--end-of-options&#34;,
+ 		r.Repository.GetGitURL(false),
+ 		dirName)
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `ValidateGitURL` function that rejects Git URLs starting with a hyphen. This validation is applied when a repository is created or updated. Additionally, the `--end-of-options` argument is added to all `git` commands that take a user-controlled URL, explicitly telling `git` to treat subsequent arguments as positional parameters rather than options.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-xp7j-h7jc-4w8p">Advisory</a> · <a href="https://github.com/semaphoreui/semaphore/commit/7e8a9434bd81b82cf42220151c74801ea97542d6">Commit</a>
+</p>
+<hr>
 <h3>GHSA-9x44-4gxf-8c25</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · PHP<br>
-<code>pimcore/pimcore</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
+<code>pimcore/pimcore</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied field names for DataObject class definitions. These field names were directly incorporated into generated PHP class files (as properties, getters/setters, and constants) and used verbatim in SQL ALTER TABLE DDL statements without proper sanitization or quoting. This allowed an attacker to inject arbitrary PHP code or SQL commands by crafting a malicious field name.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting PHP code into the generated class files, or execute arbitrary SQL commands, leading to full system compromise, data manipulation, or data exfiltration.</p>
@@ -819,7 +870,7 @@
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -843,7 +894,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -855,7 +906,7 @@
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -978,7 +1029,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1012,7 +1063,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1024,7 +1075,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1036,7 +1087,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1048,7 +1099,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1060,7 +1111,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1110,7 +1161,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1246,6 +1297,73 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-92f5-vc22-8j33</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
+<p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/core/connection.c
++++ b/src/core/connection.c
+@@ -5458,7 +5458,7 @@ QuicConnRecvPostProcessing(
+ 
+     if (Packet-&gt;HasNonProbingFrame &amp;&amp;
+         Packet-&gt;NewLargestPacketNumber &amp;&amp;
+-        !(*Path)-&gt;IsActive) {
++        !(*Path)-&gt;IsActive &amp;&amp; (*Path)-&gt;InUse) {</pre>
+</details>
+<p><b>Fix</b> : The patch adds an additional check to ensure that a network path is not only inactive but also &#39;InUse&#39; before proceeding with path switching logic. This prevents the system from attempting to use a path that is not properly initialized or valid, thereby mitigating the memory corruption vulnerability.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-92f5-vc22-8j33">Advisory</a> · <a href="https://github.com/microsoft/msquic/commit/583e7d5b509bb0bfa3518482d98879b6eda41ad0">Commit</a>
+</p>
+<hr>
+<h3>GHSA-rcr6-4jqh-j84m</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 582x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-rcr6-4jqh-j84m">Advisory</a> · <a href="https://github.com/go-gitea/gitea/commit/470d34b1de87d901bd9135564d5ee18c0d339e82">Commit</a>
+</p>
+<hr>
+<h3>GHSA-w6f5-v2h6-g786</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-08 · PHP<br>
+<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from how Predis handled pipelined commands, particularly in aggregate connections (like Redis Cluster). It would concatenate all serialized commands into a single buffer and then write this buffer to the connection. This batching, combined with the lack of proper CRLF (carriage return and line feed) sanitization, allowed an attacker to inject arbitrary Redis commands by smuggling CRLF sequences within a command argument, effectively terminating the current command and starting a new one.</p>
+<p><b>Impact</b> : An attacker could inject arbitrary Redis commands, leading to data manipulation, unauthorized access, or even remote code execution if the Redis server is configured to load modules or execute Lua scripts. Additionally, by injecting malformed commands or a large number of commands, an attacker could trigger a denial of service condition on the Redis server.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/Pipeline/ConnectionErrorProof.php
++++ b/src/Pipeline/ConnectionErrorProof.php
+@@ -92,14 +92,12 @@ protected function executeCluster(ClusterInterface $connection, SplQueue $comman
+         $responses = [];
+         $sizeOfPipe = count($commands);
+         $exceptions = [];
+-        $buffer = &#39;&#39;;
+ 
+         foreach ($commands as $command) {
+-            $buffer .= $command-&gt;serializeCommand();
++            $nodeConnection = $connection-&gt;getConnectionByCommand($command);
++            $nodeConnection-&gt;write($command-&gt;serializeCommand());
+         }
+ 
+-        $connection-&gt;write($buffer);
+-
+         for ($i = 0; $i &lt; $sizeOfPipe; ++$i) {</pre>
+</details>
+<p><b>Fix</b> : The patch refactors the command writing logic for pipelined commands. Instead of buffering all commands and writing them in one go, it now iterates through each command and writes it individually to the appropriate node connection, especially for aggregate connections. This prevents CRLF smuggling by ensuring each command is sent as a distinct unit, rather than being part of a larger, potentially injectable buffer.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-w6f5-v2h6-g786">Advisory</a> · <a href="https://github.com/predis/predis/commit/053cb4b6ac7fb1f469ead96a78d059bc0458e408">Commit</a>
+</p>
+<hr>
 <h3>GHSA-2v6v-25fm-p4fg</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-02 · Go<br>
@@ -1311,7 +1429,7 @@
 <h3>GHSA-m4rf-3fr8-xwx3</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-01 · Python<br>
-<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from an incomplete fix for a previous JVM argument injection issue. The `_validate_java_options` function, intended to sanitize JVM arguments, did not adequately restrict per-call options, allowing an attacker to inject dangerous JVM flags like `-XX:OnError` or `-D` system properties. This bypass enabled the execution of arbitrary commands or other malicious actions.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary command execution on the system running the NLTK application by injecting specially crafted JVM arguments. This could lead to full system compromise, data exfiltration, or denial of service.</p>
@@ -1476,7 +1594,7 @@
 <h3>GHSA-jrw6-7x4q-w25j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-26 · Python<br>
-<code>senaite.core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>senaite.core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used Python&#39;s `eval()` function to parse stringified record values from user-controlled input. The `eval()` function executes arbitrary Python code, making it highly dangerous when used with untrusted input.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1499,7 +1617,7 @@
 <h3>GHSA-mw6r-2hvm-4rp2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-25 · Python<br>
-<code>qwed-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>qwed-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used SymPy&#39;s `parse_expr()` function to evaluate user-supplied mathematical expressions without sufficient sanitization or a restricted execution environment. This allowed attackers to inject arbitrary Python code, which `parse_expr()` would then execute.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary Python code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1564,7 +1682,7 @@
 <h3>GHSA-w3fx-mc44-mf6j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-25 · Python<br>
-<code>chainlit</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 88x across ecosystem
+<code>chainlit</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 91x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-controlled input to be directly executed as a command via `shlex.split` without sufficient validation of the executable itself. While it attempted to restrict executables, an attacker could craft a command string that bypassed these checks, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the server, gaining full control over the system where Chainlit is running.</p>
@@ -1777,124 +1895,6 @@
 <a href="https://github.com/advisories/GHSA-w3fx-mc44-mf6j">Advisory</a> · <a href="https://github.com/Chainlit/chainlit/commit/0565fd0eccb915fce159929598b053ed79f6e0c9">Commit</a>
 </p>
 <hr>
-<h3>GHSA-mqjf-5f49-2fjh</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-21 · Java<br>
-<code>org.geotools.jdbc:gt-jdbc-postgis</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from the `jsonArrayContains` filter function in GeoTools, which directly embedded user-controlled values into a SQL query without proper escaping. Specifically, when constructing an equality comparison for JSON values, string literals were enclosed in double quotes but not sanitized, allowing an attacker to inject arbitrary SQL.</p>
-<p><b>Impact</b> : An unauthenticated attacker could execute arbitrary SQL commands against the PostGIS database, potentially leading to data exfiltration, modification, or deletion, and could even achieve remote code execution depending on the database configuration and privileges.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/modules/plugin/jdbc/jdbc-postgis/src/main/java/org/geotools/data/postgis/FilterToSqlHelper.java
-+++ b/modules/plugin/jdbc/jdbc-postgis/src/main/java/org/geotools/data/postgis/FilterToSqlHelper.java
-@@ -800,7 +800,8 @@ private String constructEquality(String[] jsonPath, Expression expected) {
-         } else if (value instanceof Double double1) {
-             return &#34;(@.%s == %f)&#34;.formatted(jsonPath[lastIndex], double1);
-         }
--        return &#34;(@.%s == \&#34;%s\&#34;)&#34;.formatted(jsonPath[lastIndex], value);
-+        String literal = escapeJsonLiteral(String.valueOf(value));
-+        return &#34;(@.%s == \&#34;%s\&#34;)&#34;.formatted(jsonPath[lastIndex], literal);</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new `escapeJsonLiteral` function. This function is now used to sanitize user-provided values before they are embedded into the SQL query string for JSON equality comparisons. This prevents malicious input from breaking out of the string literal and injecting SQL.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-mqjf-5f49-2fjh">Advisory</a> · <a href="https://github.com/geotools/geotools/commit/d821c4d321dd91c22e31fcd5b1ce676645da5176">Commit</a>
-</p>
-<hr>
-<h3>GHSA-rcr2-hggw-43wm</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-18 · Python<br>
-<code>surfio</code> · Pattern: <code>BUFFER_OVERFLOW→HEAP</code> · 35x across ecosystem
-</p>
-<p><b>Root cause</b> : The application calculated the expected number of values (nvalues) based on user-provided ncol and nrow without validating if the input buffer was large enough to contain all these values. This allowed reading beyond the allocated memory region if the declared dimensions exceeded the actual data length.</p>
-<p><b>Impact</b> : An attacker could trigger an out-of-bounds read, potentially leading to information disclosure of sensitive memory contents or a denial of service due to a crash.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/lib/irap_import_ascii.cpp
-+++ b/src/lib/irap_import_ascii.cpp
-@@ -52,8 +52,10 @@ std::tuple&lt;irap_header, const char*&gt; get_header(const char* start, const char* e
-   return {head, ptr};
- }
- 
--std::vector&lt;float&gt; get_values(const char* start, const char* end, int ncol, int nrow) {
-+std::vector&lt;float&gt; get_values(const char* start, const char* end, size_t ncol, size_t nrow) {
-   const size_t nvalues = ncol * nrow;
-+  if (static_cast&lt;size_t&gt;(end - start) / 4 &lt; nvalues)
-+    throw std::length_error(&#34;ncol and nrow declared in header exceed length of input&#34;);
-   auto values = std::vector&lt;float&gt;(nvalues);</pre>
-</details>
-<p><b>Fix</b> : The patch adds a check to ensure that the declared number of values (ncol * nrow) does not exceed the actual size of the input buffer. If an overflow is detected, it throws a `std::length_error` exception, preventing the out-of-bounds read.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-rcr2-hggw-43wm">Advisory</a> · <a href="https://github.com/equinor/surfio/commit/1619750bce28e39c4f378d2fb6d28b72380a12aa">Commit</a>
-</p>
-<hr>
-<h3>GHSA-mmj4-63m4-r6h5</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-07 · PHP<br>
-<code>codeigniter4/framework</code> · Pattern: <code>UNCLASSIFIED</code> · 566x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the file validation rules `is_image` and `mime_in` in CodeIgniter only checked the detected MIME type or the file&#39;s actual content type, but did not adequately validate the client-provided file extension against the actual content or expected image types. This allowed an attacker to upload malicious files with a misleading extension (e.g., a PHP script disguised as an image) if the server relied solely on these rules.</p>
-<p><b>Impact</b> : An attacker could bypass file upload restrictions, potentially uploading malicious scripts (e.g., PHP web shells) to the server. If these files were then accessible and executable, it could lead to Remote Code Execution (RCE) on the server, allowing the attacker to take full control.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/system/Validation/StrictRules/FileRules.php
-+++ b/system/Validation/StrictRules/FileRules.php
-@@ -150,6 +151,10 @@ public function is_image(?string $blank, string $params): bool
-             if (mb_strpos($type, &#39;image&#39;) !== 0) {
-                 return false;
-             }
-+
-+            if ($this-&gt;hasInvalidImageClientExtension($file)) {
-+                return false;
-+            }
-         }
- 
-         return true;</pre>
-</details>
-<p><b>Fix</b> : The patch introduces two new private methods: `hasInvalidImageClientExtension` and `hasMismatchedClientExtension`. These methods are called within the `is_image` and `mime_in` validation rules, respectively. They perform additional checks to ensure that the client-provided file extension is consistent with the file&#39;s detected content type, specifically rejecting non-image extensions for image files and mismatched extensions for MIME type checks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-mmj4-63m4-r6h5">Advisory</a> · <a href="https://github.com/codeigniter4/CodeIgniter4/commit/b6e9a4fa1dca2df3d3f261bdf61532df8c6420aa">Commit</a>
-</p>
-<hr>
-<h3>GHSA-v8fg-2rw7-q452</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-03 · JavaScript<br>
-<code>sequelize</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied string values intended for Oracle&#39;s TO_TIMESTAMP_TZ and TO_DATE functions. When a string started with these function names, Sequelize would return the value directly without proper escaping or validation, allowing an attacker to inject arbitrary SQL after the function call.</p>
-<p><b>Impact</b> : An attacker could inject malicious SQL queries, potentially leading to unauthorized data access, modification, or deletion, and in some cases, remote code execution depending on the database configuration and privileges.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-    if (val.startsWith(&#39;TO_TIMESTAMP&#39;) || val.startsWith(&#39;TO_DATE&#39;)) {
-+    if (val.startsWith(&#39;TO_TIMESTAMP_TZ&#39;) || val.startsWith(&#39;TO_DATE&#39;)) {
-+      const splitVal = val.split(/\(|\)/);
-+      if (splitVal.length !== 3 || splitVal[2] !== &#39;&#39;) {
-+        throw new Error(&#39;Invalid SQL function call.&#39;);
-+      }</pre>
-</details>
-<p><b>Fix</b> : The patch introduces strict validation for strings starting with &#39;TO_TIMESTAMP_TZ&#39; or &#39;TO_DATE&#39; when the dialect is Oracle. It now parses the function name, parameters, and format string, ensuring they conform to expected patterns and formats using Moment.js for date validation. Any deviation from the expected structure or format now results in an error.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-v8fg-2rw7-q452">Advisory</a> · <a href="https://github.com/sequelize/sequelize/commit/5deadd2410ae9136a21fb652db206d27bb715f26">Commit</a>
-</p>
-<hr>
-<h3>GHSA-6wcc-39rp-hh9p</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-07-28 · JavaScript<br>
-<code>@hypequery/clickhouse</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 31x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the `escapeValue` function, which is responsible for sanitizing string inputs before they are used in SQL queries, did not properly escape backslash characters. While it correctly handled single quotes by doubling them, an attacker could use backslashes to bypass this escaping mechanism and inject arbitrary SQL.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary SQL commands into queries, potentially leading to unauthorized data access, modification, or deletion, and even remote code execution on the underlying database server.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-	    return `&#39;${value.replace(/&#39;/g, &#34;&#39;&#39;&#34;)}&#39;`;
-+	    const escaped = value.replace(/\\/g, &#39;\\\\&#39;).replace(/&#39;/g, &#34;&#39;&#39;&#34;);
-+	    return `&#39;${escaped}&#39;`;</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the `escapeValue` function to correctly handle backslash characters in string inputs. It now replaces each backslash with a double backslash (`\\`) before replacing single quotes, ensuring that backslashes cannot be used to escape the single quote delimiter.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6wcc-39rp-hh9p">Advisory</a> · <a href="https://github.com/hypequery/hypequery/commit/4dfa9d77d70a08b970e722268b75ca7d13db0bdf">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1930,10 +1930,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1886</td></tr>
+<tr><td>Total advisories</td><td>1911</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-08</td></tr>
+<tr><td>Last updated</td><td>2026-09-09</td></tr>
 </table>
 </details>
 <hr>
