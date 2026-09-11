@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1931-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1956-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -97,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -109,7 +109,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -176,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -211,7 +211,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 121x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 122x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -246,7 +246,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 61x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 62x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -391,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -461,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -473,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -485,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -497,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -554,7 +554,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 6x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 7x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -588,7 +588,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 61x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 62x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -631,7 +631,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 61x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 62x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -715,7 +715,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 14x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 16x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -775,7 +775,7 @@
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
-<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -870,7 +870,7 @@
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -894,7 +894,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -906,7 +906,7 @@
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -1029,7 +1029,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1063,7 +1063,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1075,7 +1075,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1087,7 +1087,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1099,7 +1099,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1111,7 +1111,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1161,7 +1161,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1297,10 +1297,22 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-xwwr-4h3p-r22c</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-10 · Go<br>
+<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-xwwr-4h3p-r22c">Advisory</a> · <a href="https://github.com/rclone/rclone/commit/90595f34f27f569be6b27c57fe5ab65057d323bd">Commit</a>
+</p>
+<hr>
 <h3>GHSA-92f5-vc22-8j33</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
@@ -1323,7 +1335,7 @@
 <h3>GHSA-rcr6-4jqh-j84m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
-<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 584x across ecosystem
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 600x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1335,7 +1347,7 @@
 <h3>GHSA-w6f5-v2h6-g786</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · PHP<br>
-<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from how Predis handled pipelined commands, particularly in aggregate connections (like Redis Cluster). It would concatenate all serialized commands into a single buffer and then write this buffer to the connection. This batching, combined with the lack of proper CRLF (carriage return and line feed) sanitization, allowed an attacker to inject arbitrary Redis commands by smuggling CRLF sequences within a command argument, effectively terminating the current command and starting a new one.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Redis commands, leading to data manipulation, unauthorized access, or even remote code execution if the Redis server is configured to load modules or execute Lua scripts. Additionally, by injecting malformed commands or a large number of commands, an attacker could trigger a denial of service condition on the Redis server.</p>
@@ -1367,7 +1379,7 @@
 <h3>GHSA-2v6v-25fm-p4fg</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-02 · Go<br>
-<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 61x across ecosystem
+<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 62x across ecosystem
 </p>
 <p><b>Root cause</b> : The SeaweedFS filer&#39;s IAM gRPC service endpoints, which manage S3 users and access keys, lacked any authentication mechanism. This allowed any unauthenticated client to invoke administrative functions.</p>
 <p><b>Impact</b> : An attacker could create, modify, or delete S3 users and their access keys, effectively gaining full administrative control over the S3-compatible storage and potentially accessing or manipulating all stored data.</p>
@@ -1429,7 +1441,7 @@
 <h3>GHSA-m4rf-3fr8-xwx3</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-01 · Python<br>
-<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from an incomplete fix for a previous JVM argument injection issue. The `_validate_java_options` function, intended to sanitize JVM arguments, did not adequately restrict per-call options, allowing an attacker to inject dangerous JVM flags like `-XX:OnError` or `-D` system properties. This bypass enabled the execution of arbitrary commands or other malicious actions.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary command execution on the system running the NLTK application by injecting specially crafted JVM arguments. This could lead to full system compromise, data exfiltration, or denial of service.</p>
@@ -1594,7 +1606,7 @@
 <h3>GHSA-jrw6-7x4q-w25j</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-26 · Python<br>
-<code>senaite.core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>senaite.core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used Python&#39;s `eval()` function to parse stringified record values from user-controlled input. The `eval()` function executes arbitrary Python code, making it highly dangerous when used with untrusted input.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1617,7 +1629,7 @@
 <h3>GHSA-mw6r-2hvm-4rp2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-08-25 · Python<br>
-<code>qwed-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
+<code>qwed-mcp</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used SymPy&#39;s `parse_expr()` function to evaluate user-supplied mathematical expressions without sufficient sanitization or a restricted execution environment. This allowed attackers to inject arbitrary Python code, which `parse_expr()` would then execute.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary Python code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1679,222 +1691,6 @@
 <a href="https://github.com/advisories/GHSA-mw6r-2hvm-4rp2">Advisory</a> · <a href="https://github.com/QWED-AI/qwed-mcp/commit/362e61892052e250c56cb1ee852024d6f98c467b">Commit</a>
 </p>
 <hr>
-<h3>GHSA-w3fx-mc44-mf6j</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-25 · Python<br>
-<code>chainlit</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 92x across ecosystem
-</p>
-<p><b>Root cause</b> : The application allowed user-controlled input to be directly executed as a command via `shlex.split` without sufficient validation of the executable itself. While it attempted to restrict executables, an attacker could craft a command string that bypassed these checks, leading to arbitrary command execution.</p>
-<p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the server, gaining full control over the system where Chainlit is running.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/backend/chainlit/mcp.py
-+++ b/backend/chainlit/mcp.py
-@@ -1,10 +1,9 @@
--import shlex
--from typing import Dict, Literal, Optional, Union
-+from typing import Callable, Dict, Literal, Optional, Union
-+from urllib.parse import unquote, urlparse
- 
-+import httpx
- from pydantic import BaseModel
- 
--from chainlit.config import config
--
- 
- class StdioMcpConnection(BaseModel):
-     name: str
-@@ -29,71 +28,277 @@ class HttpMcpConnection(BaseModel):
- 
- McpConnection = Union[StdioMcpConnection, SseMcpConnection, HttpMcpConnection]
- 
--# Headers that must never be forwarded from the browser to the MCP transport.
--#
--# Note: ``Authorization`` is deliberately absent — forwarding a user-supplied
--# token is the point of user-provided servers. The allowlist scopes where it
--# can be sent, and redirects are disabled so that destination cannot move.
--_RESTRICTED_HEADERS = frozenset(
--    {
--        &#34;host&#34;,
--        &#34;content-length&#34;,
--        &#34;transfer-encoding&#34;,
--        &#34;connection&#34;,
--        &#34;upgrade&#34;,
--        &#34;proxy-authorization&#34;,
--        &#34;te&#34;,
--        &#34;trailer&#34;,
--        # Session credentials — must not be replayed to a third-party server.
--        &#34;cookie&#34;,
--        # Spoofable client/origin identity, used to bypass upstream ACLs.
--        &#34;forwarded&#34;,
--        &#34;via&#34;,
--        &#34;x-forwarded-by&#34;,
--        &#34;x-forwarded-for&#34;,
--        &#34;x-forwarded-host&#34;,
--        &#34;x-forwarded-port&#34;,
--        &#34;x-forwarded-proto&#34;,
--        &#34;x-forwarded-server&#34;,
--        &#34;x-real-ip&#34;,
--        # Routing/method overrides honoured by some proxies and frameworks,
--        # which can reach endpoints the literal request line would not.
--        &#34;x-http-method-override&#34;,
--        &#34;x-method-override&#34;,
--        &#34;x-original-url&#34;,
--        &#34;x-rewrite-url&#34;,
--    }
--)
--
--
--def _effective_port(parsed) -&gt; int:
--    &#34;&#34;&#34;Return the TCP port for a parsed URL, inferring defaults for http/https.&#34;&#34;&#34;
--    if parsed.port is not None:
--        return parsed.port
--    return 443 if parsed.scheme == &#34;https&#34; else 80
--
- 
--def validate_mcp_command(command_string: str):
--    &#34;&#34;&#34;
--    Validates that a command string uses command in the allowed list as the executable and returns
--    the executable and list of arguments suitable for subprocess calls.
--
--    This function handles potential command prefixes, flags, and options
--    to ensure only commands in allowed list are allowed.
--
--    Args:
--        command_string (str): The full command string to validate
--
--    Returns:
--        tuple: (env, executable, args_list) where:
--            - env (dict): Environment variables as a dictionary
--            - executable (str): The executable name or path
--            - args_list (list): List of command arguments
--
--    Raises:
--        ValueError: If the command doesn&#39;t use an allowed executable
--    &#34;&#34;&#34;
--    # Split the command string into parts while respecting quotes and escapes
--    # Using shlex.split provides POSIX-compatible parsing so that arguments
--    # wrapped in quotes (e.g. &#34;--header \&#34;Authorization: Bearer TOKEN\&#34;&#34;)
--    # or environment variable assignments such as
--    # MY_VAR=&#34;value with spaces&#34; are preserved as single list items.
--    # On Windows, shlex also works as long as posix=False is not required for
--    # our use-case (Chainlit targets POSIX-style shells for the MCP command).
--    try:
--        parts = shlex.split(command_string, posix=True)
--    except ValueError as exc:
--        # Provide a clearer error message when the command cannot be parsed
--        raise ValueError(f&#34;Invalid command string: {exc}&#34;) from exc
--
--    if not parts:
--        raise ValueError(&#34;Empty command string&#34;)
--
--    # Look for the actual executable in the command
--    executable = None
--    executable_index = None
--    allowed_executables = config.features.mcp.stdio.allowed_executables
--    for i, part in enumerate(parts):
--        # Remove any path components to get the base executable name
--        base_exec = part.split(&#34;/&#34;)[-1].split(&#34;\\&#34;)[-1]
--        if allowed_executables is None or base_exec in allowed_executables:
--            executable = part
--            executable_index = i
--            break
--
--    if executable is None or executable_index is None:
--        raise ValueError(
--            f&#34;Only commands in ({&#39;, &#39;.join(allowed_exe
-+def _path_matches(req_path: str, allowed_path: str) -&gt; bool:
-+    &#34;&#34;&#34;True if req_path equals or is a sub-path of allowed_path.
-+
-+    Normalises allowed_path to end with &#39;/&#39; before the startswith check so
-+    that &#39;/v1&#39; does not accidentally match &#39;/v1-evil&#39;.
-+
-+    Note: if allowed_path is empty (i.e. the allowlist entry is an origin with
-+    no path component, e.g. &#34;https://example.com&#34;), all sub-paths on that host
-+    are permitted. Use a path-restricted entry (e.g. &#34;https://example.com/api&#34;)
-+    to limit access to a sub-tree.
-+    &#34;&#34;&#34;
-+    norm = allowed_path.rstrip(&#34;/&#34;) + &#34;/&#34;
-+    return req_path == norm.rstrip(&#34;/&#34;) or req_path.startswith(norm)
-+
-+
-+def _has_ambiguous_path(raw_path: str) -&gt; bool:
-+    &#34;&#34;&#34;True if raw_path contains constructs that could change meaning in transit.
-+
-+    We reject rather than normalise. Decoding first would let ``%2f`` create
-+    path-segment boundaries that were not in the original URI, manufacturing a
-+    passing path from a malicious one, and re-implementing RFC 3986 dot-segment
-+    removal would leave us permanently obliged to match httpx byte for byte.
-+    None of these constructs belong in a configured MCP endpoint.
-+
-+    Deliberately operates on the *raw* percent-encoded path rather than
-+    ``httpx.URL(url).path``: httpx pre-decodes ``%2e``/``%2f``, which would make
-+    the marker check below blind to exactly the sequences it exists to catch.
-+    &#34;&#34;&#34;
-+    lowered = raw_path.lower()
-+    # %2e -&gt; &#39;.&#39;, %2f -&gt; &#39;/&#39;, %5c -&gt; &#39;\&#39;, %25 -&gt; a second decoding pass
-+    # downstream. Backslash is a separator on some origin servers and is left
-+    # untouched by httpx.
-+    if any(marker in lowered for marker in (&#34;%2e&#34;, &#34;%2f&#34;, &#34;%5c&#34;, &#34;%25&#34;)):
-+        return True
-+    if &#34;\&#34; in raw_path:
-+        return True
-+    if any(segment in (&#34;.&#34;, &#34;..&#34;) for segment in raw_path.split(&#34;/&#34;)):
-+        return True
-+
-+    # Non-ASCII characters are rejected outright, before and after a single
-+    # decode. Many code points fold to &#39;.&#39;, &#39;/&#39; or &#39;\&#39; under the normalisation
-+    # some origin servers and proxies apply (U+FF0E, U+2024, U+FF0F, U+2215,
-+    # U+2044, ...), which would reopen traversal at the destination. Enumerating
-+    # them is a denylist that keeps coming up short, so we require the path to
-+    # be ASCII instead — a positive rule, and no real MCP endpoint needs more.
-+    if not raw_path.isascii():
-+        return True
-+    try:
-+        decoded = unquote(raw_path, errors=&#34;strict&#34;)
-+    except UnicodeDecodeError:
-+        return True
-+    return not decoded.isascii()
-+
-+
-+def validate_mcp_url(url: str, allowed_urls: list[str]) -&gt; None:
-+    &#34;&#34;&#34;Validate that a user-provided MCP URL is in the allowlist.
-+
-+    Raises ValueError if the URL is not permitted.
-+    &#34;&#34;&#34;
-+    if not allowed_urls:
-+        raise ValueError(
-+            f&#34;URL {url!r} is not in the allowed MCP URL list. &#34;
-+            &#34;Configure features.mcp.user_servers.allowed_urls in your config.&#34;
-+        )
-+
-+    # Parse the request URL through httpx, which is what the MCP transports
-+    # dispatch with. Validating anything else risks approving a URL that
-+    # differs from the one that actually goes on the wire.
-+    try:
-+        parsed = httpx.URL(url)
-+    except Exception as exc:
-+        raise ValueError(
-+            f&#34;URL {url!r} is not in the allowed MCP URL list. It could not be parsed.&#34;
-+        ) from exc
-+
-+    if parsed.scheme not in (&#34;http&#34;, &#34;https&#34;):
-+        raise ValueError(
-+            f&#34;URL {url!r} is not in the allowed MCP URL list. &#34;
-+            &#34;Only http and https URLs are supported.&#34;
-+        )
-+
-+    if _has_ambiguous_path(urlparse(url).path):
-+        raise ValueError(
-+            f&#34;URL {url!r} is not in the allowed MCP URL list. &#34;
-+            &#34;It contains ambiguous path components (e.g. &#39;.&#39;, &#39;..&#39;, or percent-encoded slashes).&#34;
-+        )</pre>
-</details>
-<p><b>Fix</b> : The patch removes the `validate_mcp_command` function, which was responsible for validating and executing commands, and replaces it with `validate_mcp_url`. This new function strictly validates URLs against an allowlist, disallows ambiguous path components, and restricts schemes and headers, preventing arbitrary command execution and SSRF.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-w3fx-mc44-mf6j">Advisory</a> · <a href="https://github.com/Chainlit/chainlit/commit/0565fd0eccb915fce159929598b053ed79f6e0c9">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1930,10 +1726,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1931</td></tr>
+<tr><td>Total advisories</td><td>1956</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-10</td></tr>
+<tr><td>Last updated</td><td>2026-09-11</td></tr>
 </table>
 </details>
 <hr>
