@@ -1729,7 +1729,7 @@
 <tr><td>Total advisories</td><td>1961</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-12</td></tr>
+<tr><td>Last updated</td><td>2026-09-13</td></tr>
 </table>
 </details>
 <hr>
