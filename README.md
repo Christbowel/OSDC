@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1964-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1981-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -97,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -176,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -211,7 +211,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 122x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 124x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -391,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -461,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -473,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -485,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -497,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -715,7 +715,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 16x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -894,7 +894,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1029,7 +1029,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1063,7 +1063,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1075,7 +1075,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1087,7 +1087,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1099,7 +1099,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1111,7 +1111,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1300,7 +1300,7 @@
 <h3>GHSA-rrxg-g2pf-6hh4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-14 · Python<br>
-<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1312,7 +1312,7 @@
 <h3>GHSA-xwwr-4h3p-r22c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-10 · Go<br>
-<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1324,7 +1324,7 @@
 <h3>GHSA-92f5-vc22-8j33</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
@@ -1347,7 +1347,7 @@
 <h3>GHSA-rcr6-4jqh-j84m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
-<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 602x across ecosystem
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 604x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1673,10 +1673,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1964</td></tr>
+<tr><td>Total advisories</td><td>1981</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-15</td></tr>
+<tr><td>Last updated</td><td>2026-09-16</td></tr>
 </table>
 </details>
 <hr>
