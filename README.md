@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1981-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1983-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -246,7 +246,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 63x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -588,7 +588,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 63x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -631,7 +631,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 63x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -1297,6 +1297,32 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-cv3r-c5h8-f4g5</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-16 · JavaScript<br>
+<code>@zereight/mcp-gitlab</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+</p>
+<p><b>Root cause</b> : The application exposed an SSE (Server-Sent Events) server endpoint without proper authentication by default. This allowed an unauthenticated attacker to connect to the SSE server and potentially interact with internal functionalities, including the `upload_markdown` feature, which could be leveraged to read arbitrary files.</p>
+<p><b>Impact</b> : An attacker could read arbitrary files from the server, including sensitive configuration files or Personal Access Tokens (PATs), leading to full account takeover and access to other internal resources.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/index.ts
++++ b/index.ts
+@@ -12260,7 +12295,7 @@ async function startSSEServer(): Promise&lt;void&gt; {
+     await serverInstance.connect(transport);
+   });
+ 
+-  app.post(&#34;/messages&#34;, async (req: Request, res: Response) =&gt; {
++  app.post(&#34;/messages&#34;, requireSseAuth, async (req: Request, res: Response) =&gt; {
+     const sessionId = req.query.sessionId as string;
+     const transport = transports[sessionId];
+     if (transport) {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces an authentication mechanism for the SSE server. It adds a `requireSseAuth` middleware that checks for a `sse-auth-token` in the Authorization header. If SSE is enabled on a non-loopback host, a token is now required by default, or the user must explicitly opt-in to unauthenticated remote access.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-cv3r-c5h8-f4g5">Advisory</a> · <a href="https://github.com/zereight/gitlab-mcp/commit/e436ee4ad067b64584ec9312c9e9c9a2641c1976">Commit</a>
+</p>
+<hr>
 <h3>GHSA-rrxg-g2pf-6hh4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-14 · Python<br>
@@ -1391,7 +1417,7 @@
 <h3>GHSA-2v6v-25fm-p4fg</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-02 · Go<br>
-<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 63x across ecosystem
+<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
 </p>
 <p><b>Root cause</b> : The SeaweedFS filer&#39;s IAM gRPC service endpoints, which manage S3 users and access keys, lacked any authentication mechanism. This allowed any unauthenticated client to invoke administrative functions.</p>
 <p><b>Impact</b> : An attacker could create, modify, or delete S3 users and their access keys, effectively gaining full administrative control over the S3-compatible storage and potentially accessing or manipulating all stored data.</p>
@@ -1615,29 +1641,6 @@
 <a href="https://github.com/advisories/GHSA-73mf-m39p-wpm9">Advisory</a> · <a href="https://github.com/yamcs/yamcs/commit/549f295cf8c5496a5e799d6bec2432ef976c82aa">Commit</a>
 </p>
 <hr>
-<h3>GHSA-jrw6-7x4q-w25j</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-26 · Python<br>
-<code>senaite.core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used Python&#39;s `eval()` function to parse stringified record values from user-controlled input. The `eval()` function executes arbitrary Python code, making it highly dangerous when used with untrusted input.</p>
-<p><b>Impact</b> : An attacker could achieve arbitrary code execution on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/senaite/core/browser/fields/record.py
-+++ b/src/senaite/core/browser/fields/record.py
-@@ -253,7 +254,7 @@ def labelFax(self,fax=&#39;&#39;):
-     def set(self, instance, value, **kwargs):
-         if type(value) in StringTypes:
-             try:
--                value = eval(value)
-+                value = parse_record_literal(value)</pre>
-</details>
-<p><b>Fix</b> : The patch replaces all instances of `eval()` with `ast.literal_eval()`. A new utility function `parse_record_literal` was introduced to encapsulate this safe parsing, ensuring that only Python literal structures (strings, numbers, tuples, lists, dicts, booleans, and None) can be evaluated, preventing arbitrary code execution.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-jrw6-7x4q-w25j">Advisory</a> · <a href="https://github.com/senaite/senaite.core/commit/a24d65e99a17ac43c5374ed9f0a60d0fe60d2f74">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1673,7 +1676,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1981</td></tr>
+<tr><td>Total advisories</td><td>1983</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-16</td></tr>
