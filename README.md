@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-1990-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2010-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -41,7 +41,7 @@
 <h3>GHSA-fph3-ghq9-vw66</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly concatenated user-supplied input into SQL queries and regular expressions without proper sanitization or parameterization. Specifically, the `fullTextSearchAssetContent` function, when `method` was set to 2 (SQL) or 3 (Regexp), allowed unauthenticated users to inject arbitrary SQL or regular expression syntax.</p>
 <p><b>Impact</b> : An unauthenticated attacker could execute arbitrary SQL commands on the underlying database, leading to data exfiltration, modification, or deletion. Additionally, they could perform REGEXP injection, potentially causing denial of service or information disclosure through crafted regular expressions.</p>
@@ -77,7 +77,7 @@
 <h3>GHSA-q2vg-7qgx-x5fc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The application constructed SQL queries by directly concatenating user-controlled input (mentionKeywords and keyword) into the FTS MATCH clause without proper escaping. This allowed an attacker to inject arbitrary SQL into the query by crafting malicious input containing double quotes, breaking out of the intended string literal.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands within the database, potentially leading to data exfiltration, modification, or deletion, and could bypass intended access controls.</p>
@@ -97,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -109,7 +109,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -176,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -391,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -403,7 +403,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -461,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -473,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -485,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -497,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -715,7 +715,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 19x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -775,7 +775,7 @@
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
-<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -800,7 +800,7 @@
 <h3>GHSA-9x44-4gxf-8c25</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · PHP<br>
-<code>pimcore/pimcore</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 32x across ecosystem
+<code>pimcore/pimcore</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient validation of user-supplied field names for DataObject class definitions. These field names were directly incorporated into generated PHP class files (as properties, getters/setters, and constants) and used verbatim in SQL ALTER TABLE DDL statements without proper sanitization or quoting. This allowed an attacker to inject arbitrary PHP code or SQL commands by crafting a malicious field name.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting PHP code into the generated class files, or execute arbitrary SQL commands, leading to full system compromise, data manipulation, or data exfiltration.</p>
@@ -870,7 +870,7 @@
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -894,7 +894,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -906,7 +906,7 @@
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -1029,7 +1029,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1063,7 +1063,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1075,7 +1075,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1087,7 +1087,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1099,7 +1099,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1111,7 +1111,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1161,7 +1161,7 @@
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1326,7 +1326,7 @@
 <h3>GHSA-rrxg-g2pf-6hh4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-14 · Python<br>
-<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1338,7 +1338,7 @@
 <h3>GHSA-xwwr-4h3p-r22c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-10 · Go<br>
-<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1350,7 +1350,7 @@
 <h3>GHSA-92f5-vc22-8j33</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
@@ -1373,7 +1373,7 @@
 <h3>GHSA-rcr6-4jqh-j84m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
-<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 608x across ecosystem
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1385,7 +1385,7 @@
 <h3>GHSA-w6f5-v2h6-g786</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · PHP<br>
-<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from how Predis handled pipelined commands, particularly in aggregate connections (like Redis Cluster). It would concatenate all serialized commands into a single buffer and then write this buffer to the connection. This batching, combined with the lack of proper CRLF (carriage return and line feed) sanitization, allowed an attacker to inject arbitrary Redis commands by smuggling CRLF sequences within a command argument, effectively terminating the current command and starting a new one.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Redis commands, leading to data manipulation, unauthorized access, or even remote code execution if the Redis server is configured to load modules or execute Lua scripts. Additionally, by injecting malformed commands or a large number of commands, an attacker could trigger a denial of service condition on the Redis server.</p>
@@ -1479,7 +1479,7 @@
 <h3>GHSA-m4rf-3fr8-xwx3</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-01 · Python<br>
-<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 94x across ecosystem
+<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from an incomplete fix for a previous JVM argument injection issue. The `_validate_java_options` function, intended to sanitize JVM arguments, did not adequately restrict per-call options, allowing an attacker to inject dangerous JVM flags like `-XX:OnError` or `-D` system properties. This bypass enabled the execution of arbitrary commands or other malicious actions.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary command execution on the system running the NLTK application by injecting specially crafted JVM arguments. This could lead to full system compromise, data exfiltration, or denial of service.</p>
@@ -1676,7 +1676,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>1990</td></tr>
+<tr><td>Total advisories</td><td>2010</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-17</td></tr>
