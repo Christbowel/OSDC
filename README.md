@@ -4,8 +4,8 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2029-blue" alt="Advisories"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2049-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
@@ -15,7 +15,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 109x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 111x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -97,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -131,7 +131,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 25x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 26x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -176,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -211,7 +211,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 124x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 125x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -274,7 +274,7 @@
 <h3>GHSA-w28w-gp39-m4p6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · JavaScript<br>
-<code>@prompty/core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 20x across ecosystem
+<code>@prompty/core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 22x across ecosystem
 </p>
 <p><b>Root cause</b> : The Nunjucks templating engine was used to render user-controlled templates and inputs without sufficient sanitization or sandboxing. This allowed attackers to access and invoke dangerous properties and methods (like `__proto__`, `constructor`, `prototype`) through template expressions, leading to arbitrary code execution.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting malicious template code, potentially compromising the entire system.</p>
@@ -391,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -461,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -473,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -485,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -497,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -614,7 +614,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 32x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -655,7 +655,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 109x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 111x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -770,6 +770,66 @@
 <p><b>Fix</b> : The patch introduces a `isValidHeaderValue` function to explicitly check for and disallow newline characters (CRLF) in header values. It also adds an `assertValidHeaderValue` function to enforce this validation before header values are set, preventing header injection.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
+</p>
+<hr>
+<h3>GHSA-26vp-8gxg-v4pg</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-09-18 · Java<br>
+<code>org.xwiki.rendering:xwiki-rendering-xml</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 22x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from insufficient sanitization of user-controlled raw content. The `printRaw` method directly processed input strings, allowing an attacker to inject specific sequences like `{{/html}}` which could be combined with other content to prematurely close an HTML block and execute arbitrary code or script within the XWiki rendering engine.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary code execution or script injection within the XWiki rendering context, potentially leading to full system compromise or defacement of rendered content.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-		super.printRaw(raw);
++		String escapedRaw = raw.replace(&#34;{{/html}}&#34;, &#34;&amp;#123;&amp;#123;/html}}&#34;);
++
++		StringBuilder prefix = new StringBuilder();
++		for (Character nextChar : List.of(&#39;{&#39;, &#39;/&#39;, &#39;h&#39;, &#39;t&#39;, &#39;m&#39;, &#39;l&#39;, &#39;}&#39;, &#39;}&#39;)) {
++			prefix.append(nextChar);</pre>
+</details>
+<p><b>Fix</b> : The patch introduces explicit escaping for the `{{/html}}` sequence and its prefixes within the `printRaw` method. It replaces `{{/html}}` with `&amp;#123;&amp;#123;/html}}` and also checks for partial matches at the end of the raw content, escaping the opening brace to prevent the sequence from being formed by concatenation.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-26vp-8gxg-v4pg">Advisory</a> · <a href="https://github.com/xwiki/xwiki-rendering/commit/92bc8095ed3acce15ab200c8525e1623b4898be5">Commit</a>
+</p>
+<hr>
+<h3>GHSA-c8w2-fgvx-vhv4</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-09-18 · Go<br>
+<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
+</p>
+<p><b>Root cause</b> : The kcp front-proxy failed to strip `X-Remote-*` identity headers from incoming requests when no authenticated user was present in the request context. This allowed an attacker to inject arbitrary identity headers, which were then trusted by downstream components.</p>
+<p><b>Impact</b> : An authenticated client could inject `X-Remote-Group` headers to impersonate `system:masters` or other privileged groups in any workspace, leading to full administrative control.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">Before:
+```go
+func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string, extraHeaderPrefix string) http.Handler {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if u, ok := request.UserFrom(r.Context()); ok {
+			authheaders.SetAuthHeaders(r.Header, u, userHeader, groupHeader, extraHeaderPrefix)
+		}
+		delegate.ServeHTTP(w, r)
+	}
+}
+```
+
+After:
+```go
+func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string, extraHeaderPrefix string) http.Handler {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if u, ok := request.UserFrom(r.Context()); ok {
+			authheaders.SetAuthHeaders(r.Header, u, userHeader, groupHeader, extraHeaderPrefix)
+		} else {
+			authheaders.ClearAuthHeaders(r.Header, userHeader, groupHeader, extraHeaderPrefix)
+		}
+		delegate.ServeHTTP(w, r)
+	}
+}</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `ClearAuthHeaders` function and ensures that `X-Remote-*` identity headers are always stripped from incoming requests, regardless of whether an authenticated user is present. This prevents unauthenticated or unprivileged users from injecting arbitrary identity information.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-c8w2-fgvx-vhv4">Advisory</a> · <a href="https://github.com/kcp-dev/kcp/commit/7437cdcfec8f927d1a9bf1b2dd1e075d038e27ca">Commit</a>
 </p>
 <hr>
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
@@ -894,7 +954,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -955,7 +1015,7 @@
 <h3>GHSA-rjg6-39jm-rgg4</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-24 · JavaScript<br>
-<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 108x across ecosystem
+<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 109x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from the SCIM provider&#39;s update functionality not properly validating email uniqueness during user updates (PUT/PATCH operations). An attacker could change a user&#39;s email to one already registered by another user, leading to a collision. Additionally, the system did not properly handle user deactivation via the &#39;active&#39; SCIM attribute, failing to revoke sessions or enforce the deactivation consistently.</p>
 <p><b>Impact</b> : An attacker could take over another user&#39;s account by reassigning their email address. They could also maintain access to a deactivated account if their sessions were not properly revoked, or bypass deactivation entirely if the &#39;admin&#39; plugin was not present.</p>
@@ -1029,7 +1089,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1041,7 +1101,7 @@
 <h3>GHSA-m63v-2g9w-2w6v</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 44x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
 </p>
 <p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
 <p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
@@ -1063,7 +1123,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1075,7 +1135,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1087,7 +1147,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1099,7 +1159,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1111,7 +1171,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1178,7 +1238,7 @@
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 44x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -1297,6 +1357,28 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-2vh9-42vm-xmv2</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-18 · Python<br>
+<code>lmdeploy</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 26x across ecosystem
+</p>
+<p><b>Root cause</b> : The application used `zmq.Socket.recv_pyobj()` to receive data over a ZeroMQ connection. This method internally uses Python&#39;s `pickle.loads()` function, which is known to be insecure when deserializing data from untrusted sources, as it can execute arbitrary code embedded in the pickled payload.</p>
+<p><b>Impact</b> : An attacker could send a specially crafted pickled object to the ZeroMQ endpoint, leading to arbitrary code execution on the server running the LMDeploy application. This grants the attacker full control over the compromised system.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lmdeploy/pytorch/disagg/conn/engine_conn.py
++++ b/lmdeploy/pytorch/disagg/conn/engine_conn.py
+-            req: DistServeCacheFreeRequest = await self.p2p_receiver[remote_engine_id].recv_pyobj()
+-            if isinstance(req, DistServeCacheFreeRequest):
++            try:
++                raw = await receiver.recv_json()
++                req = DistServeCacheFreeRequest.model_validate(raw)</pre>
+</details>
+<p><b>Fix</b> : The patch replaces the use of `zmq.Socket.recv_pyobj()` and `zmq.Socket.send_pyobj()` with `zmq.Socket.recv_json()` and `zmq.Socket.send_json()`. It also adds `pydantic.ValidationError` handling and uses `DistServeCacheFreeRequest.model_validate()` to ensure that incoming JSON payloads conform to the expected schema, preventing both deserialization RCE and malformed message processing.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-2vh9-42vm-xmv2">Advisory</a> · <a href="https://github.com/InternLM/lmdeploy/commit/f05b4ad8bf2e2d84101a1d63b3c44fadd99223b2">Commit</a>
+</p>
+<hr>
 <h3>GHSA-g4c3-4g96-6g4m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-17 · PHP<br>
@@ -1365,7 +1447,7 @@
 <h3>GHSA-rrxg-g2pf-6hh4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-14 · Python<br>
-<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1377,7 +1459,7 @@
 <h3>GHSA-xwwr-4h3p-r22c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-10 · Go<br>
-<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1389,7 +1471,7 @@
 <h3>GHSA-92f5-vc22-8j33</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
@@ -1412,249 +1494,13 @@
 <h3>GHSA-rcr6-4jqh-j84m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
-<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 639x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
 <p><b>Fix</b> : </p>
 <p>
 <a href="https://github.com/advisories/GHSA-rcr6-4jqh-j84m">Advisory</a> · <a href="https://github.com/go-gitea/gitea/commit/470d34b1de87d901bd9135564d5ee18c0d339e82">Commit</a>
-</p>
-<hr>
-<h3>GHSA-w6f5-v2h6-g786</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-08 · PHP<br>
-<code>predis/predis</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from how Predis handled pipelined commands, particularly in aggregate connections (like Redis Cluster). It would concatenate all serialized commands into a single buffer and then write this buffer to the connection. This batching, combined with the lack of proper CRLF (carriage return and line feed) sanitization, allowed an attacker to inject arbitrary Redis commands by smuggling CRLF sequences within a command argument, effectively terminating the current command and starting a new one.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary Redis commands, leading to data manipulation, unauthorized access, or even remote code execution if the Redis server is configured to load modules or execute Lua scripts. Additionally, by injecting malformed commands or a large number of commands, an attacker could trigger a denial of service condition on the Redis server.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/Pipeline/ConnectionErrorProof.php
-+++ b/src/Pipeline/ConnectionErrorProof.php
-@@ -92,14 +92,12 @@ protected function executeCluster(ClusterInterface $connection, SplQueue $comman
-         $responses = [];
-         $sizeOfPipe = count($commands);
-         $exceptions = [];
--        $buffer = &#39;&#39;;
- 
-         foreach ($commands as $command) {
--            $buffer .= $command-&gt;serializeCommand();
-+            $nodeConnection = $connection-&gt;getConnectionByCommand($command);
-+            $nodeConnection-&gt;write($command-&gt;serializeCommand());
-         }
- 
--        $connection-&gt;write($buffer);
--
-         for ($i = 0; $i &lt; $sizeOfPipe; ++$i) {</pre>
-</details>
-<p><b>Fix</b> : The patch refactors the command writing logic for pipelined commands. Instead of buffering all commands and writing them in one go, it now iterates through each command and writes it individually to the appropriate node connection, especially for aggregate connections. This prevents CRLF smuggling by ensuring each command is sent as a distinct unit, rather than being part of a larger, potentially injectable buffer.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-w6f5-v2h6-g786">Advisory</a> · <a href="https://github.com/predis/predis/commit/053cb4b6ac7fb1f469ead96a78d059bc0458e408">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2v6v-25fm-p4fg</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-02 · Go<br>
-<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
-</p>
-<p><b>Root cause</b> : The SeaweedFS filer&#39;s IAM gRPC service endpoints, which manage S3 users and access keys, lacked any authentication mechanism. This allowed any unauthenticated client to invoke administrative functions.</p>
-<p><b>Impact</b> : An attacker could create, modify, or delete S3 users and their access keys, effectively gaining full administrative control over the S3-compatible storage and potentially accessing or manipulating all stored data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/weed/server/filer_server_handlers_iam_grpc.go
-+++ b/weed/server/filer_server_handlers_iam_grpc.go
-@@ -32,6 +32,30 @@
- 
- func NewIamGrpcServer(credentialManager *credential.CredentialManager) *IamGrpcServer {
- 	return &amp;IamGrpcServer{
- 		credentialManager: credentialManager,
-+		adminSigningKey:   adminSigningKey,
- 	}
- }
- 
-+func (s *IamGrpcServer) checkAdminAuth(ctx context.Context) error {
-+	if len(s.adminSigningKey) == 0 {
-+		return status.Error(codes.PermissionDenied, &#34;iam admin auth not configured&#34;)
-+	}
-+	md, ok := metadata.FromIncomingContext(ctx)
-+	if !ok {
-+		return status.Error(codes.Unauthenticated, &#34;missing metadata&#34;)
-+	}
-+	authHeaders := md.Get(&#34;authorization&#34;)
-+	if len(authHeaders) == 0 {
-+		return status.Error(codes.Unauthenticated, &#34;missing authorization metadata&#34;)
-+	}
-+	raw := strings.TrimSpace(authHeaders[0])
-+	parts := strings.Fields(raw)
-+	if len(parts) != 2 || !strings.EqualFold(parts[0], &#34;Bearer&#34;) || parts[1] == &#34;&#34; {
-+		return status.Error(codes.Unauthenticated, &#34;authorization header must use Bearer scheme&#34;)
-+	}
-+	token := parts[1]
-+	parsed, err := security.DecodeJwt(s.adminSigningKey, security.EncodedJwt(token), &amp;security.SeaweedFilerAdminClaims{})
-+	if err != nil || parsed == nil || !parsed.Valid {
-+		return status.Error(codes.Unauthenticated, &#34;invalid admin token&#34;)
-+	}
-+	return nil
-+}
-+
- //////////////////////////////////////////////////
- // Configuration Management
- 
- func (s *IamGrpcServer) GetConfiguration(ctx context.Context, req *iam_pb.GetConfigurationRequest) (*iam_pb.GetConfigurationResponse, error) {
-+	if err := s.checkAdminAuth(ctx); err != nil {
-+		return nil, err
-+	}
-+	if req == nil {
-+		return nil, status.Errorf(codes.InvalidArgument, &#34;request is required&#34;)
-+	}
- 	glog.V(4).Infof(&#34;GetConfiguration&#34;)</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `checkAdminAuth` method that verifies a Bearer token signed by a pre-configured filer write-signing key. This method is now called at the beginning of every IAM gRPC service handler to ensure only authenticated and authorized requests are processed.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2v6v-25fm-p4fg">Advisory</a> · <a href="https://github.com/seaweedfs/seaweedfs/commit/5e8f99f40a8abc7b449aefd260516443377041c7">Commit</a>
-</p>
-<hr>
-<h3>GHSA-m4rf-3fr8-xwx3</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-01 · Python<br>
-<code>nltk</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 95x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from an incomplete fix for a previous JVM argument injection issue. The `_validate_java_options` function, intended to sanitize JVM arguments, did not adequately restrict per-call options, allowing an attacker to inject dangerous JVM flags like `-XX:OnError` or `-D` system properties. This bypass enabled the execution of arbitrary commands or other malicious actions.</p>
-<p><b>Impact</b> : An attacker could achieve arbitrary command execution on the system running the NLTK application by injecting specially crafted JVM arguments. This could lead to full system compromise, data exfiltration, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/nltk/internals.py
-+++ b/nltk/internals.py
-@@ -43,23 +59,64 @@
-     &#34;-xcomp&#34;,  # compile-only mode
-     &#34;-xmixed&#34;,  # mixed mode (JVM default)
-     &#34;-verbose&#34;,  # diagnostic output: -verbose:gc
--    &#34;-xx:&#34;,  # advanced tuning:  -XX:+UseG1GC
-+
- ) 
- 
- _SAFE_JVM_EXACT = frozenset({&#34;-server&#34;, &#34;-client&#34;})
- 
-+# ``--add-modules &lt;module-list&gt;`` is required by CoreNLP on JDK 9-11 (a CoreNLP
-+# dependency uses the JAXB module dropped from the default set). The value is a
-+# comma-separated list of module names -- it names JDK modules, and because
-+# ``--module-path`` / ``-p`` is NOT allowlisted it cannot point at attacker code.
-+# Restrict the value to a plain module-list shape so nothing else rides through.
-+_MODULE_LIST_RE = re.compile(r&#34;\A[A-Za-z0-9_.,-]+\Z&#34;)
-+
-+# Every flag the allowlist accepts (heap/stack sizing, -verbose, -server/-client,
-+# --add-modules) is a single simple token; none contains whitespace or a shell
-+# metacharacter. Rejecting those characters is therefore a free, name-agnostic
-+# defense-in-depth layer (it has no false positives now that -D, whose values may
-+# legitimately contain them, is not accepted): e.g. a malformed ``-Xmx512m ; rm``
-+# token cannot ride through on the ``-xmx`` prefix.
-+_UNSAFE_OPTION_CHARS = frozenset(&#34; \t\r\n;|&amp;$`&lt;&gt;()[]*?!&#39;\&#34;\\&#34;)
- 
- def _validate_java_options(options):
-     &#34;&#34;&#34;
--    Raise ValueError if *options* contains JVM flags that can change
--    the executed program, load agents, or expand argument files.
--
--    Uses an allowlist of safe JVM memory/tuning flags that NLTK&#39;s Java
--    wrapper is known to need.  This is intentionally stricter than a
--    denylist so that -jar, @argfile, and future dangerous flags are
--    rejected without needing to be enumerated (CVE-2026-12841, CWE-88).
-+    Raise ValueError if *options* contains JVM flags that can change the
-+    executed program, run a command, load agents, or expand argument files.
-+
-+    Uses a minimal allowlist of exactly the flags NLTK&#39;s Java wrappers and the
-+    Stanford CoreNLP documentation use (heap/stack sizing, -verbose,
-+    -server/-client, and ``--add-modules``). This is intentionally stricter than
-+    a denylist so that -jar, @argfile, ``-XX:OnError=&lt;cmd&gt;``, dangerous ``-D``
-+    system properties, and future dangerous flags are all rejected without
-+    needing to be enumerated (CVE-2026-12841, CWE-88). Applications needing an
-+    unlisted flag use ``java(..., trusted_raw_options=[...])``.
-     &#34;&#34;&#34;
--    for flag in options:
-+    opts = list(options)
-+    i = 0
-+    while i &lt; len(opts):
-+        flag = opts[i]
-+
-+        # A JVM flag is a non-empty string; anything else cannot be reasoned
-+        # about safely, so reject it rather than call .lower() on it.
-+        if not isinstance(flag, str) or not flag:
-+            raise ValueError(
-+                f&#34;java_options contains an invalid (non-string or empty) entry: &#34;
-+                f&#34;{flag!r} (CVE-2026-12841, CWE-88).&#34;
-+            )
-+
-+        # Shape guard: no legitimate allowed flag contains whitespace, a control
-+        # character, or a shell metacharacter; reject any that does.
-+        if any(
-+            c.isspace() or ord(c) &lt; 0x20 or ord(c) == 0x7F or c in _UNSAFE_OPTION_CHARS
-+            for c in flag
-+        ):
-+            raise ValueError(
-+                f&#34;java_options contains whitespace, a control character, or a &#34;
-+                f&#34;shell metacharacter, which a valid JVM flag never does: &#34;
-+                f&#34;{flag!r} (CVE-2026-12841, CWE-88).&#34;
-+            )
-+
-         n = flag.lower()
- 
-         # @argfile references are expanded by the Java launcher before
-@@ -70,21 +127,38 @@ def _validate_java_options(options):
-                 f&#34;reference: {flag!r} (CVE-2026-12841, CWE-88).&#34;
-             )
- 
--        # Allow -Dkey=value system properties. The prefix is always
--        # uppercase -D in valid usage; check the original flag.
--        if flag.startswith(&#34;-D&#34;) and &#34;=&#34; in flag:
-+        # --add-modules &lt;modules&gt;  (two tokens) or  --add-modules=&lt;modules&gt;.
-+        if n == &#34;--add-modules&#34;:
-+            mods = opts[i + 1] if i + 1 &lt; len(opts) else None
-+            if not isinstance(mods, str) or not _MODULE_LIST_RE.match(mods):
-+                raise ValueError(
-+                    f&#34;--add-modules must be followed by a plain module list, got &#34;
-+                    f&#34;{mods!r} (CVE-2026-12841, CWE-88).&#34;
-+                )
-+            i += 2
-+            continue
-+        if n.startswith(&#34;--add-modules=&#34;):
-+            if not _MODULE_LIST_RE.match(flag.split(&#34;=&#34;, 1)[1]):
-+                raise ValueError(
-+                    f&#34;--add-modules has a non-module-list value: {flag!r} &#34;
-+                    &#34;(CVE-2026-12841, CWE-88).&#34;
-+                )
-+            i += 1
-             continue
- 
-         if n in _SAFE_JVM_EXACT:
-+            i += 1
-             continue
- 
-         if n.startswith(_SAFE_JVM_PREFIXES):
-+            i += 1
-             continue
- 
-         raise ValueError(
-             f&#34;java_options contains a disallowed JVM/launcher flag: {flag!r}. &#34;
--            &#34;Only JVM memory-tuning and safe runtime flags are permitted &#34;
--            &#34;(CVE-2026-12841, CWE-88).&#34;
-+            &#34;Only JVM memory/stack tuning, -verbose, -server/-client and &#34;
-+            &#34;--add-modules are permitted; pass anything else through &#34;
-+            &#34;java(trusted_raw_options=...) (CVE-2026-12841, CWE-88).&#34;
-         )
- 
- 
-@@ -209,4 +297,10 @@ def java(
-         if isinstance(options, str):
-             options = options.split()
-         java_options = list(options)
-+        # Per-call options reach subprocess.Popen directly, so they must be
-+        # validated too -- config_java() alone is not enough (CVE-2026-12841,
-+        # CWE-88). Without this a caller-supplied -jav</pre>
-</details>
-<p><b>Fix</b> : The patch significantly tightens the allowlist for JVM arguments, explicitly removing `-XX:` and `-D` prefixes, which were previously allowed. It also adds new validation checks for unsafe characters and ensures that per-call options are also subjected to the same strict validation as global options, preventing the bypass of the original fix.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-m4rf-3fr8-xwx3">Advisory</a> · <a href="https://github.com/nltk/nltk/commit/8fa9650b6009aacfdebbc33d2a08d32c0858ea6c">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1667,7 +1513,7 @@
                           ↓
 06:00:15     LLM analysis (Gemini 2.5 Flash)
              Extract: vuln_type, root_cause, impact, fix_summary, key_diff
-             Map to closed taxonomy of 50 normalized pattern IDs
+             Map to closed taxonomy of 51 normalized pattern IDs
                           ↓
 06:00:20     Pattern matching against SQLite historical DB
              Cross-language correlation, recurrence scoring
@@ -1692,8 +1538,8 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2029</td></tr>
-<tr><td>Unique patterns</td><td>50</td></tr>
+<tr><td>Total advisories</td><td>2049</td></tr>
+<tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-18</td></tr>
 </table>
