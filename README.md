@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2010-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2029-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-50-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -97,7 +97,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -176,7 +176,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -246,7 +246,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -391,7 +391,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -461,7 +461,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -473,7 +473,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -485,7 +485,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -497,7 +497,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -588,7 +588,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -631,7 +631,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -894,7 +894,7 @@
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1029,7 +1029,7 @@
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1063,7 +1063,7 @@
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1075,7 +1075,7 @@
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1087,7 +1087,7 @@
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1099,7 +1099,7 @@
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1111,7 +1111,7 @@
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1297,10 +1297,49 @@
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-g4c3-4g96-6g4m</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-17 · PHP<br>
+<code>chamilo/chamilo-lms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from a combination of factors: lack of authentication on the file upload endpoint, insufficient sanitization of filenames, and the ability to control the final filename during the &#39;finish&#39; action. An unauthenticated attacker could upload arbitrary files, including PHP scripts, and then manipulate the filename to execute them on the server.</p>
+<p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the Chamilo LMS server, leading to full compromise of the application and potentially the underlying system.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/public/plugin/CStudio/editor/import-project/inc/big-upload.php
++++ b/public/plugin/CStudio/editor/import-project/inc/big-upload.php
+@@ -240,7 +240,7 @@ public function finishUpload($finalName, $scormid)
+      */
+     public function postUnsupported($scormid)
+     {
+-        $name = $_FILES[&#39;bigUploadFile&#39;][&#39;name&#39;];
++        $name = disable_dangerous_file(api_replace_dangerous_char((string) ($_FILES[&#39;bigUploadFile&#39;][&#39;name&#39;] ?? &#39;&#39;)));
+         $tempName = $_FILES[&#39;bigUploadFile&#39;][&#39;tmp_name&#39;];
+ 
+         if (filesize($tempName) &gt; self::MAX_SIZE) {
+@@ -257,6 +257,13 @@ public function postUnsupported($scormid)
+     }
+ }
+ 
++// Require an authenticated Chamilo session
++if (empty(api_get_user_id())) {
++    http_response_code(403);
++    echo json_encode([&#39;errorStatus&#39; =&gt; 1, &#39;errorText&#39; =&gt; &#39;Forbidden&#39;]);
++    exit;
++}
++
+ // Instantiate the class
+ $bigUpload = new BigUpload();</pre>
+</details>
+<p><b>Fix</b> : The patch introduces an authentication check at the beginning of the `big-upload.php` script, ensuring only authenticated users can access the functionality. It also implements `disable_dangerous_file` and `api_replace_dangerous_char` functions for filename sanitization. Crucially, the final filename is now registered in the user&#39;s session with proper sanitization when the first chunk is uploaded, preventing an attacker from controlling it during the &#39;finish&#39; action.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-g4c3-4g96-6g4m">Advisory</a> · <a href="https://github.com/chamilo/chamilo-lms/commit/4bdba1b9a8820bd70c0809317775d7f6eaa79844">Commit</a>
+</p>
+<hr>
 <h3>GHSA-cv3r-c5h8-f4g5</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-16 · JavaScript<br>
-<code>@zereight/mcp-gitlab</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+<code>@zereight/mcp-gitlab</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
 </p>
 <p><b>Root cause</b> : The application exposed an SSE (Server-Sent Events) server endpoint without proper authentication by default. This allowed an unauthenticated attacker to connect to the SSE server and potentially interact with internal functionalities, including the `upload_markdown` feature, which could be leveraged to read arbitrary files.</p>
 <p><b>Impact</b> : An attacker could read arbitrary files from the server, including sensitive configuration files or Personal Access Tokens (PATs), leading to full account takeover and access to other internal resources.</p>
@@ -1326,7 +1365,7 @@
 <h3>GHSA-rrxg-g2pf-6hh4</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-14 · Python<br>
-<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>esphome-device-builder</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1338,7 +1377,7 @@
 <h3>GHSA-xwwr-4h3p-r22c</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-10 · Go<br>
-<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>github.com/rclone/rclone</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1350,7 +1389,7 @@
 <h3>GHSA-92f5-vc22-8j33</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
@@ -1373,7 +1412,7 @@
 <h3>GHSA-rcr6-4jqh-j84m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-08 · Go<br>
-<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 618x across ecosystem
+<code>gitea.dev</code> · Pattern: <code>UNCLASSIFIED</code> · 636x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1417,7 +1456,7 @@
 <h3>GHSA-2v6v-25fm-p4fg</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-02 · Go<br>
-<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 64x across ecosystem
+<code>github.com/seaweedfs/seaweedfs</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 65x across ecosystem
 </p>
 <p><b>Root cause</b> : The SeaweedFS filer&#39;s IAM gRPC service endpoints, which manage S3 users and access keys, lacked any authentication mechanism. This allowed any unauthenticated client to invoke administrative functions.</p>
 <p><b>Impact</b> : An attacker could create, modify, or delete S3 users and their access keys, effectively gaining full administrative control over the S3-compatible storage and potentially accessing or manipulating all stored data.</p>
@@ -1618,29 +1657,6 @@
 <a href="https://github.com/advisories/GHSA-m4rf-3fr8-xwx3">Advisory</a> · <a href="https://github.com/nltk/nltk/commit/8fa9650b6009aacfdebbc33d2a08d32c0858ea6c">Commit</a>
 </p>
 <hr>
-<h3>GHSA-73mf-m39p-wpm9</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 20x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from the Yamcs server processing user-controlled input as part of an instance-template argument, which was then directly fed into a YAML parser. This allowed an attacker to inject arbitrary YAML, including directives that could lead to object instantiation and method invocation, effectively achieving Remote Code Execution.</p>
-<p><b>Impact</b> : An attacker could achieve arbitrary code execution on the server running Yamcs, leading to full compromise of the system, including data theft, modification, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/yamcs-core/src/main/java/org/yamcs/templating/Template.java
-+++ b/yamcs-core/src/main/java/org/yamcs/templating/Template.java
-@@ -47,6 +52,66 @@ public String process(Map&lt;String, Object&gt; args) {
-         return templateProcessor.process(args);
-     }
- 
-+    public String processAndSanitizeYaml(Map&lt;String, Object&gt; userArgs) {
-+        Map&lt;String, Object&gt; tokenArgs = new HashMap&lt;&gt;();</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a sanitization layer for YAML processing. It replaces user-provided string arguments with unique UUID tokens before template processing. After the template is rendered, the output is parsed into a YAML object structure, and then the tokens are safely replaced with their original string values. This ensures that user input is treated as data and not as executable YAML directives.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-73mf-m39p-wpm9">Advisory</a> · <a href="https://github.com/yamcs/yamcs/commit/549f295cf8c5496a5e799d6bec2432ef976c82aa">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1676,10 +1692,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2010</td></tr>
+<tr><td>Total advisories</td><td>2029</td></tr>
 <tr><td>Unique patterns</td><td>50</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-17</td></tr>
+<tr><td>Last updated</td><td>2026-09-18</td></tr>
 </table>
 </details>
 <hr>
