@@ -1,1 +1,1 @@
-{"id":"GHSA-pmwx-rm49-xv39","axis":"advisories","repo":"basecamp/activerecord-tenanted","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-13T12:50:32.074024+00:00"}
+{"id":"GHSA-pmwx-rm49-xv39","axis":"advisories","repo":"basecamp/activerecord-tenanted","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-21T14:30:36.521903+00:00"}
