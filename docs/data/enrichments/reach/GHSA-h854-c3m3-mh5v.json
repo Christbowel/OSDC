@@ -1,1 +1,1 @@
-{"id":"GHSA-h854-c3m3-mh5v","axis":"advisories","repo":"pimcore/studio-backend-bundle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-13T12:48:44.177147+00:00"}
+{"id":"GHSA-h854-c3m3-mh5v","axis":"advisories","repo":"pimcore/studio-backend-bundle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-21T14:27:55.898182+00:00"}

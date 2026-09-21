@@ -1,1 +1,1 @@
-{"id":"GHSA-4x9g-vw65-vvf9","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-13T12:49:15.142835+00:00"}
+{"id":"GHSA-4x9g-vw65-vvf9","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-21T14:28:26.038660+00:00"}
