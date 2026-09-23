@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2093-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2109-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -38,7 +38,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 112x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -234,7 +234,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 130x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 132x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -269,7 +269,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 67x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 68x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -297,7 +297,7 @@
 <h3>GHSA-w28w-gp39-m4p6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · JavaScript<br>
-<code>@prompty/core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 23x across ecosystem
+<code>@prompty/core</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The Nunjucks templating engine was used to render user-controlled templates and inputs without sufficient sanitization or sandboxing. This allowed attackers to access and invoke dangerous properties and methods (like `__proto__`, `constructor`, `prototype`) through template expressions, leading to arbitrary code execution.</p>
 <p><b>Impact</b> : An attacker could achieve remote code execution on the server by injecting malicious template code, potentially compromising the entire system.</p>
@@ -611,7 +611,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 67x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 68x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -637,7 +637,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 33x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 34x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -654,7 +654,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 67x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 68x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -678,7 +678,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 112x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 114x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -795,10 +795,55 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-rr49-f9g6-c9r5</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-09-23 · Python<br>
+<code>plone.app.portlets</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 25x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed user-controlled input (template and macro names) to be directly used in a TALES (TAL Expression Syntax) path expression without sufficient validation. This enabled an attacker to inject TALES metacharacters, transforming a simple path traversal into an arbitrary TALES expression, which could then execute Python code.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary remote code execution on the server, leading to full compromise of the application and potentially the underlying system.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/plone/app/portlets/portlets/classic.py
++++ b/src/plone/app/portlets/portlets/classic.py
+@@ -13,6 +30,7 @@ class IClassicPortlet(IPortletDataProvider):
+         title=_(&#34;Template&#34;),
+         description=_(&#34;The template containing the portlet.&#34;),
+         required=True,
++        constraint=_valid_name,
+     )
+ 
+     macro = schema.ASCIILine(
+@@ -22,6 +40,7 @@ class IClassicPortlet(IPortletDataProvider):
+         ),
+         default=&#34;portlet&#34;,
+         required=False,
++        constraint=_valid_name,
+     )
+ 
+ 
+@@ -48,6 +67,20 @@ def use_macro(self):
+         return bool(self.data.macro)
+ 
+     def path_expression(self):
++        # Defense in depth: validate again at render time so assignments
++        # created programmatically (e.g. via GenericSetup import) that bypass
++        # the form field constraint are still rejected. Raises on illegal names.
++        _valid_name(self.data.template)
++        _valid_name(self.data.macro)
+         expr = &#34;context/%s&#34; % self.data.template
+         if self.use_macro():
+             expr += &#34;/macros/%s&#34; % self.data.macro</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a strict regular expression validator for the &#39;template&#39; and &#39;macro&#39; fields. This validator ensures that only alphanumeric characters, underscores, at signs, periods, hyphens, and forward slashes are allowed, effectively preventing the injection of TALES metacharacters like &#39;:&#39; or &#39;|&#39;. The validation is applied both at the schema level and as a defense-in-depth measure at render time.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-rr49-f9g6-c9r5">Advisory</a> · <a href="https://github.com/plone/plone.app.portlets/commit/1d9cacacfad9ed08b890dadc6e75741e295dc151">Commit</a>
+</p>
+<hr>
 <h3>GHSA-26vp-8gxg-v4pg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-18 · Java<br>
-<code>org.xwiki.rendering:xwiki-rendering-xml</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 23x across ecosystem
+<code>org.xwiki.rendering:xwiki-rendering-xml</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 25x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient sanitization of user-controlled raw content. The `printRaw` method directly processed input strings, allowing an attacker to inject specific sequences like `{{/html}}` which could be combined with other content to prematurely close an HTML block and execute arbitrary code or script within the XWiki rendering engine.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution or script injection within the XWiki rendering context, potentially leading to full system compromise or defacement of rendered content.</p>
@@ -819,7 +864,7 @@
 <h3>GHSA-c8w2-fgvx-vhv4</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-18 · Go<br>
-<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
+<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
 </p>
 <p><b>Root cause</b> : The kcp front-proxy failed to strip `X-Remote-*` identity headers from incoming requests when no authenticated user was present in the request context. This allowed an attacker to inject arbitrary identity headers, which were then trusted by downstream components.</p>
 <p><b>Impact</b> : An authenticated client could inject `X-Remote-Group` headers to impersonate `system:masters` or other privileged groups in any workspace, leading to full administrative control.</p>
@@ -1124,7 +1169,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-m63v-2g9w-2w6v</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
 </p>
 <p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
 <p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
@@ -1261,7 +1306,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 46x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -1405,7 +1450,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-g4c3-4g96-6g4m</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-17 · PHP<br>
-<code>chamilo/chamilo-lms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 67x across ecosystem
+<code>chamilo/chamilo-lms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 68x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from a combination of factors: lack of authentication on the file upload endpoint, insufficient sanitization of filenames, and the ability to control the final filename during the &#39;finish&#39; action. An unauthenticated attacker could upload arbitrary files, including PHP scripts, and then manipulate the filename to execute them on the server.</p>
 <p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the Chamilo LMS server, leading to full compromise of the application and potentially the underlying system.</p>
@@ -1444,7 +1489,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-cv3r-c5h8-f4g5</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-16 · JavaScript<br>
-<code>@zereight/mcp-gitlab</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 67x across ecosystem
+<code>@zereight/mcp-gitlab</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 68x across ecosystem
 </p>
 <p><b>Root cause</b> : The application exposed an SSE (Server-Sent Events) server endpoint without proper authentication by default. This allowed an unauthenticated attacker to connect to the SSE server and potentially interact with internal functionalities, including the `upload_markdown` feature, which could be leveraged to read arbitrary files.</p>
 <p><b>Impact</b> : An attacker could read arbitrary files from the server, including sensitive configuration files or Personal Access Tokens (PATs), leading to full account takeover and access to other internal resources.</p>
@@ -1491,29 +1536,6 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <a href="https://github.com/advisories/GHSA-xwwr-4h3p-r22c">Advisory</a> · <a href="https://github.com/rclone/rclone/commit/90595f34f27f569be6b27c57fe5ab65057d323bd">Commit</a>
 </p>
 <hr>
-<h3>GHSA-92f5-vc22-8j33</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-08 · C#<br>
-<code>Microsoft.Native.Quic.MsQuic.Schannel</code> · Pattern: <code>UNCLASSIFIED</code> · 659x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability existed because the QUIC implementation did not properly validate the state of a network path when processing incoming packets. An attacker could send specially crafted packets that would cause the system to attempt to use an inactive or invalid path, leading to memory corruption.</p>
-<p><b>Impact</b> : An attacker could achieve remote code execution on the target system by exploiting the memory corruption, allowing them to execute arbitrary code with the privileges of the QUIC process.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/core/connection.c
-+++ b/src/core/connection.c
-@@ -5458,7 +5458,7 @@ QuicConnRecvPostProcessing(
- 
-     if (Packet-&gt;HasNonProbingFrame &amp;&amp;
-         Packet-&gt;NewLargestPacketNumber &amp;&amp;
--        !(*Path)-&gt;IsActive) {
-+        !(*Path)-&gt;IsActive &amp;&amp; (*Path)-&gt;InUse) {</pre>
-</details>
-<p><b>Fix</b> : The patch adds an additional check to ensure that a network path is not only inactive but also &#39;InUse&#39; before proceeding with path switching logic. This prevents the system from attempting to use a path that is not properly initialized or valid, thereby mitigating the memory corruption vulnerability.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-92f5-vc22-8j33">Advisory</a> · <a href="https://github.com/microsoft/msquic/commit/583e7d5b509bb0bfa3518482d98879b6eda41ad0">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1549,7 +1571,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2093</td></tr>
+<tr><td>Total advisories</td><td>2109</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-23</td></tr>

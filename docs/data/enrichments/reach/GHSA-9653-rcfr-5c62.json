@@ -1,1 +1,1 @@
-{"id":"GHSA-9653-rcfr-5c62","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-16T12:49:31.745424+00:00"}
+{"id":"GHSA-9653-rcfr-5c62","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-23T13:00:18.357986+00:00"}
