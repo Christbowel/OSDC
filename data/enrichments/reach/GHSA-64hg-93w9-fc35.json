@@ -1,1 +1,1 @@
-{"id":"GHSA-64hg-93w9-fc35","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-16T12:51:46.751490+00:00"}
+{"id":"GHSA-64hg-93w9-fc35","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-23T13:02:26.853332+00:00"}
