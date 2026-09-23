@@ -1,1 +1,1 @@
-{"id":"GHSA-946h-jp5c-8fvh","axis":"advisories","repo":"symfony/ux","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-16T12:49:56.424785+00:00"}
+{"id":"GHSA-946h-jp5c-8fvh","axis":"advisories","repo":"symfony/ux","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-23T13:00:40.935578+00:00"}

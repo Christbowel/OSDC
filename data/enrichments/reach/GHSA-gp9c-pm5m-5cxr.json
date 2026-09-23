@@ -1,1 +1,1 @@
-{"id":"GHSA-gp9c-pm5m-5cxr","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-16T12:49:31.746103+00:00"}
+{"id":"GHSA-gp9c-pm5m-5cxr","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-23T13:00:18.358475+00:00"}
