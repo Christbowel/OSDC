@@ -1,1 +1,1 @@
-{"id":"GHSA-33f5-2c5q-wgwj","axis":"advisories","repo":"modelcontextprotocol/rust-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-17T12:43:52.477638+00:00"}
+{"id":"GHSA-33f5-2c5q-wgwj","axis":"advisories","repo":"modelcontextprotocol/rust-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-24T12:51:24.200129+00:00"}
