@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2165-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2169-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-6rf4-v2fh-m6p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · JavaScript<br>
-<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 116x across ecosystem
+<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the SunEditor&#39;s sanitizer could be bypassed. Specifically, when setting code data to the editor, the `_deleteDisallowedTags` function was not consistently applied, allowing malicious HTML content (like script tags) to persist. Additionally, the regular expressions used to identify and remove disallowed tags were not comprehensive enough, failing to catch certain variations or combinations of tags like &#39;style&#39;, &#39;meta&#39;, &#39;link&#39;, and namespaced tags.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary JavaScript code into the editor&#39;s content, leading to Cross-Site Scripting (XSS). This could allow them to steal user sessions, deface websites, redirect users, or perform other malicious actions within the context of the user&#39;s browser.</p>
@@ -41,7 +41,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -88,7 +88,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 116x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -170,7 +170,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -249,7 +249,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -464,7 +464,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -534,7 +534,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -546,7 +546,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -558,7 +558,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -570,7 +570,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -615,7 +615,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -728,7 +728,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 116x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -1100,7 +1100,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1235,7 +1235,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1269,7 +1269,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1281,7 +1281,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1293,7 +1293,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1305,7 +1305,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1317,7 +1317,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 690x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 691x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1503,6 +1503,40 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
 </p>
 <hr>
+<h3>GHSA-g7vj-c29h-3h5m</h3>
+<p>
+<code>CRITICAL 9.8</code> · 2026-09-25 · PHP<br>
+<code>fof/oauth</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 56x across ecosystem
+</p>
+<p><b>Root cause</b> : The application implicitly trusted email addresses provided by OAuth providers (Discord, GitLab, LinkedIn) without verifying if the email was actually confirmed by the provider. This allowed an attacker to register or link an account using an unverified email address from an OAuth provider, and if a user with that email already existed, the attacker could take over their account.</p>
+<p><b>Impact</b> : An attacker could take over existing user accounts by registering with an unverified email address that matches a victim&#39;s email, or by linking an unverified email to a new account, effectively gaining unauthorized access to the victim&#39;s account.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/src/Providers/Discord.php
++++ b/src/Providers/Discord.php
+@@ -59,8 +63,11 @@ public function suggestions(Registration $registration, $user, string $token)
+             &#34;https://cdn.discordapp.com/avatars/{$user-&gt;getId()}/{$user-&gt;getAvatarHash()}.png&#34;
+             : &#39;https://cdn.discordapp.com/embed/avatars/0.png&#39;;
+ 
++        $payload = $user-&gt;toArray();
++
++        if ($payload[&#39;verified&#39;] ?? false) {
++            $registration-&gt;provideTrustedEmail($email);
++        } else {
++            $registration-&gt;suggestEmail($email);
++        }
++
+         $registration
+-            -&gt;provideTrustedEmail($email)
+             -&gt;suggestUsername($user-&gt;getUsername() ?: &#39;&#39;)
+-            -&gt;setPayload($user-&gt;toArray());
++            -&gt;setPayload($payload);</pre>
+</details>
+<p><b>Fix</b> : The patch modifies the OAuth provider integrations (Discord, GitLab, LinkedIn) to explicitly check the &#39;verified&#39; status of the email address returned by the OAuth provider. If the email is not verified, it is only &#39;suggested&#39; for registration, rather than being &#39;trusted&#39; immediately, preventing automatic account linking or creation with unverified emails.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-g7vj-c29h-3h5m">Advisory</a> · <a href="https://github.com/FriendsOfFlarum/oauth/commit/baca3466b3b7be51c70a7e0ba966901aefeb344a">Commit</a>
+</p>
+<hr>
 <h3>GHSA-2vh9-42vm-xmv2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-18 · Python<br>
@@ -1523,45 +1557,6 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <p><b>Fix</b> : The patch replaces the use of `zmq.Socket.recv_pyobj()` and `zmq.Socket.send_pyobj()` with `zmq.Socket.recv_json()` and `zmq.Socket.send_json()`. It also adds `pydantic.ValidationError` handling and uses `DistServeCacheFreeRequest.model_validate()` to ensure that incoming JSON payloads conform to the expected schema, preventing both deserialization RCE and malformed message processing.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-2vh9-42vm-xmv2">Advisory</a> · <a href="https://github.com/InternLM/lmdeploy/commit/f05b4ad8bf2e2d84101a1d63b3c44fadd99223b2">Commit</a>
-</p>
-<hr>
-<h3>GHSA-g4c3-4g96-6g4m</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-17 · PHP<br>
-<code>chamilo/chamilo-lms</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 70x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from a combination of factors: lack of authentication on the file upload endpoint, insufficient sanitization of filenames, and the ability to control the final filename during the &#39;finish&#39; action. An unauthenticated attacker could upload arbitrary files, including PHP scripts, and then manipulate the filename to execute them on the server.</p>
-<p><b>Impact</b> : An unauthenticated attacker could achieve remote code execution on the Chamilo LMS server, leading to full compromise of the application and potentially the underlying system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/public/plugin/CStudio/editor/import-project/inc/big-upload.php
-+++ b/public/plugin/CStudio/editor/import-project/inc/big-upload.php
-@@ -240,7 +240,7 @@ public function finishUpload($finalName, $scormid)
-      */
-     public function postUnsupported($scormid)
-     {
--        $name = $_FILES[&#39;bigUploadFile&#39;][&#39;name&#39;];
-+        $name = disable_dangerous_file(api_replace_dangerous_char((string) ($_FILES[&#39;bigUploadFile&#39;][&#39;name&#39;] ?? &#39;&#39;)));
-         $tempName = $_FILES[&#39;bigUploadFile&#39;][&#39;tmp_name&#39;];
- 
-         if (filesize($tempName) &gt; self::MAX_SIZE) {
-@@ -257,6 +257,13 @@ public function postUnsupported($scormid)
-     }
- }
- 
-+// Require an authenticated Chamilo session
-+if (empty(api_get_user_id())) {
-+    http_response_code(403);
-+    echo json_encode([&#39;errorStatus&#39; =&gt; 1, &#39;errorText&#39; =&gt; &#39;Forbidden&#39;]);
-+    exit;
-+}
-+
- // Instantiate the class
- $bigUpload = new BigUpload();</pre>
-</details>
-<p><b>Fix</b> : The patch introduces an authentication check at the beginning of the `big-upload.php` script, ensuring only authenticated users can access the functionality. It also implements `disable_dangerous_file` and `api_replace_dangerous_char` functions for filename sanitization. Crucially, the final filename is now registered in the user&#39;s session with proper sanitization when the first chunk is uploaded, preventing an attacker from controlling it during the &#39;finish&#39; action.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-g4c3-4g96-6g4m">Advisory</a> · <a href="https://github.com/chamilo/chamilo-lms/commit/4bdba1b9a8820bd70c0809317775d7f6eaa79844">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1599,7 +1594,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2165</td></tr>
+<tr><td>Total advisories</td><td>2169</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-25</td></tr>
