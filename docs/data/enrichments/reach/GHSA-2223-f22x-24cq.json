@@ -1,1 +1,1 @@
-{"id":"GHSA-2223-f22x-24cq","axis":"advisories","repo":"wintercms/storm","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-19T12:02:24.016646+00:00"}
+{"id":"GHSA-2223-f22x-24cq","axis":"advisories","repo":"wintercms/storm","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-26T12:24:22.333165+00:00"}
