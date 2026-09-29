@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2193-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2224-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -15,7 +15,7 @@
 <h3>GHSA-6rf4-v2fh-m6p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · JavaScript<br>
-<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
+<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 119x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the SunEditor&#39;s sanitizer could be bypassed. Specifically, when setting code data to the editor, the `_deleteDisallowedTags` function was not consistently applied, allowing malicious HTML content (like script tags) to persist. Additionally, the regular expressions used to identify and remove disallowed tags were not comprehensive enough, failing to catch certain variations or combinations of tags like &#39;style&#39;, &#39;meta&#39;, &#39;link&#39;, and namespaced tags.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary JavaScript code into the editor&#39;s content, leading to Cross-Site Scripting (XSS). This could allow them to steal user sessions, deface websites, redirect users, or perform other malicious actions within the context of the user&#39;s browser.</p>
@@ -41,7 +41,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -88,7 +88,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 119x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -170,7 +170,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -182,7 +182,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 96x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -249,7 +249,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -464,7 +464,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -534,7 +534,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -546,7 +546,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -558,7 +558,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -570,7 +570,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -615,7 +615,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -687,7 +687,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 34x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 36x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -728,7 +728,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 118x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 119x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -942,7 +942,7 @@
 <h3>GHSA-c8w2-fgvx-vhv4</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-18 · Go<br>
-<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
+<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
 </p>
 <p><b>Root cause</b> : The kcp front-proxy failed to strip `X-Remote-*` identity headers from incoming requests when no authenticated user was present in the request context. This allowed an attacker to inject arbitrary identity headers, which were then trusted by downstream components.</p>
 <p><b>Impact</b> : An authenticated client could inject `X-Remote-Group` headers to impersonate `system:masters` or other privileged groups in any workspace, leading to full administrative control.</p>
@@ -981,7 +981,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
-<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 96x across ecosystem
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1076,7 +1076,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 96x across ecosystem
+<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
 </p>
 <p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1100,7 +1100,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1112,7 +1112,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 96x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -1235,7 +1235,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1247,7 +1247,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-m63v-2g9w-2w6v</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
 </p>
 <p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
 <p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
@@ -1269,7 +1269,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1281,7 +1281,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1293,7 +1293,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-9v98-6g37-x9g6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1305,7 +1305,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-qf6p-p7ww-cwr9</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1317,7 +1317,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-5pm9-r2m8-rcmj</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 696x across ecosystem
+<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 707x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
 <p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
@@ -1367,7 +1367,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-jvc5-6g7q-c843</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 96x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1384,7 +1384,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-598g-h2vc-h5vg</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 47x across ecosystem
+<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
 <p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
@@ -1594,7 +1594,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2193</td></tr>
+<tr><td>Total advisories</td><td>2224</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
 <tr><td>Last updated</td><td>2026-09-29</td></tr>
