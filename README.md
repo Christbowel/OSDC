@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2184-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2193-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -204,7 +204,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 26x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 27x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -284,7 +284,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 135x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 137x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -627,7 +627,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 8x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 9x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -1540,7 +1540,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-2vh9-42vm-xmv2</h3>
 <p>
 <code>CRITICAL 9.8</code> · 2026-09-18 · Python<br>
-<code>lmdeploy</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 26x across ecosystem
+<code>lmdeploy</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 27x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used `zmq.Socket.recv_pyobj()` to receive data over a ZeroMQ connection. This method internally uses Python&#39;s `pickle.loads()` function, which is known to be insecure when deserializing data from untrusted sources, as it can execute arbitrary code embedded in the pickled payload.</p>
 <p><b>Impact</b> : An attacker could send a specially crafted pickled object to the ZeroMQ endpoint, leading to arbitrary code execution on the server running the LMDeploy application. This grants the attacker full control over the compromised system.</p>
@@ -1594,10 +1594,10 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2184</td></tr>
+<tr><td>Total advisories</td><td>2193</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>42</td></tr>
-<tr><td>Last updated</td><td>2026-09-28</td></tr>
+<tr><td>Last updated</td><td>2026-09-29</td></tr>
 </table>
 </details>
 <hr>
