@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2294-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2324-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -12,10 +12,96 @@
 </p>
 </div>
 <hr>
+<h3>GHSA-647f-g98j-qq25</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-647f-g98j-qq25">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/315786904c416be68ff2517b86fb9d71fa6761db">Commit</a>
+</p>
+<hr>
+<h3>GHSA-98xx-8mx4-x7cm</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 51x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 library&#39;s NodeVM allowed sandboxed code to call `tls.setDefaultCACertificates()`. This function, when called from within the sandbox, would modify the host process&#39;s global TLS trust store, effectively allowing the sandboxed code to influence the security of the entire host application&#39;s TLS connections.</p>
+<p><b>Impact</b> : An attacker could replace the host process&#39;s default CA trust store, enabling them to intercept and decrypt TLS traffic from the host application by presenting attacker-signed certificates. This leads to a complete compromise of the host&#39;s TLS security.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -210,6 +210,163 @@ if (EventEmitter.EventEmitterAsyncResource) {
+ 
+ // SECURITY (GHSA-98xx-8mx4-x7cm): `tls.setDefaultCACertificates(list)` replaces
+ // the calling thread&#39;s process-wide default CA trust store, so every subsequent
+-// host TLS client that doesn&#39;t supply its own `ca` accepts attacker-signed
+-// certificates. This is the same process-wide-mutation class as the already-
+-// denied `dns.setServers`; unlike dns the rest of `tls` is legitimately useful
+-// to sandboxed code, so neutralize just this member. (The native function
+-// requires a real host array, which the sandbox can forge via `url`&#39;s
+-// `URLSearchParams.getAll()` — the bridge unwraps it back to a host array — so
+-// argument-side defenses are insufficient; the member itself must be removed.)
++function sanitizeTlsModule(mod) {
++	if (typeof mod.setDefaultCACertificates !== &#39;function&#39;) return mod;
++	const copy = Object.assign({}, mod);
++	copy.setDefaultCACertificates = function setDefaultCACertificates() {
++		throw new Error(&#39;tls.setDefaultCACertificates is disabled in vm2 sandboxes: it replaces the host process default CA trust store (GHSA-98xx-8mx4-x7cm).&#39;);
++	};
++	return copy;
++}</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `sanitizeTlsModule` function that intercepts calls to `tls.setDefaultCACertificates`. Instead of forwarding the call to the host function, it now throws an error, preventing sandboxed code from modifying the host&#39;s TLS trust store.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-98xx-8mx4-x7cm">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
+</p>
+<hr>
+<h3>GHSA-h85j-hv3c-qfgq</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>INFO_DISCLOSURE→STACK_TRACE</code> · 5x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox exposed host process-wide singletons like `http.globalAgent` and `https.globalAgent` directly to sandboxed code. While these were wrapped as &#39;read-only&#39;, the `readonly()` proxy only prevents property *assignment*, not method calls or event subscriptions. This allowed the sandbox to subscribe to events on the host&#39;s global agents.</p>
+<p><b>Impact</b> : An attacker could subscribe to events on the host&#39;s `globalAgent` objects, allowing them to observe sensitive information such as HTTP/HTTPS request options (including authorization tokens, private host/port details) and released TLS sockets from unrelated host requests, leading to credential and traffic exfiltration.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -210,6 +210,163 @@ if (EventEmitter.EventEmitterAsyncResource) {
+ 	EventEmitterReferencingAsyncResourceClass = EventEmitterReferencingAsyncResource;
+ }
+ 
++// SECURITY (GHSA-h85j-hv3c-qfgq): `http.globalAgent` / `https.globalAgent` are
++// the real process-wide host singletons. The read-only wrap hands them straight
++// to the sandbox, and `.on(&#39;free&#39;|&#39;keylog&#39;|...)` is a *read*+subscribe, not a
++// property assignment, so it is forwarded to the host object. A sandbox listener
++// then receives live host request options (Authorization tokens, private
++// host/port) and the released host TLSSocket whenever an unrelated host request
++// completes — credential/traffic exfiltration. Replace the exposed `globalAgent`
++// with a fresh sandbox-dedicated Agent so the sandbox can never reach the host
++// singleton.
++function makeHttpAgentSanitizer(agentKey) {
++	return function sanitizeHttpModule(mod) {
++		if (typeof mod.Agent !== &#39;function&#39; || !mod[agentKey]) return mod;
++		const copy = Object.assign({}, mod);
++		const sandboxAgent = new mod.Agent();
++		// The exposed globalAgent is the sandbox-dedicated one — a direct read +
++		// `.on(&#39;free&#39;)` reaches only this empty agent, never the host singleton.
++		copy[agentKey] = sandboxAgent;</pre>
+</details>
+<p><b>Fix</b> : The patch replaces the exposed `http.globalAgent` and `https.globalAgent` with fresh, sandbox-dedicated `Agent` instances. It also modifies the `request()` and `get()` methods of the `http` and `https` modules to default to using these sandbox-dedicated agents, preventing sandboxed code from interacting with the host&#39;s shared agents.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-h85j-hv3c-qfgq">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
+</p>
+<hr>
 <h3>GHSA-6rf4-v2fh-m6p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · JavaScript<br>
-<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 120x across ecosystem
+<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 121x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the SunEditor&#39;s sanitizer could be bypassed. Specifically, when setting code data to the editor, the `_deleteDisallowedTags` function was not consistently applied, allowing malicious HTML content (like script tags) to persist. Additionally, the regular expressions used to identify and remove disallowed tags were not comprehensive enough, failing to catch certain variations or combinations of tags like &#39;style&#39;, &#39;meta&#39;, &#39;link&#39;, and namespaced tags.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary JavaScript code into the editor&#39;s content, leading to Cross-Site Scripting (XSS). This could allow them to steal user sessions, deface websites, redirect users, or perform other malicious actions within the context of the user&#39;s browser.</p>
@@ -41,7 +127,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -88,7 +174,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 120x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 121x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -170,7 +256,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -182,7 +268,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -204,7 +290,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 27x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -249,7 +335,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -464,7 +550,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -534,7 +620,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -546,7 +632,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -558,7 +644,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -570,7 +656,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -615,7 +701,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -627,7 +713,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 10x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 11x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -687,7 +773,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 37x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 38x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -728,7 +814,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 120x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 121x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -845,10 +931,175 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-46pr-c5wc-xffx</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox allowed access to certain Node.js built-in modules (like `crypto`) without properly sanitizing or restricting dangerous functions. Specifically, `crypto.setEngine()` could be called by sandboxed code, which then instructed OpenSSL to dynamically load a native library from a specified path into the host process. The constructor of this native library would execute arbitrary code before OpenSSL even validated it as a legitimate engine.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary native code execution on the host system, effectively escaping the vm2 sandbox and gaining full control over the host process.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -210,6 +210,163 @@ if (EventEmitter.EventEmitterAsyncResource) {
+ 	EventEmitterReferencingAsyncResourceClass = EventEmitterReferencingAsyncResource;
+ }
+ 
++// SECURITY (GHSA-46pr-c5wc-xffx): Some builtins are safe to expose EXCEPT for a
++// handful of members that reach host-process authority the `vm.readonly()` wrap
++// cannot contain. readonly() blocks property *assignment* through the sandbox
++// proxy, but it forwards every *call* to the host member with full host
++// authority -- so a callable that loads native code, mutates a process-wide
++// security setting, or hands back a shared host singleton is a sandbox-escape
++// primitive even behind the read-only proxy. Rather than deny these
++// otherwise-useful modules wholesale (hashing/signing is a legitimate sandbox
++// use of `crypto`), expose a sanitized shallow copy with just the dangerous
++// member neutralized.
++//
++//   - crypto.setEngine(path[, flags]) : hands `path` to OpenSSL&#39;s ENGINE loader,
++//     which asks the OS dynamic loader to load the named shared library. The
++//     library&#39;s constructor runs as arbitrary native code BEFORE OpenSSL decides
++//     whether the file is a usable engine -- so even the expected
++//     ERR_CRYPTO_ENGINE_UNKNOWN rejection happens only after host-native code has
++//     already executed. A sandbox with only `crypto` allowed and a native file in
++//     its own package directory therefore has a native-RCE primitive.
++//
++// The stub throws instead of forwarding to host OpenSSL, so no library is ever
++// loaded. Matching strips the `node:` prefix so `node:crypto` shares fate.
++function sanitizeCryptoModule(mod) {
++	const copy = Object.assign({}, mod);
++	copy.setEngine = function setEngine() {
++		throw new Error(&#39;crypto.setEngine is disabled in vm2 sandboxes: it asks OpenSSL to dynamically load a native library into the host process, executing arbitrary native code (GHSA-46pr-c5wc-xffx).&#39;);
++	};
++	return copy;
++}</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `sanitizeCryptoModule` function that intercepts calls to `crypto.setEngine()`. Instead of forwarding the call to the host&#39;s OpenSSL, it now throws an error, preventing the dynamic loading of native libraries and thus neutralizing the sandbox escape vector.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-46pr-c5wc-xffx">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
+</p>
+<hr>
+<h3>GHSA-6w8r-xxw2-g3hx</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox failed to properly restrict access to certain Node.js built-in modules, specifically `node:sqlite`. The `DatabaseSync` constructor in `node:sqlite` allowed the `allowExtension` option to be set, which, if enabled, permits loading native SQLite extensions. This capability was not adequately neutralized by the sandbox&#39;s read-only proxy, enabling a sandboxed plugin to execute arbitrary native code in the host process.</p>
+<p><b>Impact</b> : An attacker could execute arbitrary native code on the host system, effectively escaping the sandbox and achieving full remote code execution (RCE) with the privileges of the Node.js process.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -210,6 +210,163 @@ if (EventEmitter.EventEmitterAsyncResource) {
+ 
++// SECURITY (GHSA-6w8r-xxw2-g3hx): `node:sqlite`&#39;s DatabaseSync can load a native
++// SQLite extension (`loadExtension(path)` / the `loadExtension` SQL function) —
++// arbitrary native code in the host process. Node gates this entirely on the
++// constructor&#39;s `allowExtension` option: with it off (the default), both
++// `loadExtension()` and `enableLoadExtension()` throw `ERR_INVALID_STATE`.
++// Wrap the DatabaseSync constructor so `allowExtension` is forced off, which
++// closes every extension-loading path while leaving normal SQL usable.
++function sanitizeSqliteModule(mod) {
++	const HostDatabaseSync = mod.DatabaseSync;
++	if (typeof HostDatabaseSync !== &#39;function&#39;) return mod;
++	const copy = Object.assign({}, mod);
++	class DatabaseSync extends HostDatabaseSync {
++		constructor(location, ...rest) {
++			// Preserve call arity (native DatabaseSync rejects an explicit
++			// `undefined` options arg). Force `allowExtension` off only when an
++			// options value is actually supplied; otherwise the native default
++			// (off) already applies. SECURITY (GHSA-6w8r-xxw2-g3hx follow-up): the
++			// native DatabaseSync also accepts a FUNCTION as its options argument
++			// (functions carry own properties), so `function o(){}; o.allowExtension
++			// = true` bypassed an `object`-only check. Treat functions as options
++			// too — Object.assign copies their own enumerable props and forces
++			// allowExtension off.
++			if (rest.length &gt; 0 &amp;&amp; rest[0] !== null &amp;&amp;
++				(typeof rest[0] === &#39;object&#39; || typeof rest[0] === &#39;function&#39;)) {
++				rest[0] = Object.assign({}, rest[0], {allowExtension: false});
++			}
++			super(location, ...rest);
++		}
++	}
++	copy.DatabaseSync = DatabaseSync;
++	return copy;
++}
++
++// SECURITY (GHSA-98xx-8mx4-x7cm): `tls.setDefaultCACertificates(list)` replaces</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a `sanitizeSqliteModule` function that wraps the `node:sqlite.DatabaseSync` constructor. This wrapper forces the `allowExtension` option to `false` when an options object is provided, preventing the loading of native SQLite extensions. This ensures that even if a sandboxed plugin attempts to enable extensions, the underlying host functionality will deny it.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-6w8r-xxw2-g3hx">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
+</p>
+<hr>
+<h3>GHSA-8686-vhfx-7r3j</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-8686-vhfx-7r3j">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/b0f50662dd499ff33544bb42387958c64711af1e">Commit</a>
+</p>
+<hr>
+<h3>GHSA-c48m-32m9-vx93</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from an insufficiently strict regular expression used to validate allowed external package names. The regex allowed partial matches, meaning a malicious package name like &#39;evil-left-pad&#39; could bypass the allowlist if &#39;left-pad&#39; was permitted. Additionally, even with an anchored regex, path traversal sequences (&#39;..&#39;) within subpaths of allowed packages were not explicitly forbidden, allowing an attacker to escape the intended package and load an arbitrary host package.</p>
+<p><b>Impact</b> : An attacker could bypass the `vm2` sandbox and execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">- this.externalCache = externals.map(pattern =&gt; new RegExp(makeExternalMatcherRegex(pattern)));
++ this.externalCache = externals.map(pattern =&gt; new RegExp(&#39;^(?:&#39; + makeExternalMatcherRegex(pattern) + &#39;)(?:[\\/].*)?$&#39;));
++ if (x.split(/[\/]/).indexOf(&#39;..&#39;) !== -1) return undefined;</pre>
+</details>
+<p><b>Fix</b> : The patch introduces two main fixes: first, it anchors the regular expression used for external package allowlisting to ensure it matches the entire package name, optionally followed by a subpath. Second, it explicitly checks for and rejects any package specifier containing &#39;..&#39; path segments before calling the custom resolver, preventing path traversal attacks.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-c48m-32m9-vx93">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/ab4ee7d803e8c80155e9eb3672226bddbca4aa9c">Commit</a>
+</p>
+<hr>
+<h3>GHSA-qhwx-74w5-xhxq</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox environment failed to properly restrict access to the &#39;node:test&#39; built-in module. This module, when invoked with specific `execArgv` parameters, could spawn a separate Node.js process outside the sandbox, executing attacker-controlled code with full host privileges.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary code execution on the host system, completely escaping the vm2 sandbox and gaining full control over the environment.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/builtin.js
++++ b/lib/builtin.js
+@@ -162,7 +162,20 @@ const DANGEROUS_BUILTINS = new Set([
+ 	// `os.platform()`, `os.EOL`, `os.constants`) can register a controlled
+ 	// wrapper under the same name via `mock` / `override`.
+ 	&#39;os&#39;,
+-	&#39;dns&#39;
++	&#39;dns&#39;,
++	&#39;test&#39;
+ ]);
+ 
+ // SECURITY (GHSA-rp36-8xq3-r6c4): Family-prefix denylist check. `inspector` and
+@@ -171,7 +184,10 @@ const DANGEROUS_BUILTINS = new Set([
+ // `node:process` and `node:inspector/promises` cannot bypass via spelling.
+ function isDangerousBuiltin(key) {
+ 	if (typeof key !== &#39;string&#39;) return false;
+-	if (key.startsWith(&#39;node:&#39;)) key = key.slice(5);
++	while (key.startsWith(&#39;node:&#39;)) key = key.slice(5);</pre>
+</details>
+<p><b>Fix</b> : The patch adds &#39;test&#39; to the `DANGEROUS_BUILTINS` denylist, preventing its use within the sandbox. It also enhances the `isDangerousBuiltin` function to strip all leading &#39;node:&#39; prefixes from module names, preventing bypasses via double-prefixed spellings like &#39;node:node:test&#39;.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-qhwx-74w5-xhxq">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/415339f698f0d52d3c5ad358b12b79c8072d5b4b">Commit</a>
+</p>
+<hr>
 <h3>GHSA-jjq7-m736-w977</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 115x across ecosystem
+<code>openc3</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 116x across ecosystem
 </p>
 <p><b>Root cause</b> : The system allowed authenticated non-admin users to write to specific configuration overlay paths (targets_modified/TARGET/cmd_tlm/) which were later loaded and executed as code (via ERB rendering and GENERIC_*_CONVERSION evaluation) by PacketConfig. This bypasses intended authorization checks for code execution.</p>
 <p><b>Impact</b> : An authenticated attacker could inject and execute arbitrary code on the server, leading to full system compromise and potentially impacting the underlying infrastructure.</p>
@@ -942,7 +1193,7 @@
 <h3>GHSA-c8w2-fgvx-vhv4</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-18 · Go<br>
-<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
+<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 51x across ecosystem
 </p>
 <p><b>Root cause</b> : The kcp front-proxy failed to strip `X-Remote-*` identity headers from incoming requests when no authenticated user was present in the request context. This allowed an attacker to inject arbitrary identity headers, which were then trusted by downstream components.</p>
 <p><b>Impact</b> : An authenticated client could inject `X-Remote-Group` headers to impersonate `system:masters` or other privileged groups in any workspace, leading to full administrative control.</p>
@@ -981,7 +1232,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
-<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1076,7 +1327,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-c64q-hj4j-375f</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
+<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
 </p>
 <p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1100,7 +1351,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-pfvc-3p5h-x7h6</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1112,7 +1363,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-mjqf-28ph-426h</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
+<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
 </p>
 <p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
@@ -1161,7 +1412,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-rjg6-39jm-rgg4</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-07-24 · JavaScript<br>
-<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 115x across ecosystem
+<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 116x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from the SCIM provider&#39;s update functionality not properly validating email uniqueness during user updates (PUT/PATCH operations). An attacker could change a user&#39;s email to one already registered by another user, leading to a collision. Additionally, the system did not properly handle user deactivation via the &#39;active&#39; SCIM attribute, failing to revoke sessions or enforce the deactivation consistently.</p>
 <p><b>Impact</b> : An attacker could take over another user&#39;s account by reassigning their email address. They could also maintain access to a deactivated account if their sessions were not properly revoked, or bypass deactivation entirely if the &#39;admin&#39; plugin was not present.</p>
@@ -1235,7 +1486,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-gx55-f84r-v3r7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1247,7 +1498,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-m63v-2g9w-2w6v</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 51x across ecosystem
 </p>
 <p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
 <p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
@@ -1269,7 +1520,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-v455-mv2v-5g92</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1281,282 +1532,13 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-wmgg-3p4h-48x7</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
+<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 767x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
 <p><b>Fix</b> : </p>
 <p>
 <a href="https://github.com/advisories/GHSA-wmgg-3p4h-48x7">Advisory</a> · <a href="https://github.com/fission/fission/commit/8fa799417c77ce8a0189d9858bfe11ece29b84a6">Commit</a>
-</p>
-<hr>
-<h3>GHSA-9v98-6g37-x9g6</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-26 · JavaScript<br>
-<code>@deepstream/server</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-9v98-6g37-x9g6">Advisory</a> · <a href="https://github.com/deepstreamIO/deepstream.io/commit/54b8e2958a98df444b5b5d9a66e22872afd84e44">Commit</a>
-</p>
-<hr>
-<h3>GHSA-qf6p-p7ww-cwr9</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-qf6p-p7ww-cwr9">Advisory</a> · <a href="https://github.com/gogs/gogs/commit/a9dbafbfd8e1020bacc626420238c01d75d03364">Commit</a>
-</p>
-<hr>
-<h3>GHSA-5pm9-r2m8-rcmj</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-22 · PHP<br>
-<code>paymenter/paymenter</code> · Pattern: <code>UNCLASSIFIED</code> · 754x across ecosystem
-</p>
-<p><b>Root cause</b> : The application allowed users to upload files via the EasyMDE editor in ticket creation and viewing forms. The `completeUpload` method in Livewire components directly stored these uploaded files without sufficient validation of their content or type, allowing an attacker to upload malicious executable files.</p>
-<p><b>Impact</b> : An attacker could upload a malicious file (e.g., a PHP script) to the server and then execute it, leading to full compromise of the server.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/themes/default/views/components/easymde-editor.blade.php
-+++ b/themes/default/views/components/easymde-editor.blade.php
-@@ -8,7 +8,7 @@
-             element: document.getElementById(&#39;editor&#39;),
-             spellChecker: false,
-             previewImagesInEditor: true,
--            uploadImage: true,
-+            uploadImage: false,
-             autoDownloadFontAwesome: false,
-             status: [{
-                 className: &#39;upload-image&#39;,
-@@ -45,11 +45,6 @@ className: &#39;upload-image&#39;,
-                     name: &#39;ordered-list&#39;,
-                     action: EasyMDE.toggleOrderedList,
-                 }, &#39;|&#39;,
--                {
--                    name: &#39;upload-image&#39;,
--                    action: EasyMDE.drawUploadedImage,
--                    title: &#39;Upload Image&#39;,
--                }, &#39;|&#39;,
-                 {
-                     name: &#39;undo&#39;,
-                     action: EasyMDE.undo,
-@@ -59,13 +54,6 @@ className: &#39;upload-image&#39;,
-                 },
- 
-             ],
--            imageUploadFunction: async (file, onSuccess, onError) =&gt; {
--                @this.upload(&#39;attachments&#39;, file, (url) =&gt; {
--                    @this.completeUpload(url).then((url) =&gt; {
--                        onSuccess(url);
--                    });
--                });
--            },
-         });</pre>
-</details>
-<p><b>Fix</b> : The patch removes the file upload functionality from the EasyMDE editor in ticket forms by disabling the `uploadImage` option and removing the associated `imageUploadFunction`. It also removes the `WithFileUploads` trait and related attachment handling logic from the Livewire components, effectively preventing any file uploads through these interfaces.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-5pm9-r2m8-rcmj">Advisory</a> · <a href="https://github.com/Paymenter/Paymenter/commit/87c3db42282ada1e3cda54b9a01f846926c0669b">Commit</a>
-</p>
-<hr>
-<h3>GHSA-jvc5-6g7q-c843</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-09 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 97x across ecosystem
-</p>
-<p><b>Root cause</b> : The application was directly embedding user-supplied input from the &#39;dir&#39; parameter into a shell command without proper sanitization. This allowed an attacker to inject arbitrary shell commands by manipulating the &#39;dir&#39; value.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary operating system commands on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-                $output = shell_exec((empty($dir) ? null : &#39;cd &#39; . $dir . &#39; &amp;&amp; &#39;) . $command . &#39; &amp;&amp; echo \ ; pwd&#39;);
-+                $output = shell_exec((empty($dir) ? null : &#39;cd &#39; . escapeshellarg($dir) . &#39; &amp;&amp; &#39;) . $command . &#39; &amp;&amp; echo \ ; pwd&#39;);</pre>
-</details>
-<p><b>Fix</b> : The patch addresses the vulnerability by wrapping the user-supplied &#39;dir&#39; parameter with `escapeshellarg()` before it is used in the `shell_exec()` function. This ensures that any special characters in the &#39;dir&#39; value are properly escaped, preventing command injection.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-jvc5-6g7q-c843">Advisory</a> · <a href="https://github.com/pheditor/pheditor/commit/62b43df7cb8956a9b0deb9bec278ca8676c890c5">Commit</a>
-</p>
-<hr>
-<h3>GHSA-598g-h2vc-h5vg</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-08 · Go<br>
-<code>github.com/juev/nebula-mesh</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 50x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used a cached context value for `actorIsAdmin` checks, which meant that if an operator&#39;s role was downgraded from &#39;admin&#39; to a regular user, their active session would still incorrectly reflect them as an administrator. This allowed them to bypass authorization checks on various API endpoints.</p>
-<p><b>Impact</b> : An attacker could maintain administrative privileges even after their role was revoked, enabling them to perform actions such as managing other operators, accessing audit logs, listing all CAs, and other sensitive operations that should be restricted to active administrators.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/internal/api/authz.go
-+++ b/internal/api/authz.go
-@@ -8,10 +8,29 @@ import (
- 	&#34;github.com/juev/nebula-mesh/internal/store&#34;
- )
- 
-+// isActiveAdmin re-fetches the captured-ctx actor and reports whether
-+// they are still an active admin.
-+func (s *Server) isActiveAdmin(ctx context.Context) bool {
-+	captured := ActorOf(ctx)
-+	if captured == nil {
-+		return false
-+	}
-+	fresh, err := s.store.GetOperator(ctx, captured.ID)
-+	if err != nil {
-+		if !errors.Is(err, store.ErrNotFound) {
-+			s.logger.Error(&#34;isActiveAdmin: store lookup&#34;, &#34;operator&#34;, captured.ID, &#34;error&#34;, err)
-+		}
-+		return false
-+	}
-+	return fresh.Status == models.OperatorStatusActive &amp;&amp; fresh.Role == &#34;admin&#34;
-+}
-+
- // actorOwnsCA returns true if the actor in ctx is admin, or owns the CA with caID.
- // Returns (false, nil) for empty caID or ErrNotFound. Errors only for unexpected DB errors.
- func (s *Server) actorOwnsCA(ctx context.Context, caID string) (bool, error) {
--	if actorIsAdmin(ctx) {
-+	if s.isActiveAdmin(ctx) {
- 		return true, nil
- 	}
- 	if caID == &#34;&#34;,</pre>
-</details>
-<p><b>Fix</b> : A new function `isActiveAdmin` was introduced to re-fetch the operator&#39;s status and role directly from the database for each authorization check. All calls to the old `actorIsAdmin` function were replaced with `s.isActiveAdmin(ctx)` to ensure that administrative checks are always based on the most current operator status.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-598g-h2vc-h5vg">Advisory</a> · <a href="https://github.com/forgekeep/nebula-mesh/commit/9d8bcd7667ecd0c2975cc71fb35a02fe131f76f2">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fqvv-jvhr-g5jc</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-05-05 · Python<br>
-<code>firefighter-incident</code> · Pattern: <code>SSRF→CLOUD_METADATA</code> · 3x across ecosystem
-</p>
-<p><b>Root cause</b> : The application&#39;s `jira_bot` endpoint allowed unauthenticated users to provide arbitrary URLs for attachments. These URLs were then fetched by the server without proper validation, enabling an attacker to direct the server to make requests to internal network resources or cloud metadata endpoints.</p>
-<p><b>Impact</b> : An attacker could perform Server-Side Request Forgery (SSRF) attacks, leading to the theft of IAM credentials or access to other sensitive internal services and data.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/firefighter/raid/serializers.py
-+++ b/src/firefighter/raid/serializers.py
-@@ -56,6 +59,58 @@
- logger = logging.getLogger(__name__)
- 
- 
-+ATTACHMENT_MAX_COUNT = 10
-+ATTACHMENT_URL_MAX_LENGTH = 2048
-+ATTACHMENT_ALLOWED_SCHEMES = frozenset({&#34;http&#34;, &#34;https&#34;})
-+
-+
-+def parse_attachment_urls(raw: str | None) -&gt; list[str]:
-+    &#34;&#34;&#34;Normalise the attachments payload sent by Landbot into a list of URLs.
-+
-+    Landbot historically sends a Python-stringified list (e.g. ``&#34;[&#39;https://a&#39;, &#39;https://b&#39;]&#34;``)
-+    rather than a JSON array. This helper tolerates that legacy format along with
-+    a plain comma-separated string or a single URL.
-+    &#34;&#34;&#34;
-+    if not raw:
-+        return []
-+    stripped = raw.replace(&#34;[&#34;, &#34;&#34;).replace(&#34;]&#34;, &#34;&#34;).replace(&#34;&#39;&#34;, &#34;&#34;).replace(&#39;&#34;&#39;, &#34;&#34;)
-+    return [item.strip() for item in stripped.split(&#34;,&#34;) if item.strip()]
-+
-+
-+def _validate_attachment_url(url: str) -&gt; None:
-+    if len(url) &gt; ATTACHMENT_URL_MAX_LENGTH:
-+        msg = f&#34;Attachment URL exceeds {ATTACHMENT_URL_MAX_LENGTH} characters.&#34;
-+        raise serializers.ValidationError(msg)
-+    parsed = urlparse(url)
-+    if parsed.scheme not in ATTACHMENT_ALLOWED_SCHEMES:
-+        msg = f&#34;Attachment URL scheme &#39;{parsed.scheme}&#39; is not allowed.&#34;
-+        raise serializers.ValidationError(msg)
-+    host = parsed.hostname
-+    if not host:
-+        raise serializers.ValidationError(&#34;Attachment URL is missing a host.&#34;)
-+    try:
-+        addr_infos = socket.getaddrinfo(host, None)
-+    except socket.gaierror as err:
-+        msg = f&#34;Attachment URL host &#39;{host}&#39; could not be resolved.&#34;
-+        raise serializers.ValidationError(msg) from err
-+    # SSRF guard: reject any host resolving to a non-routable address so the
-+    # fetch in add_attachments_to_issue can never reach internal services
-+    # (cloud metadata endpoint, RFC1918 networks, loopback).
-+    for info in addr_infos:
-+        ip = ipaddress.ip_address(info[4][0])
-+        if (
-+            ip.is_private
-+            or ip.is_loopback
-+            or ip.is_link_local
-+            or ip.is_reserved
-+            or ip.is_multicast
-+            or ip.is_unspecified
-+        ):
-+            raise serializers.ValidationError(
-+                &#34;Attachment URL host resolves to a private, loopback or link-local address.&#34;
-+            )
-+
-+
- class IgnoreEmptyStringListField(serializers.ListField):
-     def to_internal_value(self, data: list[Any] | Any) -&gt; list[str]:
-         # Check if data is a list</pre>
-</details>
-<p><b>Fix</b> : The patch introduces authentication for the `jira_bot` endpoint, requiring a bearer token. Additionally, it implements robust URL validation for attachments, including scheme checks, host resolution, and a critical SSRF guard that rejects URLs resolving to private, loopback, link-local, reserved, multicast, or unspecified IP addresses.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-fqvv-jvhr-g5jc">Advisory</a> · <a href="https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f">Commit</a>
-</p>
-<hr>
-<h3>GHSA-g7vj-c29h-3h5m</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-25 · PHP<br>
-<code>fof/oauth</code> · Pattern: <code>MISSING_VERIFICATION→SIGNATURE</code> · 56x across ecosystem
-</p>
-<p><b>Root cause</b> : The application implicitly trusted email addresses provided by OAuth providers (Discord, GitLab, LinkedIn) without verifying if the email was actually confirmed by the provider. This allowed an attacker to register or link an account using an unverified email address from an OAuth provider, and if a user with that email already existed, the attacker could take over their account.</p>
-<p><b>Impact</b> : An attacker could take over existing user accounts by registering with an unverified email address that matches a victim&#39;s email, or by linking an unverified email to a new account, effectively gaining unauthorized access to the victim&#39;s account.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/Providers/Discord.php
-+++ b/src/Providers/Discord.php
-@@ -59,8 +63,11 @@ public function suggestions(Registration $registration, $user, string $token)
-             &#34;https://cdn.discordapp.com/avatars/{$user-&gt;getId()}/{$user-&gt;getAvatarHash()}.png&#34;
-             : &#39;https://cdn.discordapp.com/embed/avatars/0.png&#39;;
- 
-+        $payload = $user-&gt;toArray();
-+
-+        if ($payload[&#39;verified&#39;] ?? false) {
-+            $registration-&gt;provideTrustedEmail($email);
-+        } else {
-+            $registration-&gt;suggestEmail($email);
-+        }
-+
-         $registration
--            -&gt;provideTrustedEmail($email)
-             -&gt;suggestUsername($user-&gt;getUsername() ?: &#39;&#39;)
--            -&gt;setPayload($user-&gt;toArray());
-+            -&gt;setPayload($payload);</pre>
-</details>
-<p><b>Fix</b> : The patch modifies the OAuth provider integrations (Discord, GitLab, LinkedIn) to explicitly check the &#39;verified&#39; status of the email address returned by the OAuth provider. If the email is not verified, it is only &#39;suggested&#39; for registration, rather than being &#39;trusted&#39; immediately, preventing automatic account linking or creation with unverified emails.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-g7vj-c29h-3h5m">Advisory</a> · <a href="https://github.com/FriendsOfFlarum/oauth/commit/baca3466b3b7be51c70a7e0ba966901aefeb344a">Commit</a>
-</p>
-<hr>
-<h3>GHSA-2vh9-42vm-xmv2</h3>
-<p>
-<code>CRITICAL 9.8</code> · 2026-09-18 · Python<br>
-<code>lmdeploy</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 27x across ecosystem
-</p>
-<p><b>Root cause</b> : The application used `zmq.Socket.recv_pyobj()` to receive data over a ZeroMQ connection. This method internally uses Python&#39;s `pickle.loads()` function, which is known to be insecure when deserializing data from untrusted sources, as it can execute arbitrary code embedded in the pickled payload.</p>
-<p><b>Impact</b> : An attacker could send a specially crafted pickled object to the ZeroMQ endpoint, leading to arbitrary code execution on the server running the LMDeploy application. This grants the attacker full control over the compromised system.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/lmdeploy/pytorch/disagg/conn/engine_conn.py
-+++ b/lmdeploy/pytorch/disagg/conn/engine_conn.py
--            req: DistServeCacheFreeRequest = await self.p2p_receiver[remote_engine_id].recv_pyobj()
--            if isinstance(req, DistServeCacheFreeRequest):
-+            try:
-+                raw = await receiver.recv_json()
-+                req = DistServeCacheFreeRequest.model_validate(raw)</pre>
-</details>
-<p><b>Fix</b> : The patch replaces the use of `zmq.Socket.recv_pyobj()` and `zmq.Socket.send_pyobj()` with `zmq.Socket.recv_json()` and `zmq.Socket.send_json()`. It also adds `pydantic.ValidationError` handling and uses `DistServeCacheFreeRequest.model_validate()` to ensure that incoming JSON payloads conform to the expected schema, preventing both deserialization RCE and malformed message processing.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-2vh9-42vm-xmv2">Advisory</a> · <a href="https://github.com/InternLM/lmdeploy/commit/f05b4ad8bf2e2d84101a1d63b3c44fadd99223b2">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1594,9 +1576,9 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2294</td></tr>
+<tr><td>Total advisories</td><td>2324</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
-<tr><td>Pending</td><td>42</td></tr>
+<tr><td>Pending</td><td>51</td></tr>
 <tr><td>Last updated</td><td>2026-10-01</td></tr>
 </table>
 </details>
