@@ -1579,7 +1579,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <tr><td>Total advisories</td><td>2324</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>51</td></tr>
-<tr><td>Last updated</td><td>2026-10-01</td></tr>
+<tr><td>Last updated</td><td>2026-10-02</td></tr>
 </table>
 </details>
 <hr>
