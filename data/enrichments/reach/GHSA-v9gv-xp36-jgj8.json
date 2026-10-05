@@ -1,1 +1,1 @@
-{"id":"GHSA-v9gv-xp36-jgj8","axis":"advisories","repo":"rabbitmq/rabbitmq-server","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-28T15:56:22.944730+00:00"}
+{"id":"GHSA-v9gv-xp36-jgj8","axis":"advisories","repo":"rabbitmq/rabbitmq-server","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-05T16:35:54.460199+00:00"}

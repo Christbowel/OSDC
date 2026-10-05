@@ -1,1 +1,1 @@
-{"id":"GHSA-rv48-qqj5-crxg","axis":"advisories","repo":"elixir-protobuf/protobuf","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-28T15:54:15.760546+00:00"}
+{"id":"GHSA-rv48-qqj5-crxg","axis":"advisories","repo":"elixir-protobuf/protobuf","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-05T16:34:14.927718+00:00"}

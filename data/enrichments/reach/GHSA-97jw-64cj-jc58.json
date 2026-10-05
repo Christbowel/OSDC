@@ -1,1 +1,1 @@
-{"id":"GHSA-97jw-64cj-jc58","axis":"advisories","repo":"ViewComponent/view_component","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-28T15:53:56.183080+00:00"}
+{"id":"GHSA-97jw-64cj-jc58","axis":"advisories","repo":"ViewComponent/view_component","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-05T16:33:59.081244+00:00"}
