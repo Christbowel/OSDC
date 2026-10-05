@@ -1,1 +1,1 @@
-{"id":"GHSA-9x44-4gxf-8c25","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-28T15:48:14.117506+00:00"}
+{"id":"GHSA-9x44-4gxf-8c25","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-05T16:29:20.911440+00:00"}
