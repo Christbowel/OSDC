@@ -4,13 +4,235 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2364-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2394-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
 </p>
 </div>
+<hr>
+<h3>GHSA-3vgf-8m4q-q4qr</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 37x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox environment failed to properly protect the prototypes of host TypedArray and ArrayBuffer intrinsics, as well as various iterator prototypes. These prototypes were not included in the list of protected host objects, allowing sandbox code to modify their host-realm definitions.</p>
+<p><b>Impact</b> : An attacker could mutate host TypedArray and ArrayBuffer intrinsics, potentially leading to arbitrary code execution or other severe integrity violations outside the sandbox.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/bridge.js
++++ b/lib/bridge.js
+@@ -31,6 +31,29 @@ const globalsList = [
+ 	&#39;WeakSet&#39;,
+ 	&#39;Promise&#39;,
+ 	&#39;Function&#39;,
++	&#39;ArrayBuffer&#39;,
++	&#39;SharedArrayBuffer&#39;,
++	&#39;DataView&#39;,
++	&#39;Uint8Array&#39;,
++	&#39;Int8Array&#39;,
++	&#39;Uint8ClampedArray&#39;,
++	&#39;Uint16Array&#39;,
++	&#39;Int16Array&#39;,
++	&#39;Uint32Array&#39;,
++	&#39;Int32Array&#39;,
++	&#39;Float32Array&#39;,
++	&#39;Float64Array&#39;,
++	&#39;BigInt64Array&#39;,
++	&#39;BigUint64Array&#39;,
+ ];
+ 
+ const errorsList = [
+@@ -79,6 +102,54 @@ try {
+ 	thisGlobalPrototypes[&#39;AsyncGeneratorFunction&#39;] = eval(&#39;(async function*() {})&#39;).constructor.prototype;
+ } catch (e) {}
+ 
++// SECURITY (GHSA-3vgf-8m4q-q4qr / GHSA-59g5-pmg6-5gr4): abstract intrinsic
++// prototypes with NO named global. Same protection gap as the binary-data
++// globals above, but they cannot be reached through `global[key]`, so resolve
++// them structurally (mirroring the AsyncFunction / GeneratorFunction pattern).
++// Adding them to `thisGlobalPrototypes` routes them into `protectedHostObjects`
++// (which enumerates every key) and the mapping loops below, so the write traps
++// refuse sandbox `set` / `defineProperty` on host `%TypedArray%.prototype`,
++// `%IteratorPrototype%`, `ArrayIterator.prototype`, etc.
++// `TypedArrayProto` — the shared `%TypedArray%.prototype` above every concrete
++// typed array (Buffer -&gt; Uint8Array.prototype -&gt; %TypedArray%.prototype).
++try {
++	thisGlobalPrototypes[&#39;TypedArray&#39;] = Object.getPrototypeOf(Uint8Array.prototype);
++} catch (e) {}
++// The iterator prototype chain: concrete iterator prototypes and the shared
++// `%IteratorPrototype%` they all inherit from (GHSA-59g5 targets both).
++try {
++	const arrayIteratorProto = Object.getPrototypeOf([][Symbol.iterator]());
++	thisGlobalPrototypes[&#39;ArrayIterator&#39;] = arrayIteratorProto;
++	thisGlobalPrototypes[&#39;IteratorPrototype&#39;] = Object.getPrototypeOf(arrayIteratorProto);
++} catch (e) {}
++try {
++	thisGlobalPrototypes[&#39;StringIterator&#39;] = Object.getPrototypeOf(&#39;&#39;[Symbol.iterator]());
++} catch (e) {}
++try {
++	thisGlobalPrototypes[&#39;MapIterator&#39;] = Object.getPrototypeOf(new Map()[Symbol.iterator]());
++} catch (e) {}
++try {
++	thisGlobalPrototypes[&#39;SetIterator&#39;] = Object.getPrototypeOf(new Set()[Symbol.iterator]());
++} catch (e) {}
++try {
++	// %RegExpStringIteratorPrototype% — matchAll&#39;s iterator (Node 12+).
++	thisGlobalPrototypes[&#39;RegExpStringIterator&#39;] = Object.getPrototypeOf(&#39;a&#39;.matchAll(/a/g));
++} catch (e) {}
++
++// Keys in `thisGlobalPrototypes` that are NOT named globals (so the
++// globalsList/errorsList mapping loops below do not cover them) but MUST still
++// receive proto + identity mappings so their host prototypes are recognized
++// and their `constructor` reads collapse to the sandbox realm.
++const nonGlobalProtoKeys = [
++	&#39;TypedArray&#39;,
++	&#39;ArrayIterator&#39;,
++	&#39;IteratorPrototype&#39;,
++	&#39;StringIterator&#39;,
++	&#39;MapIterator&#39;,
++	&#39;SetIterator&#39;,
++	&#39;RegExpStringIterator&#39;,
++];
+ 
+ // Cache this-realm dangerous function constructors.
+ // Used to block raw host Function constructors from leaking when handler</pre>
+</details>
+<p><b>Fix</b> : The patch extends the list of protected global objects to include all TypedArray and ArrayBuffer related intrinsics, as well as various iterator prototypes. It ensures these prototypes are properly mapped and their constructors are collapsed to the sandbox realm, preventing modification from within the sandbox.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-3vgf-8m4q-q4qr">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/92a10fca7b3ca63bb1574b6795540264f6805b30">Commit</a>
+</p>
+<hr>
+<h3>GHSA-5h3f-q97h-ccvc</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-5h3f-q97h-ccvc">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/6ac3916da84e060c403e407b6b6318fcc66b0e72">Commit</a>
+</p>
+<hr>
+<h3>GHSA-88hf-g992-jg85</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>PROTOTYPE_POLLUTION→OVERRIDE</code> · 37x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox allowed an attacker to obtain raw host-realm prototype-reading functions (like `Object.prototype.__proto__` getter or `Object.getPrototypeOf`). By invoking these functions on a wrapped host object, the sandbox could pierce the flattened prototype chain enforced by the bridge, gaining access to intermediate host builtin prototypes (e.g., `EventEmitter.prototype`). These intermediate prototypes were not protected against modification, allowing the attacker to write a callable function onto them.</p>
+<p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) by installing a malicious function on a shared host prototype (e.g., `EventEmitter.prototype.emit = fn`). When a host-side operation later invoked this function with a host `this` context, the attacker&#39;s code would execute outside the sandbox with host privileges.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/bridge.js
++++ b/lib/bridge.js
+@@ -1124,10 +1224,16 @@ function createBridge(otherInit, registerProxy) {
+ 		const protoDesc = otherSafeGetOwnPropertyDescriptor(otherGlobalPrototypes.Object, &#39;__proto__&#39;);
+ 		if (protoDesc) {
+ 			addDangerousHostProtoMutator(protoDesc.set);
+-			// Note: we intentionally do NOT add the getter — reading a host
+-			// prototype is not, by itself, a privilege escalation primitive, and
+-			// blocking the getter would break legitimate `instanceof` and
+-			// inspection paths.
++			// SECURITY (GHSA-88hf-g992-jg85): classify the host `__proto__` GETTER
++			// as dangerous-to-DELIVER (not dangerous-to-invoke). Extracting the raw
++			// host getter and calling `gP.call(x)` pierces the bridge&#39;s flattened
++			// prototype view and hands the sandbox the true intermediate host
++			// builtin prototypes (EventEmitter.prototype, etc.), which are writable.
++			// We do NOT add it to the mutator set (which THROWS in the apply trap
++			// and would break legitimate `instanceof` / inspection that internally
++			// walk prototypes); instead we deny its DELIVERY at the read-side
++			// chokepoints so the sandbox can never hold the raw reader to invoke.
++			addDangerousHostProtoReader(protoDesc.get);
+ 		}
+ 		// Cache host `Function.prototype.call` / `Function.prototype.apply` as
+ 		// the canonical indirection primitives. The canonical PoC reaches host</pre>
+</details>
+<p><b>Fix</b> : The patch introduces `dangerousHostProtoReaders` to identify and prevent the delivery of raw host prototype-reading functions into the sandbox. It also adds `hostObjectsUsedAsPrototype` and `looksLikeHostPrototype` to structurally identify and protect host prototype objects from having sandbox-controlled functions written to them, even if a future read path exposes them.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-88hf-g992-jg85">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/22a43704c04b66823b4064b8a16fe1ad54ad0290">Commit</a>
+</p>
+<hr>
+<h3>GHSA-fcqc-726x-5wfc</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
+<p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/setup-sandbox.js
++++ b/lib/setup-sandbox.js
+@@ -584,7 +584,11 @@ class BufferHandler extends ReadOnlyHandler {
+ 			checkBufferAllocLimit(args[0]);
+ 			return LocalBuffer.alloc(args[0]);
+ 		}
+-		return apply(LocalBuffer.from, LocalBuffer, args);
++		// SECURITY (GHSA-fcqc-726x-5wfc): deprecated Buffer(array|string|arrayBuffer)
++		// form aliases Buffer.from. Route through `bufferFrom` so the result is
++		// depooled (exact-size backing store) — a raw `LocalBuffer.from` here would
++		// return a pool-backed buffer whose `.buffer` exposes the shared 64 KiB pool.
++		return apply(bufferFrom, LocalBuffer, args);
+ 	}
+ 
+ 	construct(target, args, newTarget) {</pre>
+</details>
+<p><b>Fix</b> : The patch modifies Buffer creation methods (Buffer.from, Buffer.concat, Buffer.copyBytesFrom, and Buffer constructor aliases) within the sandbox to ensure that any buffer returned to sandboxed code owns its entire backing store. This is achieved by &#39;depooling&#39; buffers that would otherwise be backed by Node&#39;s shared pool, copying their contents into a new, exact-size, non-pooled ArrayBuffer. This prevents sandboxed code from accessing the larger shared memory pool.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fcqc-726x-5wfc">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/4f2508abeb252aa86eb6761c78b3b000248fb089">Commit</a>
+</p>
+<hr>
+<h3>GHSA-j3hm-6rg5-mchv</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 39x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 library, when configured with `require.external: true` but without an explicit `require.root`, allowed sandboxed code to use the host&#39;s `require()` function to load arbitrary paths. This effectively granted unrestricted access to the host filesystem and enabled full Remote Code Execution (RCE) because the sandboxed code could load and execute any module available to the host process.</p>
+<p><b>Impact</b> : An attacker could escape the sandbox, execute arbitrary code on the host system with the privileges of the vm2 process, and potentially access or manipulate host files.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/lib/cli.js
++++ b/lib/cli.js
+ 		NodeVM.file(path, {
+ 			verbose: true,
+ 			require: {
+-				external: true
++				external: true,
++				root: pa.dirname(path),
++				context: &#39;sandbox&#39;
+ 			}
+ 		});</pre>
+</details>
+<p><b>Fix</b> : The patch introduces defense-in-depth measures. It prevents sandboxed code from requiring vm2&#39;s own package (which could lead to nested unrestricted sandboxes). For the CLI, it explicitly sets `require.root` to the script&#39;s directory and `context: &#39;sandbox&#39;` to ensure external requires are sandboxed. It also adds a security warning when `require.external: true` is used without `require.root` in a host context.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-j3hm-6rg5-mchv">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/903017c8a1eae9aba947ec854468b48155e79f86">Commit</a>
+</p>
+<hr>
+<h3>GHSA-wjwh-qqvp-g4p4</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 13x across ecosystem
+</p>
+<p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly streaming compilation APIs. Specifically, `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` could return Promises whose prototype chain reached the host realm&#39;s `Promise.prototype`. This bypasses the sandbox&#39;s `then`/`catch` overrides and `resetPromiseSpecies` mechanism, allowing an attacker to manipulate the `Symbol.species` property of the host Promise and execute arbitrary code in the host context.</p>
+<p><b>Impact</b> : An attacker could achieve a complete sandbox escape, executing arbitrary code in the host environment with the privileges of the vm2 process. This leads to remote code execution (RCE) outside the sandbox.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">- if (typeof WebAssembly.promising !== &#39;undefined&#39;) {
+- 	localReflectDeleteProperty(WebAssembly, &#39;promising&#39;);
+- }
++ if (typeof WebAssembly.compileStreaming !== &#39;undefined&#39;) {
++ 	localReflectDeleteProperty(WebAssembly, &#39;compileStreaming&#39;);
++ }
++ if (typeof WebAssembly.instantiateStreaming !== &#39;undefined&#39;) {
++ 	localReflectDeleteProperty(WebAssembly, &#39;instantiateStreaming&#39;);
++ }</pre>
+</details>
+<p><b>Fix</b> : The patch removes `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` from the sandbox environment. By removing these APIs, the sources of cross-realm-prototype Promises are eliminated, preventing attackers from leveraging the Promise species bypass to escape the sandbox.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-wjwh-qqvp-g4p4">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/cb85599e4470afa308e7c807b5c6b3ec9bf58b18">Commit</a>
+</p>
 <hr>
 <h3>GHSA-jqmf-mx4f-hfr6</h3>
 <p>
@@ -99,7 +321,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -211,7 +433,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -340,7 +562,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -352,7 +574,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 104x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -374,7 +596,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -419,7 +641,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -454,7 +676,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 139x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 140x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -634,7 +856,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -704,7 +926,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -716,7 +938,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -728,7 +950,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -740,7 +962,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -785,7 +1007,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -797,7 +1019,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 11x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 13x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -857,7 +1079,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 38x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 39x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -1018,7 +1240,7 @@
 <h3>GHSA-46pr-c5wc-xffx</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
+<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed access to certain Node.js built-in modules (like `crypto`) without properly sanitizing or restricting dangerous functions. Specifically, `crypto.setEngine()` could be called by sandboxed code, which then instructed OpenSSL to dynamically load a native library from a specified path into the host process. The constructor of this native library would execute arbitrary code before OpenSSL even validated it as a legitimate engine.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary native code execution on the host system, effectively escaping the vm2 sandbox and gaining full control over the host process.</p>
@@ -1067,7 +1289,7 @@
 <h3>GHSA-6w8r-xxw2-g3hx</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 29x across ecosystem
+<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 30x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly restrict access to certain Node.js built-in modules, specifically `node:sqlite`. The `DatabaseSync` constructor in `node:sqlite` allowed the `allowExtension` option to be set, which, if enabled, permits loading native SQLite extensions. This capability was not adequately neutralized by the sandbox&#39;s read-only proxy, enabling a sandboxed plugin to execute arbitrary native code in the host process.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary native code on the host system, effectively escaping the sandbox and achieving full remote code execution (RCE) with the privileges of the Node.js process.</p>
@@ -1120,7 +1342,7 @@
 <h3>GHSA-8686-vhfx-7r3j</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1132,7 +1354,7 @@
 <h3>GHSA-c48m-32m9-vx93</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 799x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from an insufficiently strict regular expression used to validate allowed external package names. The regex allowed partial matches, meaning a malicious package name like &#39;evil-left-pad&#39; could bypass the allowlist if &#39;left-pad&#39; was permitted. Additionally, even with an anchored regex, path traversal sequences (&#39;..&#39;) within subpaths of allowed packages were not explicitly forbidden, allowing an attacker to escape the intended package and load an arbitrary host package.</p>
 <p><b>Impact</b> : An attacker could bypass the `vm2` sandbox and execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -1150,7 +1372,7 @@
 <h3>GHSA-qhwx-74w5-xhxq</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
+<code>vm2</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 104x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox environment failed to properly restrict access to the &#39;node:test&#39; built-in module. This module, when invoked with specific `execArgv` parameters, could spawn a separate Node.js process outside the sandbox, executing attacker-controlled code with full host privileges.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary code execution on the host system, completely escaping the vm2 sandbox and gaining full control over the environment.</p>
@@ -1316,7 +1538,7 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <h3>GHSA-xp7j-h7jc-4w8p</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-08 · Go<br>
-<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
+<code>github.com/semaphoreui/semaphore</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 104x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly passed user-controlled Git URLs to the `git` command-line utility without proper sanitization or argument separation. An attacker could craft a Git URL starting with a hyphen (&#39;-&#39;), which `git` would interpret as a command-line option rather than a repository path, leading to arbitrary command execution.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary commands on the server where Semaphore U is running, potentially leading to full system compromise, data exfiltration, or denial of service.</p>
@@ -1408,199 +1630,6 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <a href="https://github.com/advisories/GHSA-9x44-4gxf-8c25">Advisory</a> · <a href="https://github.com/pimcore/pimcore/commit/a4f8c3cfee58b7d5fe4873d67782eff58dae9b9d">Commit</a>
 </p>
 <hr>
-<h3>GHSA-c64q-hj4j-375f</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-08-28 · Java<br>
-<code>org.yamcs:yamcs-core</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
-</p>
-<p><b>Root cause</b> : The Yamcs StreamSQL `LIKE` expression directly embedded user-controlled pattern strings into dynamically compiled Java code (via Janino) without proper escaping. This allowed an authenticated attacker to inject arbitrary Java code into the `LikeExpression`&#39;s `fillCode_getValueReturn` method.</p>
-<p><b>Impact</b> : An authenticated attacker could execute arbitrary code on the server, leading to full system compromise, data exfiltration, or denial of service.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/yamcs-core/src/main/java/org/yamcs/yarch/streamsql/LikeExpression.java
-+++ b/yamcs-core/src/main/java/org/yamcs/yarch/streamsql/LikeExpression.java
-@@ -23,5 +23,5 @@ public void fillCode_getValueReturn(StringBuilder code) throws StreamSqlExceptio
-         code.append(&#34;org.yamcs.yarch.streamsql.Utils.like(&#34;);
-         children[0].fillCode_getValueReturn(code);
-         code.append(&#34;, \&#34;&#34;);
--        code.append(likeClause.pattern);
-+        ValueExpression.escapeJavaString(likeClause.pattern, code);
-         code.append(&#34;\&#34;)&#34;);</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a static `escapeJavaString` method in `ValueExpression` and applies it to the `likeClause.pattern` before embedding it into the dynamically generated Java code. This ensures that special characters in the user-provided pattern are properly escaped, preventing code injection.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-c64q-hj4j-375f">Advisory</a> · <a href="https://github.com/yamcs/yamcs/commit/640e1598b7097b521692e89dd47a39b6cb1fc663">Commit</a>
-</p>
-<hr>
-<h3>GHSA-pfvc-3p5h-x7h6</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-07-31 · Go<br>
-<code>github.com/pterodactyl/wings</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-pfvc-3p5h-x7h6">Advisory</a> · <a href="https://github.com/pterodactyl/wings/commit/eb65e27ae077a63e38518c490768486af1cd86a9">Commit</a>
-</p>
-<hr>
-<h3>GHSA-mjqf-28ph-426h</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-07-29 · Go<br>
-<code>github.com/kube-logging/logging-operator</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 100x across ecosystem
-</p>
-<p><b>Root cause</b> : The logging operator was vulnerable to Fluentd configuration injection because it did not properly validate or escape user-provided input before incorporating it into Fluentd configuration files. Specifically, newline characters in directive names, types, IDs, labels, log levels, tags, and parameter names, as well as parameter values, could break out of the intended configuration structure, allowing an attacker to inject arbitrary Fluentd directives, including those that execute remote code.</p>
-<p><b>Impact</b> : An attacker could inject arbitrary Fluentd configuration, leading to remote code execution on the Fluentd pods managed by the logging operator. This could compromise the entire Kubernetes cluster where the operator is deployed.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/pkg/sdk/logging/model/render/fluent.go
-+++ b/pkg/sdk/logging/model/render/fluent.go
-@@ -44,6 +44,19 @@ func (f *FluentRender) RenderDirectives(directives []types.Directive, indent int
- 		if meta.Directive == &#34;&#34; {
- 			return fmt.Errorf(&#34;directive must have a name %s&#34;, meta)
- 		}
-+		// Structural tokens can&#39;t be quoted, so a newline would break out.
-+		for _, t := range []struct{ kind, value string }{
-+			{&#34;directive name&#34;, meta.Directive},
-+			{&#34;@type&#34;, meta.Type},
-+			{&#34;@id&#34;, meta.Id},
-+			{&#34;@label&#34;, meta.Label},
-+			{&#34;@log_level&#34;, meta.LogLevel},
-+			{&#34;tag&#34;, meta.Tag},
-+		} {
-+			if err := validateFluentToken(t.kind, t.value); err != nil {
-+				return err
-+			}
-+		}
- 		f.indentedf(indent, &#34;&lt;%s%s&gt;&#34;, meta.Directive, tag(meta.Tag))
- 		if meta.Type != &#34;&#34; {
- 			f.indentedf(indent+f.Indent, &#34;@type %s&#34;, meta.Type)
-@@ -61,7 +74,10 @@ func (f *FluentRender) RenderDirectives(directives []types.Directive, indent int
- 			keys := mapstrstr.Keys(params)
- 			sort.Strings(keys)
- 			for _, k := range keys {
--				f.indentedf(indent+f.Indent, &#34;%s %s&#34;, k, params[k])
-+				if err := validateFluentToken(&#34;parameter name&#34;, k); err != nil {
-+					return err
-+				}
-+				f.indentedf(indent+f.Indent, &#34;%s %s&#34;, k, escapeFluentValue(params[k]))
- 			}
- 		}
- 		if sections := d.GetSections(); len(sections) &gt; 0 {</pre>
-</details>
-<p><b>Fix</b> : The patch introduces validation to prevent newline characters in Fluentd structural tokens (directive names, types, IDs, labels, log levels, tags, and parameter names). It also adds an `escapeFluentValue` function to properly quote and escape parameter values that contain newlines or &#39;#&#39; characters, preventing them from being interpreted as structural elements or Ruby interpolations.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-mjqf-28ph-426h">Advisory</a> · <a href="https://github.com/kube-logging/logging-operator/commit/cf437d7f1e056c78740bf5716ac8bdebcf002425">Commit</a>
-</p>
-<hr>
-<h3>GHSA-rjg6-39jm-rgg4</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-07-24 · JavaScript<br>
-<code>@better-auth/scim</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 117x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from the SCIM provider&#39;s update functionality not properly validating email uniqueness during user updates (PUT/PATCH operations). An attacker could change a user&#39;s email to one already registered by another user, leading to a collision. Additionally, the system did not properly handle user deactivation via the &#39;active&#39; SCIM attribute, failing to revoke sessions or enforce the deactivation consistently.</p>
-<p><b>Impact</b> : An attacker could take over another user&#39;s account by reassigning their email address. They could also maintain access to a deactivated account if their sessions were not properly revoked, or bypass deactivation entirely if the &#39;admin&#39; plugin was not present.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/packages/scim/src/routes.ts
-+++ b/packages/scim/src/routes.ts
-@@ -850,19 +932,37 @@ export const updateSCIMUser = (authMiddleware: AuthMiddleware) =&gt;
- 				});
- 			}
- 
-+			const email = getUserPrimaryEmail(
-+				body.userName,
-+				body.emails,
-+			).toLowerCase();
-+			const name = getUserFullName(email, body.name);
-+			const emailChanged = email !== user.email;
-+
-+			if (emailChanged) {
-+				await assertSCIMEmailAvailable(ctx, email, userId);
-+			}
-+
-+			const userUpdate: Record&lt;string, unknown&gt; = {
-+				email,
-+				name,
-+				updatedAt: new Date(),
-+			};
-+			if (emailChanged) {
-+				// A reassigned email is unverified until the new address is confirmed.
-+				userUpdate.emailVerified = false;
-+			}
-+			if (body.active !== undefined) {
-+				userUpdate.banned = body.active === false;
-+			}
-+			const deactivating = resolveSCIMActiveDeactivation(ctx, userUpdate);
-+
- 			const [updatedUser, updatedAccount] =
- 				await ctx.context.adapter.transaction&lt;[User | null, Account | null]&gt;(
- 					async () =&gt; {
--						const email = getUserPrimaryEmail(body.userName, body.emails);
--						const name = getUserFullName(email, body.name);
--
- 						const updatedUser = await ctx.context.internalAdapter.updateUser(
- 							userId,
--							{
--								email,
--								name,
--								updatedAt: new Date(),
--							},
-+							userUpdate,
- 						);
- 
- 						const updatedAccount =
-@@ -875,6 +975,10 @@ export const updateSCIMUser = (authMiddleware: AuthMiddleware) =&gt;
- 					},
- 				);
- 
-+			if (deactivating) {
-+				await ctx.context.internalAdapter.deleteUserSessions(userId);
-+			}
-+
- 			const userResource = createUserResource(
- 				ctx.context.baseURL,
- 				updatedUser!,</pre>
-</details>
-<p><b>Fix</b> : The patch introduces `assertSCIMEmailAvailable` to enforce email uniqueness during user updates. It also adds `resolveSCIMActiveDeactivation` to correctly map SCIM `active` status to the internal `banned` field, revoke user sessions upon deactivation, and ensure the admin plugin is present for deactivation. The `deleteSCIMUser` function was also updated to only delete the global user if no other accounts are linked.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-rjg6-39jm-rgg4">Advisory</a> · <a href="https://github.com/better-auth/better-auth/commit/7c126dcd1aad24468ec37e876545c1d083d8acca">Commit</a>
-</p>
-<hr>
-<h3>GHSA-gx55-f84r-v3r7</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>UNCLASSIFIED</code> · 785x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-gx55-f84r-v3r7">Advisory</a> · <a href="https://github.com/fission/fission/commit/e484df8460bb4e8026e24210120602aa7f181f64">Commit</a>
-</p>
-<hr>
-<h3>GHSA-m63v-2g9w-2w6v</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-06-30 · Go<br>
-<code>github.com/fission/fission</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 51x across ecosystem
-</p>
-<p><b>Root cause</b> : The Fission platform allowed users to specify container configurations for environments (Runtime.Container and Builder.Container) that were not subject to the same security context validation as standard PodSpecs. This oversight meant that dangerous security settings like &#39;privileged=true&#39; or &#39;allowPrivilegeEscalation=true&#39; could be set in these specific container fields, bypassing existing security checks.</p>
-<p><b>Impact</b> : An attacker could create privileged pods within the Kubernetes cluster, effectively escaping the container sandbox and gaining root-level access to the host or other cluster resources, leading to full cluster compromise.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/pkg/apis/core/v1/validation.go
-+++ b/pkg/apis/core/v1/validation.go
- 	errs = errors.Join(errs, ValidatePodSpecSafety(&#34;Environment.spec.runtime.podspec&#34;, e.Spec.Runtime.PodSpec))
- 	errs = errors.Join(errs, ValidatePodSpecSafety(&#34;Environment.spec.builder.podspec&#34;, e.Spec.Builder.PodSpec))
-+	errs = errors.Join(errs, ValidateContainerSafety(&#34;Environment.spec.runtime.container&#34;, e.Spec.Runtime.Container))
-+	errs = errors.Join(errs, ValidateContainerSafety(&#34;Environment.spec.builder.container&#34;, e.Spec.Builder.Container))
- 	return errs</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new `ValidateContainerSafety` function to explicitly check the security context of individual containers, specifically applying it to the previously unchecked `Runtime.Container` and `Builder.Container` fields in the Environment CRD. Additionally, a sanitization step is added during container merging to strip dangerous security context settings, providing a defense-in-depth measure even if admission webhooks are bypassed.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-m63v-2g9w-2w6v">Advisory</a> · <a href="https://github.com/fission/fission/commit/695d3e97e3a20463ab7c8c081843e69e65e952e5">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1636,10 +1665,10 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2364</td></tr>
+<tr><td>Total advisories</td><td>2394</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>51</td></tr>
-<tr><td>Last updated</td><td>2026-10-05</td></tr>
+<tr><td>Last updated</td><td>2026-10-06</td></tr>
 </table>
 </details>
 <hr>
