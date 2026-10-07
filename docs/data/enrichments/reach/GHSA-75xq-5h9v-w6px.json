@@ -1,1 +1,1 @@
-{"id":"GHSA-75xq-5h9v-w6px","axis":"advisories","repo":"ruby/net-imap","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:18:22.802379+00:00"}
+{"id":"GHSA-75xq-5h9v-w6px","axis":"advisories","repo":"ruby/net-imap","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:50:05.617882+00:00"}

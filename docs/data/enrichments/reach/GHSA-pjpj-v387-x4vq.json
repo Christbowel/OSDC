@@ -1,1 +1,1 @@
-{"id":"GHSA-pjpj-v387-x4vq","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:14:44.460979+00:00"}
+{"id":"GHSA-pjpj-v387-x4vq","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:47:01.224018+00:00"}

@@ -1,1 +1,1 @@
-{"id":"GHSA-2gr4-ppc7-7mhx","axis":"advisories","repo":"codeigniter4/CodeIgniter4","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:14:46.603874+00:00"}
+{"id":"GHSA-2gr4-ppc7-7mhx","axis":"advisories","repo":"codeigniter4/CodeIgniter4","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:47:02.280126+00:00"}

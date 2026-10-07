@@ -1,1 +1,1 @@
-{"id":"GHSA-9vx2-j98c-p72w","axis":"advisories","repo":"getkirby/kirby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:11:12.029811+00:00"}
+{"id":"GHSA-9vx2-j98c-p72w","axis":"advisories","repo":"getkirby/kirby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:44:03.423892+00:00"}

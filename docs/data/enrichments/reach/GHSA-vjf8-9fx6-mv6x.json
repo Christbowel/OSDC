@@ -1,1 +1,1 @@
-{"id":"GHSA-vjf8-9fx6-mv6x","axis":"advisories","repo":"TritonVM/triton-vm","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:12:33.198711+00:00"}
+{"id":"GHSA-vjf8-9fx6-mv6x","axis":"advisories","repo":"TritonVM/triton-vm","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:45:05.623237+00:00"}

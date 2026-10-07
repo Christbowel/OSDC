@@ -1,1 +1,1 @@
-{"id":"GHSA-c32j-vqhx-rx3x","axis":"advisories","repo":"jwt/ruby-jwt","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-09-30T14:16:30.534511+00:00"}
+{"id":"GHSA-c32j-vqhx-rx3x","axis":"advisories","repo":"jwt/ruby-jwt","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:48:30.057298+00:00"}
