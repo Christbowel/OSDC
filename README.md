@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2414-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2417-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -213,7 +213,7 @@
 <h3>GHSA-wjwh-qqvp-g4p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 13x across ecosystem
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly streaming compilation APIs. Specifically, `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` could return Promises whose prototype chain reached the host realm&#39;s `Promise.prototype`. This bypasses the sandbox&#39;s `then`/`catch` overrides and `resetPromiseSpecies` mechanism, allowing an attacker to manipulate the `Symbol.species` property of the host Promise and execute arbitrary code in the host context.</p>
 <p><b>Impact</b> : An attacker could achieve a complete sandbox escape, executing arbitrary code in the host environment with the privileges of the vm2 process. This leads to remote code execution (RCE) outside the sandbox.</p>
@@ -1019,7 +1019,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 13x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 14x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -1620,10 +1620,10 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2414</td></tr>
+<tr><td>Total advisories</td><td>2417</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>63</td></tr>
-<tr><td>Last updated</td><td>2026-10-06</td></tr>
+<tr><td>Last updated</td><td>2026-10-07</td></tr>
 </table>
 </details>
 <hr>
