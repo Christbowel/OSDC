@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2452-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2472-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -47,6 +47,23 @@
 <p><b>Fix</b> : The patch introduces several HTML and JSON encoding functions (`encodeHtml`, `encodeJson`, `protectRawText`) and a validation function for attribute names (`isValidAttrName`). These functions are applied to all user-controlled data rendered within meta tags, attributes, and script contents to ensure proper escaping and prevent injection.</p>
 <p>
 <a href="https://github.com/advisories/GHSA-pq96-jpmf-w254">Advisory</a> · <a href="https://github.com/quasarframework/quasar/commit/11505afe5b5218f2c468f130181815b898fd1e40">Commit</a>
+</p>
+<hr>
+<h3>GHSA-r488-j9vj-wx3q</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-07 · JavaScript<br>
+<code>@payloadcms/plugin-form-builder</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 125x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from overly permissive access control configurations in the Payload Form Builder plugin. Specifically, the &#39;read&#39; access for &#39;FormSubmissions&#39; and the &#39;emails&#39; field within &#39;Forms&#39; collections was set to allow any logged-in user to read, rather than restricting it to administrative users.</p>
+<p><b>Impact</b> : An attacker, if authenticated as any user (not necessarily an admin), could read sensitive form submission data and email configurations, potentially leading to information disclosure or further attacks.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">-      read: ({ req: { user } }) =&gt; !!user, // logged-in users,
++      read: ({ req }) =&gt; req.user?.collection === req.payload.config.admin.user,</pre>
+</details>
+<p><b>Fix</b> : The patch tightens access control by changing the &#39;read&#39; access logic. Instead of allowing any logged-in user, it now explicitly checks if the logged-in user belongs to the admin user collection configured in Payload CMS, thereby restricting access to administrative users only.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-r488-j9vj-wx3q">Advisory</a> · <a href="https://github.com/payloadcms/payload/commit/333b82b9f3e685fed6826c2e3270da79df8336c6">Commit</a>
 </p>
 <hr>
 <h3>GHSA-3vgf-8m4q-q4qr</h3>
@@ -144,7 +161,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -194,7 +211,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -358,7 +375,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -470,7 +487,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -599,7 +616,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -678,7 +695,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -893,7 +910,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -963,7 +980,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -975,7 +992,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -987,7 +1004,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -999,7 +1016,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1044,7 +1061,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1274,10 +1291,22 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-w794-rj3p-xv45</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
+<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-w794-rj3p-xv45">Advisory</a> · <a href="https://github.com/langflow-ai/langflow/commit/eba285edf1dd4a33bf23a9cb8113c991fcdf3d1d">Commit</a>
+</p>
+<hr>
 <h3>GHSA-8qpj-27x8-pwpq</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-06 · Python<br>
-<code>langflow</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 123x across ecosystem
+<code>langflow</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 125x across ecosystem
 </p>
 <p><b>Root cause</b> : The Langflow application&#39;s PythonREPLComponent and PythonREPLToolComponent allowed authenticated users to execute arbitrary Python code without proper authorization checks. Although there was a `allow_custom_components` setting, it was not enforced for these specific components, enabling a bypass.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary Python code on the server, leading to full system compromise (Remote Code Execution) and potential privilege escalation.</p>
@@ -1404,7 +1433,7 @@
 <h3>GHSA-8686-vhfx-7r3j</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1416,7 +1445,7 @@
 <h3>GHSA-c48m-32m9-vx93</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 815x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 833x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from an insufficiently strict regular expression used to validate allowed external package names. The regex allowed partial matches, meaning a malicious package name like &#39;evil-left-pad&#39; could bypass the allowlist if &#39;left-pad&#39; was permitted. Additionally, even with an anchored regex, path traversal sequences (&#39;..&#39;) within subpaths of allowed packages were not explicitly forbidden, allowing an attacker to escape the intended package and load an arbitrary host package.</p>
 <p><b>Impact</b> : An attacker could bypass the `vm2` sandbox and execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
@@ -1467,7 +1496,7 @@
 <h3>GHSA-jjq7-m736-w977</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-09-23 · Ruby<br>
-<code>openc3</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 123x across ecosystem
+<code>openc3</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 125x across ecosystem
 </p>
 <p><b>Root cause</b> : The system allowed authenticated non-admin users to write to specific configuration overlay paths (targets_modified/TARGET/cmd_tlm/) which were later loaded and executed as code (via ERB rendering and GENERIC_*_CONVERSION evaluation) by PacketConfig. This bypasses intended authorization checks for code execution.</p>
 <p><b>Impact</b> : An authenticated attacker could inject and execute arbitrary code on the server, leading to full system compromise and potentially impacting the underlying infrastructure.</p>
@@ -1537,66 +1566,6 @@
 <a href="https://github.com/advisories/GHSA-rr49-f9g6-c9r5">Advisory</a> · <a href="https://github.com/plone/plone.app.portlets/commit/1d9cacacfad9ed08b890dadc6e75741e295dc151">Commit</a>
 </p>
 <hr>
-<h3>GHSA-26vp-8gxg-v4pg</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-09-18 · Java<br>
-<code>org.xwiki.rendering:xwiki-rendering-xml</code> · Pattern: <code>UNSANITIZED_INPUT→TEMPLATE</code> · 28x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from insufficient sanitization of user-controlled raw content. The `printRaw` method directly processed input strings, allowing an attacker to inject specific sequences like `{{/html}}` which could be combined with other content to prematurely close an HTML block and execute arbitrary code or script within the XWiki rendering engine.</p>
-<p><b>Impact</b> : An attacker could achieve arbitrary code execution or script injection within the XWiki rendering context, potentially leading to full system compromise or defacement of rendered content.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">-		super.printRaw(raw);
-+		String escapedRaw = raw.replace(&#34;{{/html}}&#34;, &#34;&amp;#123;&amp;#123;/html}}&#34;);
-+
-+		StringBuilder prefix = new StringBuilder();
-+		for (Character nextChar : List.of(&#39;{&#39;, &#39;/&#39;, &#39;h&#39;, &#39;t&#39;, &#39;m&#39;, &#39;l&#39;, &#39;}&#39;, &#39;}&#39;)) {
-+			prefix.append(nextChar);</pre>
-</details>
-<p><b>Fix</b> : The patch introduces explicit escaping for the `{{/html}}` sequence and its prefixes within the `printRaw` method. It replaces `{{/html}}` with `&amp;#123;&amp;#123;/html}}` and also checks for partial matches at the end of the raw content, escaping the opening brace to prevent the sequence from being formed by concatenation.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-26vp-8gxg-v4pg">Advisory</a> · <a href="https://github.com/xwiki/xwiki-rendering/commit/92bc8095ed3acce15ab200c8525e1623b4898be5">Commit</a>
-</p>
-<hr>
-<h3>GHSA-c8w2-fgvx-vhv4</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-09-18 · Go<br>
-<code>github.com/kcp-dev/kcp</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 52x across ecosystem
-</p>
-<p><b>Root cause</b> : The kcp front-proxy failed to strip `X-Remote-*` identity headers from incoming requests when no authenticated user was present in the request context. This allowed an attacker to inject arbitrary identity headers, which were then trusted by downstream components.</p>
-<p><b>Impact</b> : An authenticated client could inject `X-Remote-Group` headers to impersonate `system:masters` or other privileged groups in any workspace, leading to full administrative control.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">Before:
-```go
-func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string, extraHeaderPrefix string) http.Handler {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if u, ok := request.UserFrom(r.Context()); ok {
-			authheaders.SetAuthHeaders(r.Header, u, userHeader, groupHeader, extraHeaderPrefix)
-		}
-		delegate.ServeHTTP(w, r)
-	}
-}
-```
-
-After:
-```go
-func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string, extraHeaderPrefix string) http.Handler {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if u, ok := request.UserFrom(r.Context()); ok {
-			authheaders.SetAuthHeaders(r.Header, u, userHeader, groupHeader, extraHeaderPrefix)
-		} else {
-			authheaders.ClearAuthHeaders(r.Header, userHeader, groupHeader, extraHeaderPrefix)
-		}
-		delegate.ServeHTTP(w, r)
-	}
-}</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `ClearAuthHeaders` function and ensures that `X-Remote-*` identity headers are always stripped from incoming requests, regardless of whether an authenticated user is present. This prevents unauthenticated or unprivileged users from injecting arbitrary identity information.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-c8w2-fgvx-vhv4">Advisory</a> · <a href="https://github.com/kcp-dev/kcp/commit/7437cdcfec8f927d1a9bf1b2dd1e075d038e27ca">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1632,10 +1601,10 @@ func WithProxyAuthHeaders(delegate http.Handler, userHeader, groupHeader string,
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2452</td></tr>
+<tr><td>Total advisories</td><td>2472</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>63</td></tr>
-<tr><td>Last updated</td><td>2026-10-07</td></tr>
+<tr><td>Last updated</td><td>2026-10-08</td></tr>
 </table>
 </details>
 <hr>
