@@ -1,1 +1,1 @@
-{"id":"GHSA-mc5q-6hpj-rp7j","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-01T14:44:30.639882+00:00"}
+{"id":"GHSA-mc5q-6hpj-rp7j","axis":"advisories","repo":"getgrav/grav","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-08T14:53:12.601285+00:00"}
