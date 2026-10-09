@@ -1,1 +1,1 @@
-{"id":"GHSA-x424-64qh-5j54","axis":"advisories","repo":"reactphp/http","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-02T14:04:12.193310+00:00"}
+{"id":"GHSA-x424-64qh-5j54","axis":"advisories","repo":"reactphp/http","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-09T14:35:33.325929+00:00"}

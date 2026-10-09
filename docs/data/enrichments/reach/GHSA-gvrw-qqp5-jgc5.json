@@ -1,1 +1,1 @@
-{"id":"GHSA-gvrw-qqp5-jgc5","axis":"advisories","repo":"silverstripe/silverstripe-framework","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-02T14:05:49.334936+00:00"}
+{"id":"GHSA-gvrw-qqp5-jgc5","axis":"advisories","repo":"silverstripe/silverstripe-framework","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-09T14:36:58.739102+00:00"}

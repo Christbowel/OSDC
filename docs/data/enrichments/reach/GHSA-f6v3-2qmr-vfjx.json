@@ -1,1 +1,1 @@
-{"id":"GHSA-f6v3-2qmr-vfjx","axis":"advisories","repo":"zbateson/mail-mime-parser","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-02T14:03:30.605917+00:00"}
+{"id":"GHSA-f6v3-2qmr-vfjx","axis":"advisories","repo":"zbateson/mail-mime-parser","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-09T14:34:55.870978+00:00"}
