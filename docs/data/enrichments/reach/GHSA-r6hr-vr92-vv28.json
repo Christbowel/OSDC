@@ -1,1 +1,1 @@
-{"id":"GHSA-r6hr-vr92-vv28","axis":"advisories","repo":"PHPCSStandards/PHPCSUtils","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-07T14:41:31.735551+00:00"}
+{"id":"GHSA-r6hr-vr92-vv28","axis":"advisories","repo":"PHPCSStandards/PHPCSUtils","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:48:19.712099+00:00"}
