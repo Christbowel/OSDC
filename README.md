@@ -4,13 +4,36 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2605-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2616-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
 </p>
 </div>
+<hr>
+<h3>GHSA-f8c7-rwf9-fmgm</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-10-19 · Python<br>
+<code>mercury</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
+</p>
+<p><b>Root cause</b> : The application&#39;s access control mechanism, specifically the `BLOCKED_PATTERNS` list, had a regular expression that was incorrectly terminated. This allowed requests to `/api/terminals` to bypass the intended blocking, making the endpoint accessible without proper authentication.</p>
+<p><b>Impact</b> : An unauthenticated attacker could access the `/api/terminals` endpoint, which is typically used for managing terminal sessions. This could lead to remote code execution by allowing the attacker to create and interact with arbitrary terminal sessions.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/mercury_app/block_handler.py
++++ b/mercury_app/block_handler.py
+@@ -5,7 +5,7 @@
+ 
+ BLOCKED_PATTERNS = [
+     # JupyterLab UI + API
+-    r&#34;/lab(?!/(?:extensions/|api/settings(?:/|$)|api/translations(?:/|$)))(?:/.*)?&#34;
++    r&#34;/lab(?!/(?:extensions/|api/settings(?:/|$)|api/translations(?:/|$)))(?:/.*)?&#34;,</pre>
+</details>
+<p><b>Fix</b> : The patch corrects a regular expression in the `BLOCKED_PATTERNS` list within `mercury_app/block_handler.py`. A missing comma was added to properly terminate the regex for `/lab` paths, ensuring that subsequent patterns, including `/api/terminals`, are correctly applied and blocked.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-f8c7-rwf9-fmgm">Advisory</a> · <a href="https://github.com/mljar/mercury/commit/8c467129037ee9df269d543ac217ffd33b97bf3f">Commit</a>
+</p>
 <hr>
 <h3>GHSA-2cvf-wqm6-wr9g</h3>
 <p>
@@ -47,7 +70,7 @@
 <h3>GHSA-pq96-jpmf-w254</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-07 · JavaScript<br>
-<code>quasar</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 129x across ecosystem
+<code>quasar</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 130x across ecosystem
 </p>
 <p><b>Root cause</b> : The Quasar Framework&#39;s Server-Side Rendering (SSR) mechanism for meta tags (like title, meta, link, script, noscript) did not properly escape user-controlled input before rendering it into the HTML head. This allowed attackers to inject arbitrary HTML and JavaScript.</p>
 <p><b>Impact</b> : An attacker could inject malicious scripts into web pages, leading to session hijacking, defacement, redirection, or other client-side attacks against users viewing the affected pages.</p>
@@ -193,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -243,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -323,7 +346,7 @@
 <h3>GHSA-jqmf-mx4f-hfr6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-02 · Python<br>
-<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 83x across ecosystem
+<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
 </p>
 <p><b>Root cause</b> : The application had a &#39;dev mode&#39; where authentication was skipped if the API_AUTH_KEY environment variable was not set. This dev mode was not sufficiently restricted to local clients, allowing remote attackers to bypass authentication entirely if the key was unset. Additionally, several sensitive API endpoints lacked explicit authentication dependencies.</p>
 <p><b>Impact</b> : An unauthenticated remote attacker could access sensitive API endpoints, potentially leading to command execution, code injection, or Server-Side Request Forgery (SSRF) if the LLM-callable tools were enabled, or at minimum, information disclosure.</p>
@@ -364,7 +387,7 @@
 <h3>GHSA-v2f8-6655-7grj</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-02 · Python<br>
-<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 83x across ecosystem
+<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s API endpoints lacked proper authentication checks, especially when the API_AUTH_KEY environment variable was not set. In &#39;dev mode&#39; (API_AUTH_KEY unset), the system incorrectly allowed unauthenticated access from non-local clients, treating them as local. Additionally, the comparison of API keys was not constant-time, potentially leaking information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could access sensitive API endpoints, including those for file upload and potentially remote code execution (RCE) chains, leading to full system compromise.</p>
@@ -407,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -493,7 +516,7 @@
 <h3>GHSA-6rf4-v2fh-m6p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · JavaScript<br>
-<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 129x across ecosystem
+<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 130x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the SunEditor&#39;s sanitizer could be bypassed. Specifically, when setting code data to the editor, the `_deleteDisallowedTags` function was not consistently applied, allowing malicious HTML content (like script tags) to persist. Additionally, the regular expressions used to identify and remove disallowed tags were not comprehensive enough, failing to catch certain variations or combinations of tags like &#39;style&#39;, &#39;meta&#39;, &#39;link&#39;, and namespaced tags.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary JavaScript code into the editor&#39;s content, leading to Cross-Site Scripting (XSS). This could allow them to steal user sessions, deface websites, redirect users, or perform other malicious actions within the context of the user&#39;s browser.</p>
@@ -519,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -566,7 +589,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 129x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 130x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -648,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -727,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -797,7 +820,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 83x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -942,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1012,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1024,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1036,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1048,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1093,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1139,7 +1162,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 83x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -1182,7 +1205,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 83x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 85x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -1206,7 +1229,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 129x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 130x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -1326,7 +1349,7 @@
 <h3>GHSA-637c-6jxx-4rwm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1338,7 +1361,7 @@
 <h3>GHSA-fmxq-cgp8-87wp</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1350,7 +1373,7 @@
 <h3>GHSA-w794-rj3p-xv45</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
-<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1489,31 +1512,13 @@
 <h3>GHSA-8686-vhfx-7r3j</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 902x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
 <p><b>Fix</b> : </p>
 <p>
 <a href="https://github.com/advisories/GHSA-8686-vhfx-7r3j">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/b0f50662dd499ff33544bb42387958c64711af1e">Commit</a>
-</p>
-<hr>
-<h3>GHSA-c48m-32m9-vx93</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 901x across ecosystem
-</p>
-<p><b>Root cause</b> : The vulnerability stemmed from an insufficiently strict regular expression used to validate allowed external package names. The regex allowed partial matches, meaning a malicious package name like &#39;evil-left-pad&#39; could bypass the allowlist if &#39;left-pad&#39; was permitted. Additionally, even with an anchored regex, path traversal sequences (&#39;..&#39;) within subpaths of allowed packages were not explicitly forbidden, allowing an attacker to escape the intended package and load an arbitrary host package.</p>
-<p><b>Impact</b> : An attacker could bypass the `vm2` sandbox and execute arbitrary code in the host environment with the privileges of the Node.js process running the sandbox.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">- this.externalCache = externals.map(pattern =&gt; new RegExp(makeExternalMatcherRegex(pattern)));
-+ this.externalCache = externals.map(pattern =&gt; new RegExp(&#39;^(?:&#39; + makeExternalMatcherRegex(pattern) + &#39;)(?:[\\/].*)?$&#39;));
-+ if (x.split(/[\/]/).indexOf(&#39;..&#39;) !== -1) return undefined;</pre>
-</details>
-<p><b>Fix</b> : The patch introduces two main fixes: first, it anchors the regular expression used for external package allowlisting to ensure it matches the entire package name, optionally followed by a subpath. Second, it explicitly checks for and rejects any package specifier containing &#39;..&#39; path segments before calling the custom resolver, preventing path traversal attacks.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-c48m-32m9-vx93">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/ab4ee7d803e8c80155e9eb3672226bddbca4aa9c">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1551,7 +1556,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2605</td></tr>
+<tr><td>Total advisories</td><td>2616</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>86</td></tr>
 <tr><td>Last updated</td><td>2026-10-19</td></tr>
