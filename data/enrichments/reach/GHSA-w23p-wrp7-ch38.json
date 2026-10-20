@@ -1,1 +1,1 @@
-{"id":"GHSA-w23p-wrp7-ch38","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-12T16:55:45.844616+00:00"}
+{"id":"GHSA-w23p-wrp7-ch38","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-20T12:54:00.541293+00:00"}

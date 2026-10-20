@@ -1,1 +1,1 @@
-{"id":"GHSA-4w2j-m93h-cj5j","axis":"advisories","repo":"quinn-rs/quinn","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-12T16:59:26.599163+00:00"}
+{"id":"GHSA-4w2j-m93h-cj5j","axis":"advisories","repo":"quinn-rs/quinn","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-20T12:57:46.610785+00:00"}
