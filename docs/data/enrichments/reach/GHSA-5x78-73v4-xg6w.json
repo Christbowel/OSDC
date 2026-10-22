@@ -1,1 +1,1 @@
-{"id":"GHSA-5x78-73v4-xg6w","axis":"advisories","repo":"rust-postgres/rust-postgres","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:52:11.194108+00:00"}
+{"id":"GHSA-5x78-73v4-xg6w","axis":"advisories","repo":"rust-postgres/rust-postgres","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:12:43.928557+00:00"}

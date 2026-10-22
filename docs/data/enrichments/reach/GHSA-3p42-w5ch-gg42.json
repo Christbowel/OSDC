@@ -1,1 +1,1 @@
-{"id":"GHSA-3p42-w5ch-gg42","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:55:44.906746+00:00"}
+{"id":"GHSA-3p42-w5ch-gg42","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:15:17.345487+00:00"}

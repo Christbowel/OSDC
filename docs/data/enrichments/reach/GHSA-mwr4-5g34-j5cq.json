@@ -1,1 +1,1 @@
-{"id":"GHSA-mwr4-5g34-j5cq","axis":"advisories","repo":"elixir-grpc/grpc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:52:01.146729+00:00"}
+{"id":"GHSA-mwr4-5g34-j5cq","axis":"advisories","repo":"elixir-grpc/grpc","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:12:35.175383+00:00"}

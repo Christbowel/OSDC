@@ -1,1 +1,1 @@
-{"id":"GHSA-55wf-5m3q-6jjf","axis":"advisories","repo":"Icinga/ipl-web","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:59:30.526912+00:00"}
+{"id":"GHSA-55wf-5m3q-6jjf","axis":"advisories","repo":"Icinga/ipl-web","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:18:52.785877+00:00"}
