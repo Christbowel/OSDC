@@ -1,1 +1,1 @@
-{"id":"GHSA-rvx4-ffvw-m9q3","axis":"advisories","repo":"composer/composer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-15T12:50:37.926098+00:00"}
+{"id":"GHSA-rvx4-ffvw-m9q3","axis":"advisories","repo":"composer/composer","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:11:22.547381+00:00"}
