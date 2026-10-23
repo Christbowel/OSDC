@@ -1,1 +1,1 @@
-{"id":"GHSA-3q6v-r5mr-hxv8","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-16T12:41:23.373612+00:00"}
+{"id":"GHSA-3q6v-r5mr-hxv8","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-23T12:49:51.109865+00:00"}
