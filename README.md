@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2738-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2768-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -216,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -266,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -322,7 +322,7 @@
 <h3>GHSA-wjwh-qqvp-g4p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 17x across ecosystem
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly streaming compilation APIs. Specifically, `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` could return Promises whose prototype chain reached the host realm&#39;s `Promise.prototype`. This bypasses the sandbox&#39;s `then`/`catch` overrides and `resetPromiseSpecies` mechanism, allowing an attacker to manipulate the `Symbol.species` property of the host Promise and execute arbitrary code in the host context.</p>
 <p><b>Impact</b> : An attacker could achieve a complete sandbox escape, executing arbitrary code in the host environment with the privileges of the vm2 process. This leads to remote code execution (RCE) outside the sandbox.</p>
@@ -430,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -542,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -671,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -750,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -762,7 +762,7 @@
 <h3>GHSA-2956-977x-2w3r</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-30 · Python<br>
-<code>flyto-core</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 73x across ecosystem
+<code>flyto-core</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 74x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed an attacker to control both the target file path and its base directory when writing files. The existing path traversal check was ineffective because it validated the output path against a caller-supplied output directory, which an attacker could manipulate to bypass the check and write files outside the intended sandbox.</p>
 <p><b>Impact</b> : An attacker could write arbitrary files to any location on the file system where the application has write permissions, potentially leading to remote code execution, data corruption, or denial of service.</p>
@@ -965,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1035,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1047,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1059,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1071,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1116,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1128,7 +1128,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 17x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 18x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -1258,7 +1258,7 @@
 <h3>GHSA-9cp7-j3f8-p5jx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · Go<br>
-<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 73x across ecosystem
+<code>github.com/daptin/daptin</code> · Pattern: <code>PATH_TRAVERSAL→FILE_WRITE</code> · 74x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed user-supplied filenames and archive entry names to be used directly in file system operations (e.g., `filepath.Join`, `os.OpenFile`, `os.MkdirAll`) without sufficient sanitization. This enabled attackers to manipulate file paths using `../` sequences or absolute paths.</p>
 <p><b>Impact</b> : An unauthenticated attacker could write arbitrary files to arbitrary locations on the server&#39;s file system, potentially leading to remote code execution, data corruption, or denial of service. In the case of Zip Slip, files within an uploaded archive could be extracted outside the intended directory.</p>
@@ -1373,10 +1373,179 @@
 <a href="https://github.com/advisories/GHSA-84c9-qqpq-2pq5">Advisory</a> · <a href="https://github.com/The-40-Thieves/obsidian-tc/commit/38b4992e87dc2715564236e1a42d005ab05a0194">Commit</a>
 </p>
 <hr>
+<h3>GHSA-897f-g5gm-fmxm</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-10-23 · RUST<br>
+<code>wasmtime</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 22x across ecosystem
+</p>
+<p><b>Root cause</b> : The Cranelift compiler used a bit-packing scheme to store `ValueDataPacked` in a `u64`, where fields like `x` and `y` were allocated 24 bits each. This narrow field encoding, combined with a special sentinel value (0xffffffff) for `u32` values that didn&#39;t fit, led to silent overflows. When a `u32` value greater than `2^24 - 2` (excluding the sentinel) was encoded, it would be truncated, leading to miscompilation.</p>
+<p><b>Impact</b> : An attacker could craft WebAssembly modules that, when compiled by Wasmtime, would result in miscompiled code. This miscompilation could lead to incorrect program behavior, memory corruption, or potentially arbitrary code execution within the Wasmtime sandbox, breaking its security guarantees.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/cranelift/codegen/src/ir/dfg.rs
++++ b/cranelift/codegen/src/ir/dfg.rs
+@@ -718,7 +718,7 @@ enum ValueData {
+ /// Layout:
+ ///
+ /// ```plain
+-///        | tag:2 |  type:14        |    x:24       | y:24          |
++///        | tag:2 |  type:14        |    x:32       | y:32          |
+ ///
+ /// Inst       00     ty               inst output     inst index
+ /// Param      01     ty               blockparam num  block index
+@@ -727,76 +727,50 @@ enum ValueData {
+ /// ```
+ #[derive(Clone, Copy, Debug, PartialEq, Hash)]
+ #[cfg_attr(feature = &#34;enable-serde&#34;, derive(Serialize, Deserialize))]
+-struct ValueDataPacked(u64);
+-
+-/// Encodes a value in 0..2^32 into 0..2^n, where n is less than 32
+-/// (and is implied by `mask`), by translating 2^32-1 (0xffffffff)
+-/// into 2^n-1 and panic&#39;ing on 2^n..2^32-1.
+-fn encode_narrow_field(x: u32, bits: u8) -&gt; u32 {
+-    let max = (1 &lt;&lt; bits) - 1;
+-    if x == 0xffff_ffff {
+-        max
+-    } else {
+-        debug_assert!
+-            x &lt; max,
+-            &#34;{x} does not fit into {bits} bits (must be less than {max} to \
+-             allow for a 0xffffffff sentinel)&#34;
+-        );
+-        x
+-    }
+-}
+-
+-/// The inverse of the above `encode_narrow_field`: unpacks 2^n-1 into
+-/// 2^32-1.
+-fn decode_narrow_field(x: u32, bits: u8) -&gt; u32 {
+-    if x == (1 &lt;&lt; bits) - 1 { 0xffff_ffff } else { x }
++#[repr(Rust, packed)]
++struct ValueDataPacked {
++    x: u32,
++    y: u32,
++    flags_and_type: u16,
+}
+ 
+ impl ValueDataPacked {
+-    const Y_SHIFT: u8 = 0;
+-    const Y_BITS: u8 = 24;
+-    const X_SHIFT: u8 = Self::Y_SHIFT + Self::Y_BITS;
+-    const X_BITS: u8 = 24;
+-    const TYPE_SHIFT: u8 = Self::X_SHIFT + Self::X_BITS;
++    const TYPE_SHIFT: u8 = 0;
+     const TYPE_BITS: u8 = 14;
+     const TAG_SHIFT: u8 = Self::TYPE_SHIFT + Self::TYPE_BITS;
+     const TAG_BITS: u8 = 2;
+ 
+-    const TAG_INST: u64 = 0;
+-    const TAG_PARAM: u64 = 1;
+-    const TAG_ALIAS: u64 = 2;
+-    const TAG_UNION: u64 = 3;
++    const TAG_INST: u16 = 0;
++    const TAG_PARAM: u16 = 1;
++    const TAG_ALIAS: u16 = 2;
++    const TAG_UNION: u16 = 3;
+ 
+-    fn make(tag: u64, ty: Type, x: u32, y: u32) -&gt; ValueDataPacked {
++    fn make(tag: u16, ty: Type, x: u32, y: u32) -&gt; ValueDataPacked {
+         debug_assert!(tag &lt; (1 &lt;&lt; Self::TAG_BITS));
+         debug_assert!(ty.repr() &lt; (1 &lt;&lt; Self::TYPE_BITS));
+ 
+-        let x = encode_narrow_field(x, Self::X_BITS);
+-        let y = encode_narrow_field(y, Self::Y_BITS);
+-
+-        ValueDataPacked(
+-            (tag &lt;&lt; Self::TAG_SHIFT)
+-                | ((ty.repr() as u64) &lt;&lt; Self::TYPE_SHIFT)
+-                | ((x as u64) &lt;&lt; Self::X_SHIFT)
+-                | ((y as u64) &lt;&lt; Self::Y_SHIFT),
+-        )
++        ValueDataPacked {
++            x,
++            y,
++            flags_and_type: (tag &lt;&lt; Self::TAG_SHIFT) | (ty.repr() &lt;&lt; Self::TYPE_SHIFT),
++        }
+     }
+ 
+     #[inline(always)]
+-    fn field(self, shift: u8, bits: u8) -&gt; u64 {
+-        (self.0 &gt;&gt; shift) &amp; ((1 &lt;&lt; bits) - 1)
++    fn field(self, shift: u8, bits: u8) -&gt; u16 {
++        (self.flags_and_type &gt;&gt; shift) &amp; ((1 &lt;&lt; bits) - 1)
+     }
+ 
+     #[inline(always)]
+     fn ty(self) -&gt; Type {
+-        let ty = self.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS) as u16;
++        let ty = self.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS);
+         Type::from_repr(ty)
+     }
+ 
+     #[inline(always)]
+     fn set_type(&amp;mut self, ty: Type) {
+-        self.0 &amp;= !(((1 &lt;&lt; Self::TYPE_BITS) - 1) &lt;&lt; Self::TYPE_SHIFT);
+-        self.0 |= (ty.repr() as u64) &lt;&lt; Self::TYPE_SHIFT;
++        self.flags_and_type &amp;= !(((1 &lt;&lt; Self::TYPE_BITS) - 1) &lt;&lt; Self::TYPE_SHIFT);
++        self.flags_and_type |= ty.repr() &lt;&lt; Self::TYPE_SHIFT;
+     }
+ }
+ 
+@@ -822,35 +796,30 @@ impl From&lt;ValueData&gt; for ValueDataPacked {
+ impl From&lt;ValueDataPacked&gt; for ValueData {
+     fn from(data: ValueDataPacked) -&gt; Self {
+         let tag = data.field(ValueDataPacked::TAG_SHIFT, ValueDataPacked::TAG_BITS);
+-        let ty = u16::try_from(data.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS))
+-            .expect(&#34;Mask should ensure result fits in a u16&#34;);
+-        let x = u32::try_from(data.field(ValueDataPacked::X_SHIFT, ValueDataPacked::X_BITS))
+-            .expect(&#34;Mask should ensure result fits in a u32&#34;);
+-        let y = u32::try_from(data.field(ValueDataPacked::Y_SHIFT, ValueDataPacked::Y_BITS))
+-            .expect(&#34;Mask should ensure result fits in a u32&#34;);
++        let ty = data.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS);
+ 
+         let ty = Type::from_repr(ty);
+         match tag {
+             ValueDataPacked::TAG_INST =&gt; ValueData::Inst {
+                 ty,
+-                num: u16::try_from(x).expect(&#34;Inst result num should fit in u16&#34;),
+-                inst: Inst::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
++                num: u16::try_from(data.x).expect(&#34;Inst result num should fit in u16&#34;),
++                inst: Inst::from_bits(data.y),
+             },
+             ValueDataPacked::TAG_PARAM =&gt; ValueData::Param {
+                 ty,
+-                num: u16::try_from(x).expect(&#34;Blockparam index should fit in u16&#34;),
+-                block: Block::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
++                num: u16::try_from(data.x).expect(&#34;Blockparam index should fit in u16&#34;),
++                block: Block::from_bits(data.y),
+             },
+             ValueDataPacked::TAG_ALIAS =&gt; ValueData::Alias {
+                 ty,
+-                original: Value::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
++                original: Value::from_bits(data.y),
+             },
+             ValueDataPacked::TAG_UNION =&gt; ValueData::Union {
+                 ty,
+-                x: Value::from_bits(decode_narrow_field(x, ValueDataPacked::X_BITS)),
+-                y: Value::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
++                x: Value::from_bits(data.x),
++                y: Value::from_bits(data.y),
+             },
+-            _ =&gt; panic!(&#34;Invalid tag {} in ValueDataPacked 0x{:x}&#34;, tag, data.0),
++            _ =&gt; panic!(&#34;Invalid tag {tag} in ValueDataPacked&#34;),
+         }
+     }
+ }</pre>
+</details>
+<p><b>Fix</b> : The patch refactors `ValueDataPacked` to use a `#[repr(Rust, packed)]` struct with `u32` fields for `x` and `y`, eliminating the need for bit-packing and the `encode_narrow_field`/`decode_narrow_field` functions. This ensures that `u32` values are stored without truncation, preventing silent overflows and miscompilation.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-897f-g5gm-fmxm">Advisory</a> · <a href="https://github.com/bytecodealliance/wasmtime/commit/ba8f7d70caa1825b7f64fa75cd9d03f4a438dae0">Commit</a>
+</p>
+<hr>
 <h3>GHSA-637c-6jxx-4rwm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1388,7 +1557,7 @@
 <h3>GHSA-fmxq-cgp8-87wp</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1400,7 +1569,7 @@
 <h3>GHSA-w794-rj3p-xv45</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
-<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 958x across ecosystem
+<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1483,59 +1652,6 @@
 <a href="https://github.com/advisories/GHSA-46pr-c5wc-xffx">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
 </p>
 <hr>
-<h3>GHSA-6w8r-xxw2-g3hx</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 32x across ecosystem
-</p>
-<p><b>Root cause</b> : The vm2 sandbox failed to properly restrict access to certain Node.js built-in modules, specifically `node:sqlite`. The `DatabaseSync` constructor in `node:sqlite` allowed the `allowExtension` option to be set, which, if enabled, permits loading native SQLite extensions. This capability was not adequately neutralized by the sandbox&#39;s read-only proxy, enabling a sandboxed plugin to execute arbitrary native code in the host process.</p>
-<p><b>Impact</b> : An attacker could execute arbitrary native code on the host system, effectively escaping the sandbox and achieving full remote code execution (RCE) with the privileges of the Node.js process.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/lib/builtin.js
-+++ b/lib/builtin.js
-@@ -210,6 +210,163 @@ if (EventEmitter.EventEmitterAsyncResource) {
- 
-+// SECURITY (GHSA-6w8r-xxw2-g3hx): `node:sqlite`&#39;s DatabaseSync can load a native
-+// SQLite extension (`loadExtension(path)` / the `loadExtension` SQL function) —
-+// arbitrary native code in the host process. Node gates this entirely on the
-+// constructor&#39;s `allowExtension` option: with it off (the default), both
-+// `loadExtension()` and `enableLoadExtension()` throw `ERR_INVALID_STATE`.
-+// Wrap the DatabaseSync constructor so `allowExtension` is forced off, which
-+// closes every extension-loading path while leaving normal SQL usable.
-+function sanitizeSqliteModule(mod) {
-+	const HostDatabaseSync = mod.DatabaseSync;
-+	if (typeof HostDatabaseSync !== &#39;function&#39;) return mod;
-+	const copy = Object.assign({}, mod);
-+	class DatabaseSync extends HostDatabaseSync {
-+		constructor(location, ...rest) {
-+			// Preserve call arity (native DatabaseSync rejects an explicit
-+			// `undefined` options arg). Force `allowExtension` off only when an
-+			// options value is actually supplied; otherwise the native default
-+			// (off) already applies. SECURITY (GHSA-6w8r-xxw2-g3hx follow-up): the
-+			// native DatabaseSync also accepts a FUNCTION as its options argument
-+			// (functions carry own properties), so `function o(){}; o.allowExtension
-+			// = true` bypassed an `object`-only check. Treat functions as options
-+			// too — Object.assign copies their own enumerable props and forces
-+			// allowExtension off.
-+			if (rest.length &gt; 0 &amp;&amp; rest[0] !== null &amp;&amp;
-+				(typeof rest[0] === &#39;object&#39; || typeof rest[0] === &#39;function&#39;)) {
-+				rest[0] = Object.assign({}, rest[0], {allowExtension: false});
-+			}
-+			super(location, ...rest);
-+		}
-+	}
-+	copy.DatabaseSync = DatabaseSync;
-+	return copy;
-+}
-+
-+// SECURITY (GHSA-98xx-8mx4-x7cm): `tls.setDefaultCACertificates(list)` replaces</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a `sanitizeSqliteModule` function that wraps the `node:sqlite.DatabaseSync` constructor. This wrapper forces the `allowExtension` option to `false` when an options object is provided, preventing the loading of native SQLite extensions. This ensures that even if a sandboxed plugin attempts to enable extensions, the underlying host functionality will deny it.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-6w8r-xxw2-g3hx">Advisory</a> · <a href="https://github.com/patriksimek/vm2/commit/aa146a77f859325e079f3bfbfe6d8309af483daa">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1571,10 +1687,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2738</td></tr>
+<tr><td>Total advisories</td><td>2768</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
-<tr><td>Last updated</td><td>2026-10-23</td></tr>
+<tr><td>Last updated</td><td>2026-10-24</td></tr>
 </table>
 </details>
 <hr>
