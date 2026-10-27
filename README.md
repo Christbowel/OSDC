@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2768-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2798-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -216,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -266,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -296,7 +296,7 @@
 <h3>GHSA-j3hm-6rg5-mchv</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 43x across ecosystem
+<code>vm2</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 44x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 library, when configured with `require.external: true` but without an explicit `require.root`, allowed sandboxed code to use the host&#39;s `require()` function to load arbitrary paths. This effectively granted unrestricted access to the host filesystem and enabled full Remote Code Execution (RCE) because the sandboxed code could load and execute any module available to the host process.</p>
 <p><b>Impact</b> : An attacker could escape the sandbox, execute arbitrary code on the host system with the privileges of the vm2 process, and potentially access or manipulate host files.</p>
@@ -322,7 +322,7 @@
 <h3>GHSA-wjwh-qqvp-g4p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 18x across ecosystem
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly streaming compilation APIs. Specifically, `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` could return Promises whose prototype chain reached the host realm&#39;s `Promise.prototype`. This bypasses the sandbox&#39;s `then`/`catch` overrides and `resetPromiseSpecies` mechanism, allowing an attacker to manipulate the `Symbol.species` property of the host Promise and execute arbitrary code in the host context.</p>
 <p><b>Impact</b> : An attacker could achieve a complete sandbox escape, executing arbitrary code in the host environment with the privileges of the vm2 process. This leads to remote code execution (RCE) outside the sandbox.</p>
@@ -430,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -542,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -671,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -683,7 +683,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 119x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 120x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -705,7 +705,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 32x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -750,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -785,7 +785,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 144x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 145x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -965,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1035,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1047,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1059,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1071,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1116,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1128,7 +1128,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 18x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 19x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -1188,7 +1188,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 43x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 44x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -1545,7 +1545,7 @@
 <h3>GHSA-637c-6jxx-4rwm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1557,7 +1557,7 @@
 <h3>GHSA-fmxq-cgp8-87wp</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1569,7 +1569,7 @@
 <h3>GHSA-w794-rj3p-xv45</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
-<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 973x across ecosystem
+<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 982x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1606,7 +1606,7 @@
 <h3>GHSA-46pr-c5wc-xffx</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 32x across ecosystem
+<code>vm2</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 33x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed access to certain Node.js built-in modules (like `crypto`) without properly sanitizing or restricting dangerous functions. Specifically, `crypto.setEngine()` could be called by sandboxed code, which then instructed OpenSSL to dynamically load a native library from a specified path into the host process. The constructor of this native library would execute arbitrary code before OpenSSL even validated it as a legitimate engine.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary native code execution on the host system, effectively escaping the vm2 sandbox and gaining full control over the host process.</p>
@@ -1687,7 +1687,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2768</td></tr>
+<tr><td>Total advisories</td><td>2798</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
 <tr><td>Last updated</td><td>2026-10-27</td></tr>
