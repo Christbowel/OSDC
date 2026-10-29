@@ -1,1 +1,1 @@
-{"id":"GHSA-72xp-p242-47p9","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:16:37.514220+00:00"}
+{"id":"GHSA-72xp-p242-47p9","axis":"advisories","repo":"symfony/symfony","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-29T14:46:22.830457+00:00"}

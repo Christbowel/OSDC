@@ -1,1 +1,1 @@
-{"id":"GHSA-r2f4-ff2p-xc64","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:16:33.676042+00:00"}
+{"id":"GHSA-r2f4-ff2p-xc64","axis":"advisories","repo":"pimcore/pimcore","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-29T14:46:18.811173+00:00"}

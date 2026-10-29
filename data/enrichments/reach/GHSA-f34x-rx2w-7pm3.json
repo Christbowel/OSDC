@@ -1,1 +1,1 @@
-{"id":"GHSA-f34x-rx2w-7pm3","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:15:19.428338+00:00"}
+{"id":"GHSA-f34x-rx2w-7pm3","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-29T14:44:57.964340+00:00"}
