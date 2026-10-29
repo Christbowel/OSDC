@@ -1,1 +1,1 @@
-{"id":"GHSA-jh32-v29g-68pq","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-22T13:15:20.119030+00:00"}
+{"id":"GHSA-jh32-v29g-68pq","axis":"advisories","repo":"TYPO3/typo3","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-29T14:44:58.848264+00:00"}
