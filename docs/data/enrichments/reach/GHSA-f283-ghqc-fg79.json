@@ -1,1 +1,1 @@
-{"id":"GHSA-f283-ghqc-fg79","axis":"advisories","repo":"guzzle/guzzle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-24T12:16:16.224502+00:00"}
+{"id":"GHSA-f283-ghqc-fg79","axis":"advisories","repo":"guzzle/guzzle","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-31T13:55:15.735565+00:00"}

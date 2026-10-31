@@ -1,1 +1,1 @@
-{"id":"GHSA-754j-98wh-57rf","axis":"advisories","repo":"swoosh/swoosh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-24T12:10:54.053101+00:00"}
+{"id":"GHSA-754j-98wh-57rf","axis":"advisories","repo":"swoosh/swoosh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-31T13:50:10.446181+00:00"}
