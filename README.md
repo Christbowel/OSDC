@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2859-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2889-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -107,7 +107,7 @@
 <h3>GHSA-r488-j9vj-wx3q</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-07 · JavaScript<br>
-<code>@payloadcms/plugin-form-builder</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 135x across ecosystem
+<code>@payloadcms/plugin-form-builder</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 136x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from overly permissive access control configurations in the Payload Form Builder plugin. Specifically, the &#39;read&#39; access for &#39;FormSubmissions&#39; and the &#39;emails&#39; field within &#39;Forms&#39; collections was set to allow any logged-in user to read, rather than restricting it to administrative users.</p>
 <p><b>Impact</b> : An attacker, if authenticated as any user (not necessarily an admin), could read sensitive form submission data and email configurations, potentially leading to information disclosure or further attacks.</p>
@@ -216,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -266,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -322,7 +322,7 @@
 <h3>GHSA-wjwh-qqvp-g4p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 19x across ecosystem
+<code>vm2</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly isolate WebAssembly streaming compilation APIs. Specifically, `WebAssembly.compileStreaming` and `WebAssembly.instantiateStreaming` could return Promises whose prototype chain reached the host realm&#39;s `Promise.prototype`. This bypasses the sandbox&#39;s `then`/`catch` overrides and `resetPromiseSpecies` mechanism, allowing an attacker to manipulate the `Symbol.species` property of the host Promise and execute arbitrary code in the host context.</p>
 <p><b>Impact</b> : An attacker could achieve a complete sandbox escape, executing arbitrary code in the host environment with the privileges of the vm2 process. This leads to remote code execution (RCE) outside the sandbox.</p>
@@ -430,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -542,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -671,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -750,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -965,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1035,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1047,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1059,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1071,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1116,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1128,7 +1128,7 @@
 <h3>GHSA-g8f2-4f4f-5jqw</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-11 · JavaScript<br>
-<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 19x across ecosystem
+<code>@nyariv/sandboxjs</code> · Pattern: <code>TYPE_CONFUSION→BYPASS</code> · 20x across ecosystem
 </p>
 <p><b>Root cause</b> : The sandbox environment in SandboxJS failed to restrict access to sensitive JavaScript properties like &#39;caller&#39;, &#39;callee&#39;, and &#39;arguments&#39;. These properties, when accessed from within a sandboxed function, could leak references to the internal execution context or global objects, effectively allowing an attacker to break out of the sandbox.</p>
 <p><b>Impact</b> : An attacker could escape the JavaScript sandbox, gaining access to the host environment and potentially executing arbitrary code or accessing sensitive resources outside the intended sandboxed scope.</p>
@@ -1389,7 +1389,7 @@
 <h3>GHSA-84c9-qqpq-2pq5</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-23 · JavaScript<br>
-<code>obsidian-tc</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 135x across ecosystem
+<code>obsidian-tc</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 136x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s JWT tokens, when used via the HTTP transport, did not enforce a binding between the token and a specific vault. While tokens could specify a &#39;vault&#39; claim, this claim was not used to restrict access, allowing an attacker with a valid token for one vault to access or manipulate data in any other configured vault by simply specifying a different vault ID in their requests.</p>
 <p><b>Impact</b> : An attacker could use a token issued for a specific vault to access, modify, or delete data in any other vault configured on the server, leading to unauthorized data access and potential data loss across all vaults.</p>
@@ -1585,7 +1585,7 @@
 <h3>GHSA-637c-6jxx-4rwm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1597,7 +1597,7 @@
 <h3>GHSA-fmxq-cgp8-87wp</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1609,7 +1609,7 @@
 <h3>GHSA-w794-rj3p-xv45</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
-<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 1003x across ecosystem
+<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 1021x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1621,7 +1621,7 @@
 <h3>GHSA-8qpj-27x8-pwpq</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-06 · Python<br>
-<code>langflow</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 135x across ecosystem
+<code>langflow</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 136x across ecosystem
 </p>
 <p><b>Root cause</b> : The Langflow application&#39;s PythonREPLComponent and PythonREPLToolComponent allowed authenticated users to execute arbitrary Python code without proper authorization checks. Although there was a `allow_custom_components` setting, it was not enforced for these specific components, enabling a bypass.</p>
 <p><b>Impact</b> : An authenticated attacker could execute arbitrary Python code on the server, leading to full system compromise (Remote Code Execution) and potential privilege escalation.</p>
@@ -1678,10 +1678,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2859</td></tr>
+<tr><td>Total advisories</td><td>2889</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
-<tr><td>Last updated</td><td>2026-10-30</td></tr>
+<tr><td>Last updated</td><td>2026-10-31</td></tr>
 </table>
 </details>
 <hr>
