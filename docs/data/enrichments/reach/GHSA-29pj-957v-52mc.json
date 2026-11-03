@@ -1,1 +1,1 @@
-{"id":"GHSA-29pj-957v-52mc","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-27T13:31:18.704101+00:00"}
+{"id":"GHSA-29pj-957v-52mc","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-03T15:26:49.068318+00:00"}
