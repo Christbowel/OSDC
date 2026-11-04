@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2898-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2899-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -705,7 +705,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 34x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 35x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -1678,10 +1678,10 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2898</td></tr>
+<tr><td>Total advisories</td><td>2899</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
-<tr><td>Last updated</td><td>2026-11-03</td></tr>
+<tr><td>Last updated</td><td>2026-11-04</td></tr>
 </table>
 </details>
 <hr>
