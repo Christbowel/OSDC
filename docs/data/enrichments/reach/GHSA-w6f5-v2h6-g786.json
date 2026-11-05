@@ -1,1 +1,1 @@
-{"id":"GHSA-w6f5-v2h6-g786","axis":"advisories","repo":"predis/predis","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-10-29T14:40:00.591240+00:00"}
+{"id":"GHSA-w6f5-v2h6-g786","axis":"advisories","repo":"predis/predis","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-05T15:46:55.689994+00:00"}
