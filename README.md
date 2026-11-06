@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2904-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2919-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -38,7 +38,7 @@
 <h3>GHSA-2cvf-wqm6-wr9g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-15 · Go<br>
-<code>go.podman.io/podman/v6</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 56x across ecosystem
+<code>go.podman.io/podman/v6</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 57x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from Podman&#39;s `podman run` command allowing image annotations to disable almost all sandboxing. Specifically, a checkpoint annotation, previously used for restoring containers, could be present in an image. When `podman run` processed such an image, it would inadvertently apply the checkpoint&#39;s relaxed security settings, bypassing intended sandboxing.</p>
 <p><b>Impact</b> : An attacker could craft a malicious container image with a specific annotation that, when run with `podman run`, would disable critical security sandboxing mechanisms. This could lead to privilege escalation, allowing the container to escape its isolation and potentially gain control over the host system.</p>
@@ -70,7 +70,7 @@
 <h3>GHSA-pq96-jpmf-w254</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-07 · JavaScript<br>
-<code>quasar</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 143x across ecosystem
+<code>quasar</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 144x across ecosystem
 </p>
 <p><b>Root cause</b> : The Quasar Framework&#39;s Server-Side Rendering (SSR) mechanism for meta tags (like title, meta, link, script, noscript) did not properly escape user-controlled input before rendering it into the HTML head. This allowed attackers to inject arbitrary HTML and JavaScript.</p>
 <p><b>Impact</b> : An attacker could inject malicious scripts into web pages, leading to session hijacking, defacement, redirection, or other client-side attacks against users viewing the affected pages.</p>
@@ -216,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -266,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -430,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -442,7 +442,7 @@
 <h3>GHSA-98xx-8mx4-x7cm</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 56x across ecosystem
+<code>vm2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 57x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 library&#39;s NodeVM allowed sandboxed code to call `tls.setDefaultCACertificates()`. This function, when called from within the sandbox, would modify the host process&#39;s global TLS trust store, effectively allowing the sandboxed code to influence the security of the entire host application&#39;s TLS connections.</p>
 <p><b>Impact</b> : An attacker could replace the host process&#39;s default CA trust store, enabling them to intercept and decrypt TLS traffic from the host application by presenting attacker-signed certificates. This leads to a complete compromise of the host&#39;s TLS security.</p>
@@ -516,7 +516,7 @@
 <h3>GHSA-6rf4-v2fh-m6p4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · JavaScript<br>
-<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 143x across ecosystem
+<code>suneditor</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 144x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the SunEditor&#39;s sanitizer could be bypassed. Specifically, when setting code data to the editor, the `_deleteDisallowedTags` function was not consistently applied, allowing malicious HTML content (like script tags) to persist. Additionally, the regular expressions used to identify and remove disallowed tags were not comprehensive enough, failing to catch certain variations or combinations of tags like &#39;style&#39;, &#39;meta&#39;, &#39;link&#39;, and namespaced tags.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary JavaScript code into the editor&#39;s content, leading to Cross-Site Scripting (XSS). This could allow them to steal user sessions, deface websites, redirect users, or perform other malicious actions within the context of the user&#39;s browser.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -566,7 +566,7 @@
 <h3>GHSA-wrhw-j3f9-8vc6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-22 · Python<br>
-<code>mcp-atlassian</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 42x across ecosystem
+<code>mcp-atlassian</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to JQL injection because it did not properly sanitize user-supplied project filters before incorporating them into JQL queries. Additionally, it lacked robust SSRF protection, allowing for potential server-side request forgery through redirect validation and DNS rebinding attacks.</p>
 <p><b>Impact</b> : An attacker could bypass configured project restrictions in Jira, potentially accessing or manipulating data outside their authorized scope. The SSRF vulnerabilities could allow an attacker to make arbitrary requests from the server, potentially accessing internal network resources or sensitive cloud metadata.</p>
@@ -589,7 +589,7 @@
 <h3>GHSA-jrc7-96c5-q579</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-08 · JavaScript<br>
-<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 143x across ecosystem
+<code>maplibre-gl</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 144x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the `DOM.removeAttributes` method iterated directly over `elem.attributes`, which is a live `NamedNodeMap`. When a dangerous attribute was removed using `elem.removeAttribute(name)`, it modified the live collection, causing the loop to skip the next attribute in the original sequence, thus failing to sanitize all malicious attributes.</p>
 <p><b>Impact</b> : An attacker could bypass the HTML sanitizer, allowing them to inject malicious scripts or content into the DOM. This could lead to arbitrary code execution in the user&#39;s browser, session hijacking, or defacement of the web application.</p>
@@ -615,7 +615,7 @@
 <h3>GHSA-fph3-ghq9-vw66</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 42x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application directly concatenated user-supplied input into SQL queries and regular expressions without proper sanitization or parameterization. Specifically, the `fullTextSearchAssetContent` function, when `method` was set to 2 (SQL) or 3 (Regexp), allowed unauthenticated users to inject arbitrary SQL or regular expression syntax.</p>
 <p><b>Impact</b> : An unauthenticated attacker could execute arbitrary SQL commands on the underlying database, leading to data exfiltration, modification, or deletion. Additionally, they could perform REGEXP injection, potentially causing denial of service or information disclosure through crafted regular expressions.</p>
@@ -651,7 +651,7 @@
 <h3>GHSA-q2vg-7qgx-x5fc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 42x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application constructed SQL queries by directly concatenating user-controlled input (mentionKeywords and keyword) into the FTS MATCH clause without proper escaping. This allowed an attacker to inject arbitrary SQL into the query by crafting malicious input containing double quotes, breaking out of the intended string literal.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands within the database, potentially leading to data exfiltration, modification, or deletion, and could bypass intended access controls.</p>
@@ -671,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -683,7 +683,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 124x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 126x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -750,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -785,7 +785,7 @@
 <h3>GHSA-4p3g-4hcj-wpvx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-29 · Go<br>
-<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 146x across ecosystem
+<code>github.com/prebid/prebid-server</code> · Pattern: <code>SSRF→INTERNAL_ACCESS</code> · 147x across ecosystem
 </p>
 <p><b>Root cause</b> : The application was vulnerable to Server-Side Request Forgery (SSRF) because it constructed outbound HTTP requests using user-controlled input (e.g., &#39;endpoint&#39;, &#39;host&#39;, &#39;account&#39;) without sufficient validation. An attacker could manipulate these parameters to make the server send requests to arbitrary internal or external hosts.</p>
 <p><b>Impact</b> : An attacker could force the Prebid Server to make requests to internal network resources, potentially extracting sensitive data from the host environment (e.g., cloud metadata, internal services) or bypassing firewall rules.</p>
@@ -965,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -977,7 +977,7 @@
 <h3>GHSA-73cv-556c-w3g6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-26 · Python<br>
-<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 42x across ecosystem
+<code>mcp-pinot-server</code> · Pattern: <code>UNSANITIZED_INPUT→SQL</code> · 43x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed unauthenticated users to execute arbitrary SQL queries against the Pinot database. The `oauth_enabled=False` default configuration combined with binding to `0.0.0.0` made the Pinot server publicly accessible without authentication, enabling attackers to send malicious SQL.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary SQL commands, potentially leading to data exfiltration, modification, or deletion, and could also invoke administrative functions or other tools if the underlying database permissions allowed.</p>
@@ -1035,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1047,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1059,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1071,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1116,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1229,7 +1229,7 @@
 <h3>GHSA-gph2-j4c9-vhhr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-14 · PHP<br>
-<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 143x across ecosystem
+<code>wwbn/avideo</code> · Pattern: <code>UNSANITIZED_INPUT→XSS</code> · 144x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s WebSocket broadcast relay allowed unauthenticated users to inject arbitrary JavaScript code into messages. Specifically, the &#39;autoEvalCodeOnHTML&#39; field and the &#39;callback&#39; field in WebSocket messages were not properly sanitized or validated before being relayed to other clients, which would then execute the injected code via client-side eval() sinks.</p>
 <p><b>Impact</b> : An attacker could achieve unauthenticated cross-user JavaScript execution, leading to session hijacking, data theft, defacement, or other malicious activities on the client-side for any user connected to the WebSocket.</p>
@@ -1346,6 +1346,80 @@
 <a href="https://github.com/advisories/GHSA-fvcv-3m26-pcqx">Advisory</a> · <a href="https://github.com/axios/axios/commit/363185461b90b1b78845dc8a99a1f103d9b122a1">Commit</a>
 </p>
 <hr>
+<h3>GHSA-47w9-6r3f-938g</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-47w9-6r3f-938g">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/5aac658c888d52e3a2480a8f879799ac643fdc49">Commit</a>
+</p>
+<hr>
+<h3>GHSA-9j25-mm2h-2f76</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-9j25-mm2h-2f76">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/124f901006400f634d54d908911c9ea93bae9a70">Commit</a>
+</p>
+<hr>
+<h3>GHSA-fmc8-p6q7-75cc</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 126x across ecosystem
+</p>
+<p><b>Root cause</b> : The vulnerability stemmed from insufficient AppArmor confinement when handling user-supplied compression algorithms. The AppArmor profile allowed the compression command to write to any path specified by the user, and the command arguments themselves were not properly sanitized, leading to argument injection.</p>
+<p><b>Impact</b> : An attacker could achieve arbitrary file write (AFW) and potentially arbitrary code execution (ACE) by injecting arguments into the compression command or by directing the output to sensitive file paths.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">Before:
+```go
+// No specific AppArmor profile for user-supplied compression commands.
+// Command arguments were not explicitly sanitized or restricted.
+```
+After:
+```go
+// CompressWrapper should be used when applying a user specified compression algorithm.
+// The given command is directly modified such that it runs under `aa-exec` with a restricted profile (see [compressProfileTpl]).
+// It returns a cleanup function that deletes the AppArmor profile that the command is running in.
+func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedCommands []string) (func(), error) {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces a new AppArmor profile specifically for user-supplied compression algorithms. This profile strictly limits write access to only the designated output file and explicitly lists allowed command paths, preventing arbitrary file writes and argument injection.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-fmc8-p6q7-75cc">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/0915bb88cbb0baed5ac1aef8e62079c57ac877da">Commit</a>
+</p>
+<hr>
+<h3>GHSA-jpf8-86f3-wp38</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-jpf8-86f3-wp38">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/190e2451544a60f6f924ef50a2112fb65d1923cd">Commit</a>
+</p>
+<hr>
+<h3>GHSA-vghh-5rfx-xhq8</h3>
+<p>
+<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1030x across ecosystem
+</p>
+<p><b>Root cause</b> : </p>
+<p><b>Impact</b> : </p>
+<p><b>Fix</b> : </p>
+<p>
+<a href="https://github.com/advisories/GHSA-vghh-5rfx-xhq8">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/190e2451544a60f6f924ef50a2112fb65d1923cd">Commit</a>
+</p>
+<hr>
 <h3>GHSA-mghf-wjfp-p5xm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-28 · RUST<br>
@@ -1413,236 +1487,6 @@
 <a href="https://github.com/advisories/GHSA-84c9-qqpq-2pq5">Advisory</a> · <a href="https://github.com/The-40-Thieves/obsidian-tc/commit/38b4992e87dc2715564236e1a42d005ab05a0194">Commit</a>
 </p>
 <hr>
-<h3>GHSA-897f-g5gm-fmxm</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-23 · RUST<br>
-<code>wasmtime</code> · Pattern: <code>INTEGER_OVERFLOW→BOUNDARY</code> · 22x across ecosystem
-</p>
-<p><b>Root cause</b> : The Cranelift compiler used a bit-packing scheme to store `ValueDataPacked` in a `u64`, where fields like `x` and `y` were allocated 24 bits each. This narrow field encoding, combined with a special sentinel value (0xffffffff) for `u32` values that didn&#39;t fit, led to silent overflows. When a `u32` value greater than `2^24 - 2` (excluding the sentinel) was encoded, it would be truncated, leading to miscompilation.</p>
-<p><b>Impact</b> : An attacker could craft WebAssembly modules that, when compiled by Wasmtime, would result in miscompiled code. This miscompilation could lead to incorrect program behavior, memory corruption, or potentially arbitrary code execution within the Wasmtime sandbox, breaking its security guarantees.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/cranelift/codegen/src/ir/dfg.rs
-+++ b/cranelift/codegen/src/ir/dfg.rs
-@@ -718,7 +718,7 @@ enum ValueData {
- /// Layout:
- ///
- /// ```plain
--///        | tag:2 |  type:14        |    x:24       | y:24          |
-+///        | tag:2 |  type:14        |    x:32       | y:32          |
- ///
- /// Inst       00     ty               inst output     inst index
- /// Param      01     ty               blockparam num  block index
-@@ -727,76 +727,50 @@ enum ValueData {
- /// ```
- #[derive(Clone, Copy, Debug, PartialEq, Hash)]
- #[cfg_attr(feature = &#34;enable-serde&#34;, derive(Serialize, Deserialize))]
--struct ValueDataPacked(u64);
--
--/// Encodes a value in 0..2^32 into 0..2^n, where n is less than 32
--/// (and is implied by `mask`), by translating 2^32-1 (0xffffffff)
--/// into 2^n-1 and panic&#39;ing on 2^n..2^32-1.
--fn encode_narrow_field(x: u32, bits: u8) -&gt; u32 {
--    let max = (1 &lt;&lt; bits) - 1;
--    if x == 0xffff_ffff {
--        max
--    } else {
--        debug_assert!
--            x &lt; max,
--            &#34;{x} does not fit into {bits} bits (must be less than {max} to \
--             allow for a 0xffffffff sentinel)&#34;
--        );
--        x
--    }
--}
--
--/// The inverse of the above `encode_narrow_field`: unpacks 2^n-1 into
--/// 2^32-1.
--fn decode_narrow_field(x: u32, bits: u8) -&gt; u32 {
--    if x == (1 &lt;&lt; bits) - 1 { 0xffff_ffff } else { x }
-+#[repr(Rust, packed)]
-+struct ValueDataPacked {
-+    x: u32,
-+    y: u32,
-+    flags_and_type: u16,
-}
- 
- impl ValueDataPacked {
--    const Y_SHIFT: u8 = 0;
--    const Y_BITS: u8 = 24;
--    const X_SHIFT: u8 = Self::Y_SHIFT + Self::Y_BITS;
--    const X_BITS: u8 = 24;
--    const TYPE_SHIFT: u8 = Self::X_SHIFT + Self::X_BITS;
-+    const TYPE_SHIFT: u8 = 0;
-     const TYPE_BITS: u8 = 14;
-     const TAG_SHIFT: u8 = Self::TYPE_SHIFT + Self::TYPE_BITS;
-     const TAG_BITS: u8 = 2;
- 
--    const TAG_INST: u64 = 0;
--    const TAG_PARAM: u64 = 1;
--    const TAG_ALIAS: u64 = 2;
--    const TAG_UNION: u64 = 3;
-+    const TAG_INST: u16 = 0;
-+    const TAG_PARAM: u16 = 1;
-+    const TAG_ALIAS: u16 = 2;
-+    const TAG_UNION: u16 = 3;
- 
--    fn make(tag: u64, ty: Type, x: u32, y: u32) -&gt; ValueDataPacked {
-+    fn make(tag: u16, ty: Type, x: u32, y: u32) -&gt; ValueDataPacked {
-         debug_assert!(tag &lt; (1 &lt;&lt; Self::TAG_BITS));
-         debug_assert!(ty.repr() &lt; (1 &lt;&lt; Self::TYPE_BITS));
- 
--        let x = encode_narrow_field(x, Self::X_BITS);
--        let y = encode_narrow_field(y, Self::Y_BITS);
--
--        ValueDataPacked(
--            (tag &lt;&lt; Self::TAG_SHIFT)
--                | ((ty.repr() as u64) &lt;&lt; Self::TYPE_SHIFT)
--                | ((x as u64) &lt;&lt; Self::X_SHIFT)
--                | ((y as u64) &lt;&lt; Self::Y_SHIFT),
--        )
-+        ValueDataPacked {
-+            x,
-+            y,
-+            flags_and_type: (tag &lt;&lt; Self::TAG_SHIFT) | (ty.repr() &lt;&lt; Self::TYPE_SHIFT),
-+        }
-     }
- 
-     #[inline(always)]
--    fn field(self, shift: u8, bits: u8) -&gt; u64 {
--        (self.0 &gt;&gt; shift) &amp; ((1 &lt;&lt; bits) - 1)
-+    fn field(self, shift: u8, bits: u8) -&gt; u16 {
-+        (self.flags_and_type &gt;&gt; shift) &amp; ((1 &lt;&lt; bits) - 1)
-     }
- 
-     #[inline(always)]
-     fn ty(self) -&gt; Type {
--        let ty = self.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS) as u16;
-+        let ty = self.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS);
-         Type::from_repr(ty)
-     }
- 
-     #[inline(always)]
-     fn set_type(&amp;mut self, ty: Type) {
--        self.0 &amp;= !(((1 &lt;&lt; Self::TYPE_BITS) - 1) &lt;&lt; Self::TYPE_SHIFT);
--        self.0 |= (ty.repr() as u64) &lt;&lt; Self::TYPE_SHIFT;
-+        self.flags_and_type &amp;= !(((1 &lt;&lt; Self::TYPE_BITS) - 1) &lt;&lt; Self::TYPE_SHIFT);
-+        self.flags_and_type |= ty.repr() &lt;&lt; Self::TYPE_SHIFT;
-     }
- }
- 
-@@ -822,35 +796,30 @@ impl From&lt;ValueData&gt; for ValueDataPacked {
- impl From&lt;ValueDataPacked&gt; for ValueData {
-     fn from(data: ValueDataPacked) -&gt; Self {
-         let tag = data.field(ValueDataPacked::TAG_SHIFT, ValueDataPacked::TAG_BITS);
--        let ty = u16::try_from(data.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS))
--            .expect(&#34;Mask should ensure result fits in a u16&#34;);
--        let x = u32::try_from(data.field(ValueDataPacked::X_SHIFT, ValueDataPacked::X_BITS))
--            .expect(&#34;Mask should ensure result fits in a u32&#34;);
--        let y = u32::try_from(data.field(ValueDataPacked::Y_SHIFT, ValueDataPacked::Y_BITS))
--            .expect(&#34;Mask should ensure result fits in a u32&#34;);
-+        let ty = data.field(ValueDataPacked::TYPE_SHIFT, ValueDataPacked::TYPE_BITS);
- 
-         let ty = Type::from_repr(ty);
-         match tag {
-             ValueDataPacked::TAG_INST =&gt; ValueData::Inst {
-                 ty,
--                num: u16::try_from(x).expect(&#34;Inst result num should fit in u16&#34;),
--                inst: Inst::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
-+                num: u16::try_from(data.x).expect(&#34;Inst result num should fit in u16&#34;),
-+                inst: Inst::from_bits(data.y),
-             },
-             ValueDataPacked::TAG_PARAM =&gt; ValueData::Param {
-                 ty,
--                num: u16::try_from(x).expect(&#34;Blockparam index should fit in u16&#34;),
--                block: Block::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
-+                num: u16::try_from(data.x).expect(&#34;Blockparam index should fit in u16&#34;),
-+                block: Block::from_bits(data.y),
-             },
-             ValueDataPacked::TAG_ALIAS =&gt; ValueData::Alias {
-                 ty,
--                original: Value::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
-+                original: Value::from_bits(data.y),
-             },
-             ValueDataPacked::TAG_UNION =&gt; ValueData::Union {
-                 ty,
--                x: Value::from_bits(decode_narrow_field(x, ValueDataPacked::X_BITS)),
--                y: Value::from_bits(decode_narrow_field(y, ValueDataPacked::Y_BITS)),
-+                x: Value::from_bits(data.x),
-+                y: Value::from_bits(data.y),
-             },
--            _ =&gt; panic!(&#34;Invalid tag {} in ValueDataPacked 0x{:x}&#34;, tag, data.0),
-+            _ =&gt; panic!(&#34;Invalid tag {tag} in ValueDataPacked&#34;),
-         }
-     }
- }</pre>
-</details>
-<p><b>Fix</b> : The patch refactors `ValueDataPacked` to use a `#[repr(Rust, packed)]` struct with `u32` fields for `x` and `y`, eliminating the need for bit-packing and the `encode_narrow_field`/`decode_narrow_field` functions. This ensures that `u32` values are stored without truncation, preventing silent overflows and miscompilation.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-897f-g5gm-fmxm">Advisory</a> · <a href="https://github.com/bytecodealliance/wasmtime/commit/ba8f7d70caa1825b7f64fa75cd9d03f4a438dae0">Commit</a>
-</p>
-<hr>
-<h3>GHSA-637c-6jxx-4rwm</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/kedacore/keda/v2</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-637c-6jxx-4rwm">Advisory</a> · <a href="https://github.com/kedacore/keda/commit/1e21cc798dedd079e696cdb45388eddc5e18365d">Commit</a>
-</p>
-<hr>
-<h3>GHSA-fmxq-cgp8-87wp</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-15 · Go<br>
-<code>github.com/argoproj/argo-cd/v3</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-fmxq-cgp8-87wp">Advisory</a> · <a href="https://github.com/argoproj/argo-cd/commit/1149cdc6e932208c4402183cc3d7b7485239940c">Commit</a>
-</p>
-<hr>
-<h3>GHSA-w794-rj3p-xv45</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-07 · Python<br>
-<code>lfx</code> · Pattern: <code>UNCLASSIFIED</code> · 1022x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-w794-rj3p-xv45">Advisory</a> · <a href="https://github.com/langflow-ai/langflow/commit/eba285edf1dd4a33bf23a9cb8113c991fcdf3d1d">Commit</a>
-</p>
-<hr>
-<h3>GHSA-8qpj-27x8-pwpq</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-10-06 · Python<br>
-<code>langflow</code> · Pattern: <code>MISSING_AUTHZ→RESOURCE</code> · 137x across ecosystem
-</p>
-<p><b>Root cause</b> : The Langflow application&#39;s PythonREPLComponent and PythonREPLToolComponent allowed authenticated users to execute arbitrary Python code without proper authorization checks. Although there was a `allow_custom_components` setting, it was not enforced for these specific components, enabling a bypass.</p>
-<p><b>Impact</b> : An authenticated attacker could execute arbitrary Python code on the server, leading to full system compromise (Remote Code Execution) and potential privilege escalation.</p>
-<details>
-<summary>Diff</summary>
-<pre lang="diff">--- a/src/lfx/src/lfx/components/tools/python_repl.py
-+++ b/src/lfx/src/lfx/components/tools/python_repl.py
-@@ -78,6 +78,9 @@ def get_globals(self, global_imports: str | list[str]) -&gt; dict:
-     def build_tool(self) -&gt; Tool:
-         def run_python_code(code: str) -&gt; str:
-             try:
-+                # Refuse to run user code when allow_custom_components is disabled
-+                # (GHSA-8qpj-27x8-pwpq).
-+                ensure_code_execution_enabled()
-                 # Validate the exact (sanitized) code that will run, rejecting inline</pre>
-</details>
-<p><b>Fix</b> : The patch introduces a new function, `ensure_code_execution_enabled()`, which is called before any user-supplied Python code is executed in the PythonREPLComponent and PythonREPLToolComponent. This function checks the `allow_custom_components` setting and raises an error if code execution is disabled, thereby enforcing the security policy.</p>
-<p>
-<a href="https://github.com/advisories/GHSA-8qpj-27x8-pwpq">Advisory</a> · <a href="https://github.com/langflow-ai/langflow/commit/2754c84aad1306f463db1c3bbb3e8ffbe85da77d">Commit</a>
-</p>
-<hr>
 <h2 id="how-it-works">How it works</h2>
 <pre>
 06:00 UTC    Pull advisories (GitHub Advisory DB, GraphQL)
@@ -1678,7 +1522,7 @@
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2904</td></tr>
+<tr><td>Total advisories</td><td>2919</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
 <tr><td>Last updated</td><td>2026-11-06</td></tr>
