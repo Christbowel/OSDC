@@ -1,1 +1,1 @@
-{"id":"GHSA-x2rp-9qf7-2fmq","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-01T14:27:50.931647+00:00"}
+{"id":"GHSA-x2rp-9qf7-2fmq","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-08T14:28:05.548574+00:00"}

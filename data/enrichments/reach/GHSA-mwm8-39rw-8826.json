@@ -1,1 +1,1 @@
-{"id":"GHSA-mwm8-39rw-8826","axis":"advisories","repo":"sparklemotion/sqlite3-ruby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-01T14:28:32.555612+00:00"}
+{"id":"GHSA-mwm8-39rw-8826","axis":"advisories","repo":"sparklemotion/sqlite3-ruby","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-08T14:28:51.217220+00:00"}
