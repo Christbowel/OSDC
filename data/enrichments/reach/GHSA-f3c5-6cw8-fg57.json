@@ -1,1 +1,1 @@
-{"id":"GHSA-f3c5-6cw8-fg57","axis":"advisories","repo":"grokability/snipe-it","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-03T15:32:53.736263+00:00"}
+{"id":"GHSA-f3c5-6cw8-fg57","axis":"advisories","repo":"grokability/snipe-it","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-10T15:51:55.953357+00:00"}

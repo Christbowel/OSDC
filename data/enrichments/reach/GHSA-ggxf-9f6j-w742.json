@@ -1,1 +1,1 @@
-{"id":"GHSA-ggxf-9f6j-w742","axis":"advisories","repo":"diesel-rs/diesel","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-03T15:30:24.705942+00:00"}
+{"id":"GHSA-ggxf-9f6j-w742","axis":"advisories","repo":"diesel-rs/diesel","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-10T15:49:33.762477+00:00"}
