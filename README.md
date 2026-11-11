@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-2985-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3005-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -38,7 +38,7 @@
 <h3>GHSA-2cvf-wqm6-wr9g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-15 · Go<br>
-<code>go.podman.io/podman/v6</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 59x across ecosystem
+<code>go.podman.io/podman/v6</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 60x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from Podman&#39;s `podman run` command allowing image annotations to disable almost all sandboxing. Specifically, a checkpoint annotation, previously used for restoring containers, could be present in an image. When `podman run` processed such an image, it would inadvertently apply the checkpoint&#39;s relaxed security settings, bypassing intended sandboxing.</p>
 <p><b>Impact</b> : An attacker could craft a malicious container image with a specific annotation that, when run with `podman run`, would disable critical security sandboxing mechanisms. This could lead to privilege escalation, allowing the container to escape its isolation and potentially gain control over the host system.</p>
@@ -216,7 +216,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -266,7 +266,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -430,7 +430,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -442,7 +442,7 @@
 <h3>GHSA-98xx-8mx4-x7cm</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 59x across ecosystem
+<code>vm2</code> · Pattern: <code>PRIVILEGE_ESCALATION→ROLE</code> · 60x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 library&#39;s NodeVM allowed sandboxed code to call `tls.setDefaultCACertificates()`. This function, when called from within the sandbox, would modify the host process&#39;s global TLS trust store, effectively allowing the sandboxed code to influence the security of the entire host application&#39;s TLS connections.</p>
 <p><b>Impact</b> : An attacker could replace the host process&#39;s default CA trust store, enabling them to intercept and decrypt TLS traffic from the host application by presenting attacker-signed certificates. This leads to a complete compromise of the host&#39;s TLS security.</p>
@@ -542,7 +542,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -671,7 +671,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -683,7 +683,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 131x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 132x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -705,7 +705,7 @@
 <h3>GHSA-7pwq-q9jf-539h</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-18 · Ruby<br>
-<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 35x across ecosystem
+<code>kobako</code> · Pattern: <code>DESERIALIZATION→RCE</code> · 36x across ecosystem
 </p>
 <p><b>Root cause</b> : The `kobako` gem allowed guest code to invoke arbitrary methods on host objects via `public_send`. This included Ruby&#39;s reflection and metaprogramming methods like `send`, `public_send`, `instance_eval`, `method`, `tap`, and `instance_variable_get`. An attacker could chain these methods to bypass the sandbox and execute arbitrary code on the host system.</p>
 <p><b>Impact</b> : An attacker could achieve Remote Code Execution (RCE) on the host system, completely escaping the intended sandbox environment. This allows full control over the host machine.</p>
@@ -750,7 +750,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -965,7 +965,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1035,7 +1035,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1047,7 +1047,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1059,7 +1059,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1071,7 +1071,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1116,7 +1116,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1289,7 +1289,7 @@
 <h3>GHSA-fvcv-3m26-pcqx</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-10 · JavaScript<br>
-<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 27x across ecosystem
+<code>axios</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 28x across ecosystem
 </p>
 <p><b>Root cause</b> : The Axios library did not properly sanitize header values, allowing newline characters (CRLF) to be injected. This meant that an attacker could append arbitrary headers or even inject a new HTTP request body by including these characters in a user-controlled header value.</p>
 <p><b>Impact</b> : An attacker could inject arbitrary HTTP headers, potentially leading to SSRF (Server-Side Request Forgery) against cloud metadata endpoints or other internal services, and could also manipulate the request body.</p>
@@ -1349,7 +1349,7 @@
 <h3>GHSA-47w9-6r3f-938g</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1361,7 +1361,7 @@
 <h3>GHSA-9j25-mm2h-2f76</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1373,7 +1373,7 @@
 <h3>GHSA-fmc8-p6q7-75cc</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 131x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 132x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient AppArmor confinement when handling user-supplied compression algorithms. The AppArmor profile allowed the compression command to write to any path specified by the user, and the command arguments themselves were not properly sanitized, leading to argument injection.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (AFW) and potentially arbitrary code execution (ACE) by injecting arguments into the compression command or by directing the output to sensitive file paths.</p>
@@ -1399,7 +1399,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <h3>GHSA-jpf8-86f3-wp38</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1411,7 +1411,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <h3>GHSA-vghh-5rfx-xhq8</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1047x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1062x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1423,7 +1423,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <h3>GHSA-mghf-wjfp-p5xm</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-10-28 · RUST<br>
-<code>wasmtime</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 27x across ecosystem
+<code>wasmtime</code> · Pattern: <code>UNSANITIZED_INPUT→HEADER</code> · 28x across ecosystem
 </p>
 <p><b>Root cause</b> : The `FieldMap` implementation for HTTP headers did not properly enforce the single-value constraint for the `Content-Length` header. This allowed multiple `Content-Length` headers to be set, which can lead to message framing ambiguities.</p>
 <p><b>Impact</b> : An attacker could potentially manipulate HTTP message framing, leading to request smuggling, cache poisoning, or other bypasses of security controls that rely on correct message length interpretation.</p>
@@ -1522,10 +1522,10 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>2985</td></tr>
+<tr><td>Total advisories</td><td>3005</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
-<tr><td>Last updated</td><td>2026-11-10</td></tr>
+<tr><td>Last updated</td><td>2026-11-11</td></tr>
 </table>
 </details>
 <hr>
