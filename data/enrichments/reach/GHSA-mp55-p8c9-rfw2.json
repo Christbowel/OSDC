@@ -1,1 +1,1 @@
-{"id":"GHSA-mp55-p8c9-rfw2","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-05T15:50:20.580093+00:00"}
+{"id":"GHSA-mp55-p8c9-rfw2","axis":"advisories","repo":"benoitc/hackney","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-12T16:17:30.312518+00:00"}

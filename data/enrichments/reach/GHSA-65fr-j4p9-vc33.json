@@ -1,1 +1,1 @@
-{"id":"GHSA-65fr-j4p9-vc33","axis":"advisories","repo":"mongodb/mongo-php-library","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-05T15:46:59.725834+00:00"}
+{"id":"GHSA-65fr-j4p9-vc33","axis":"advisories","repo":"mongodb/mongo-php-library","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-12T16:14:23.264068+00:00"}
