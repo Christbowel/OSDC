@@ -1,1 +1,1 @@
-{"id":"GHSA-86wm-r4c5-2rc9","axis":"advisories","repo":"square/wire","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-06T15:21:21.235495+00:00"}
+{"id":"GHSA-86wm-r4c5-2rc9","axis":"advisories","repo":"square/wire","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-13T15:41:15.379561+00:00"}
