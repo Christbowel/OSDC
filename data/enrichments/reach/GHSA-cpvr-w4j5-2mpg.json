@@ -1,1 +1,1 @@
-{"id":"GHSA-cpvr-w4j5-2mpg","axis":"advisories","repo":"GNOME/librsvg","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-06T15:17:51.749096+00:00"}
+{"id":"GHSA-cpvr-w4j5-2mpg","axis":"advisories","repo":"GNOME/librsvg","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-13T15:38:41.305263+00:00"}

@@ -1,1 +1,1 @@
-{"id":"GHSA-9pj6-vhgr-3mwh","axis":"advisories","repo":"modelcontextprotocol/rust-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-06T15:21:52.185179+00:00"}
+{"id":"GHSA-9pj6-vhgr-3mwh","axis":"advisories","repo":"modelcontextprotocol/rust-sdk","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-13T15:41:39.453238+00:00"}
