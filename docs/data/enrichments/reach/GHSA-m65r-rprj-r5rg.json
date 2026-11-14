@@ -1,1 +1,1 @@
-{"id":"GHSA-m65r-rprj-r5rg","axis":"advisories","repo":"Eugeny/russh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-07T14:22:40.683930+00:00"}
+{"id":"GHSA-m65r-rprj-r5rg","axis":"advisories","repo":"Eugeny/russh","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-14T14:31:02.041214+00:00"}
