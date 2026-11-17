@@ -1,1 +1,1 @@
-{"id":"GHSA-5pm9-r2m8-rcmj","axis":"advisories","repo":"Paymenter/Paymenter","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-10T15:51:59.663517+00:00"}
+{"id":"GHSA-5pm9-r2m8-rcmj","axis":"advisories","repo":"Paymenter/Paymenter","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:10:19.854811+00:00"}
