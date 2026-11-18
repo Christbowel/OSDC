@@ -1,9 +1,9 @@
 {
-  "run_at": "2026-11-17T22:00:11.082443+00:00",
+  "run_at": "2026-11-18T04:01:39.838017+00:00",
   "run_number": 1,
-  "fetched": 10,
-  "new": 10,
-  "analyzed": 10,
+  "fetched": 0,
+  "new": 0,
+  "analyzed": 0,
   "new_patterns": 0,
   "errors": 0,
   "pending": 112,
