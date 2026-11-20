@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3208-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3213-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -718,7 +718,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 142x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 143x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -1408,7 +1408,7 @@
 <h3>GHSA-fmc8-p6q7-75cc</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 142x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 143x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient AppArmor confinement when handling user-supplied compression algorithms. The AppArmor profile allowed the compression command to write to any path specified by the user, and the command arguments themselves were not properly sanitized, leading to argument injection.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (AFW) and potentially arbitrary code execution (ACE) by injecting arguments into the compression command or by directing the output to sensitive file paths.</p>
@@ -1490,7 +1490,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>3208</td></tr>
+<tr><td>Total advisories</td><td>3213</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
 <tr><td>Last updated</td><td>2026-11-20</td></tr>
