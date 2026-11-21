@@ -1,1 +1,1 @@
-{"id":"GHSA-r5pm-vrc5-3m73","axis":"advisories","repo":"cakephp/queue","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-14T14:30:32.955499+00:00"}
+{"id":"GHSA-r5pm-vrc5-3m73","axis":"advisories","repo":"cakephp/queue","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-21T15:37:52.504284+00:00"}
