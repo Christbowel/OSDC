@@ -1,1 +1,1 @@
-{"id":"GHSA-g7vj-c29h-3h5m","axis":"advisories","repo":"FriendsOfFlarum/oauth","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-15T14:57:01.604033+00:00"}
+{"id":"GHSA-g7vj-c29h-3h5m","axis":"advisories","repo":"FriendsOfFlarum/oauth","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-22T15:36:05.209833+00:00"}
