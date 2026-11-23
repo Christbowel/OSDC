@@ -4,7 +4,7 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3228-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3230-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
@@ -331,7 +331,7 @@
 <h3>GHSA-j3hm-6rg5-mchv</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 47x across ecosystem
+<code>vm2</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 49x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 library, when configured with `require.external: true` but without an explicit `require.root`, allowed sandboxed code to use the host&#39;s `require()` function to load arbitrary paths. This effectively granted unrestricted access to the host filesystem and enabled full Remote Code Execution (RCE) because the sandboxed code could load and execute any module available to the host process.</p>
 <p><b>Impact</b> : An attacker could escape the sandbox, execute arbitrary code on the host system with the privileges of the vm2 process, and potentially access or manipulate host files.</p>
@@ -1223,7 +1223,7 @@
 <h3>GHSA-q6mh-rqwh-g786</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-07 · Go<br>
-<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 47x across ecosystem
+<code>github.com/enchant97/note-mark/backend</code> · Pattern: <code>INSECURE_DEFAULT→CONFIG</code> · 49x across ecosystem
 </p>
 <p><b>Root cause</b> : The application allowed a JWT secret to be configured without a minimum length validation. This meant that a short, easily guessable secret could be used, making JWT tokens vulnerable to brute-force attacks.</p>
 <p><b>Impact</b> : An attacker could brute-force the weak JWT secret, forge valid authentication tokens, and achieve full account takeover for any user, including administrative accounts.</p>
@@ -1490,7 +1490,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>3228</td></tr>
+<tr><td>Total advisories</td><td>3230</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
 <tr><td>Last updated</td><td>2026-11-23</td></tr>
