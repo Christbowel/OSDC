@@ -1,1 +1,1 @@
-{"id":"GHSA-c94f-87xg-65wf","axis":"advisories","repo":"silverstripe/silverstripe-framework","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:00:47.516195+00:00"}
+{"id":"GHSA-c94f-87xg-65wf","axis":"advisories","repo":"silverstripe/silverstripe-framework","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-24T19:01:35.549394+00:00"}
