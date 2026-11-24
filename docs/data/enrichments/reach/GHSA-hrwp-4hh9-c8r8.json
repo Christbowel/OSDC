@@ -1,1 +1,1 @@
-{"id":"GHSA-hrwp-4hh9-c8r8","axis":"advisories","repo":"phalcon/cphalcon","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:02:44.708166+00:00"}
+{"id":"GHSA-hrwp-4hh9-c8r8","axis":"advisories","repo":"phalcon/cphalcon","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-24T19:03:16.980155+00:00"}

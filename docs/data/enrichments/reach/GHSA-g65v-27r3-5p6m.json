@@ -1,1 +1,1 @@
-{"id":"GHSA-g65v-27r3-5p6m","axis":"advisories","repo":"guard/guard-livereload","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:04:48.456183+00:00"}
+{"id":"GHSA-g65v-27r3-5p6m","axis":"advisories","repo":"guard/guard-livereload","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-24T19:04:55.607244+00:00"}

@@ -4,13 +4,103 @@
 <p>
 <a href="https://github.com/christbowel/osdc/actions/workflows/daily.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/daily.yml/badge.svg" alt="Analysis"></a>
 <a href="https://github.com/christbowel/osdc/actions/workflows/render.yml"><img src="https://github.com/christbowel/osdc/actions/workflows/render.yml/badge.svg" alt="Render"></a>
-<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3237-blue" alt="Advisories"></a>
+<a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/advisories-3245-blue" alt="Advisories"></a>
 <a href="https://christbowel.github.io/OSDC"><img src="https://img.shields.io/badge/patterns-51-purple" alt="Patterns"></a>
 </p>
 <p>
 <a href="https://christbowel.github.io/OSDC">Live dashboard</a> · <a href="#how-it-works">How it works</a>
 </p>
 </div>
+<hr>
+<h3>GHSA-c4hm-4h84-2cf3</h3>
+<p>
+<code>CRITICAL 10.0</code> · 2026-11-24 · JavaScript<br>
+<code>ruflo</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
+</p>
+<p><b>Root cause</b> : The application allowed unauthenticated access to an endpoint that could execute &#39;dangerous&#39; tools, specifically &#39;terminal_execute&#39;, which provided shell access. This was due to a lack of proper authentication enforcement and a missing server-side gate for these sensitive tools.</p>
+<p><b>Impact</b> : An unauthenticated attacker could execute arbitrary commands on the server where the application was running, leading to full system compromise.</p>
+<details>
+<summary>Diff</summary>
+<pre lang="diff">--- a/ruflo/src/mcp-bridge/index.js
++++ b/ruflo/src/mcp-bridge/index.js
+@@ -771,6 +772,20 @@ async function executeGoapSearch(query, args) {
+ // TOOL EXECUTOR
+ // =============================================================================
+ 
++// ADR-166 §6 Phase 1d + 2a — server-side tool gate.
++// Enforced HERE (not just in the autopilot handler) so /mcp, /mcp/:group,
++// autopilot, and any future path share ONE denial gate. Was the missing
++// link that made the disclosed unauthenticated-RCE chain reach shell.
++const DANGEROUS_TOOLS = Object.freeze(new Set([
++  &#34;terminal_execute&#34;,
++  &#34;ruflo__terminal_execute&#34;,
++  &#34;devtools__terminal_execute&#34;,
++]));
++function isTerminalTool(name) {
++  return DANGEROUS_TOOLS.has(name) || /terminal_execute/i.test(name);
++}
++const MCP_ENABLE_TERMINAL = process.env.MCP_ENABLE_TERMINAL === &#34;true&#34;;
++
+ async function executeTool(name, args) {
++  // Deny dangerous tools unless the operator explicitly opted in.
++  // Enforced on every path (not just autopilot) — root cause of ADR-166 V2/V3.
++  if (isTerminalTool(name) &amp;&amp; !MCP_ENABLE_TERMINAL) {
++    return {
++      error:
++        `Tool &#34;${name}&#34; is disabled by default. Set MCP_ENABLE_TERMINAL=true to allow.`,
++      code: &#34;TOOL_DISABLED&#34;,
++    };
++  }
+   // Validate that search-like tools have a non-empty query to prevent 400 errors
+   if (!args || typeof args !== &#34;object&#34;) args = {};
+   const rawQuery = args.query ?? args.q ?? args.input ?? &#34;&#34;;
+@@ -858,15 +882,39 @@ const GROUP_DISPLAY_NAMES = {
+ const app = express();
+ app.use(express.json({ limit: &#34;10mb&#34; }));
+ 
+-// ---------- CORS middleware ----------
++// ---------- CORS middleware (ADR-166 §6 Phase 3b) ----------
++const CORS_ALLOWLIST = (process.env.MCP_CORS_ORIGIN || &#34;*&#34;)
++  .split(&#34;,&#34;).map(s =&gt; s.trim()).filter(Boolean);
++const CORS_WILDCARD = CORS_ALLOWLIST.length === 1 &amp;&amp; CORS_ALLOWLIST[0] === &#34;*&#34;;
+ app.use((req, res, next) =&gt; {
+-  res.setHeader(&#34;Access-Control-Allow-Origin&#34;, &#34;*&#34;);
++  const origin = req.get(&#34;origin&#34;) || &#34;&#34;;
++  if (CORS_WILDCARD) {
++    res.setHeader(&#34;Access-Control-Allow-Origin&#34;, &#34;*&#34;);
++  } else if (origin &amp;&amp; CORS_ALLOWLIST.includes(origin)) {
++    res.setHeader(&#34;Access-Control-Allow-Origin&#34;, origin);
++    res.setHeader(&#34;Vary&#34;, &#34;Origin&#34;);
++  }
+   res.setHeader(&#34;Access-Control-Allow-Methods&#34;, &#34;GET, POST, OPTIONS&#34;);
+   res.setHeader(&#34;Access-Control-Allow-Headers&#34;, &#34;Content-Type, Authorization&#34;);
+   if (req.method === &#34;OPTIONS&#34;) return res.sendStatus(204);
+   next();
+ });
+ 
++// ---------- Auth middleware ----------
++// No-op in local-only mode (MCP_AUTH_TOKEN unset). Enforces 401 when token is set.
++const MCP_TOKEN = process.env.MCP_AUTH_TOKEN || &#34;&#34;;
++function requireAuth(req, res, next) {
++  if (req.path === &#34;/health&#34;) return next();
++  if (!MCP_TOKEN) return next();
++  const expected = `Bearer ${MCP_TOKEN}`;
++  const got = req.get(&#34;authorization&#34;) || &#34;&#34;;
++  const ok = got.length === expected.length &amp;&amp;
++    timingSafeEqual(Buffer.from(got), Buffer.from(expected));
++  if (!ok) return res.status(401).json({ error: &#34;unauthorized&#34; });
++  next();
++}
++app.use(requireAuth);
++
+ // ---------- Shared MCP handler ----------
+ function createMcpHandler(groupName) {
+   return async (req, res) =&gt; {</pre>
+</details>
+<p><b>Fix</b> : The patch introduces an authentication middleware that requires a bearer token if `MCP_AUTH_TOKEN` is set. It also adds a server-side gate to explicitly disable &#39;dangerous&#39; tools like &#39;terminal_execute&#39; by default, requiring an explicit opt-in via `MCP_ENABLE_TERMINAL=true` environment variable. Furthermore, it enforces binding to localhost by default and prevents public binding without an authentication token.</p>
+<p>
+<a href="https://github.com/advisories/GHSA-c4hm-4h84-2cf3">Advisory</a> · <a href="https://github.com/ruvnet/ruflo/commit/d00a0a40cd8bdbca877ac7f675f416bdc69accd1">Commit</a>
+</p>
 <hr>
 <h3>GHSA-p34x-fmph-9fjx</h3>
 <p>
@@ -50,7 +140,7 @@
 <h3>GHSA-f8c7-rwf9-fmgm</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-19 · Python<br>
-<code>mercury</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>mercury</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s access control mechanism, specifically the `BLOCKED_PATTERNS` list, had a regular expression that was incorrectly terminated. This allowed requests to `/api/terminals` to bypass the intended blocking, making the endpoint accessible without proper authentication.</p>
 <p><b>Impact</b> : An unauthenticated attacker could access the `/api/terminals` endpoint, which is typically used for managing terminal sessions. This could lead to remote code execution by allowing the attacker to create and interact with arbitrary terminal sessions.</p>
@@ -251,7 +341,7 @@
 <h3>GHSA-5h3f-q97h-ccvc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -301,7 +391,7 @@
 <h3>GHSA-fcqc-726x-5wfc</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-05 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox allowed sandboxed code to access Node.js&#39;s shared Buffer pool. When a small Buffer was created, it would often be backed by a shared 64 KiB ArrayBuffer. The sandboxed code could then obtain a reference to this entire shared ArrayBuffer, allowing it to read and write memory outside its intended boundaries, including data from other host-realm buffers.</p>
 <p><b>Impact</b> : An attacker could achieve a full sandbox escape, leading to arbitrary read and write access to the host-realm memory. This could result in information disclosure (e.g., reading secrets, database rows) and integrity compromise (e.g., corrupting host data), effectively breaking the isolation provided by the sandbox.</p>
@@ -381,7 +471,7 @@
 <h3>GHSA-jqmf-mx4f-hfr6</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-02 · Python<br>
-<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The application had a &#39;dev mode&#39; where authentication was skipped if the API_AUTH_KEY environment variable was not set. This dev mode was not sufficiently restricted to local clients, allowing remote attackers to bypass authentication entirely if the key was unset. Additionally, several sensitive API endpoints lacked explicit authentication dependencies.</p>
 <p><b>Impact</b> : An unauthenticated remote attacker could access sensitive API endpoints, potentially leading to command execution, code injection, or Server-Side Request Forgery (SSRF) if the LLM-callable tools were enabled, or at minimum, information disclosure.</p>
@@ -422,7 +512,7 @@
 <h3>GHSA-v2f8-6655-7grj</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-02 · Python<br>
-<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>vibe-trading-ai</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The application&#39;s API endpoints lacked proper authentication checks, especially when the API_AUTH_KEY environment variable was not set. In &#39;dev mode&#39; (API_AUTH_KEY unset), the system incorrectly allowed unauthenticated access from non-local clients, treating them as local. Additionally, the comparison of API keys was not constant-time, potentially leaking information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could access sensitive API endpoints, including those for file upload and potentially remote code execution (RCE) chains, leading to full system compromise.</p>
@@ -465,7 +555,7 @@
 <h3>GHSA-647f-g98j-qq25</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-10-01 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -577,7 +667,7 @@
 <h3>GHSA-g5f9-3xfg-p9mf</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-24 · Python<br>
-<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>decepticon-sdk</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because attacker-controlled web crawl output, when composed into an LLM&#39;s context, could contain special-token literals (e.g., &lt;|im_start|&gt;, [INST]) that a self-hosted LLM tokenizer would parse as structural role delimiters. This allowed an attacker to forge system or operator turns, bypassing the intended quarantine envelope.</p>
 <p><b>Impact</b> : An attacker could achieve role-boundary forgery, making the LLM treat attacker-controlled input as authoritative system or operator instructions. This could lead to a full bypass of security controls and potentially arbitrary code execution or data exfiltration, depending on the LLM&#39;s capabilities and downstream integrations.</p>
@@ -706,7 +796,7 @@
 <h3>GHSA-vh22-h7hf-www7</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-09-03 · Go<br>
-<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>github.com/siyuan-note/siyuan/kernel</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -718,7 +808,7 @@
 <h3>GHSA-x2rj-828p-hx9m</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-08-21 · Python<br>
-<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 145x across ecosystem
+<code>xinference</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 146x across ecosystem
 </p>
 <p><b>Root cause</b> : The application used the unsafe `eval()` function to parse tool-call arguments from untrusted model outputs. An attacker could craft a malicious string that, when evaluated by `eval()`, would execute arbitrary Python code on the server.</p>
 <p><b>Impact</b> : An attacker could achieve full remote code execution on the server hosting the Xinference application, leading to complete system compromise.</p>
@@ -785,7 +875,7 @@
 <h3>GHSA-p849-8hwh-84j9</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-31 · JavaScript<br>
-<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>@nocobase/plugin-notification-in-app-message</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -855,7 +945,7 @@
 <h3>GHSA-f25v-x6vr-962g</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-24 · PHP<br>
-<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>pheditor/pheditor</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability existed because the application had a hardcoded default password &#39;admin&#39; which, when set, triggered a forced password change flow. During this flow, the application did not verify the current password provided by the user against the actual stored password. Instead, it only checked if the submitted password was &#39;admin&#39; (which was hardcoded into a hidden input field in the password change form), allowing an attacker to bypass authentication and set a new password without knowing the original one.</p>
 <p><b>Impact</b> : An attacker could completely bypass the authentication mechanism, gain administrative access to the Pheditor application, and potentially execute arbitrary code or modify files on the server, leading to full system compromise.</p>
@@ -1000,7 +1090,7 @@
 <h3>GHSA-v5px-423j-pf7p</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-07-08 · Go<br>
-<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>github.com/nuclio/nuclio</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1070,7 +1160,7 @@
 <h3>GHSA-c39w-43gm-34h5</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-06-23 · Go<br>
-<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>gogs.io/gogs</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1082,7 +1172,7 @@
 <h3>GHSA-76w7-j9cq-rx2j</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1094,7 +1184,7 @@
 <h3>GHSA-m4wx-m65x-ghrr</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1106,7 +1196,7 @@
 <h3>GHSA-rp36-8xq3-r6c4</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : The vm2 sandbox failed to properly denylist certain Node.js built-in modules and their subpaths, specifically &#39;process&#39; and &#39;inspector/promises&#39;. This allowed an attacker to bypass the sandbox&#39;s security mechanisms by requiring these modules, which provide direct access to host system capabilities.</p>
 <p><b>Impact</b> : An attacker could execute arbitrary code on the host system, completely escaping the sandbox environment and gaining full control over the application running the vm2 instance.</p>
@@ -1151,7 +1241,7 @@
 <h3>GHSA-v6mx-mf47-r5wg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-29 · JavaScript<br>
-<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>vm2</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1197,7 +1287,7 @@
 <h3>GHSA-3258-qmv8-frp3</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-05-08 · Go<br>
-<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>github.com/free5gc/smf</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The free5GC SMF&#39;s UPI management interface was not protected by any authentication middleware. This allowed unauthenticated requests to reach the underlying handlers for reading and writing topology information.</p>
 <p><b>Impact</b> : An unauthenticated attacker could perform read and write operations on the SMF&#39;s UPI topology, potentially disrupting network operations or gaining unauthorized access to sensitive network configuration.</p>
@@ -1240,7 +1330,7 @@
 <h3>GHSA-246w-jgmq-88fg</h3>
 <p>
 <code>CRITICAL 10.0</code> · 2026-04-22 · Go<br>
-<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 98x across ecosystem
+<code>github.com/jkroepke/openvpn-auth-oauth2</code> · Pattern: <code>MISSING_AUTH→ENDPOINT</code> · 99x across ecosystem
 </p>
 <p><b>Root cause</b> : The application incorrectly returned &#39;FUNC_SUCCESS&#39; even when a client&#39;s authentication was explicitly denied or an error occurred during the authentication process. This misinterpretation of the return code by OpenVPN led to clients being granted access despite failing authentication.</p>
 <p><b>Impact</b> : An attacker could gain unauthorized access to the VPN without providing valid credentials, effectively bypassing the entire authentication mechanism.</p>
@@ -1384,7 +1474,7 @@
 <h3>GHSA-47w9-6r3f-938g</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1396,7 +1486,7 @@
 <h3>GHSA-9j25-mm2h-2f76</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
@@ -1408,7 +1498,7 @@
 <h3>GHSA-fmc8-p6q7-75cc</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 145x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNSANITIZED_INPUT→COMMAND</code> · 146x across ecosystem
 </p>
 <p><b>Root cause</b> : The vulnerability stemmed from insufficient AppArmor confinement when handling user-supplied compression algorithms. The AppArmor profile allowed the compression command to write to any path specified by the user, and the command arguments themselves were not properly sanitized, leading to argument injection.</p>
 <p><b>Impact</b> : An attacker could achieve arbitrary file write (AFW) and potentially arbitrary code execution (ACE) by injecting arguments into the compression command or by directing the output to sensitive file paths.</p>
@@ -1434,25 +1524,13 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <h3>GHSA-jpf8-86f3-wp38</h3>
 <p>
 <code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
+<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1143x across ecosystem
 </p>
 <p><b>Root cause</b> : </p>
 <p><b>Impact</b> : </p>
 <p><b>Fix</b> : </p>
 <p>
 <a href="https://github.com/advisories/GHSA-jpf8-86f3-wp38">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/190e2451544a60f6f924ef50a2112fb65d1923cd">Commit</a>
-</p>
-<hr>
-<h3>GHSA-vghh-5rfx-xhq8</h3>
-<p>
-<code>CRITICAL 9.9</code> · 2026-11-06 · Go<br>
-<code>github.com/canonical/lxd</code> · Pattern: <code>UNCLASSIFIED</code> · 1141x across ecosystem
-</p>
-<p><b>Root cause</b> : </p>
-<p><b>Impact</b> : </p>
-<p><b>Fix</b> : </p>
-<p>
-<a href="https://github.com/advisories/GHSA-vghh-5rfx-xhq8">Advisory</a> · <a href="https://github.com/canonical/lxd/commit/190e2451544a60f6f924ef50a2112fb65d1923cd">Commit</a>
 </p>
 <hr>
 <h2 id="how-it-works">How it works</h2>
@@ -1490,7 +1568,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <summary>Stats</summary>
 <table>
 <tr><th>Metric</th><th>Value</th></tr>
-<tr><td>Total advisories</td><td>3237</td></tr>
+<tr><td>Total advisories</td><td>3245</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
 <tr><td>Last updated</td><td>2026-11-24</td></tr>

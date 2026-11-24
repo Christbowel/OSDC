@@ -1,1 +1,1 @@
-{"id":"GHSA-mj63-m3rc-8ppr","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:03:30.252196+00:00"}
+{"id":"GHSA-mj63-m3rc-8ppr","axis":"advisories","repo":"thephpleague/commonmark","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-24T19:03:52.097659+00:00"}

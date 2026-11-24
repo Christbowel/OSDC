@@ -1,1 +1,1 @@
-{"id":"GHSA-mc85-72gr-vm9f","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-17T17:08:01.975957+00:00"}
+{"id":"GHSA-mc85-72gr-vm9f","axis":"advisories","repo":"elixir-tesla/tesla","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-24T19:08:07.238018+00:00"}
