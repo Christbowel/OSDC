@@ -1,1 +1,1 @@
-{"id":"GHSA-r7hw-jx6r-756g","axis":"advisories","repo":"simplesamlphp/saml2","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-18T16:40:29.924959+00:00"}
+{"id":"GHSA-r7hw-jx6r-756g","axis":"advisories","repo":"simplesamlphp/saml2","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-25T18:07:46.073483+00:00"}
