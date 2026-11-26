@@ -1,1 +1,1 @@
-{"id":"GHSA-rxj4-h86g-25gc","axis":"advisories","repo":"PHPOffice/PhpSpreadsheet","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-19T16:46:01.625388+00:00"}
+{"id":"GHSA-rxj4-h86g-25gc","axis":"advisories","repo":"PHPOffice/PhpSpreadsheet","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-26T17:53:01.345954+00:00"}
