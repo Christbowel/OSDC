@@ -1,1 +1,1 @@
-{"id":"GHSA-2jc5-xhx8-qj6h","axis":"advisories","repo":"fluent-plugins-nursery/fluent-plugin-opentelemetry","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-19T16:54:23.293269+00:00"}
+{"id":"GHSA-2jc5-xhx8-qj6h","axis":"advisories","repo":"fluent-plugins-nursery/fluent-plugin-opentelemetry","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-26T18:00:14.635768+00:00"}

@@ -1,1 +1,1 @@
-{"id":"GHSA-5hrj-7fc3-cmx9","axis":"advisories","repo":"mustache/mustache","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-19T16:44:09.037687+00:00"}
+{"id":"GHSA-5hrj-7fc3-cmx9","axis":"advisories","repo":"mustache/mustache","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-26T17:51:31.474720+00:00"}
