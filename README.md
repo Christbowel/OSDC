@@ -1571,7 +1571,7 @@ func CompressWrapper(sysOS *sys.OS, cmd *exec.Cmd, dstPath string, extraAllowedC
 <tr><td>Total advisories</td><td>3252</td></tr>
 <tr><td>Unique patterns</td><td>51</td></tr>
 <tr><td>Pending</td><td>112</td></tr>
-<tr><td>Last updated</td><td>2026-11-26</td></tr>
+<tr><td>Last updated</td><td>2026-11-27</td></tr>
 </table>
 </details>
 <hr>
