@@ -1,1 +1,1 @@
-{"id":"GHSA-h5m9-42h9-vcq6","axis":"advisories","repo":"doorkeeper-gem/doorkeeper","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-20T16:19:22.138616+00:00"}
+{"id":"GHSA-h5m9-42h9-vcq6","axis":"advisories","repo":"doorkeeper-gem/doorkeeper","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-27T17:37:30.583019+00:00"}

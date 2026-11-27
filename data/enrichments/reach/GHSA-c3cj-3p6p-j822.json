@@ -1,1 +1,1 @@
-{"id":"GHSA-c3cj-3p6p-j822","axis":"advisories","repo":"janephp/janephp","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-20T16:19:00.854350+00:00"}
+{"id":"GHSA-c3cj-3p6p-j822","axis":"advisories","repo":"janephp/janephp","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-27T17:37:11.471849+00:00"}
