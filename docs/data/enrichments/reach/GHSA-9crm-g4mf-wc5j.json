@@ -1,1 +1,1 @@
-{"id":"GHSA-9crm-g4mf-wc5j","axis":"advisories","repo":"sporkmonger/addressable","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-20T16:20:02.242107+00:00"}
+{"id":"GHSA-9crm-g4mf-wc5j","axis":"advisories","repo":"sporkmonger/addressable","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-27T17:38:03.549456+00:00"}

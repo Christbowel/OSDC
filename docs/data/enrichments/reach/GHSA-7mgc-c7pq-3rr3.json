@@ -1,1 +1,1 @@
-{"id":"GHSA-7mgc-c7pq-3rr3","axis":"advisories","repo":"getgrav/grav-plugin-login","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-20T16:24:47.926847+00:00"}
+{"id":"GHSA-7mgc-c7pq-3rr3","axis":"advisories","repo":"getgrav/grav-plugin-login","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-27T17:42:07.749792+00:00"}
