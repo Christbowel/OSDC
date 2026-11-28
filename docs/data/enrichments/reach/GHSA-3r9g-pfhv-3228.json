@@ -1,1 +1,1 @@
-{"id":"GHSA-3r9g-pfhv-3228","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-21T15:31:50.800501+00:00"}
+{"id":"GHSA-3r9g-pfhv-3228","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-28T16:20:31.371342+00:00"}

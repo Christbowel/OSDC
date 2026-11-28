@@ -1,1 +1,1 @@
-{"id":"GHSA-23w9-4pg3-xwm3","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-21T15:31:41.617876+00:00"}
+{"id":"GHSA-23w9-4pg3-xwm3","axis":"advisories","repo":"contao/contao","package":null,"downloads":null,"dependents":null,"blast_radius":{"score":0,"tier":"UNKNOWN","factors":[]},"enriched_at":"2026-11-28T16:20:23.147801+00:00"}
